@@ -1,9 +1,9 @@
 // hooks/useAuth.ts
+import { router, usePathname } from "expo-router";
 import { onAuthStateChanged, User } from "firebase/auth";
+import { createContext, useContext, useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
 import { auth } from "../lib/firebaseConfig";
-import { useEffect, useState, createContext, useContext } from "react";
-import { View, ActivityIndicator } from "react-native";
-import { Redirect, router } from "expo-router";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -18,24 +18,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const pathname = usePathname();
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("Auth state changed:", user);
       setUser(user);
       setLoading(false);
 
-      // Agrega esto para debuggear
       if (user) {
         console.log("User logged in:", user.email);
-        // Forzar una actualización del router
-        router.replace("/");
+        if (pathname === "/login") {
+          router.replace("/");
+        }
       } else {
         console.log("No user logged in");
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [pathname]);
 
   if (loading) {
     return (

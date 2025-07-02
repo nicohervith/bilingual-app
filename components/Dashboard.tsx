@@ -24,11 +24,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user) {
-      // Simulación de progreso real
-      // getUserProgress(user.uid).then((data) => {
-      //   setProgress(data);
-      //   checkUnlockedLevels(data);
-      // });
       console.log("user", user);
     }
   }, [user]);

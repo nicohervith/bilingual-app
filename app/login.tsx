@@ -36,26 +36,21 @@ export default function Login() {
     responseType: "id_token",
   });
 
-
   useEffect(() => {
     if (response?.type === "success") {
-      const { id_token } = response.params; // ← Usa id_token en lugar de access_token
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
 
-      if (id_token) {
-        const credential = GoogleAuthProvider.credential(id_token); // Sin null
-        signInWithCredential(auth, credential)
-          .then(() => {
-            console.log("Firebase auth successful!");
-            router.replace("/");
-          })
-          .catch((error) => {
-            console.error("Firebase auth error:", error);
-          });
-      } else {
-        console.error("No id_token received in response:", response);
-      }
+      signInWithCredential(auth, credential)
+        .then(() => {
+          router.replace("/"); 
+        })
+        .catch((error) => {
+          console.error("Authentication error:", error);
+        });
     }
   }, [response]);
+  
 
   useEffect(() => {
     if (user && !authLoading) {

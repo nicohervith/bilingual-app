@@ -29,6 +29,11 @@ export default function LevelScreen() {
     }
   }, [level]);
 
+  useEffect(() => {
+    console.log("Current mission index:", currentMissionIndex);
+  }, [currentMissionIndex]);
+  
+
   const handleCompleteMission = () => {
     // Verificar si hay más misiones disponibles
     if (currentMissionIndex < allMissions.length - 1) {
@@ -63,7 +68,11 @@ export default function LevelScreen() {
         {currentMission.title} ({currentMissionIndex + 1}/{allMissions.length})
       </Text>
 
-      <Mission mission={currentMission} onComplete={handleCompleteMission} />
+      <Mission
+        key={currentMission.id} // <- esto forzará un nuevo render cuando cambie la misión
+        mission={currentMission}
+        onComplete={handleCompleteMission}
+      />
     </ScrollView>
   );
 }

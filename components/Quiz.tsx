@@ -1,6 +1,6 @@
 // components/Quiz.tsx
 import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Quiz({
   quiz,
@@ -37,17 +37,31 @@ export default function Quiz({
 
     const success = correctCount >= quiz.questions.length * 0.7; // 70% correcto
 
-    Alert.alert(
-      "Resultado",
-      `Respuestas correctas: ${correctCount}/${quiz.questions.length}`,
-      [
-        {
-          text: "OK",
-          onPress: success ? onComplete : undefined,
-        },
-      ]
-    );
-  };
+    if (Platform.OS === "web") {
+      if (success) {
+        console.log("✅ Completado");
+        onComplete();
+      } else {
+        alert(`Fallaste. Correctas: ${correctCount}/${quiz.questions.length}`);
+      }
+    } else {
+      Alert.alert(
+        "Resultado",
+        `Respuestas correctas: ${correctCount}/${quiz.questions.length}`,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              if (success) {
+                console.log("✅ Completado");
+                onComplete();
+              }
+            },
+          },
+        ]
+      );
+    }
+  }
 
   return (
     <View style={styles.container}>

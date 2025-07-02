@@ -11,7 +11,7 @@ export default function Mission({
   mission: any;
   onComplete: () => void;
 }) {
-  const { title, content } = mission;
+  const { title, content, type, gameConfig } = mission;
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const handleQuizComplete = () => {
@@ -24,26 +24,56 @@ export default function Mission({
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
 
-      {content.sections.map((section: any, index: number) => {
-        if (section.type === "dialogue") {
-          return <Dialogue key={index} section={section} />;
-        }
-        if (section.type === "vocabulary") {
-          return <Vocabulary key={index} section={section} />;
-        }
-        return null;
-      })}
+      {Array.isArray(content.sections) &&
+        content.sections.map((section: any, index: number) => {
+          if (section.type === "dialogue") {
+            return <Dialogue key={index} section={section} />;
+          }
+          if (section.type === "vocabulary") {
+            return <Vocabulary key={index} section={section} />;
+          }
+          if (section.type === "grammar") {
+            return (
+              <View key={index}>
+                <Text style={{ fontWeight: "bold" }}>{section.title}</Text>
+                <Text>{section.explanation}</Text>
+                {section.examples?.map((ex: string, i: number) => (
+                  <Text key={i}>• {ex}</Text>
+                ))}
+              </View>
+            );
+          }
+          return null;
+        })}
 
-      {content.practice?.type === "quiz" && (
+      {/* Quiz si existe */}
+      {content?.practice?.type === "quiz" && (
         <Quiz quiz={content.practice} onComplete={handleQuizComplete} />
       )}
 
-      {/* Botón de completar para misiones sin quiz */}
-      {(!content.practice || quizCompleted) && (
+      {/* Juegos */}
+      {type === "game" && gameConfig?.type === "memory" && (
+        <View>
+          <Text>⚠️ Juego de memoria aún no implementado.</Text>
+          <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
+            <Text>Marcar juego como completado</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Botón por si no hay quiz o juego, o después de completarlo */}
+      {((!content?.practice && type !== "game") || quizCompleted) && (
         <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
           <Text>Continuar a siguiente misión</Text>
         </TouchableOpacity>
       )}
+
+      {/* Botón de completar para misiones sin quiz */}
+     {/*  {(!content.practice || quizCompleted) && (
+        <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
+          <Text>Continuar a siguiente misión</Text>
+        </TouchableOpacity>
+      )} */}
     </View>
   );
 }
