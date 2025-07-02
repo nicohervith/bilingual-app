@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-
+lib/
 # Expo
 .expo/
 dist/
@@ -17,7 +17,7 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
-
+app.json
 # Metro
 .metro-health-check*
 
