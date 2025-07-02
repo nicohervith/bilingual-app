@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { auth } from "../lib/firebaseConfig";
+/* import ProtectedRoute from "./ProtectedRoute"; */
 /* import { getUserProgress } from "../lib/progress"; */
 
 const availableLevels = ["A1", "A2", "B1"];
@@ -57,60 +58,63 @@ export default function Dashboard() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>
-        Welcome, {user ? user.displayName : "guest"}!
-      </Text>
-      <Text style={styles.email}>{user?.email ?? "Please log in"}</Text>
 
-      {!user && (
-        <Button
-          title="Login with Google"
-          onPress={() => router.push("/login")}
-        />
-      )}
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>
+          Welcome, {user ? user.displayName : "guest"}!
+        </Text>
+        <Text style={styles.email}>{user?.email ?? "Please log in"}</Text>
 
-      <Text style={styles.sectionTitle}>Your Progress</Text>
+        {!user && (
+          <Button
+            title="Login with Google"
+            onPress={() => router.push("/login")}
+          />
+        )}
 
-      {availableLevels.map((level) => {
-        const isUnlocked =
-          level === "A1" || (user && unlockedLevels.includes(level));
-        const disabled = !isUnlocked;
+        <Text style={styles.sectionTitle}>Your Progress</Text>
 
-        return (
-          <View key={level} style={styles.levelCard}>
-            <View style={styles.levelHeader}>
-              <Text style={styles.levelTitle}>Level {level}</Text>
-              {disabled && <Text style={styles.locked}>🔒 Locked</Text>}
+        {availableLevels.map((level) => {
+          const isUnlocked =
+            level === "A1" || (user && unlockedLevels.includes(level));
+          const disabled = !isUnlocked;
+
+          return (
+            <View key={level} style={styles.levelCard}>
+              <View style={styles.levelHeader}>
+                <Text style={styles.levelTitle}>Level {level}</Text>
+                {disabled && <Text style={styles.locked}>🔒 Locked</Text>}
+              </View>
+
+              <View style={styles.progressBar}>
+                <View
+                  style={[
+                    styles.progressFill,
+                    { width: `${getProgressPercentage(level, progress)}%` },
+                  ]}
+                />
+              </View>
+
+              <Text>
+                {progress[level]?.completed || 0}/{progress[level]?.total || 0}{" "}
+                lessons completed
+              </Text>
+
+              <TouchableOpacity
+                disabled={disabled}
+                onPress={() => navigateToLevel(level)}
+                style={[styles.levelButton, disabled && styles.disabledButton]}
+              >
+                <Text style={styles.buttonText}>Access Level</Text>
+              </TouchableOpacity>
             </View>
+          );
+        })}
 
-            <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${getProgressPercentage(level, progress)}%` },
-                ]}
-              />
-            </View>
-
-            <Text>
-              {progress[level]?.completed || 0}/{progress[level]?.total || 0}{" "}
-              lessons completed
-            </Text>
-
-            <TouchableOpacity
-              disabled={disabled}
-              onPress={() => navigateToLevel(level)}
-              style={[styles.levelButton, disabled && styles.disabledButton]}
-            >
-              <Text style={styles.buttonText}>Access Level</Text>
-            </TouchableOpacity>
-          </View>
-        );
-      })}
-
-      {user && <Button title="Logout" onPress={handleLogout} color="#FF5A5F" />}
-    </ScrollView>
+        {user && (
+          <Button title="Logout" onPress={handleLogout} color="#FF5A5F" />
+        )}
+      </ScrollView>
   );
 }
 

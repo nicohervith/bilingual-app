@@ -23,7 +23,17 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyC40iEVDPzMrQBEjPAuYss5lzvhpH_ZrsU",
+          "authDomain": "bilingual-site-65404.firebaseapp.com",
+          "projectId": "bilingual-site-65404",
+          "storageBucket": "bilingual-site-65404.firebasestorage.app",
+          "messagingSenderId": "500497750948",
+          "appId": "1:500497750948:web:082933a226e1224f5abf31"
+        }
+      }
     },
     "plugins": [
       "expo-router",

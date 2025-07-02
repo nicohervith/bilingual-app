@@ -4,6 +4,10 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Slot } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import { AuthProvider } from "@/contexts/AuthContext";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -17,22 +21,13 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={styles.globalContainer}>
-      <Slot />
-    </View>
+    <AuthProvider>
+      <View style={styles.globalContainer}>
+        <Slot />
+      </View>
+    </AuthProvider>
   );
 
-  /* 
-Anterior layout
-return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  ); */
 }
 
 const styles = StyleSheet.create({
