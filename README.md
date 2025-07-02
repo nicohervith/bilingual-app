@@ -1,5 +1,5 @@
 # Welcome to your Expo app 👋
-
+FB:83:86:DB:38:D1:21:C7:37:25:4D:13:55:82:13:D3:14:44:B3:74
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Get started
@@ -48,3 +48,4 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# bilingual-app
