@@ -1,10 +1,24 @@
-import { View, Text, StyleSheet } from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Dialogue from "./Dialogue";
-import Vocabulary from "./Vocabulary";
 import Quiz from "./Quiz";
+import Vocabulary from "./Vocabulary";
 
-export default function Mission({ mission }: { mission: any }) {
+export default function Mission({
+  mission,
+  onComplete,
+}: {
+  mission: any;
+  onComplete: () => void;
+}) {
   const { title, content } = mission;
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const handleQuizComplete = () => {
+    setQuizCompleted(true);
+    // Podrías añadir aquí lógica para guardar el progreso
+    onComplete();
+  };
 
   return (
     <View style={styles.card}>
@@ -20,7 +34,16 @@ export default function Mission({ mission }: { mission: any }) {
         return null;
       })}
 
-      {content.practice?.type === "quiz" && <Quiz quiz={content.practice} />}
+      {content.practice?.type === "quiz" && (
+        <Quiz quiz={content.practice} onComplete={handleQuizComplete} />
+      )}
+
+      {/* Botón de completar para misiones sin quiz */}
+      {(!content.practice || quizCompleted) && (
+        <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
+          <Text>Continuar a siguiente misión</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -37,4 +60,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
+  completeButton: {},
 });

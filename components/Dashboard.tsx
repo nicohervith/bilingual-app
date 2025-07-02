@@ -115,7 +115,7 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, alignItems: "center" },
+  container: { padding: 20, alignItems: "center", width: "100%" },
   userPhoto: { width: 100, height: 100, borderRadius: 50, marginBottom: 10 },
   title: { fontSize: 22, fontWeight: "bold" },
   email: { marginBottom: 10, color: "#555" },

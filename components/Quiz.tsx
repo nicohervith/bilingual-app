@@ -2,7 +2,13 @@
 import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 
-export default function Quiz({ quiz }: { quiz: any }) {
+export default function Quiz({
+  quiz,
+  onComplete,
+}: {
+  quiz: any;
+  onComplete: () => void;
+}) {
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
@@ -29,9 +35,17 @@ export default function Quiz({ quiz }: { quiz: any }) {
       }
     });
 
+    const success = correctCount >= quiz.questions.length * 0.7; // 70% correcto
+
     Alert.alert(
       "Resultado",
-      `Respuestas correctas: ${correctCount}/${quiz.questions.length}`
+      `Respuestas correctas: ${correctCount}/${quiz.questions.length}`,
+      [
+        {
+          text: "OK",
+          onPress: success ? onComplete : undefined,
+        },
+      ]
     );
   };
 
