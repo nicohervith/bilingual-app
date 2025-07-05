@@ -1,0 +1,40 @@
+{
+  "game1_dialogue_simulator": {
+    "type": "dialogue",
+    "title": "Simulador de Conversación",
+    "scenes": [
+      {
+        "background": "scenes/coffee_shop.jpg",
+        "characters": [
+          {
+            "position": "left",
+            "image": "characters/barista.png",
+            "name": "Barista"
+          }
+        ],
+        "dialogues": [
+          {
+            "speaker": "Barista",
+            "text": "Good morning! What would you like?",
+            "audio": "dialogues/barista_morning.mp3",
+            "userOptions": [
+              {
+                "text": "Good morning! A coffee please",
+                "correct": true
+              },
+              {
+                "text": "I'm 25 years old",
+                "correct": false,
+                "feedback": "Esa no es una respuesta adecuada para el contexto"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "rewards": {
+      "xp": 100,
+      "unlock": "achievement_coffee_lover"
+    }
+  }
+}

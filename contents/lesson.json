@@ -1,0 +1,36 @@
+{
+  "lesson1_hello": {
+    "unitId": "unit1_greetings",
+    "type": "vocabulary",
+    "title": "Hello! Hi!",
+    "duration": "15 min",
+    "objectives": [
+      "Diferenciar saludos formales e informales",
+      "Pronunciar correctamente"
+    ],
+    "content": {
+      "theory": {
+        "text": "En inglés, 'Hello' es formal y 'Hi' es informal...",
+        "audio": "lessons/hello_theory.mp3",
+        "examples": [
+          {
+            "text": "Hello, Mr. Smith",
+            "translation": "Buenos días, Sr. Smith"
+          }
+        ]
+      },
+      "interactive": {
+        "type": "flashcards",
+        "cards": [
+          {
+            "word": "Good morning",
+            "image": "flashcards/morning.jpg",
+            "audio": "audio/good_morning.mp3"
+          }
+        ]
+      }
+    },
+    "xpReward": 50,
+    "prerequisites": []
+  }
+}

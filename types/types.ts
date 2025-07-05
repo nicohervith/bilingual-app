@@ -25,3 +25,15 @@ type Props = {
   mission: Mission;
   onComplete: () => void;
 };
+
+export interface UserProgress {
+  xp: number;
+  completedMissions: Record<string, string[]>;
+  levels: Record<string, { completed: number; total: number }>;
+}
+
+export interface AppLevel {
+  id: string;
+  name: string;
+  missions: Mission[];
+}

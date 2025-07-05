@@ -1,5 +1,7 @@
 import Mission from "@/components/Mission";
+import { useAuth } from "@/contexts/AuthContext";
 import { getMissionsByLevel } from "@/lib/firebaseUtils";
+import { completeMission } from "@/services/progressService";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -10,38 +12,65 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { MissionType } from "../../types/missionsType";
 
 export default function LevelScreen() {
-  const { level } = useLocalSearchParams();
-  const [allMissions, setAllMissions] = useState<any[]>([]);
+  const { level: levelId } = useLocalSearchParams();
+  const [allMissions, setAllMissions] = useState<MissionType[]>([]);
   const [currentMissionIndex, setCurrentMissionIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { user } = useAuth();
+  const [progress, setProgress] = useState<any>(null);
 
   useEffect(() => {
-    if (level) {
-      getMissionsByLevel(level as string)
+    if (levelId) {
+      getMissionsByLevel(levelId as string)
         .then((missions) => {
           setAllMissions(missions);
           setLoading(false);
         })
-        .catch(console.error);
+        .catch((error) => {
+          console.error("Error loading missions:", error);
+          setLoading(false);
+        });
     }
-  }, [level]);
+  }, [levelId]);
 
-  useEffect(() => {
-    console.log("Current mission index:", currentMissionIndex);
-  }, [currentMissionIndex]);
-  
+  const handleCompleteMission = async () => {
+    if (!user || !progress || !allMissions.length) return;
 
-  const handleCompleteMission = () => {
-    // Verificar si hay más misiones disponibles
-    if (currentMissionIndex < allMissions.length - 1) {
-      console.log(currentMissionIndex);
-      setCurrentMissionIndex(currentMissionIndex + 1);
-    } else {
-      // No hay más misiones, volver al dashboard
-      router.replace("/");
+    const currentMission = allMissions[currentMissionIndex];
+
+    try {
+      await completeMission(
+        user.uid,
+        levelId as string,
+        currentMission.id,
+        currentMission.xpReward
+      );
+
+      // Actualizar estado local
+      setProgress({
+        ...progress,
+        xp: progress.xp + currentMission.xpReward,
+        completedMissions: {
+          ...progress.completedMissions,
+          [levelId as string]: [
+            ...(progress.completedMissions[levelId as string] || []),
+            currentMission.id,
+          ],
+        },
+      });
+
+      // Navegar a la siguiente misión o al dashboard
+      if (currentMissionIndex < allMissions.length - 1) {
+        setCurrentMissionIndex(currentMissionIndex + 1);
+      } else {
+        router.replace("/");
+      }
+    } catch (error) {
+      console.error("Error completing mission:", error);
     }
   };
 
@@ -69,9 +98,10 @@ export default function LevelScreen() {
       </Text>
 
       <Mission
-        key={currentMission.id} // <- esto forzará un nuevo render cuando cambie la misión
+        key={currentMission.id}
         mission={currentMission}
         onComplete={handleCompleteMission}
+        currentLevel={levelId as string}
       />
     </ScrollView>
   );

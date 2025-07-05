@@ -1,0 +1,31 @@
+{
+  "unit1_greetings": {
+    "title": "Greetings and Introductions",
+    "order": 1,
+    "description": "Aprende saludos básicos y cómo presentarte",
+    "icon": "👋",
+    "coverImage": "units/greetings_cover.jpg",
+    "duration": "2 horas",
+    "rewards": {
+      "gems": 20,
+      "badge": {
+        "id": "badge_first_talk",
+        "image": "badges/first_talk.png"
+      },
+      "unlockables": [
+        {
+          "type": "sticker",
+          "id": "sticker_bily_hello",
+          "image": "stickers/hello.png"
+        }
+      ]
+    },
+    "lessons": [
+      "lesson1_hello",
+      "lesson2_introductions",
+      "lesson3_review_game"
+    ],
+    "dependencies": [], 
+    "tags": ["básico", "conversacional"]
+  }
+}

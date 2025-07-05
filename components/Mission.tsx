@@ -1,94 +1,274 @@
+import { useAuth } from "@/contexts/AuthContext";
+import { completeMission } from "@/services/progressService";
+import { MissionType } from "@/types/missionsType";
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Dialogue from "./Dialogue";
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Quiz from "./Quiz";
-import Vocabulary from "./Vocabulary";
+
+interface MissionProps {
+  mission: MissionType;
+  onComplete: () => void;
+  currentLevel: string;
+}
 
 export default function Mission({
   mission,
   onComplete,
-}: {
-  mission: any;
-  onComplete: () => void;
-}) {
-  const { title, content, type, gameConfig } = mission;
+  currentLevel,
+}: MissionProps) {
+  const { user } = useAuth();
+  const [xpAnimation] = useState(new Animated.Value(0));
+
+  const { title, content, type, gameConfig, xpReward, id } = mission;
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [showXpReward, setShowXpReward] = useState(false);
 
   const handleQuizComplete = () => {
     setQuizCompleted(true);
-    // Podrías añadir aquí lógica para guardar el progreso
     onComplete();
   };
 
+  const handleComplete = async () => {
+    if (!user) return;
+
+    try {
+      await completeMission(
+        user.uid,
+        currentLevel,
+        mission.id,
+        mission.xpReward
+      );
+
+      setShowXpReward(true);
+      setTimeout(() => {
+        setShowXpReward(false);
+        onComplete();
+      }, 1500);
+    } catch (error) {
+      console.error("Error saving progress:", error);
+    }
+  };
+
+  const opacity = xpAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
+    <View style={missionStyles.card}>
+      <Text style={missionStyles.title}>{title}</Text>
 
-      {Array.isArray(content.sections) &&
-        content.sections.map((section: any, index: number) => {
-          if (section.type === "dialogue") {
-            return <Dialogue key={index} section={section} />;
-          }
-          if (section.type === "vocabulary") {
-            return <Vocabulary key={index} section={section} />;
-          }
-          if (section.type === "grammar") {
-            return (
-              <View key={index}>
-                <Text style={{ fontWeight: "bold" }}>{section.title}</Text>
-                <Text>{section.explanation}</Text>
-                {section.examples?.map((ex: string, i: number) => (
-                  <Text key={i}>• {ex}</Text>
-                ))}
-              </View>
-            );
-          }
-          return null;
-        })}
+      {content.sections?.map((section, index) => {
+        if (section.type === "dialogue") {
+          return (
+            <View key={index} style={missionStyles.section}>
+              <Text style={missionStyles.sectionTitle}>{section.title}</Text>
+              {section.dialogues?.map((dialogue, i) => (
+                <View key={i} style={missionStyles.dialogue}>
+                  <Text style={missionStyles.speaker}>{dialogue.speaker}:</Text>
+                  <Text>{dialogue.text}</Text>
+                  <Text style={missionStyles.translation}>
+                    {dialogue.translation}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          );
+        }
 
-      {/* Quiz si existe */}
-      {content?.practice?.type === "quiz" && (
+        if (section.type === "vocabulary") {
+          return (
+            <View key={index} style={missionStyles.section}>
+              <Text style={missionStyles.sectionTitle}>{section.title}</Text>
+              {section.words?.map((word, i) => (
+                <View key={i} style={missionStyles.vocabularyItem}>
+                  <Text style={missionStyles.word}>{word.word}</Text>
+                  <Text style={missionStyles.translation}>
+                    {word.translation}
+                  </Text>
+                  {word.example && (
+                    <Text style={missionStyles.example}>
+                      Ejemplo: {word.example}
+                    </Text>
+                  )}
+                </View>
+              ))}
+            </View>
+          );
+        }
+
+        if (section.type === "grammar") {
+          return (
+            <View key={index} style={missionStyles.section}>
+              <Text style={missionStyles.sectionTitle}>{section.title}</Text>
+              <Text style={missionStyles.explanation}>
+                {section.explanation}
+              </Text>
+              {section.examples?.map((ex, i) => (
+                <Text key={i} style={missionStyles.example}>
+                  • {ex}
+                </Text>
+              ))}
+            </View>
+          );
+        }
+
+        return null;
+      })}
+
+      {content.practice?.type === "quiz" && (
         <Quiz quiz={content.practice} onComplete={handleQuizComplete} />
       )}
 
-      {/* Juegos */}
       {type === "game" && gameConfig?.type === "memory" && (
-        <View>
-          <Text>⚠️ Juego de memoria aún no implementado.</Text>
-          <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
-            <Text>Marcar juego como completado</Text>
+        <View style={missionStyles.gameContainer}>
+          <Text style={missionStyles.gameMessage}>
+            ⚠️ Juego de memoria aún no implementado.
+          </Text>
+          <TouchableOpacity
+            onPress={handleComplete}
+            style={missionStyles.completeButton}
+          >
+            <Text style={missionStyles.buttonText}>
+              Marcar juego como completado
+            </Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {/* Botón por si no hay quiz o juego, o después de completarlo */}
-      {((!content?.practice && type !== "game") || quizCompleted) && (
-        <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
-          <Text>Continuar a siguiente misión</Text>
-        </TouchableOpacity>
+      {showXpReward && (
+        <View style={missionStyles.xpReward}>
+          <Text style={missionStyles.xpText}>+{xpReward} XP!</Text>
+          <Animated.View style={[missionStyles.xpReward, { opacity }]}>
+            <Text style={missionStyles.xpText}>
+              +{mission.xpReward || 50} XP!
+            </Text>
+          </Animated.View>
+        </View>
       )}
 
-      {/* Botón de completar para misiones sin quiz */}
-     {/*  {(!content.practice || quizCompleted) && (
-        <TouchableOpacity onPress={onComplete} style={styles.completeButton}>
-          <Text>Continuar a siguiente misión</Text>
+      {((!content.practice && type !== "game") || quizCompleted) && (
+        <TouchableOpacity
+          onPress={handleComplete}
+          style={missionStyles.completeButton}
+        >
+          <Text style={missionStyles.buttonText}>
+            Continuar a siguiente misión
+          </Text>
         </TouchableOpacity>
-      )} */}
+      )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+// Estilos específicos para el componente Mission
+const missionStyles = StyleSheet.create({
   card: {
-    marginVertical: 20,
-    padding: 15,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#fff",
     borderRadius: 10,
+    padding: 20,
+    marginVertical: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
+    marginBottom: 15,
+    color: "#333",
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 10,
+    color: "#444",
+  },
+  dialogue: {
+    marginBottom: 15,
+    paddingLeft: 10,
+    borderLeftWidth: 3,
+    borderLeftColor: "#4CAF50",
+  },
+  speaker: {
+    fontWeight: "bold",
+    color: "#2196F3",
+  },
+  translation: {
+    fontStyle: "italic",
+    color: "#666",
+    marginTop: 5,
+  },
+  vocabularyItem: {
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 5,
+  },
+  word: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  example: {
+    color: "#666",
+    marginTop: 5,
+  },
+  explanation: {
+    marginBottom: 10,
+    lineHeight: 22,
+  },
+  gameContainer: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+  gameMessage: {
+    color: "#FF9800",
+    marginBottom: 15,
+  },
+  completeButton: {
+    backgroundColor: "#4CAF50",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  xpReward: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -100 }, { translateY: -100 }],
+    width: 200,
+    height: 200,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 100,
+  },
+  xpText: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#FFD700",
+    textShadowColor: "rgba(0,0,0,0.5)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
     marginBottom: 10,
   },
-  completeButton: {},
+  xpAnimation: {
+    width: 180,
+    height: 180,
+  },
 });
