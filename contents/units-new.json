@@ -1,0 +1,102 @@
+{
+  "units": {
+    "unit1_greetings": {
+      "title": "Greetings and Introductions",
+      "order": 1,
+      "description": "Aprende saludos, presentaciones y despedidas básicas.",
+      "rewards": {
+        "gems": 10,
+        "badge": "First Talk",
+        "sticker": "bily_hello"
+      },
+      "lessons": [
+        "lesson1_hello_hi",
+        "lesson2_my_name",
+        "lesson3_whats_your_name",
+        "lesson4_nice_to_meet_you",
+        "lesson5_review_game"
+      ]
+    }
+  },
+
+  "lessons": {
+    "lesson1_hello_hi": {
+      "type": "vocabulary",
+      "title": "Hello! Hi!",
+      "objectives": [
+        "Comprender saludos básicos",
+        "Diferenciar saludos formales e informales"
+      ],
+      "vocabulary": [
+        {
+          "word": "hello",
+          "translation": "hola",
+          "audio": "hello.mp3",
+          "image": "wave.png"
+        },
+        {
+          "word": "hi",
+          "translation": "hola (informal)",
+          "context": "Para amigos"
+        }
+      ],
+      "exercises": [
+        {
+          "type": "matching",
+          "pairs": [
+            ["hello", "hola"],
+            ["goodbye", "adiós"]
+          ]
+        },
+        {
+          "type": "image_selection",
+          "question": "Selecciona el saludo",
+          "correctImage": "wave.png",
+          "options": ["sleep.png", "book.png"]
+        }
+      ]
+    },
+
+    "lesson2_my_name": {
+      "type": "grammar",
+      "title": "My name is...",
+      "objectives": ["Presentarse", "Usar 'to be' con nombre propio"],
+      "grammarStructure": "Subject + am/is + name",
+      "examples": ["I am Laura.", "He is John."],
+      "exercises": [
+        {
+          "type": "fill_blank",
+          "sentence": "I ___ Ana.",
+          "answer": "am"
+        },
+        {
+          "type": "multiple_choice",
+          "question": "Selecciona la opción correcta:",
+          "options": ["I is Maria.", "I am Maria.", "I are Maria."],
+          "correctIndex": 1
+        }
+      ]
+    },
+
+    "lesson5_review_game": {
+      "type": "game",
+      "gameType": "drag_drop",
+      "title": "Match the Faces",
+      "description": "Relaciona saludos con expresiones faciales",
+      "pairs": [
+        {
+          "image": "smile.png",
+          "matches": "hi"
+        },
+        {
+          "image": "sad.png",
+          "matches": "goodbye"
+        }
+      ],
+      "rewards": {
+        "gems": 5,
+        "animation": "animation_bily_wave"
+      }
+    }
+  }
+}

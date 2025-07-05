@@ -1,0 +1,15 @@
+{
+  "wave_image": {
+    "url": "https://storage.googleapis.com/.../wave.png",
+    "type": "image",
+    "tags": ["greetings", "gestures"],
+    "altText": "Persona saludando con la mano",
+    "license": "CC BY 4.0"
+  },
+  "hello_audio": {
+    "url": "https://storage.googleapis.com/.../hello.mp3",
+    "duration": 1.2, 
+    "accent": "american",
+    "gender": "female"
+  }
+}

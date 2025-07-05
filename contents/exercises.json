@@ -1,0 +1,27 @@
+{
+  "exercise1_match_greetings": {
+    "lessonId": "lesson1_hello",
+    "type": "matching",
+    "title": "Empareja los saludos",
+    "config": {
+      "pairs": [
+        {
+          "prompt": {
+            "type": "text",
+            "content": "Hello"
+          },
+          "match": {
+            "type": "image",
+            "content": "images/wave.png"
+          }
+        }
+      ],
+      "timeLimit": 60, 
+      "attempts": 3
+    },
+    "feedback": {
+      "positive": ["¡Excelente!", "👍 Correcto"],
+      "negative": ["Intenta nuevamente", "Escucha el audio de ayuda"]
+    }
+  }
+}
