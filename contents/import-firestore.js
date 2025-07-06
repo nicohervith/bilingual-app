@@ -43,87 +43,100 @@ const db = admin.firestore();
 
 async function importContent() {
   try {
-    // 1. Importar unidades
+    const db = admin.firestore();
+
+    // 1. Primero importar las lecciones (porque las unidades las referencian)
+    const lessonsBatch = db.batch();
+    const lessonsRef = db.collection("lessons");
+    let lessonCount = 0;
+
+    for (const [lessonId, lessonData] of Object.entries(
+      contentData.lessons || {}
+    )) {
+      if (!lessonData) continue;
+      lessonCount++;
+
+      const lessonRef = lessonsRef.doc(lessonId);
+      const lessonToSave = {
+        type: lessonData.type || "",
+        title: lessonData.title || "",
+        objectives: lessonData.objectives || [],
+        vocabulary: (lessonData.vocabulary || []).map((item) => ({
+          word: item.word || "",
+          translation: item.translation || "",
+          audio: item.audio || "",
+          image: item.image || "",
+          context: item.context || "",
+          example: item.example || "",
+        })),
+        grammarStructure: lessonData.grammarStructure || "",
+        examples: lessonData.examples || [],
+        gameType: lessonData.gameType || "",
+        description: lessonData.description || "",
+        pairs: (lessonData.pairs || []).map((pair) => ({
+          image: pair.image || "",
+          matches: pair.matches || "",
+        })),
+        rewards: lessonData.rewards || {},
+        exercises: [],
+      };
+
+      // Manejar ejercicios de forma compatible con Firestore
+      if (Array.isArray(lessonData.exercises)) {
+        lessonToSave.exercises = lessonData.exercises.map((ex) => ({
+          type: ex.type || "",
+          question: ex.question || "",
+          sentence: ex.sentence || "",
+          answer: ex.answer || "",
+          options: ex.options || [],
+          correctIndex: ex.correctIndex || 0,
+          correctImage: ex.correctImage || "",
+          matches: ex.matches || "",
+          // Convertir arrays de arrays a arrays de objetos
+          pairs: Array.isArray(ex.pairs)
+            ? ex.pairs.map(([from, to]) => ({ from, to }))
+            : [],
+        }));
+      }
+
+      lessonsBatch.set(lessonRef, lessonToSave);
+    }
+
+    await lessonsBatch.commit();
+    console.log(`✅ ${lessonCount} lecciones importadas`);
+
+    // 2. Luego importar las unidades
     const unitsBatch = db.batch();
     const unitsRef = db.collection("units");
 
-    Object.entries(contentData.units || {}).forEach(([unitId, unitData]) => {
-      if (!unitData) return;
+    for (const [unitId, unitData] of Object.entries(contentData.units || {})) {
+      if (!unitData) continue;
 
       const unitRef = unitsRef.doc(unitId);
-      const simplifiedUnit = {
-        title: unitData.title,
-        order: unitData.order,
-        description: unitData.description,
+      unitsBatch.set(unitRef, {
+        title: unitData.title || "",
+        order: unitData.order || 0,
+        description: unitData.description || "",
         lessons: unitData.lessons || [],
-        rewards: unitData.rewards
-          ? {
-              gems: unitData.rewards.gems || 0,
-              badge: unitData.rewards.badge || "",
-              sticker: unitData.rewards.sticker || "",
-            }
-          : { gems: 0, badge: "", sticker: "" },
-      };
-      unitsBatch.set(unitRef, simplifiedUnit);
-    });
+        rewards: {
+          gems: unitData.rewards?.gems || 0,
+          badge: unitData.rewards?.badge || "",
+          sticker: unitData.rewards?.sticker || "",
+        },
+      });
+    }
 
     await unitsBatch.commit();
     console.log(
       `✅ ${Object.keys(contentData.units || {}).length} unidades importadas`
     );
-
-    // 2. Importar lecciones
-    const lessonsBatch = db.batch();
-    const lessonsRef = db.collection("lessons");
-    let lessonCount = 0;
-
-    Object.entries(contentData.lessons || {}).forEach(
-      ([lessonId, lessonData]) => {
-        if (!lessonData) return;
-        lessonCount++;
-
-        const lessonRef = lessonsRef.doc(lessonId);
-        const simplifiedLesson = {
-          type: lessonData.type || "",
-          title: lessonData.title || "",
-          objectives: lessonData.objectives || [],
-          vocabulary: lessonData.vocabulary || [],
-          grammarStructure: lessonData.grammarStructure || "",
-          examples: lessonData.examples || [],
-          gameType: lessonData.gameType || "",
-          description: lessonData.description || "",
-          pairs: lessonData.pairs || [],
-          rewards: lessonData.rewards || {},
-        };
-
-        // Manejar ejercicios de forma segura
-        if (Array.isArray(lessonData.exercises)) {
-          simplifiedLesson.exercises = lessonData.exercises.map((exercise) => ({
-            type: exercise.type || "",
-            question: exercise.question || "",
-            pairs: exercise.pairs
-              ? exercise.pairs.map((pair) => [...pair])
-              : [],
-            sentence: exercise.sentence || "",
-            answer: exercise.answer || "",
-            options: exercise.options || [],
-            correctIndex: exercise.correctIndex || 0,
-            correctImage: exercise.correctImage || "",
-            matches: exercise.matches || "",
-          }));
-        } else {
-          simplifiedLesson.exercises = [];
-        }
-
-        lessonsBatch.set(lessonRef, simplifiedLesson);
-      }
-    );
-
-    await lessonsBatch.commit();
-    console.log(`✅ ${lessonCount} lecciones importadas`);
     console.log("🎉 Importación completada con éxito!");
   } catch (error) {
     console.error("❌ Error durante la importación:", error);
+    // Detalle adicional del error
+    if (error.details) {
+      console.error("Detalles del error:", error.details);
+    }
   }
 }
 
