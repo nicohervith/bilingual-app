@@ -1,7 +1,7 @@
-import Mission from "@/components/Mission";
+import Lesson from "@/components/Lessons";
 import { useAuth } from "@/contexts/AuthContext";
-import { getMissionsByLevel } from "@/lib/firebaseUtils";
-import { completeMission } from "@/services/progressService";
+import { completeLesson, getLessonsByLevel } from "@/services/firestoreService";
+
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -12,65 +12,91 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { MissionType } from "../../types/missionsType";
 
 export default function LevelScreen() {
   const { level: levelId } = useLocalSearchParams();
-  const [allMissions, setAllMissions] = useState<MissionType[]>([]);
-  const [currentMissionIndex, setCurrentMissionIndex] = useState(0);
+  const [lessons, setLessons] = useState<any[]>([]);
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { user } = useAuth();
   const [progress, setProgress] = useState<any>(null);
+  const [isTestMode, setIsTestMode] = useState(false);
 
   useEffect(() => {
     if (levelId) {
-      getMissionsByLevel(levelId as string)
-        .then((missions) => {
-          setAllMissions(missions);
+      getLessonsByLevel(levelId as string)
+        .then((lessons) => {
+          setLessons(lessons);
           setLoading(false);
         })
         .catch((error) => {
-          console.error("Error loading missions:", error);
+          console.error("Error loading lessons:", error);
           setLoading(false);
         });
     }
   }, [levelId]);
 
-  const handleCompleteMission = async () => {
-    if (!user || !progress || !allMissions.length) return;
+/*   const handleCompleteLesson = async () => {
+    if (!user || !progress || !lessons.length) return;
 
-    const currentMission = allMissions[currentMissionIndex];
-
+    const currentLesson = lessons[currentLessonIndex];
+    console.log("Completing lesson, current index:", currentLessonIndex);
     try {
-      await completeMission(
+      await completeLesson(
         user.uid,
         levelId as string,
-        currentMission.id,
-        currentMission.xpReward
+        currentLesson.id,
+        currentLesson.xpReward
       );
 
       // Actualizar estado local
       setProgress({
         ...progress,
-        xp: progress.xp + currentMission.xpReward,
-        completedMissions: {
-          ...progress.completedMissions,
+        xp: progress.xp + currentLesson.xpReward,
+        completedLessons: {
+          ...progress.completedLessons,
           [levelId as string]: [
-            ...(progress.completedMissions[levelId as string] || []),
-            currentMission.id,
+            ...(progress.completedLessons[levelId as string] || []),
+            currentLesson.id,
           ],
         },
       });
 
-      // Navegar a la siguiente misión o al dashboard
-      if (currentMissionIndex < allMissions.length - 1) {
-        setCurrentMissionIndex(currentMissionIndex + 1);
+      // Navegar a la siguiente lección o al dashboard
+      if (currentLessonIndex < lessons.length - 1) {
+        setCurrentLessonIndex((prevIndex) => prevIndex + 1);
       } else {
         router.replace("/");
       }
     } catch (error) {
-      console.error("Error completing mission:", error);
+      console.error("Error completing lesson:", error);
+    }
+  }; */
+  const handleCompleteLesson = async () => {
+    if (!user || !lessons.length) return;
+
+    const currentLesson = lessons[currentLessonIndex];
+
+    try {
+      // Solo marca como completada si NO estamos en modo prueba
+      if (!isTestMode) {
+        await completeLesson(
+          user.uid,
+          levelId as string,
+          currentLesson.id,
+          currentLesson.xpReward
+        );
+      }
+
+      // Navegar a la siguiente lección o al dashboard
+      if (currentLessonIndex < lessons.length - 1) {
+        setCurrentLessonIndex(currentLessonIndex + 1); // Forzar actualización
+      } else {
+        router.replace("/");
+      }
+    } catch (error) {
+      console.error("Error completing lesson:", error);
     }
   };
 
@@ -78,15 +104,15 @@ export default function LevelScreen() {
     return <ActivityIndicator size="large" style={{ marginTop: 40 }} />;
   }
 
-  if (allMissions.length === 0) {
+  if (lessons.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>No se encontraron misiones para este nivel</Text>
+        <Text>No se encontraron lecciones para este nivel</Text>
       </View>
     );
   }
 
-  const currentMission = allMissions[currentMissionIndex];
+  const currentLesson = lessons[currentLessonIndex];
 
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }}>
@@ -94,14 +120,15 @@ export default function LevelScreen() {
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
       <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        {currentMission.title} ({currentMissionIndex + 1}/{allMissions.length})
+        {currentLesson.title} ({currentLessonIndex + 1}/{lessons.length})
       </Text>
 
-      <Mission
-        key={currentMission.id}
-        mission={currentMission}
-        onComplete={handleCompleteMission}
+      <Lesson
+        key={currentLesson.id}
+        lesson={currentLesson}
+        onComplete={handleCompleteLesson}
         currentLevel={levelId as string}
+        isTestMode={false}
       />
     </ScrollView>
   );

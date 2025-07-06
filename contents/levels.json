@@ -1,0 +1,18 @@
+{
+  "A1": {
+    "title": "Beginner",
+    "description": "Fundamentos del inglés",
+    "totalUnits": 8,
+    "totalXp": 2500,
+    "unlockXp": 0,
+    "badge": "a1_badge.png"
+  },
+  "A2": {
+    "title": "Elementary",
+    "description": "Inglés cotidiano",
+    "totalUnits": 10,
+    "totalXp": 4000,
+    "unlockXp": 2500,
+    "badge": "a2_badge.png"
+  }
+}

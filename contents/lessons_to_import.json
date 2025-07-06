@@ -1,0 +1,203 @@
+{
+  "lessons": {
+    "A1_colors": {
+      "id": "A1_colors",
+      "unit": "unitA1_basics",
+      "title": "Basic Colors",
+      "type": "vocabulary",
+      "level": "A1",
+      "xpReward": 40,
+      "objectives": [
+        "Identificar colores básicos",
+        "Asociar colores con objetos comunes"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Red",
+            "translation": "Rojo",
+            "image": "colors/red.png",
+            "examples": ["The apple is red", "The car is red"]
+          },
+          {
+            "word": "Blue",
+            "translation": "Azul",
+            "image": "colors/blue.png",
+            "examples": ["The sky is blue", "The ocean is blue"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "title": "Match words",
+            "pairs": [
+              { "from": "Red", "to": "Rojo" },
+              { "from": "Blue", "to": "Azul" }
+            ]
+          },
+          {
+            "type": "image_selection",
+            "title": "Select the correct color",
+            "question": "Which image shows something blue?",
+            "options": [
+              { "image": "colors/red_car.png", "isCorrect": false },
+              { "image": "colors/blue_sky.png", "isCorrect": true }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "createdAt": "2023-11-20",
+        "version": 1
+      }
+    },
+    "A1_articles": {
+      "id": "A1_articles",
+      "unit": "unitA1_grammar",
+      "title": "Articles: A vs An",
+      "type": "grammar",
+      "xpReward": 50,
+      "objectives": [
+        "Diferenciar entre 'a' y 'an'",
+        "Aplicar la regla de sonido vocálico"
+      ],
+      "content": {
+        "grammarRules": [
+          {
+            "rule": "Use 'a' before consonant sounds",
+            "examples": ["a dog", "a university"]
+          },
+          {
+            "rule": "Use 'an' before vowel sounds",
+            "examples": ["an apple", "an hour"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "fill_blank",
+            "questions": [
+              {
+                "sentence": "I have ___ apple",
+                "answer": "an",
+                "options": ["a", "an"]
+              },
+              {
+                "sentence": "She is ___ doctor",
+                "answer": "a",
+                "options": ["a", "an"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "A1_family": {
+      "id": "A1_family",
+      "unit": "unitA1_relationships",
+      "title": "Immediate Family",
+      "type": "vocabulary",
+      "xpReward": 45,
+      "objectives": [
+        "Nombrar miembros de la familia",
+        "Identificar relaciones básicas"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Mother",
+            "translation": "Madre",
+            "image": "family/mother.png"
+          },
+          {
+            "word": "Father",
+            "translation": "Padre",
+            "image": "family/father.png"
+          }
+        ],
+        "familyTree": {
+          "image": "family/tree_example.png",
+          "relationships": [
+            {
+              "from": "mother",
+              "to": "child",
+              "relation": "parent"
+            }
+          ]
+        },
+        "exercises": [
+          {
+            "type": "relationship_matching",
+            "pairs": [
+              { "person": "mother", "relation": "parent" },
+              { "person": "brother", "relation": "sibling" }
+            ]
+          }
+        ]
+      }
+    },
+    "A1_simple_present": {
+      "id": "A1_simple_present",
+      "unit": "unitA1_verbs",
+      "title": "Simple Present",
+      "type": "grammar",
+      "xpReward": 60,
+      "objectives": [
+        "Conjugar verbos en presente simple",
+        "Formar oraciones afirmativas"
+      ],
+      "content": {
+        "conjugation": {
+          "I": "work",
+          "You": "work",
+          "He/She/It": "works",
+          "We/They": "work"
+        },
+        "examples": ["I eat breakfast at 7am", "She works in an office"],
+        "exercises": [
+          {
+            "type": "conjugation",
+            "verb": "to eat",
+            "pronouns": ["I", "She", "They"]
+          },
+          {
+            "type": "sentence_formation",
+            "words": ["She", "work", "hospital"],
+            "correct": "She works in a hospital"
+          }
+        ]
+      }
+    },
+    "A1_food": {
+      "id": "A1_food",
+      "unit": "unitA1_food",
+      "title": "Basic Foods",
+      "type": "vocabulary_game",
+      "xpReward": 55,
+      "objectives": ["Identificar comidas comunes", "Clasificar alimentos"],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Apple",
+            "translation": "Manzana",
+            "image": "food/apple.png",
+            "category": "fruit"
+          },
+          {
+            "word": "Bread",
+            "translation": "Pan",
+            "image": "food/bread.png",
+            "category": "grains"
+          }
+        ],
+        "game": {
+          "type": "categorization",
+          "categories": ["Fruits", "Vegetables", "Grains"],
+          "items": [
+            { "image": "food/apple.png", "correct": "Fruits" },
+            { "image": "food/bread.png", "correct": "Grains" }
+          ]
+        }
+      }
+    }
+  }
+}

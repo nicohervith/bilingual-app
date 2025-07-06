@@ -1,0 +1,157 @@
+{
+  "lessons": {
+    "A1_numbers": {
+      "id": "A1_numbers",
+      "unit": "unitA1_basics",
+      "title": "Numbers 1-20",
+      "type": "vocabulary_game",
+      "level": "A1",
+      "xpReward": 30,
+      "objectives": ["Contar del 1 al 20", "Reconocer números escritos"],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "One",
+            "translation": "Uno",
+            "image": "numbers/1.png"
+          },
+          {
+            "word": "Two",
+            "translation": "Dos",
+            "image": "numbers/2.png"
+          }
+        ],
+        "game": {
+          "type": "listening_quiz",
+          "questions": [
+            {
+              "audio": "numbers/audio_7.mp3",
+              "correctAnswer": "Seven",
+              "options": ["Five", "Seven", "Nine"]
+            }
+          ]
+        }
+      }
+    },
+    "A1_animals": {
+      "id": "A1_animals",
+      "unit": "unitA1_vocabulary",
+      "title": "Common Animals",
+      "type": "vocabulary",
+      "xpReward": 50,
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Dog",
+            "translation": "Perro",
+            "image": "animals/dog.png",
+            "sound": "animals/dog_bark.mp3"
+          },
+          {
+            "word": "Cat",
+            "translation": "Gato",
+            "image": "animals/cat.png",
+            "sound": "animals/cat_meow.mp3"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "pairs": [
+              { "image": "animals/dog.png", "word": "Dog" },
+              { "image": "animals/cat.png", "word": "Cat" }
+            ]
+          }
+        ]
+      }
+    },
+    "A1_pronouns": {
+      "id": "A1_pronouns",
+      "unit": "unitA1_grammar",
+      "title": "Personal Pronouns",
+      "type": "grammar",
+      "xpReward": 40,
+      "content": {
+        "grammarRules": [
+          {
+            "pronoun": "I",
+            "translation": "Yo",
+            "example": "I am happy"
+          },
+          {
+            "pronoun": "You",
+            "translation": "Tú/Usted",
+            "example": "You are tall"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "drag_drop",
+            "sentences": [
+              {
+                "text": "___ am a student (I/You)",
+                "answer": "I"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "A1_weather": {
+      "id": "A1_weather",
+      "unit": "unitA1_daily_life",
+      "title": "Weather Vocabulary",
+      "type": "vocabulary_game",
+      "xpReward": 45,
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Sunny",
+            "translation": "Soleado",
+            "icon": "weather/sun.png"
+          },
+          {
+            "word": "Rainy",
+            "translation": "Lluvioso",
+            "icon": "weather/rain.png"
+          }
+        ],
+        "game": {
+          "type": "weather_forecast",
+          "scenarios": [
+            {
+              "image": "weather/beach.png",
+              "correctWord": "Sunny"
+            }
+          ]
+        }
+      }
+    },
+    "A1_verbs": {
+      "id": "A1_verbs",
+      "unit": "unitA1_grammar",
+      "title": "Action Verbs",
+      "type": "vocabulary_interactive",
+      "xpReward": 55,
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Run",
+            "translation": "Correr",
+            "gif": "actions/run.gif"
+          },
+          {
+            "word": "Jump",
+            "translation": "Saltar",
+            "gif": "actions/jump.gif"
+          }
+        ],
+        "game": {
+          "type": "charades",
+          "instructions": "Guess the verb from the animation",
+          "items": [{ "gif": "actions/run.gif", "answer": "Run" }]
+        }
+      }
+    }
+  }
+}
