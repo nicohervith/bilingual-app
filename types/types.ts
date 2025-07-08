@@ -43,7 +43,7 @@ export interface AppLevel {
   missions: Mission[];
 }
 
-export interface Lesson {
+/* export interface Lesson {
   id: string;
   unit: string;
   title: string;
@@ -74,7 +74,7 @@ export interface Lesson {
       cards?: Array<{ front: string; back: string }>;
     };
   };
-}
+} */
 
 export type LessonComponentProps = {
   lesson: {
@@ -102,6 +102,37 @@ export type Unit = {
 export type LessonProps = {
   lesson: Lesson;
   onComplete: () => void;
+  currentLevel: string;
+  isTestMode?: boolean;
+};
+
+export type Lesson = {
+  id: string;
+  title: string;
+  content: {
+    vocabulary?: Array<{
+      word: string;
+      translation: string;
+      image?: string;
+      examples?: string[];
+    }>;
+    grammarRules?: Array<{
+      rule: string;
+      examples: string[];
+    }>;
+    exercises?: Array<{
+      type: string;
+      [key: string]: any;
+    }>;
+  };
+  xpReward: number;
+  objectives?: string[];
+  type?: string;
+};
+
+export type LessonScreenProps = {
+  lesson: Lesson;
+  onComplete: () => Promise<void> | void;
   currentLevel: string;
   isTestMode?: boolean;
 };
