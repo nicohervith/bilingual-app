@@ -1,11 +1,20 @@
 // app/lesson/[id].tsx
+import ImageSelectionExercise from "@/components/ImageSelectionExercise";
+import MatchingExercise from "@/components/MatchingExercise";
+import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/lib/firebaseConfig";
+import { completeLesson } from "@/services/courseService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
-import { db } from "@/lib/firebaseConfig";
-import { completeLesson } from "@/services/courseService";
-import { useAuth } from "@/contexts/AuthContext";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function LessonScreen() {
   const { id } = useLocalSearchParams();
@@ -54,7 +63,17 @@ export default function LessonScreen() {
         {lesson.title}
       </Text>
 
-      {/* Renderiza el contenido de la lección */}
+      {/* Objetivos de la lección */}
+      {lesson.objectives && (
+        <View style={{ marginBottom: 16 }}>
+          <Text style={{ fontWeight: "600", marginBottom: 8 }}>Objetivos:</Text>
+          {lesson.objectives.map((obj:any, i:any) => (
+            <Text key={i}>• {obj}</Text>
+          ))}
+        </View>
+      )}
+
+      {/* Vocabulario */}
       {lesson.content.vocabulary && (
         <View style={{ marginBottom: 24 }}>
           <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 8 }}>
@@ -64,10 +83,40 @@ export default function LessonScreen() {
             <View key={index} style={{ marginBottom: 12 }}>
               <Text style={{ fontWeight: "bold" }}>{item.word}</Text>
               <Text>{item.translation}</Text>
+              {item.examples?.map((ex:any, i:any) => (
+                <Text key={i} style={{ fontStyle: "italic", color: "#666" }}>
+                  - {ex}
+                </Text>
+              ))}
             </View>
           ))}
         </View>
       )}
+
+      {/* Ejercicios */}
+      {lesson.content.exercises?.map((exercise: any, index: number) => {
+        switch (exercise.type) {
+          case "matching":
+            return (
+              <MatchingExercise
+                key={`exercise-${index}`}
+                pairs={exercise.pairs}
+                onComplete={() => console.log("Matching completed")}
+              />
+            );
+          case "image_selection":
+            return (
+              <ImageSelectionExercise
+                key={`exercise-${index}`}
+                question={exercise.question}
+                options={exercise.options}
+                onComplete={() => console.log("Image selection completed")}
+              />
+            );
+          default:
+            return null;
+        }
+      })}
 
       <TouchableOpacity
         onPress={handleComplete}
@@ -86,3 +135,17 @@ export default function LessonScreen() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  exerciseContainer: {
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+  },
+  exerciseTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+});

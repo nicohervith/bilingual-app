@@ -1,50 +1,125 @@
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+
+type Pair = {
+  from: string;
+  to: string;
+};
+
+type MatchingExerciseProps = {
+  pairs: Pair[];
+  onComplete: () => void;
+};
 
 export default function MatchingExercise({
   pairs,
   onComplete,
-}: {
-  pairs: any[];
-  onComplete: () => void;
-}) {
-  const [matchedPairs, setMatchedPairs] = useState<number>(0);
+}: MatchingExerciseProps) {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
 
-  const handleMatch = () => {
-    const newCount = matchedPairs + 1;
-    setMatchedPairs(newCount);
+  const handleSelect = (word: string) => {
+    if (!selected) {
+      setSelected(word);
+    } else {
+      // Verificar si el par coincide
+      const pair =
+        pairs.find((p) => p.from === selected && p.to === word) ||
+        pairs.find((p) => p.from === word && p.to === selected);
 
-    if (newCount === pairs.length) {
-      onComplete();
+      if (pair) {
+        setMatchedPairs([...matchedPairs, pair.from, pair.to]);
+      }
+      setSelected(null);
+
+      // Verificar si todos los pares están completos
+      if (matchedPairs.length + 2 === pairs.length * 2) {
+        onComplete();
+      }
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Empareja las palabras</Text>
-      {pairs.map((pair, index) => (
-        <TouchableOpacity key={index} onPress={handleMatch} style={styles.pair}>
-          <Text>{pair.from}</Text>
-          <Text>→</Text>
-          <Text>{pair.to}</Text>
-        </TouchableOpacity>
-      ))}
+      <Text style={styles.title}>Empareja las palabras correctas</Text>
+
+      <View style={styles.wordsContainer}>
+        {/* Palabras en inglés */}
+        <View style={styles.column}>
+          {pairs.map((pair, index) => (
+            <TouchableOpacity
+              key={`from-${index}`}
+              onPress={() =>
+                !matchedPairs.includes(pair.from) && handleSelect(pair.from)
+              }
+              style={[
+                styles.wordButton,
+                selected === pair.from && styles.selected,
+                matchedPairs.includes(pair.from) && styles.matched,
+              ]}
+            >
+              <Text>{pair.from}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Palabras en español */}
+        <View style={styles.column}>
+          {pairs.map((pair, index) => (
+            <TouchableOpacity
+              key={`to-${index}`}
+              onPress={() =>
+                !matchedPairs.includes(pair.to) && handleSelect(pair.to)
+              }
+              style={[
+                styles.wordButton,
+                selected === pair.to && styles.selected,
+                matchedPairs.includes(pair.to) && styles.matched,
+              ]}
+            >
+              <Text>{pair.to}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    
+    marginBottom: 24,
+    padding: 16,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
   },
   title: {
-    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 15,
-    color: "#333",
+    marginBottom: 12,
+    textAlign: "center",
   },
-  pair:{
-    
-  }
+  wordsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  column: {
+    width: "48%",
+  },
+  wordButton: {
+    padding: 12,
+    marginVertical: 4,
+    backgroundColor: "#fff",
+    borderRadius: 4,
+    alignItems: "center",
+  },
+  selected: {
+    backgroundColor: "#E3F2FD",
+    borderColor: "#2196F3",
+    borderWidth: 1,
+  },
+  matched: {
+    backgroundColor: "#E8F5E9",
+    borderColor: "#4CAF50",
+    borderWidth: 1,
+  },
 });
