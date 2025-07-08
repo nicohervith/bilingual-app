@@ -20,7 +20,7 @@ export default function LessonCard({
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.index}>{index + 1}</Text>
+        <Text style={styles.index}>{index + 1} </Text>
         <View style={styles.content}>
           <Text style={styles.title}>{lesson.title}</Text>
           <Text style={styles.xp}>+{lesson.xpReward} XP</Text>

@@ -30,25 +30,6 @@ export default function RootLayout() {
   );
 }
 
-/* export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <AuthProvider>
-      <View style={styles.globalContainer}>
-        <Slot />
-      </View>
-    </AuthProvider>
-  );
-} */
-
 const styles = StyleSheet.create({
   globalContainer: {
     width: 800,
@@ -59,12 +40,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     alignSelf: "center",
-    flex: 1, // Añadido para mejor comportamiento en mobile
+    flex: 1, 
   },
   header: {
     backgroundColor: "#f5f5f5",
-    elevation: 0, // Para Android
-    shadowOpacity: 0, // Para iOS
+    elevation: 0, 
+    shadowOpacity: 0, 
   },
   headerTitle: {
     fontWeight: "bold",
