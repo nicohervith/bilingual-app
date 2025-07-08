@@ -1,13 +1,18 @@
-import { useFonts } from "expo-font";
-import "react-native-reanimated";
-
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Slot } from "expo-router";
-import { StyleSheet, View } from "react-native";
-import * as WebBrowser from "expo-web-browser";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { useFonts } from "expo-font";
+import { Slot } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
+import { StyleSheet, useColorScheme, View } from "react-native";
+import "react-native-reanimated";
+import { Link, type Router } from 'expo-router';
 
 WebBrowser.maybeCompleteAuthSession();
+
+
+type Routes = {
+  'level-modules/[level]': { level: string };
+  'unit/[id]': { id: string };
+};
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -16,7 +21,6 @@ export default function RootLayout() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 
@@ -27,18 +31,27 @@ export default function RootLayout() {
       </View>
     </AuthProvider>
   );
-
 }
 
 const styles = StyleSheet.create({
   globalContainer: {
     width: 800,
-    marginHorizontal: "auto", // esto funciona en web
+    marginHorizontal: "auto",
     marginTop: 32,
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: "#9365FF",
     borderRadius: 16,
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)", // esto solo para web
-    alignSelf: "center", // centra también en mobile
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    alignSelf: "center",
+    flex: 1, // Añadido para mejor comportamiento en mobile
+  },
+  header: {
+    backgroundColor: "#f5f5f5",
+    elevation: 0, // Para Android
+    shadowOpacity: 0, // Para iOS
+  },
+  headerTitle: {
+    fontWeight: "bold",
+    color: "#333",
   },
 });

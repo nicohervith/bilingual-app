@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type Option = {
   image: string;
@@ -58,8 +58,9 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 280,
+    height: 230,
+    objectFit: "cover",
     borderRadius: 8,
   },
 });
