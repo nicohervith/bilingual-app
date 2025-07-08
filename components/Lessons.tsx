@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Animated,
   Image,
   StyleSheet,
@@ -8,12 +9,17 @@ import {
   View,
 } from "react-native";
 
-import { completeLesson } from "../services/firestoreService";
+
 import FillBlankExercise from "./FillBlankExercise";
 import MatchingExercise from "./MatchingExercise";
 
 import { useAuth } from "@/contexts/AuthContext";
 import ImageSelectionExercise from "./ImageSelectionExercise";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
+import { completeLesson, getProgress, unlockNextUnit } from "@/services/courseService";
+import LessonContent from "./LessonContent";
 
 // Definición de tipos para TypeScript
 type VocabularyItem = {
@@ -50,10 +56,64 @@ type LessonProps = {
   };
   onComplete: () => void;
   currentLevel: string;
-  isTestMode?: boolean; 
+  isTestMode?: boolean;
+  onPress?: () => void;
 };
 
-export default function Lesson({
+
+export default function LessonScreen() {
+  const { id } = useLocalSearchParams();
+  const [lesson, setLesson] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const loadLesson = async () => {
+      const lessonDoc = await getDoc(doc(db, "lessons", id as string));
+      setLesson(lessonDoc.data());
+      setLoading(false);
+    };
+    
+    loadLesson();
+  }, [id]);
+
+  const handleComplete = async () => {
+    if (!user || !lesson) return;
+    
+    try {
+      await completeLesson(user.uid, lesson.id, lesson.xpReward);
+      
+      // Verificar si se completó la unidad
+      const userProgress = await getProgress(user.uid);
+      const allLessonsCompleted = '';
+      
+      if (allLessonsCompleted) {
+        // Desbloquear siguiente unidad
+        await unlockNextUnit(user.uid, lesson.module, lesson.unit);
+      }
+      
+      router.back();
+    } catch (error) {
+      console.error("Error completing lesson:", error);
+    }
+  };
+
+  if (loading || !lesson) {
+    return <ActivityIndicator size="large" />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <LessonContent 
+        lesson={lesson}
+        onComplete={handleComplete}
+      />
+    </View>
+  );
+}
+
+/* export default function Lesson({
   lesson,
   onComplete,
   currentLevel,
@@ -127,7 +187,6 @@ export default function Lesson({
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
 
-      {/* Mostrar objetivos */}
       {objectives && objectives.length > 0 && (
         <View style={styles.objectivesContainer}>
           <Text style={styles.sectionTitle}>Objetivos:</Text>
@@ -139,7 +198,6 @@ export default function Lesson({
         </View>
       )}
 
-      {/* Contenido de vocabulario */}
       {content.vocabulary && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Vocabulario</Text>
@@ -169,7 +227,7 @@ export default function Lesson({
         </View>
       )}
 
-      {/* Contenido de gramática */}
+
       {content.grammarRules && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Reglas Gramaticales</Text>
@@ -190,20 +248,10 @@ export default function Lesson({
         </View>
       )}
 
-      {/* Ejercicios */}
       {content.exercises && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Ejercicios</Text>
           {content.exercises.map((exercise, index) => {
-            /*  if (exercise.type === "matching") {
-              return (
-                <MatchingExercise
-                  key={index}
-                  pairs={exercise.pairs}
-                  onComplete={() => setExerciseCompleted(true)}
-                />
-              );
-            } */
             if (exercise.type === "matching") {
               return (
                 <MatchingExercise
@@ -240,15 +288,11 @@ export default function Lesson({
           })}
         </View>
       )}
-
-      {/* Recompensa de XP */}
       {showXpReward && (
         <Animated.View style={[styles.xpReward, { opacity }]}>
           <Text style={styles.xpText}>+{xpReward} XP!</Text>
         </Animated.View>
       )}
-
-      {/* Botón para completar lección */}
 
       {!isTestMode && exercisesCompleted && (
         <TouchableOpacity
@@ -266,8 +310,11 @@ export default function Lesson({
     </View>
   );
 }
-
+ */
 const styles = StyleSheet.create({
+  container:{
+
+  },
   card: {
     backgroundColor: "white",
     borderRadius: 10,
@@ -319,8 +366,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     marginTop: 10,
     alignSelf: "center",
   },

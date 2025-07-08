@@ -2,7 +2,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export levelCard = ({ level, progress }) => {
+/* export levelCard = ({ level, progress }) => {
   const currentXp = progress?.xp || 0;
   const levelConfig = LEVELS_CONFIG[level.id];
   const progressToNextLevel =
@@ -18,3 +18,4 @@ export levelCard = ({ level, progress }) => {
     </View>
   );
 };
+ */

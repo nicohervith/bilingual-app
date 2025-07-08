@@ -37,49 +37,12 @@ export default function LevelScreen() {
     }
   }, [levelId]);
 
-/*   const handleCompleteLesson = async () => {
-    if (!user || !progress || !lessons.length) return;
-
-    const currentLesson = lessons[currentLessonIndex];
-    console.log("Completing lesson, current index:", currentLessonIndex);
-    try {
-      await completeLesson(
-        user.uid,
-        levelId as string,
-        currentLesson.id,
-        currentLesson.xpReward
-      );
-
-      // Actualizar estado local
-      setProgress({
-        ...progress,
-        xp: progress.xp + currentLesson.xpReward,
-        completedLessons: {
-          ...progress.completedLessons,
-          [levelId as string]: [
-            ...(progress.completedLessons[levelId as string] || []),
-            currentLesson.id,
-          ],
-        },
-      });
-
-      // Navegar a la siguiente lección o al dashboard
-      if (currentLessonIndex < lessons.length - 1) {
-        setCurrentLessonIndex((prevIndex) => prevIndex + 1);
-      } else {
-        router.replace("/");
-      }
-    } catch (error) {
-      console.error("Error completing lesson:", error);
-    }
-  }; */
   const handleCompleteLesson = async () => {
     if (!user || !lessons.length) return;
 
     const currentLesson = lessons[currentLessonIndex];
 
     try {
-      // Solo marca como completada si NO estamos en modo prueba
       if (!isTestMode) {
         await completeLesson(
           user.uid,
@@ -88,10 +51,8 @@ export default function LevelScreen() {
           currentLesson.xpReward
         );
       }
-
-      // Navegar a la siguiente lección o al dashboard
       if (currentLessonIndex < lessons.length - 1) {
-        setCurrentLessonIndex(currentLessonIndex + 1); // Forzar actualización
+        setCurrentLessonIndex(currentLessonIndex + 1);
       } else {
         router.replace("/");
       }

@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 type QuizQuestion = {
   question: string;
   options: string[];
@@ -30,6 +32,9 @@ export interface UserProgress {
   xp: number;
   completedMissions: Record<string, string[]>;
   levels: Record<string, { completed: number; total: number }>;
+  completedUnits: string[]; // array de unitIds completadas
+  totalXP: number;
+  lastActive?: Timestamp;
 }
 
 export interface AppLevel {
@@ -70,3 +75,33 @@ export interface Lesson {
     };
   };
 }
+
+export type LessonComponentProps = {
+  lesson: {
+    id: string;
+    title: string;
+    content: any; // Ajusta este tipo según tu estructura real
+    xpReward: number;
+    objectives?: string[];
+  };
+  onComplete: () => Promise<void> | void;
+  currentLevel: string;
+  isTestMode: boolean;
+};
+
+export type Unit = {
+  id: string;
+  title: string;
+  lessons: string[]; // IDs de lecciones
+  requiredXP: number;
+  rewardXP: number;
+  completed?: boolean;
+  locked?: boolean;
+};
+
+export type LessonProps = {
+  lesson: Lesson;
+  onComplete: () => void;
+  currentLevel: string;
+  isTestMode?: boolean;
+};
