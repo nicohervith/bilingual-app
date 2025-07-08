@@ -1,20 +1,36 @@
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useFonts } from "expo-font";
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { StyleSheet, useColorScheme, View } from "react-native";
 import "react-native-reanimated";
-import { Link, type Router } from 'expo-router';
 
 WebBrowser.maybeCompleteAuthSession();
 
-
-type Routes = {
-  'level-modules/[level]': { level: string };
-  'unit/[id]': { id: string };
-};
-
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <AuthProvider>
+      <View style={styles.globalContainer}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
+          <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
+        </Stack>
+      </View>
+    </AuthProvider>
+  );
+}
+
+/* export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -31,7 +47,7 @@ export default function RootLayout() {
       </View>
     </AuthProvider>
   );
-}
+} */
 
 const styles = StyleSheet.create({
   globalContainer: {

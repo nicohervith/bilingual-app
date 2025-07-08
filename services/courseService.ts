@@ -169,3 +169,40 @@ export const getProgress = async (userId: string) => {
   const docSnap = await getDoc(doc(db, "userProgress", userId));
   return docSnap.exists() ? docSnap.data() : null;
 };
+
+export const getUnitProgress = async (userId: string, unitId: string) => {
+  const docSnap = await getDoc(doc(db, "userProgress", userId));
+  return docSnap.exists() ? docSnap.data().completedLessons || {} : {};
+};
+
+export const calculateUnitProgress = async (
+  userId: string,
+  unitId: string
+): Promise<number> => {
+  try {
+    // 1. Obtener la unidad para saber cuántas lecciones tiene
+    const unitDoc = await getDoc(doc(db, "units", unitId));
+    if (!unitDoc.exists()) return 0;
+
+    const unit = unitDoc.data();
+    const totalLessons = unit.lessons.length;
+    if (totalLessons === 0) return 0;
+
+    // 2. Obtener el progreso del usuario
+    const userProgressDoc = await getDoc(doc(db, "userProgress", userId));
+    if (!userProgressDoc.exists()) return 0;
+
+    const completedLessons = userProgressDoc.data().completedLessons || {};
+
+    // 3. Contar lecciones completadas en esta unidad
+    const completedInUnit = unit.lessons.filter(
+      (lessonId: string) => completedLessons[lessonId]
+    ).length;
+
+    // 4. Calcular porcentaje de completado
+    return completedInUnit / totalLessons;
+  } catch (error) {
+    console.error("Error calculating unit progress:", error);
+    return 0;
+  }
+};

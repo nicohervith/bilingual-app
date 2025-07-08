@@ -1,6 +1,5 @@
 // components/LessonCard.tsx
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Link } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type LessonCardProps = {
   lesson: {
@@ -10,22 +9,23 @@ type LessonCardProps = {
     objectives?: string[];
   };
   index: number;
-  completed?: boolean;
-  onPress?: () => void;
+  onPress: () => void;
 };
 
-export default function LessonCard({ lesson, index, completed, onPress }: LessonCardProps) {
+export default function LessonCard({
+  lesson,
+  index,
+  onPress,
+}: LessonCardProps) {
   return (
-    <TouchableOpacity
-      onPress={onPress} // Usamos la prop onPress aquí
-      style={[styles.card, completed && styles.completedCard]}
-    >
+    <TouchableOpacity onPress={onPress} style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.index}>{index + 1}</Text>
-        <Text style={styles.title}>{lesson.title}</Text>
+        <View style={styles.content}>
+          <Text style={styles.title}>{lesson.title}</Text>
+          <Text style={styles.xp}>+{lesson.xpReward} XP</Text>
+        </View>
       </View>
-      <Text style={styles.xp}>+{lesson.xpReward} XP</Text>
-      {completed && <Text style={styles.completedText}>✓ Completada</Text>}
     </TouchableOpacity>
   );
 }
@@ -33,39 +33,36 @@ export default function LessonCard({ lesson, index, completed, onPress }: Lesson
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    padding: 16,
     borderRadius: 8,
+    padding: 16,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-  },
-  completedCard: {
-    backgroundColor: "#f0f8ff",
-    borderColor: "#4CAF50",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 8,
   },
   index: {
     fontSize: 18,
     fontWeight: "bold",
-    marginRight: 12,
+    marginRight: 16,
     color: "#3a3a3a",
+  },
+  content: {
+    flex: 1,
   },
   title: {
     fontSize: 16,
-    fontWeight: "600",
-    flex: 1,
+    fontWeight: "500",
+    marginBottom: 4,
   },
   xp: {
     color: "#FFC107",
     fontWeight: "bold",
-  },
-  completedText: {
-    color: "#4CAF50",
-    marginTop: 4,
-    fontSize: 12,
+    fontSize: 14,
   },
 });

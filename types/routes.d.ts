@@ -1,14 +1,6 @@
-import { LinkProps } from "expo-router";
-import { NavigatorScreenParams } from "@react-navigation/native";
-import { Link, type Router } from "expo-router";
+// types/routes.d.ts
 import { type Router } from "expo-router";
 
-/* type RootStackParamList = {
-  "(tabs)": undefined;
-  "/": undefined;
-  "/unit/[id]": { id: string };
-};
- */
 type AppRoutes = {
   "/": undefined;
   "/login": undefined;
@@ -18,13 +10,10 @@ type AppRoutes = {
   "/lesson/[id]": { id: string };
   "/level/[level]": { level: string };
   "/level/unit": undefined;
-  // Agrega todas las rutas que uses
 };
 
-declare global {
-  module 'expo-router' {
-    interface Router extends Router<AppRoutes> {}
-  }
+declare module "expo-router" {
+  interface Router extends Router<AppRoutes> {}
 }
 /* declare global {
   namespace ReactNavigation {

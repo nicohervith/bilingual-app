@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import * as Progress from "react-native-progress";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
+import { calculateUnitProgress } from "@/services/courseService";
 
 
 // Define tipos para tus datos
@@ -27,35 +28,43 @@ type Unit = {
 
 type Module = {
   id: string;
-  title: string;
-  description: string;
-  icon: string;
+  title?: string; // Hacer opcional si puede faltar
+  description?: string; // Hacer opcional
+  icon?: string; // Hacer opcional
   units: Record<string, Unit>;
 };
 
 export default function LevelModulesScreen() {
   const { level } = useLocalSearchParams();
   const { user } = useAuth();
-  /* const router = useRouter(); */
   const router = useRouter() as {
     push: (path: `/unit/${string}`) => void;
   };
-
+  const [unitProgress, setUnitProgress] = useState<Record<string, number>>({});
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadModules = async () => {
       try {
-        // Consulta todos los módulos que tienen unidades de este nivel
         const modulesSnapshot = await getDocs(collection(db, "modules"));
 
         const filteredModules = modulesSnapshot.docs
-          .map((doc) => doc.data() as Module)
-          .filter((module) =>
-            Object.values(module.units).some((unit) => unit.level === level)
-          );
+          .map((doc) => {
+            const data = doc.data();
+            const filteredUnits = Object.entries(data.units || {})
+              .filter(([unitId]) => unitId.startsWith(`unit${level}_`))
+              .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
+            return {
+              ...data,
+              id: doc.id,
+              units: filteredUnits,
+            };
+          })
+          .filter((module) => Object.keys(module.units).length > 0);
+
+        console.log("Filtered modules:", filteredModules); 
         setModules(filteredModules);
       } catch (error) {
         console.error("Error loading modules:", error);
@@ -82,7 +91,6 @@ export default function LevelModulesScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Level {level} Modules</Text>
-
       {modules.map((module) => (
         <View key={module.id} style={styles.moduleCard}>
           <Text style={styles.moduleTitle}>
@@ -90,24 +98,26 @@ export default function LevelModulesScreen() {
           </Text>
           <Text style={styles.moduleDescription}>{module.description}</Text>
 
-          {Object.values(module.units)
-            .filter((unit) => unit.level === level)
-            .map((unit) => (
-              <TouchableOpacity
-                key={unit.id}
-                /* onPress={() =>
-                  router.push(`/unit/${unit.id}`)
-                } */
-                style={styles.unitCard}
-              >
+          {Object.values(module.units).map((unit) => (
+            <TouchableOpacity
+              key={unit.id}
+              onPress={() => router.push(`/unit/${unit.id}`)}
+              style={styles.unitCard}
+            >
+              <View style={styles.unitHeader}>
                 <Text style={styles.unitTitle}>{unit.title}</Text>
-                <Text style={styles.lessonCount}>
-                  {unit.lessons.length}{" "}
-                  {unit.lessons.length === 1 ? "lesson" : "lessons"}
-                </Text>
-                <Text style={styles.xpReward}>Reward: {unit.rewardXP} XP</Text>
-              </TouchableOpacity>
-            ))}
+                <Text style={styles.xpReward}>{unit.rewardXP} XP</Text>
+              </View>
+              <Text style={styles.lessonCount}>
+                {unit.lessons.length} lecciones
+              </Text>
+              <Progress.Bar
+                progress={unitProgress[unit.id] || 0}
+                width={200}
+                color="#4CAF50"
+              />
+            </TouchableOpacity>
+          ))}
         </View>
       ))}
     </ScrollView>
@@ -118,6 +128,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
+  unitHeader:{},
   emptyContainer: {
     flex: 1,
     justifyContent: "center",

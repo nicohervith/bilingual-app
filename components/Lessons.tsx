@@ -20,6 +20,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { completeLesson, getProgress, unlockNextUnit } from "@/services/courseService";
 import LessonContent from "./LessonContent";
+import { Lesson, LessonScreenProps } from "@/types/types";
 
 // Definición de tipos para TypeScript
 type VocabularyItem = {

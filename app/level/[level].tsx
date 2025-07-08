@@ -1,7 +1,7 @@
-import Lesson from "@/components/Lessons";
+import LessonScreen from "@/components/Lessons";
 import { useAuth } from "@/contexts/AuthContext";
 import { completeLesson, getLessonsByLevel } from "@/services/firestoreService";
-
+import { Lesson, LessonScreenProps } from "@/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import {
 
 export default function LevelScreen() {
   const { level: levelId } = useLocalSearchParams();
-  const [lessons, setLessons] = useState<any[]>([]);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -84,7 +84,7 @@ export default function LevelScreen() {
         {currentLesson.title} ({currentLessonIndex + 1}/{lessons.length})
       </Text>
 
-      <Lesson
+      <LessonScreen
         key={currentLesson.id}
         lesson={currentLesson}
         onComplete={handleCompleteLesson}
