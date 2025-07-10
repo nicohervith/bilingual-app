@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Animated,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-
-
-import FillBlankExercise from "./FillBlankExercise";
-import MatchingExercise from "./MatchingExercise";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 import { useAuth } from "@/contexts/AuthContext";
-import ImageSelectionExercise from "./ImageSelectionExercise";
+import { db } from "@/lib/firebaseConfig";
+import {
+  completeLesson,
+  getProgress,
+  unlockNextUnit,
+} from "@/services/courseService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
-import { completeLesson, getProgress, unlockNextUnit } from "@/services/courseService";
-import LessonContent from "./LessonContent";
-import { Lesson, LessonScreenProps } from "@/types/types";
+import LessonContent from "../app/lesson/LessonContent";
 
 // Definición de tipos para TypeScript
 type VocabularyItem = {
@@ -61,7 +51,6 @@ type LessonProps = {
   onPress?: () => void;
 };
 
-
 export default function LessonScreen() {
   const { id } = useLocalSearchParams();
   const [lesson, setLesson] = useState<any>(null);
@@ -75,25 +64,25 @@ export default function LessonScreen() {
       setLesson(lessonDoc.data());
       setLoading(false);
     };
-    
+
     loadLesson();
   }, [id]);
 
   const handleComplete = async () => {
     if (!user || !lesson) return;
-    
+
     try {
       await completeLesson(user.uid, lesson.id, lesson.xpReward);
-      
+
       // Verificar si se completó la unidad
       const userProgress = await getProgress(user.uid);
-      const allLessonsCompleted = '';
-      
+      const allLessonsCompleted = "";
+
       if (allLessonsCompleted) {
         // Desbloquear siguiente unidad
         await unlockNextUnit(user.uid, lesson.module, lesson.unit);
       }
-      
+
       router.back();
     } catch (error) {
       console.error("Error completing lesson:", error);
@@ -106,18 +95,13 @@ export default function LessonScreen() {
 
   return (
     <View style={styles.container}>
-      <LessonContent 
-        lesson={lesson}
-        onComplete={handleComplete}
-      />
+      <LessonContent lesson={lesson} onComplete={handleComplete} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container:{
-
-  },
+  container: {},
   card: {
     backgroundColor: "white",
     borderRadius: 10,

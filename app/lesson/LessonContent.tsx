@@ -1,56 +1,47 @@
-// app/lesson/[id].tsx
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
   ActivityIndicator,
-  TouchableOpacity,
   Image,
+  ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { db } from "@/lib/firebaseConfig";
-import { completeLesson } from "@/services/courseService";
-import { useAuth } from "@/contexts/AuthContext";
-import MatchingExercise from "@/components/MatchingExercise";
+
+import CategorizationGame from "@/components/CategorizationGame";
 import ImageSelectionExercise from "@/components/ImageSelectionExercise";
-import Quiz from "./Quiz";
-/* import ListeningQuiz from "@/components/ListeningQuiz"; */
+import MatchingExercise from "@/components/MatchingExercise";
+import MemoryGame from "@/components/MemoryGame";
+import Quiz from "@/components/Quiz";
+import { useAuth } from "@/contexts/AuthContext";
+import { completeLesson } from "@/services/courseService";
 
-export default function LessonScreen() {
-  const { id } = useLocalSearchParams();
-  const [lesson, setLesson] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+const LessonContent = ({
+  lesson,
+  onComplete,
+}: {
+  lesson: any;
+  onComplete?: () => void;
+}) => {
   const [completedExercises, setCompletedExercises] = useState<boolean[]>([]);
-  const router = useRouter();
   const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
 
+  // Inicializar estado de ejercicios completados
   useEffect(() => {
-    const loadLesson = async () => {
-      try {
-        const lessonDoc = await getDoc(doc(db, "lessons", id as string));
-        if (lessonDoc.exists()) {
-          const lessonData = lessonDoc.data();
-          setLesson(lessonData);
+    if (lesson) {
+      const exercisesCount = lesson.content.exercises?.length || 0;
+      setCompletedExercises(Array(exercisesCount).fill(false));
+      setLoading(false);
 
-          // Inicializar ejercicios completados basado en el tipo de lección
-          const exercisesCount =
-            lessonData.content.exercises?.length ||
-            (lessonData.content.game ? 1 : 0);
-          setCompletedExercises(Array(exercisesCount).fill(false));
-        }
-      } catch (error) {
-        console.error("Error loading lesson:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadLesson();
-  }, [id]);
+      // Debug: Verificar estructura de la lección
+      console.log("Lesson content:", JSON.stringify(lesson.content, null, 2));
+    }
+  }, [lesson]);
 
   const handleExerciseComplete = (exerciseIndex: number) => {
+    console.log(`Exercise ${exerciseIndex} completed`);
     setCompletedExercises((prev) => {
       const newCompleted = [...prev];
       newCompleted[exerciseIndex] = true;
@@ -58,33 +49,33 @@ export default function LessonScreen() {
     });
   };
 
-  const handleComplete = async () => {
+  const handleCompleteLesson = async () => {
     if (!user || !lesson) return;
 
     try {
       await completeLesson(user.uid, lesson.id, lesson.xpReward);
-      router.back();
+      onComplete?.();
     } catch (error) {
       console.error("Error completing lesson:", error);
     }
   };
 
+  // Verificar si todos los ejercicios están completos
+  const allExercisesCompleted =
+    completedExercises.length > 0 &&
+    completedExercises.every((completed) => completed);
+
   if (loading) {
-    return <ActivityIndicator size="large" style={{ marginTop: 20 }} />;
+    return <ActivityIndicator size="large" style={styles.loader} />;
   }
 
   if (!lesson) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.notFoundContainer}>
         <Text>No se encontró la lección</Text>
       </View>
     );
   }
-
-  // Determinar si todos los ejercicios están completos
-  const allExercisesCompleted =
-    completedExercises.length > 0 &&
-    completedExercises.every((completed) => completed);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -116,9 +107,18 @@ export default function LessonScreen() {
 
               {item.image && (
                 <Image
-                  source={{ uri: item.image }}
+                  source={{
+                    uri: item.image,
+                    headers: {
+                      Accept: "image/webp,image/png,image/jpeg",
+                    },
+                    cache: "force-cache",
+                  }}
                   style={styles.vocabularyImage}
                   resizeMode="contain"
+                  onError={(e) =>
+                    console.log("Error loading image:", e.nativeEvent.error)
+                  }
                 />
               )}
 
@@ -136,42 +136,71 @@ export default function LessonScreen() {
         </View>
       )}
 
-      {/* Ejercicios estándar */}
+      {/* Ejercicios */}
       {lesson.content.exercises?.map((exercise: any, index: number) => {
-        switch (exercise.type) {
-          case "matching":
-            return (
-              <MatchingExercise
-                key={`ex-${index}`}
+        console.log(`Rendering exercise ${index}:`, exercise); // Debug
+
+        return (
+          <View key={`ex-${index}`} style={styles.exerciseContainer}>
+            {exercise.type === "memory_game" && (
+              <MemoryGame
                 pairs={exercise.pairs}
                 onComplete={() => handleExerciseComplete(index)}
               />
-            );
-          case "image_selection":
-            return (
+            )}
+            {exercise.type === "matching" && (
+              <MatchingExercise
+                pairs={exercise.pairs}
+                onComplete={() => handleExerciseComplete(index)}
+              />
+            )}
+            {exercise.type === "image_selection" && (
               <ImageSelectionExercise
-                key={`ex-${index}`}
                 question={exercise.question}
                 options={exercise.options}
                 onComplete={() => handleExerciseComplete(index)}
               />
-            );
-          default:
-            return null;
-        }
+            )}
+            {exercise.type === "vocabulary_game" && (
+              <CategorizationGame
+                categories={lesson.content.game.categories}
+                items={lesson.content.game.items}
+                onComplete={() => handleExerciseComplete(0)}
+              />
+            )}
+          </View>
+        );
       })}
 
-      {/* Juego de escucha (listening_quiz) */}
-      {lesson.content.game?.type === "listening_quiz" && (
-        <Quiz
-          quiz={lesson.content.game}
-          onComplete={() => handleExerciseComplete(0)}
-        />
+      {/* Juego de escucha */}
+      {/* Juegos */}
+      {lesson.content?.game && (
+        <View style={styles.gameContainer}>
+          {lesson.content.game.type === "categorization" && (
+            <CategorizationGame
+              categories={lesson.content.game.categories}
+              items={lesson.content.game.items}
+              onComplete={() => handleExerciseComplete(0)}
+            />
+          )}
+          {lesson.content.game.type === "memory_game" && (
+            <MemoryGame
+              pairs={lesson.content.game.pairs}
+              onComplete={() => handleExerciseComplete(0)}
+            />
+          )}
+          {lesson.content.game.type === "listening_quiz" && (
+            <Quiz
+              quiz={lesson.content.game}
+              onComplete={() => handleExerciseComplete(0)}
+            />
+          )}
+        </View>
       )}
 
       {/* Botón de completar */}
       <TouchableOpacity
-        onPress={handleComplete}
+        onPress={handleCompleteLesson}
         disabled={
           !allExercisesCompleted && lesson.content.exercises?.length > 0
         }
@@ -190,36 +219,50 @@ export default function LessonScreen() {
       </TouchableOpacity>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
     paddingBottom: 32,
   },
+  loader: {
+    marginTop: 20,
+  },
+  gameContainer: {
+    marginVertical: 20,
+    padding: 15,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 10,
+  },
+  notFoundContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 16,
     color: "#333",
   },
   section: {
-    marginBottom: 28,
+    marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
-    marginBottom: 12,
+    marginBottom: 8,
     color: "#444",
   },
   objective: {
     marginLeft: 8,
-    marginBottom: 4,
+    color: "#555",
   },
   vocabularyItem: {
-    marginBottom: 20,
+    marginBottom: 16,
     padding: 12,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
   },
   wordRow: {
@@ -233,7 +276,6 @@ const styles = StyleSheet.create({
   },
   translation: {
     color: "#666",
-    fontSize: 16,
   },
   vocabularyImage: {
     width: "100%",
@@ -243,20 +285,24 @@ const styles = StyleSheet.create({
   examplesContainer: {
     marginTop: 8,
     paddingLeft: 8,
-    borderLeftWidth: 2,
-    borderLeftColor: "#ddd",
   },
   example: {
     fontStyle: "italic",
     color: "#666",
     marginBottom: 4,
   },
+  exerciseContainer: {
+    marginVertical: 16,
+    padding: 12,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+  },
   completeButton: {
     backgroundColor: "#4CAF50",
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 16,
+    marginTop: 24,
   },
   disabledButton: {
     backgroundColor: "#cccccc",
@@ -265,4 +311,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
+  image: {
+    width: "100%",
+    height: 120,
+  },
 });
+
+export default LessonContent;
