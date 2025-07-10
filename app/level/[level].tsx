@@ -1,8 +1,5 @@
-import LessonScreen from "@/components/Lessons";
-import { useAuth } from "@/contexts/AuthContext";
-import { completeLesson, getLessonsByLevel } from "@/services/firestoreService";
-import { Lesson } from "@/types/types";
-import { Ionicons } from "@expo/vector-icons";
+
+import { getLessonsByLevel } from "@/services/firestoreService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -110,6 +107,8 @@ import LessonContent from "../lesson/LessonContent";
     }, [levelId]);
 
     if (lessons.length === 0) return <ActivityIndicator />;
+
+    console.log(`Mostrando lección ${currentIndex + 1}/${lessons.length}`);
 
     return (
       <View style={{ flex: 1 }}>

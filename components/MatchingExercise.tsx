@@ -1,92 +1,205 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 
 type Pair = {
   from: string;
   to: string;
 };
 
-type MatchingExerciseProps = {
+/* type MatchingExerciseProps = {
   pairs: Pair[];
   onComplete: () => void;
-};
+}; */
 
-export default function MatchingExercise({
-  pairs,
+interface MatchingPair {
+  person: string;
+  relation: string;
+  image?: string; // Opcional para mostrar imágenes
+}
+
+interface MatchingExerciseProps {
+  pairs: MatchingPair[];
+  vocabulary: any[]; // Para buscar traducciones
+  onComplete: () => void;
+  title?: string;
+}
+
+/* import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native"; */
+
+const MatchingExercise = ({
+  pairs = [],
   onComplete,
-}: MatchingExerciseProps) {
+  vocabulary = [],
+}: {
+  pairs: any[];
+  onComplete: () => void;
+  vocabulary?: any[];
+}) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
 
-  const handleSelect = (word: string) => {
-    if (!selected) {
-      setSelected(word);
-    } else {
-      // Verificar si el par coincide
-      const pair =
-        pairs.find((p) => p.from === selected && p.to === word) ||
-        pairs.find((p) => p.from === word && p.to === selected);
+  // Normalizar los pares a una estructura común
+  const normalizedPairs = pairs.map((pair) => {
+    // Caso memory_game: { image: "a.png", word: "Dog" }
+    if ("image" in pair && "word" in pair) {
+      return {
+        left: pair.image,
+        right: pair.word,
+        leftType: "image",
+        rightType: "text",
+      };
+    }
+    // Caso matching tradicional: { from: "Red", to: "Rojo" }
+    else if ("from" in pair && "to" in pair) {
+      return {
+        left: pair.from,
+        right: pair.to,
+        leftType: "text",
+        rightType: "text",
+      };
+    }
+    // Caso familia: { person: "mother", relation: "parent" }
+    else if ("person" in pair && "relation" in pair) {
+      const translation =
+        vocabulary.find(
+          (v) => v.word.toLowerCase() === pair.person.toLowerCase()
+        )?.translation || pair.person;
+      return {
+        left: pair.image || translation,
+        right: pair.relation,
+        leftType: pair.image ? "image" : "text",
+        rightType: "text",
+      };
+    }
+    return pair;
+  });
 
-      if (pair) {
-        setMatchedPairs([...matchedPairs, pair.from, pair.to]);
+  const handleSelect = (item: string) => {
+    if (!selected) {
+      setSelected(item);
+    } else {
+      // Verificar si es un par válido
+      const isValidPair = normalizedPairs.some(
+        (pair) =>
+          (pair.left === selected && pair.right === item) ||
+          (pair.right === selected && pair.left === item)
+      );
+
+      if (isValidPair) {
+        setMatchedPairs([...matchedPairs, selected, item]);
       }
       setSelected(null);
 
       // Verificar si todos los pares están completos
-      if (matchedPairs.length + 2 === pairs.length * 2) {
+      if (matchedPairs.length + 2 === normalizedPairs.length * 2) {
         onComplete();
       }
     }
   };
 
+  // Extraer elementos únicos para cada columna
+  const leftItems = [...new Set(normalizedPairs.map((p) => p.left))];
+  const rightItems = [...new Set(normalizedPairs.map((p) => p.right))];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Empareja las palabras correctas</Text>
+      <Text style={styles.title}>Empareja los elementos correspondientes</Text>
 
-      <View style={styles.wordsContainer}>
-        {/* Palabras en inglés */}
+      <View style={styles.columnsContainer}>
+        {/* Columna izquierda */}
         <View style={styles.column}>
-          {pairs.map((pair, index) => (
-            <TouchableOpacity
-              key={`from-${index}`}
-              onPress={() =>
-                !matchedPairs.includes(pair.from) && handleSelect(pair.from)
-              }
-              style={[
-                styles.wordButton,
-                selected === pair.from && styles.selected,
-                matchedPairs.includes(pair.from) && styles.matched,
-              ]}
-            >
-              <Text>{pair.from}</Text>
-            </TouchableOpacity>
-          ))}
+          {leftItems.map((item, index) => {
+            const pair = normalizedPairs.find((p) => p.left === item);
+            return (
+              <TouchableOpacity
+                key={`left-${index}`}
+                onPress={() =>
+                  !matchedPairs.includes(item) && handleSelect(item)
+                }
+                style={[
+                  styles.itemButton,
+                  selected === item && styles.selectedItem,
+                  matchedPairs.includes(item) && styles.matchedItem,
+                ]}
+              >
+                {pair?.leftType === "image" ? (
+                  <Image source={{ uri: item }} style={styles.imageItem} />
+                ) : (
+                  <Text>{item}</Text>
+                )}
+              </TouchableOpacity>
+            );
+          })}
         </View>
 
-        {/* Palabras en español */}
+        {/* Columna derecha */}
         <View style={styles.column}>
-          {pairs.map((pair, index) => (
+          {rightItems.map((item, index) => (
             <TouchableOpacity
-              key={`to-${index}`}
-              onPress={() =>
-                !matchedPairs.includes(pair.to) && handleSelect(pair.to)
-              }
+              key={`right-${index}`}
+              onPress={() => !matchedPairs.includes(item) && handleSelect(item)}
               style={[
-                styles.wordButton,
-                selected === pair.to && styles.selected,
-                matchedPairs.includes(pair.to) && styles.matched,
+                styles.itemButton,
+                selected === item && styles.selectedItem,
+                matchedPairs.includes(item) && styles.matchedItem,
               ]}
             >
-              <Text>{pair.to}</Text>
+              <Text>{item}</Text>
             </TouchableOpacity>
           ))}
         </View>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    marginVertical: 10,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  columnsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  column: {
+    flex: 1,
+    marginHorizontal: 8,
+  },
+  itemButton: {
+    padding: 12,
+    marginVertical: 6,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 6,
+    alignItems: "center",
+    minHeight: 60,
+    justifyContent: "center",
+  },
+  selectedItem: {
+    backgroundColor: "#bbdefb",
+  },
+  matchedItem: {
+    backgroundColor: "#c8e6c9",
+  },
+  imageItem: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
+  },
+});
+
+export default MatchingExercise;
+
+/* const styles = StyleSheet.create({
   container: {
     marginBottom: 24,
     padding: 16,
@@ -123,3 +236,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
+ */
