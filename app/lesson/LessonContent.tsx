@@ -16,6 +16,7 @@ import MemoryGame from "@/components/MemoryGame";
 import Quiz from "@/components/Quiz";
 import { useAuth } from "@/contexts/AuthContext";
 import { completeLesson } from "@/services/courseService";
+import DragDropExercise from "@/components/DragAndDropExercise";
 
 const LessonContent = ({
   lesson,
@@ -28,6 +29,12 @@ const LessonContent = ({
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    console.log("Lección recibida:", JSON.stringify(lesson, null, 2));
+    console.log("¿Tiene game?", !!lesson?.content?.game);
+    console.log("Tipo de game:", lesson?.content?.game?.type);
+  }, []);
+
   // Inicializar estado de ejercicios completados
   useEffect(() => {
     if (lesson) {
@@ -37,6 +44,23 @@ const LessonContent = ({
 
       // Debug: Verificar estructura de la lección
       console.log("Lesson content:", JSON.stringify(lesson.content, null, 2));
+    }
+  }, [lesson]);
+
+  useEffect(() => {
+    if (lesson) {
+      console.log("Inicializando ejercicios...");
+
+      const exercisesCount = lesson.content.exercises?.length || 0;
+      const hasGame = lesson.content.game ? 1 : 0;
+      const totalExercises = exercisesCount + hasGame;
+
+      console.log(
+        `Ejercicios: ${exercisesCount}, Juegos: ${hasGame}, Total: ${totalExercises}`
+      );
+
+      setCompletedExercises(Array(totalExercises).fill(false));
+      setLoading(false);
     }
   }, [lesson]);
 
@@ -114,6 +138,7 @@ const LessonContent = ({
                     },
                     cache: "force-cache",
                   }}
+                  alt="Vocabulary Image"
                   style={styles.vocabularyImage}
                   resizeMode="contain"
                   onError={(e) =>
@@ -142,7 +167,7 @@ const LessonContent = ({
 
         return (
           <View key={`ex-${index}`} style={styles.exerciseContainer}>
-            {exercise.type === "memory_game" && (
+            {/* {exercise.type === "memory_game" && (
               <MemoryGame
                 pairs={exercise.pairs}
                 onComplete={() => handleExerciseComplete(index)}
@@ -151,7 +176,31 @@ const LessonContent = ({
             {exercise.type === "matching" && (
               <MatchingExercise
                 pairs={exercise.pairs}
+                vocabulary={lesson.content.vocabulary}
                 onComplete={() => handleExerciseComplete(index)}
+                title={exercise.title}
+              />
+            )} */}
+            {exercise.type === "drag_drop" && (
+              <DragDropExercise
+                sentences={exercise.sentences}
+                pronouns={lesson.content.grammarRules}
+                onComplete={() => handleExerciseComplete(index)}
+              />
+            )}
+            {exercise.type === "memory_game" && (
+              <MemoryGame
+                pairs={exercise.pairs}
+                onComplete={() => handleExerciseComplete(index)}
+              />
+            )}
+
+            {exercise.type === "matching" && (
+              <MatchingExercise
+                pairs={exercise.pairs}
+                vocabulary={lesson.content.vocabulary}
+                onComplete={() => handleExerciseComplete(index)}
+                title={exercise.title}
               />
             )}
             {exercise.type === "image_selection" && (
@@ -161,11 +210,11 @@ const LessonContent = ({
                 onComplete={() => handleExerciseComplete(index)}
               />
             )}
-            {exercise.type === "vocabulary_game" && (
+            {exercise.type === "vocabulary" && (
               <CategorizationGame
-                categories={lesson.content.game.categories}
-                items={lesson.content.game.items}
-                onComplete={() => handleExerciseComplete(0)}
+                categories={exercise.categories}
+                items={exercise.items}
+                onComplete={() => handleExerciseComplete(index)}
               />
             )}
           </View>

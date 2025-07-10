@@ -17,6 +17,7 @@
     "@react-navigation/native": "^7.1.6",
     "expo": "~53.0.15",
     "expo-auth-session": "~6.2.0",
+    "expo-av": "~15.1.7",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.6",
     "expo-crypto": "~14.1.5",
@@ -36,6 +37,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.4",
+    "react-native-draggable": "^3.3.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-progress": "^5.0.1",
     "react-native-reanimated": "~3.17.4",
@@ -43,8 +45,7 @@
     "react-native-screens": "~4.11.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.20.0",
-    "react-native-webview": "13.13.5",
-    "expo-av": "~15.1.7"
+    "react-native-webview": "13.13.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
