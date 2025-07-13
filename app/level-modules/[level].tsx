@@ -1,25 +1,23 @@
 // app/level-modules/[level].tsx
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import * as Progress from "react-native-progress";
-import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
-import { calculateUnitProgress } from "@/services/courseService";
-
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import * as Progress from "react-native-progress";
 
 // Define tipos para tus datos
 type Unit = {
   id: string;
-  title: string;
+  title?: string;
   level: string;
   lessons: string[];
   requiredXP: number;
@@ -60,11 +58,13 @@ export default function LevelModulesScreen() {
               ...data,
               id: doc.id,
               units: filteredUnits,
+              title: data.title ?? "", // Ensure title property exists
             };
           })
-          .filter((module) => Object.keys(module.units).length > 0);
+          .filter((module) => Object.keys(module.units).length > 0)
+          .sort((a, b) => (a.title || "").localeCompare(b.title || ""));
 
-        console.log("Filtered modules:", filteredModules); 
+        console.log("Filtered modules:", filteredModules);
         setModules(filteredModules);
       } catch (error) {
         console.error("Error loading modules:", error);
@@ -87,6 +87,7 @@ export default function LevelModulesScreen() {
       </View>
     );
   }
+  console.log("Modules loaded:", modules);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
-  unitHeader:{},
+  unitHeader: {},
   emptyContainer: {
     flex: 1,
     justifyContent: "center",

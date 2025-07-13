@@ -1,21 +1,10 @@
 // app/lesson/[id].tsx
-import ImageSelectionExercise from "@/components/ImageSelectionExercise";
-import MatchingExercise from "@/components/MatchingExercise";
-import MemoryGame from "@/components/MemoryGame";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
-import { completeLesson } from "@/services/courseService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, Text } from "react-native";
 import LessonContent from "./LessonContent";
 
 export default function LessonPage() {
@@ -43,7 +32,7 @@ export default function LessonPage() {
 
   if (loading) return <ActivityIndicator size="large" />;
   if (!lesson) return <Text>Lección no encontrada</Text>;
-
+  console.log("Lesson data:", lesson);
   return <LessonContent lesson={lesson} />;
 }
 

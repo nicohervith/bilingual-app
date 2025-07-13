@@ -15,7 +15,6 @@ const CategorizationGame = ({ categories, items, onComplete }: any) => {
 
     setCurrentSelections(newSelections);
 
-    // Verificar si todos los items tienen categoría seleccionada
     if (Object.keys(newSelections).length === items.length) {
       setGameCompleted(true);
       onComplete();
