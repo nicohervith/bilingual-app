@@ -17,6 +17,7 @@ import Quiz from "@/components/Quiz";
 import { useAuth } from "@/contexts/AuthContext";
 import { completeLesson } from "@/services/courseService";
 import DragDropExercise from "@/components/DragAndDropExercise";
+import NumbersGame from "@/components/NumbersGame";
 
 const LessonContent = ({
   lesson,
@@ -167,20 +168,14 @@ const LessonContent = ({
 
         return (
           <View key={`ex-${index}`} style={styles.exerciseContainer}>
-            {/* {exercise.type === "memory_game" && (
-              <MemoryGame
-                pairs={exercise.pairs}
+            {exercise.type === "numbers_game" && (
+              <NumbersGame
+                vocabulary={lesson.content.vocabulary}
+                range={exercise.options?.range || [1, 20]}
+                imageBaseUrl={exercise.options?.imageBaseUrl || ""}
                 onComplete={() => handleExerciseComplete(index)}
               />
             )}
-            {exercise.type === "matching" && (
-              <MatchingExercise
-                pairs={exercise.pairs}
-                vocabulary={lesson.content.vocabulary}
-                onComplete={() => handleExerciseComplete(index)}
-                title={exercise.title}
-              />
-            )} */}
             {exercise.type === "drag_drop" && (
               <DragDropExercise
                 sentences={exercise.sentences}

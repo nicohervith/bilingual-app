@@ -6,15 +6,10 @@ type Pair = {
   to: string;
 };
 
-/* type MatchingExerciseProps = {
-  pairs: Pair[];
-  onComplete: () => void;
-}; */
-
 interface MatchingPair {
   person: string;
   relation: string;
-  image?: string; // Opcional para mostrar imágenes
+  image?: string; 
 }
 
 interface MatchingExerciseProps {
@@ -23,9 +18,6 @@ interface MatchingExerciseProps {
   onComplete: () => void;
   title?: string;
 }
-
-/* import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native"; */
 
 const MatchingExercise = ({
   pairs = [],
