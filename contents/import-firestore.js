@@ -1,34 +1,4 @@
-/* const admin = require("firebase-admin");
-const serviceAccount = require("../service-account-key.json");
-const missionsData = require("./units-new.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://bilingual-site-65404-default-rtdb.firebaseio.com", 
-});
-
-const db = admin.firestore();
-
-async function importMissions() {
-  try {
-    const batch = db.batch();
-    const missionsRef = db.collection("missions");
-
-    // Para cada nivel (A1, A2, etc.)
-    Object.entries(missionsData).forEach(([levelId, levelData]) => {
-      const levelRef = missionsRef.doc(levelId);
-      batch.set(levelRef, levelData);
-    });
-
-    await batch.commit();
-    console.log("✅ ¡Datos importados correctamente a Firestore!");
-  } catch (error) {
-    console.error("❌ Error al importar:", error);
-  }
-}
-
-importMissions();
- */
 
 const admin = require("firebase-admin");
 const serviceAccount = require("../service-account-key.json");
