@@ -8,6 +8,7 @@ import {
   getDocs,
   getFirestore,
   increment,
+  serverTimestamp,
   setDoc,
   Timestamp,
   updateDoc,
@@ -131,18 +132,66 @@ export const getLessonById = async (lessonId: string): Promise<Lesson> => {
   return docSnap.data() as Lesson;
 };
 
-// firebase.ts
 export const completeLesson = async (
   userId: string,
   lessonId: string,
-  xpReward: number
+  xpReward: number,
+  unitData: { id: string; insignia?: string }
 ) => {
-  const userRef = doc(db, "userProgress", userId);
-  
-  await updateDoc(userRef, {
-    [`completedLessons.${lessonId}`]: true,
-    xp: increment(xpReward)
-  });
+  try {
+    const progressRef = doc(db, "userProgress", userId);
+
+    let levelKey = "A1";
+    if (lessonId.includes("A2")) levelKey = "A2";
+    else if (lessonId.includes("B1")) levelKey = "B1";
+
+    // 2. Obtener datos actuales del progreso y la unidad
+    const [progressSnap, unitSnap] = await Promise.all([
+      getDoc(progressRef),
+      getDoc(doc(db, "units", unitData.id)),
+    ]);
+
+    if (!progressSnap.exists() || !unitSnap.exists()) {
+      throw new Error("Documento no encontrado");
+    }
+
+    const progressData = progressSnap.data();
+    const unit = unitSnap.data();
+
+    // 3. Actualizar progreso básico (operación atómica)
+    const updateData: any = {
+      xp: increment(xpReward),
+      [`completedLessons.${lessonId}`]: true,
+      [`levels.${levelKey}.completed`]: increment(1),
+      lastCompleted: serverTimestamp(),
+    };
+
+    // 4. Verificar si se completó toda la unidad
+    const allLessonsCompleted = unit.lessons.every(
+      (id: string) => progressData.completedLessons?.[id] || id === lessonId
+    );
+
+    // 5. Si se completó la unidad y tiene insignia, añadirla
+    if (allLessonsCompleted && unitData.insignia) {
+      updateData[`earnedBadges.${unitData.id}`] = {
+        unitId: unitData.id,
+        unitTitle: unit.title,
+        insigniaUrl: unitData.insignia,
+        earnedAt: serverTimestamp(),
+      };
+    }
+
+    // 6. Ejecutar la actualización
+    await updateDoc(progressRef, updateData);
+
+    console.log(
+      `Lección ${lessonId} completada. Unidad completa: ${allLessonsCompleted}`
+    );
+    return true;
+  } catch (error) {
+    console.error("Error completing lesson:", error);
+    return false;
+  }
 };
 
 export const unlockNextUnit = async (
@@ -206,3 +255,4 @@ export const calculateUnitProgress = async (
     return 0;
   }
 };
+

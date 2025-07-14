@@ -2,10 +2,11 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import * as Progress from "react-native-progress";
 type Unit = {
   id: string;
   title?: string;
+  insignia?: string;
   level: string;
   lessons: string[];
   requiredXP: number;
@@ -42,11 +44,26 @@ export default function LevelModulesScreen() {
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadModules = async () => {
-      try {
-        const modulesSnapshot = await getDocs(collection(db, "modules"));
+  const isModuleComplete = (
+    module: Module,
+    completedLessons: Record<string, boolean>
+  ): boolean => {
+    return Object.values(module.units).every((unit: Unit) => {
+      return unit.lessons.every((lessonId) => completedLessons[lessonId]);
+    });
+  };
 
+  const [moduleCompletion, setModuleCompletion] = useState<
+    Record<string, boolean>
+  >({});
+
+  useEffect(() => {
+    const loadModulesAndProgress = async () => {
+      if (!user) return;
+
+      try {
+        // 1. Cargar módulos
+        const modulesSnapshot = await getDocs(collection(db, "modules"));
         const filteredModules = modulesSnapshot.docs
           .map((doc) => {
             const data = doc.data();
@@ -58,14 +75,46 @@ export default function LevelModulesScreen() {
               ...data,
               id: doc.id,
               units: filteredUnits,
-              title: data.title ?? "", // Ensure title property exists
+              title: data.title ?? "",
             };
           })
           .filter((module) => Object.keys(module.units).length > 0)
           .sort((a, b) => (a.title || "").localeCompare(b.title || ""));
 
-        console.log("Filtered modules:", filteredModules);
         setModules(filteredModules);
+
+        // 2. Cargar progreso del usuario
+        const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
+        if (progressDoc.exists()) {
+          const progressData = progressDoc.data();
+          console.log("User progress data:", progressData);
+          const completedLessons = progressData.completedLessons || {};
+
+          const newModuleCompletion: Record<string, boolean> = {};
+          filteredModules.forEach((module) => {
+            newModuleCompletion[module.id] = isModuleComplete(
+              module,
+              completedLessons
+            );
+          });
+          setModuleCompletion(newModuleCompletion);
+
+          console.log("User progress:", completedLessons);
+          // Calcular progreso por unidad
+          const newUnitProgress: Record<string, number> = {};
+
+          filteredModules.forEach((module) => {
+            Object.values(module.units).forEach((unit: any) => {
+              const totalLessons = unit.lessons.length;
+              const completedCount = unit.lessons.filter(
+                (id: string) => completedLessons[id]
+              ).length;
+              newUnitProgress[unit.id] = completedCount / totalLessons;
+            });
+          });
+
+          setUnitProgress(newUnitProgress);
+        }
       } catch (error) {
         console.error("Error loading modules:", error);
       } finally {
@@ -73,8 +122,8 @@ export default function LevelModulesScreen() {
       }
     };
 
-    loadModules();
-  }, [level]);
+    loadModulesAndProgress();
+  }, [level, user]);
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 20 }} />;
@@ -88,46 +137,90 @@ export default function LevelModulesScreen() {
     );
   }
   console.log("Modules loaded:", modules);
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Level {level} Modules</Text>
-      {modules.map((module) => (
-        <View key={module.id} style={styles.moduleCard}>
-          <Text style={styles.moduleTitle}>
-            {module.icon} {module.title}
-          </Text>
-          <Text style={styles.moduleDescription}>{module.description}</Text>
-
-          {Object.values(module.units).map((unit) => (
+  <ScrollView contentContainerStyle={styles.container}>
+    <Text style={styles.title}>Level {level} Modules</Text>
+    {modules.map((module) => (
+      <View key={module.id} style={styles.moduleCard}>
+        <View style={styles.moduleHeader}>
+          <View style={styles.moduleTitleContainer}>
+            <Text style={styles.moduleIcon}>{module.icon}</Text>
+            <Text style={styles.moduleTitle}>{module.title}</Text>
+          </View>
+        </View>
+        
+        {Object.values(module.units).map((unit: any) => {
+          const isUnitComplete = unitProgress[unit.id] === 1;
+          
+          return (
             <TouchableOpacity
               key={unit.id}
               onPress={() => router.push(`/unit/${unit.id}`)}
               style={styles.unitCard}
             >
+              {/* Insignia de la unidad */}
+              {unit.insignia && (
+                <Image
+                  source={{ uri: unit.insignia }}
+                  style={[
+                    styles.unitInsignia,
+                    { opacity: isUnitComplete ? 1 : 0.3 }
+                  ]}
+                />
+              )}
+              
               <View style={styles.unitHeader}>
                 <Text style={styles.unitTitle}>{unit.title}</Text>
                 <Text style={styles.xpReward}>{unit.rewardXP} XP</Text>
               </View>
+              
               <Text style={styles.lessonCount}>
                 {unit.lessons.length} lecciones
               </Text>
+              
               <Progress.Bar
                 progress={unitProgress[unit.id] || 0}
                 width={200}
                 color="#4CAF50"
               />
+              
+              <Text style={styles.progressText}>
+                {Math.round((unitProgress[unit.id] || 0) * 100)}% completado
+              </Text>
             </TouchableOpacity>
-          ))}
-        </View>
-      ))}
-    </ScrollView>
-  );
+          );
+        })}
+      </View>
+    ))}
+  </ScrollView>
+); 
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+  },
+  moduleHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  moduleTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  moduleIcon: {
+    marginRight: 8,
+    fontSize: 20,
+  },
+  insignia: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#FFD700",
   },
   unitHeader: {},
   emptyContainer: {
@@ -142,7 +235,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   moduleCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "#9365ff",
     borderRadius: 10,
     padding: 16,
     marginBottom: 20,
@@ -161,11 +254,36 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 12,
   },
-  unitCard: {
+  /* unitCard: {
     backgroundColor: "#f8f9fa",
     borderRadius: 8,
     padding: 12,
     marginBottom: 10,
+  }, */
+  /*  unitCard: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+  }, */
+  unitCard: {
+    backgroundColor: "#f8f9fa",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 12,
+    position: "relative",
+  },
+  unitInsignia: {
+    position: "absolute",
+    right: 12,
+    top: 12,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#FFD700",
   },
   unitTitle: {
     fontSize: 16,
@@ -180,5 +298,11 @@ const styles = StyleSheet.create({
     color: "#28a745",
     fontSize: 14,
     marginTop: 4,
+  },
+  progressText: {
+    textAlign: "center",
+    marginTop: 4,
+    fontSize: 12,
+    color: "#666",
   },
 });

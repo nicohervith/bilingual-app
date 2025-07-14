@@ -1,26 +1,34 @@
 // app/unit/[id].tsx
+import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/lib/firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
   ActivityIndicator,
-  TouchableOpacity,
+  ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { db } from "@/lib/firebaseConfig";
+import * as Progress from "react-native-progress";
 
 export default function UnitScreen() {
   const { id } = useLocalSearchParams();
+  const { user } = useAuth();
   const [unit, setUnit] = useState<any>(null);
   const [lessons, setLessons] = useState<any[]>([]);
+  const [completedLessons, setCompletedLessons] = useState<
+    Record<string, boolean>
+  >({});
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const loadUnitData = async () => {
+      if (!user) return;
+
       try {
         // 1. Cargar datos de la unidad
         const unitDoc = await getDoc(doc(db, "units", id as string));
@@ -39,7 +47,17 @@ export default function UnitScreen() {
           );
 
         const lessonSnapshots = await Promise.all(lessonPromises);
-        setLessons(lessonSnapshots.map((snap) => snap.data()));
+        const lessonsData = lessonSnapshots.map((snap) => snap.data());
+        setLessons(lessonsData);
+
+        // 3. Cargar progreso del usuario
+        const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
+        if (progressDoc.exists()) {
+          const progressData = progressDoc.data();
+          const completed = progressData.completedLessons || {};
+          console.log("User progress:", completed);
+          setCompletedLessons(completed);
+        }
       } catch (error) {
         console.error("Error loading unit:", error);
       } finally {
@@ -48,7 +66,13 @@ export default function UnitScreen() {
     };
 
     loadUnitData();
-  }, [id]);
+  }, [id, user]);
+
+  const calculateUnitProgress = () => {
+    if (!unit || lessons.length === 0) return 0;
+    const completedCount = lessons.filter((l) => completedLessons[l.id]).length;
+    return completedCount / lessons.length;
+  };
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 20 }} />;
@@ -74,23 +98,44 @@ export default function UnitScreen() {
         {lessons.length} lecciones • {unit.rewardXP} XP
       </Text>
 
+      <View style={{ marginBottom: 16 }}>
+        <Progress.Bar
+          progress={calculateUnitProgress()}
+          width={null}
+          color="#4CAF50"
+        />
+        <Text style={{ textAlign: "center", marginTop: 4 }}>
+          {Math.round(calculateUnitProgress() * 100)}% completado
+        </Text>
+      </View>
+
       {lessons.map((lesson, index) => (
         <TouchableOpacity
           key={lesson.id}
-          onPress={() =>router.push({
-            pathname: '/lesson/[id]',
-            params: { id: lesson.id }
-          })}
+          onPress={() =>
+            router.push({
+              pathname: "/lesson/[id]",
+              params: { id: lesson.id },
+            })
+          }
           style={{
-            backgroundColor: "#fff",
+            backgroundColor: completedLessons[lesson.id] ? "#E8F5E9" : "#fff",
             padding: 16,
             borderRadius: 8,
             marginBottom: 12,
+            borderWidth: 1,
+            borderColor: completedLessons[lesson.id] ? "#4CAF50" : "#e0e0e0",
           }}
         >
-          <Text style={{ fontWeight: "bold" }}>
-            Lección {index + 1}: {lesson.title}
-          </Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={{ fontWeight: "bold" }}>
+              {completedLessons[lesson.id] && "✓ "}
+              Lección {index + 1}: {lesson.title}
+            </Text>
+            {completedLessons[lesson.id] && <Text>✅</Text>}
+          </View>
           <Text style={{ color: "#FFC107", marginTop: 4 }}>
             +{lesson.xpReward} XP
           </Text>
