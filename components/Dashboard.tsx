@@ -289,10 +289,9 @@ export default function Dashboard() {
 
   const xpProgress = calculateXPProgress();
 
-  // Actualizamos el efecto para desbloquear niveles según XP
   useEffect(() => {
     if (user && progress.xp !== undefined) {
-      const newUnlockedLevels = ["A1"]; // Siempre desbloqueado
+      const newUnlockedLevels = ["A1"]; 
 
       if (progress.xp >= LEVEL_REQUIREMENTS.A2) {
         newUnlockedLevels.push("A2");
@@ -303,7 +302,6 @@ export default function Dashboard() {
 
       setUnlockedLevels(newUnlockedLevels);
 
-      // Actualizar en Firestore si cambió
       if (
         JSON.stringify(newUnlockedLevels) !==
         JSON.stringify(progress.unlockedLevels)
@@ -325,10 +323,8 @@ export default function Dashboard() {
           await createNewUserProgress(user.uid);
         }
 
-        // Cargar datos existentes
         const userProgress = progressSnap.exists() ? progressSnap.data() : null;
 
-        // Si no hay datos o están incompletos, inicializar con valores por defecto
         if (!userProgress || !userProgress.levels) {
           const modulesSnapshot = await getDocs(collection(db, "modules"));
           let totalLessons = {
@@ -423,7 +419,6 @@ export default function Dashboard() {
     }
 
     if (unlockedLevels.includes(levelId)) {
-      /*    router.push(`/level/${levelId}`); */
       router.push({
         pathname: "/level-modules/[level]",
         params: { level: levelId },

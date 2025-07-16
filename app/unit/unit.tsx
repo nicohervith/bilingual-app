@@ -30,7 +30,6 @@ export default function UnitScreen() {
       if (!user) return;
 
       try {
-        // 1. Cargar datos de la unidad
         const unitDoc = await getDoc(doc(db, "units", id as string));
         if (!unitDoc.exists()) {
           console.warn("Unit not found");
@@ -39,7 +38,6 @@ export default function UnitScreen() {
 
         setUnit(unitDoc.data());
 
-        // 2. Cargar todas las lecciones de la unidad
         const lessonPromises = unitDoc
           .data()
           .lessons.map((lessonId: string) =>
@@ -50,7 +48,6 @@ export default function UnitScreen() {
         const lessonsData = lessonSnapshots.map((snap) => snap.data());
         setLessons(lessonsData);
 
-        // 3. Cargar progreso del usuario
         const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
         if (progressDoc.exists()) {
           const progressData = progressDoc.data();
