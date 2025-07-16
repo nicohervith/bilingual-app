@@ -17,6 +17,7 @@ import MemoryGame from "@/components/MemoryGame";
 import NumbersGame from "@/components/NumbersGame";
 import Quiz from "@/components/Quiz";
 import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/lib/firebaseConfig";
 import { completeLesson } from "@/services/courseService";
 import { collection, getDocs } from "firebase/firestore";
 import Animated, {
@@ -28,7 +29,6 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import { db } from "@/lib/firebaseConfig";
 
 const LessonContent = ({
   lesson,
@@ -139,7 +139,7 @@ const LessonContent = ({
   }, []);
 
   // Inicializar estado de ejercicios completados
-  useEffect(() => {
+  /*  useEffect(() => {
     if (lesson) {
       const exercisesCount = lesson.content.exercises?.length || 0;
       setCompletedExercises(Array(exercisesCount).fill(false));
@@ -148,7 +148,7 @@ const LessonContent = ({
       // Debug: Verificar estructura de la lección
       console.log("Lesson content:", JSON.stringify(lesson.content, null, 2));
     }
-  }, [lesson]);
+  }, [lesson]); */
 
   useEffect(() => {
     if (lesson) {
@@ -167,11 +167,22 @@ const LessonContent = ({
     }
   }, [lesson]);
 
-  const handleExerciseComplete = (exerciseIndex: number) => {
+  /* const handleExerciseComplete = (exerciseIndex: number) => {
     console.log(`Exercise ${exerciseIndex} completed`);
     setCompletedExercises((prev) => {
       const newCompleted = [...prev];
       newCompleted[exerciseIndex] = true;
+      return newCompleted;
+    });
+  }; */
+  const handleExerciseComplete = (exerciseIndex: number) => {
+    console.log(`Exercise ${exerciseIndex} completed. Current state:`, [
+      ...completedExercises,
+    ]);
+    setCompletedExercises((prev) => {
+      const newCompleted = [...prev];
+      newCompleted[exerciseIndex] = true;
+      console.log("Updated state:", newCompleted);
       return newCompleted;
     });
   };
@@ -269,9 +280,28 @@ const LessonContent = ({
               )}
               {exercise.type === "drag_drop" && (
                 <DragDropExercise
-                  sentences={exercise.sentences}
-                  pronouns={lesson.content.grammarRules}
-                  onComplete={() => handleExerciseComplete(index)}
+                  dragItems={exercise.items.map((item: any) => ({
+                    id:
+                      item.id ||
+                      `items-${Math.random().toString(36).substr(2, 9)}`,
+                    content: item.from,
+                  }))}
+                  dropZones={exercise.pairs.map((pair: any) => ({
+                    id:
+                      pair.id ||
+                      `zone-${Math.random().toString(36).substr(2, 9)}`,
+                    content: pair.to,
+                    correctMatch: pair.id,
+                  }))}
+                  instructions={
+                    exercise.question ||
+                    "Arrastra cada elemento a su posición correcta"
+                  }
+                  onComplete={() => {
+                    console.log(`Ejercicio ${index} completado`);
+                    handleExerciseComplete(index);
+                  }}
+                  question={exercise.question}
                 />
               )}
               {exercise.type === "memory_game" && (
@@ -280,7 +310,6 @@ const LessonContent = ({
                   onComplete={() => handleExerciseComplete(index)}
                 />
               )}
-
               {exercise.type === "matching" && (
                 <MatchingExercise
                   pairs={exercise.pairs}
@@ -308,7 +337,6 @@ const LessonContent = ({
         })}
 
         {/* Juego de escucha */}
-        {/* Juegos */}
         {lesson.content?.game && (
           <View style={styles.gameContainer}>
             {lesson.content.game.type === "categorization" && (

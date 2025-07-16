@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -32,6 +33,7 @@ type Module = {
   description?: string; // Hacer opcional
   icon?: string; // Hacer opcional
   units: Record<string, Unit>;
+  insigniaModule?: string; // Insignia del módulo
 };
 
 export default function LevelModulesScreen() {
@@ -137,68 +139,115 @@ export default function LevelModulesScreen() {
     );
   }
   console.log("Modules loaded:", modules);
+
   return (
-  <ScrollView contentContainerStyle={styles.container}>
-    <Text style={styles.title}>Level {level} Modules</Text>
-    {modules.map((module) => (
-      <View key={module.id} style={styles.moduleCard}>
-        <View style={styles.moduleHeader}>
-          <View style={styles.moduleTitleContainer}>
-            <Text style={styles.moduleIcon}>{module.icon}</Text>
-            <Text style={styles.moduleTitle}>{module.title}</Text>
-          </View>
-        </View>
-        
-        {Object.values(module.units).map((unit: any) => {
-          const isUnitComplete = unitProgress[unit.id] === 1;
-          
-          return (
-            <TouchableOpacity
-              key={unit.id}
-              onPress={() => router.push(`/unit/${unit.id}`)}
-              style={styles.unitCard}
-            >
-              {/* Insignia de la unidad */}
-              {unit.insignia && (
-                <Image
-                  source={{ uri: unit.insignia }}
-                  style={[
-                    styles.unitInsignia,
-                    { opacity: isUnitComplete ? 1 : 0.3 }
-                  ]}
-                />
-              )}
-              
-              <View style={styles.unitHeader}>
-                <Text style={styles.unitTitle}>{unit.title}</Text>
-                <Text style={styles.xpReward}>{unit.rewardXP} XP</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Level {level} Modules</Text>
+      {modules.map((module) => {
+        const isModuleComplete = moduleCompletion[module.id];
+
+        return (
+          <View key={module.id} style={styles.moduleCard}>
+            <View style={styles.moduleHeader}>
+              <View style={styles.moduleTitleContainer}>
+                <Text style={styles.moduleIcon}>{module.icon}</Text>
+                <Text style={styles.moduleTitle}>{module.title}</Text>
+
+                {module.insigniaModule && (
+                  <View style={styles.moduleBadgeContainer}>
+                    <Image
+                      source={{ uri: module.insigniaModule }}
+                      style={[
+                        styles.moduleBadge,
+                        {
+                          opacity: isModuleComplete ? 1 : 0.3,
+                          transform: [{ scale: isModuleComplete ? 1.1 : 1 }],
+                        },
+                      ]}
+                    />
+                    {isModuleComplete && (
+                      <Text style={styles.moduleBadgeText}>
+                        ¡Módulo completado!
+                      </Text>
+                    )}
+                  </View>
+                )}
               </View>
-              
-              <Text style={styles.lessonCount}>
-                {unit.lessons.length} lecciones
-              </Text>
-              
-              <Progress.Bar
-                progress={unitProgress[unit.id] || 0}
-                width={200}
-                color="#4CAF50"
-              />
-              
-              <Text style={styles.progressText}>
-                {Math.round((unitProgress[unit.id] || 0) * 100)}% completado
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    ))}
-  </ScrollView>
-); 
+            </View>
+
+            {Object.values(module.units).map((unit: any) => {
+              const isUnitComplete = unitProgress[unit.id] === 1;
+
+              return (
+                <TouchableOpacity
+                  key={unit.id}
+                  onPress={() => router.push(`/unit/${unit.id}`)}
+                  style={styles.unitCard}
+                >
+                  {/* Insignia de la unidad */}
+                  {unit.insignia && (
+                    <Image
+                      source={{ uri: unit.insignia }}
+                      style={[
+                        styles.unitInsignia,
+                        { opacity: isUnitComplete ? 1 : 0.3 },
+                      ]}
+                    />
+                  )}
+
+                  <View style={styles.unitHeader}>
+                    <Text style={styles.unitTitle}>{unit.title}</Text>
+                    <Text style={styles.xpReward}>{unit.rewardXP} XP</Text>
+                  </View>
+
+                  <Text style={styles.lessonCount}>
+                    {unit.lessons.length} lecciones
+                  </Text>
+
+                  <Progress.Bar
+                    progress={unitProgress[unit.id] || 0}
+                    width={200}
+                    color="#4CAF50"
+                  />
+
+                  <Text style={styles.progressText}>
+                    {Math.round((unitProgress[unit.id] || 0) * 100)}% completado
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        );
+      })}
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+  },
+  moduleBadgeContainer: {
+    marginLeft: "auto",
+    alignItems: "center",
+  },
+
+  moduleBadge: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
+    marginLeft: 10,
+    borderRadius: 25,
+    right: 12,
+    /*  top: 12, */
+    borderWidth: 2,
+    borderColor: "#FFD700",
+  },
+  moduleBadgeText: {
+    fontSize: 10,
+    color: "#4CAF50",
+    fontWeight: "bold",
+    marginTop: 2,
   },
   moduleHeader: {
     flexDirection: "row",
@@ -210,9 +259,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
+    marginBottom: 0,
   },
   moduleIcon: {
-    marginRight: 8,
+    /* marginRight: 8, */
     fontSize: 20,
   },
   insignia: {
@@ -248,26 +298,13 @@ const styles = StyleSheet.create({
   moduleTitle: {
     fontSize: 20,
     fontWeight: "600",
-    marginBottom: 8,
+    /* marginBottom: 8, */
+    marginLeft: 5,
   },
   moduleDescription: {
     color: "#666",
     marginBottom: 12,
   },
-  /* unitCard: {
-    backgroundColor: "#f8f9fa",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
-  }, */
-  /*  unitCard: {
-    backgroundColor: "#fff",
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-  }, */
   unitCard: {
     backgroundColor: "#f8f9fa",
     borderRadius: 8,

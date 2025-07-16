@@ -13,7 +13,7 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { firebaseConfig } from "../lib/firebaseConfig"; // Asegúrate de tener tu configuración
+import { firebaseConfig } from "../lib/firebaseConfig"; 
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
