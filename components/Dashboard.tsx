@@ -1,4 +1,5 @@
 import { auth, db } from "@/lib/firebaseConfig";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
 import {
@@ -50,8 +51,8 @@ const availableLevels: Level[] = [
 
 interface ProgressData {
   xp?: number;
-  level?: string; // Añade esta línea
-  unlockedLevels?: string[]; // Añade esta línea
+  level?: string;
+  unlockedLevels?: string[];
   completedMissions?: Record<string, string[]>;
   completedLessons?: Record<string, boolean>;
   levels?: Record<string, { completed: number; total: number }>;
@@ -64,17 +65,34 @@ interface ProgressData {
       earnedAt: Timestamp;
     }
   >;
+  stats: {
+    daysStreak: number;
+    lastLogin: Timestamp | Date;
+    longestStreak: number;
+  };
 }
+type LevelRequirements = {
+  A1: number;
+  A2: number;
+  B1: number;
+};
+
+const BASE_XP_PER_LESSON = 50;
 
 export default function Dashboard() {
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
-
   const [unlockedLevels, setUnlockedLevels] = useState<string[]>(
     user ? ["A1"] : []
   );
+const [dynamicRequirements, setDynamicRequirements] =
+  useState<LevelRequirements>({
+    A1: 0,
+    A2: 1000,
+    B1: 2000,
+  });
 
   const [progress, setProgress] = useState<ProgressData>({
     xp: 0,
@@ -86,161 +104,207 @@ export default function Dashboard() {
       A2: { completed: 0, total: 0 },
       B1: { completed: 0, total: 0 },
     },
+    stats: {
+      daysStreak: 1,
+      lastLogin: new Date(),
+      longestStreak: 1,
+    },
   });
 
-  useEffect(() => {
-    const loadProgress = async () => {
-      if (!user) return;
+  const calculateTotalLevelXP = (units: any[]): number => {
+    return units.reduce((total, unit) => {
+      const lessonsXP = (unit.lessons?.length || 0) * BASE_XP_PER_LESSON;
+      return total + lessonsXP + (unit.rewardXP || 0);
+    }, 0);
+  };
 
-      try {
-        // 1. Cargar progreso del usuario
-        const progressRef = doc(db, "userProgress", user.uid);
-        const progressSnap = await getDoc(progressRef);
+  const getDynamicLevelRequirements = (modules: any[]) => {
+    const A1Units = modules.flatMap((m) =>
+      Object.entries(m.units || {})
+        .filter(([unitId]) => unitId.includes("A1_"))
+        .map(([, unit]) => unit)
+    );
 
-        if (!progressSnap.exists()) {
-          await createNewUserProgress(user.uid);
-          return;
-        }
+    const A2Units = modules.flatMap((m) =>
+      Object.entries(m.units || {})
+        .filter(([unitId]) => unitId.includes("A2_"))
+        .map(([, unit]) => unit)
+    );
 
-        const userProgress = progressSnap.data();
-
-        // 2. Calcular total de lecciones por nivel
-        const modulesSnapshot = await getDocs(collection(db, "modules"));
-        const levelTotals = { A1: 0, A2: 0, B1: 0 };
-
-        modulesSnapshot.forEach((doc) => {
-          Object.entries(doc.data().units || {}).forEach(
-            ([unitId, unit]: [string, any]) => {
-              if (unitId.includes("A1_"))
-                levelTotals.A1 += unit.lessons?.length || 0;
-              else if (unitId.includes("A2_"))
-                levelTotals.A2 += unit.lessons?.length || 0;
-              else if (unitId.includes("B1_"))
-                levelTotals.B1 += unit.lessons?.length || 0;
-            }
-          );
-        });
-
-        // 3. Actualizar estado
-        setProgress({
-          xp: userProgress.xp || 0,
-          level: userProgress.level || "A1",
-          unlockedLevels: userProgress.unlockedLevels || ["A1"],
-          completedLessons: userProgress.completedLessons || {},
-          earnedBadges: userProgress.earnedBadges || {},
-          levels: {
-            A1: {
-              completed: userProgress.levels?.A1?.completed || 0,
-              total: levelTotals.A1,
-            },
-            A2: {
-              completed: userProgress.levels?.A2?.completed || 0,
-              total: levelTotals.A2,
-            },
-            B1: {
-              completed: userProgress.levels?.B1?.completed || 0,
-              total: levelTotals.B1,
-            },
-          },
-        });
-      } catch (error) {
-        console.error("Error loading progress:", error);
-      }
+    return {
+      A1: 0,
+      A2: Math.round(calculateTotalLevelXP(A1Units) * 0.7),
+      B1: Math.round(
+        calculateTotalLevelXP(A1Units) + calculateTotalLevelXP(A2Units) * 0.7
+      ),
     };
+  };
 
-    loadProgress();
-  }, [user]);
+ const updateStreak = async (userProgress: any) => {
+   // Verificar primero si user existe
+   if (!user) {
+     console.error("No hay usuario autenticado");
+     return {
+       daysStreak: 1,
+       lastLogin: new Date(),
+       longestStreak: 1,
+     };
+   }
 
-  const countLessonsByLevel = async (): Promise<Record<string, number>> => {
-    const modulesSnapshot = await getDocs(collection(db, "modules"));
-    const levelTotals = { A1: 0, A2: 0, B1: 0 };
+   const userProgressRef = doc(db, "userProgress", user.uid);
+   const lastLogin = userProgress.stats?.lastLogin;
 
-    modulesSnapshot.forEach((doc) => {
-      Object.entries(doc.data().units || {}).forEach(
-        ([unitId, unit]: [string, any]) => {
-          if (unitId.includes("A1_"))
-            levelTotals.A1 += unit.lessons?.length || 0;
-          else if (unitId.includes("A2_"))
-            levelTotals.A2 += unit.lessons?.length || 0;
-          else if (unitId.includes("B1_"))
-            levelTotals.B1 += unit.lessons?.length || 0;
-        }
-      );
-    });
+   const lastLoginDate = lastLogin?.toDate?.() || new Date();
+   const todayDate = new Date();
 
-    return levelTotals;
+   lastLoginDate.setHours(0, 0, 0, 0);
+   todayDate.setHours(0, 0, 0, 0);
+
+   const diffDays = Math.floor(
+     (todayDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)
+   );
+
+   let newStreak = userProgress.stats?.daysStreak || 1;
+
+   if (diffDays === 1) {
+     newStreak += 1;
+   } else if (diffDays > 1) {
+     newStreak = 1;
+   }
+
+   const longestStreak = Math.max(
+     newStreak,
+     userProgress.stats?.longestStreak || 1
+   );
+
+   try {
+     await updateDoc(userProgressRef, {
+       "stats.daysStreak": newStreak,
+       "stats.lastLogin": new Date(),
+       "stats.longestStreak": longestStreak,
+     });
+   } catch (error) {
+     console.error("Error updating streak:", error);
+   }
+
+   return {
+     daysStreak: newStreak,
+     lastLogin: new Date(),
+     longestStreak: longestStreak,
+   };
+ };
+
+  const loadProgress = async () => {
+    if (!user) {
+      console.error("No hay usuario autenticado");
+      return {
+        daysStreak: 1,
+        lastLogin: new Date(),
+        longestStreak: 1,
+      };
+    }
+    try {
+      const progressRef = doc(db, "userProgress", user.uid);
+      const progressSnap = await getDoc(progressRef);
+
+      if (!progressSnap.exists()) {
+        await createNewUserProgress(user.uid);
+        return;
+      }
+
+      const userProgress = progressSnap.data();
+      const updatedStats = await updateStreak(userProgress);
+
+      // Obtener módulos y calcular requisitos dinámicos
+      const modulesSnapshot = await getDocs(collection(db, "modules"));
+      const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
+      const newRequirements = getDynamicLevelRequirements(modulesData);
+      setDynamicRequirements(newRequirements);
+
+      // Calcular lecciones totales por nivel
+      const levelTotals = { A1: 0, A2: 0, B1: 0 };
+      modulesSnapshot.forEach((doc) => {
+        Object.entries(doc.data().units || {}).forEach(
+          ([unitId, unit]: [string, any]) => {
+            if (unitId.includes("A1_"))
+              levelTotals.A1 += unit.lessons?.length || 0;
+            else if (unitId.includes("A2_"))
+              levelTotals.A2 += unit.lessons?.length || 0;
+            else if (unitId.includes("B1_"))
+              levelTotals.B1 += unit.lessons?.length || 0;
+          }
+        );
+      });
+
+      setProgress({
+        xp: userProgress.xp || 0,
+        level: userProgress.level || "A1",
+        unlockedLevels: userProgress.unlockedLevels || ["A1"],
+        completedLessons: userProgress.completedLessons || {},
+        earnedBadges: userProgress.earnedBadges || {},
+        levels: {
+          A1: {
+            completed: userProgress.levels?.A1?.completed || 0,
+            total: levelTotals.A1,
+          },
+          A2: {
+            completed: userProgress.levels?.A2?.completed || 0,
+            total: levelTotals.A2,
+          },
+          B1: {
+            completed: userProgress.levels?.B1?.completed || 0,
+            total: levelTotals.B1,
+          },
+        },
+        stats: updatedStats,
+      });
+    } catch (error) {
+      console.error("Error loading progress:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     if (!user) return;
-
-    const unsubscribe = onSnapshot(
-      doc(db, "userProgress", user.uid),
-      async (doc) => {
-        if (doc.exists()) {
-          const levelTotals = await countLessonsByLevel();
-          const progressData = doc.data();
-
-          setProgress((prev) => ({
-            ...prev,
-            xp: progressData.xp || 0,
-            completedLessons: progressData.completedLessons || {},
-            levels: {
-              A1: {
-                completed: progressData.levels?.A1?.completed || 0,
-                total: levelTotals.A1,
-              },
-              A2: {
-                completed: progressData.levels?.A2?.completed || 0,
-                total: levelTotals.A2,
-              },
-              B1: {
-                completed: progressData.levels?.B1?.completed || 0,
-                total: levelTotals.B1,
-              },
-            },
-          }));
-        }
-      }
-    );
-
-    return () => unsubscribe();
-  }, [user]);
+    loadProgress();
+  }, [user, refreshKey]);
 
   const createNewUserProgress = async (userId: string) => {
     try {
       const modulesSnapshot = await getDocs(collection(db, "modules"));
-      let totalLessons = {
-        A1: 0,
-        A2: 0,
-        B1: 0,
-      };
+      const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
+      const newRequirements = getDynamicLevelRequirements(modulesData);
+      setDynamicRequirements(newRequirements);
 
+      let totalLessons = { A1: 0, A2: 0, B1: 0 };
       modulesSnapshot.forEach((doc) => {
-        const data = doc.data();
-        Object.entries(data.units || {}).forEach(([unitId, unit]) => {
-          if (unitId.startsWith("unitA1_")) {
-            totalLessons.A1 +=
-              (unit as { lessons?: any[] }).lessons?.length || 0;
-          } else if (unitId.startsWith("unitA2_")) {
-            totalLessons.A2 +=
-              (unit as { lessons?: any[] }).lessons?.length || 0;
-          } else if (unitId.startsWith("unitB1_")) {
-            totalLessons.B1 +=
-              (unit as { lessons?: any[] }).lessons?.length || 0;
+        Object.entries(doc.data().units || {}).forEach(
+          ([unitId, unit]: [string, any]) => {
+            if (unitId.startsWith("unitA1_"))
+              totalLessons.A1 += unit.lessons?.length || 0;
+            else if (unitId.startsWith("unitA2_"))
+              totalLessons.A2 += unit.lessons?.length || 0;
+            else if (unitId.startsWith("unitB1_"))
+              totalLessons.B1 += unit.lessons?.length || 0;
           }
-        });
+        );
       });
 
       await setDoc(doc(db, "userProgress", userId), {
         xp: 0,
         level: "A1",
         unlockedLevels: ["A1"],
-        completedMissions: {},
+        completedLessons: {},
         levels: {
           A1: { completed: 0, total: totalLessons.A1 },
           A2: { completed: 0, total: totalLessons.A2 },
           B1: { completed: 0, total: totalLessons.B1 },
+        },
+        stats: {
+          daysStreak: 1,
+          lastLogin: new Date(),
+          longestStreak: 1,
         },
       });
     } catch (error) {
@@ -248,57 +312,42 @@ export default function Dashboard() {
     }
   };
 
-  const LEVEL_REQUIREMENTS = {
-    A1: 0,
-    A2: 1000,
-    B1: 2000,
-  };
-
   const getCurrentLevel = (): string => {
     if (!progress || !progress.xp) return "A1";
-    if (progress.xp >= LEVEL_REQUIREMENTS.B1) return "B1";
-    if (progress.xp >= LEVEL_REQUIREMENTS.A2) return "A2";
+    if (progress.xp >= dynamicRequirements.B1) return "B1";
+    if (progress.xp >= dynamicRequirements.A2) return "A2";
     return "A1";
   };
 
-  // Calcula el progreso hacia el siguiente nivel
-  const calculateXPProgress = (): { progress: number; nextLevel: string } => {
-    const currentXP = progress.xp || 0;
-    const currentLevel = getCurrentLevel();
+const calculateXPProgress = (): { progress: number; nextLevel: string } => {
+  const currentXP = progress.xp || 0;
+  const currentLevel = getCurrentLevel();
 
-    if (currentLevel === "A1") {
-      return {
-        progress: currentXP / LEVEL_REQUIREMENTS.A2,
-        nextLevel: "A2",
-      };
-    } else if (currentLevel === "A2") {
-      return {
-        progress:
-          (currentXP - LEVEL_REQUIREMENTS.A2) /
-          (LEVEL_REQUIREMENTS.B1 - LEVEL_REQUIREMENTS.A2),
-        nextLevel: "B1",
-      };
-    } else {
-      // Para B1 no hay siguiente nivel, mostramos progreso completo
-      return {
-        progress: 1,
-        nextLevel: "B1 (Max)",
-      };
-    }
+  const nextLevel: "A2" | "B1" | null =
+    currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
+
+  if (!nextLevel) return { progress: 1, nextLevel: "Max" };
+
+  const validCurrentLevel = currentLevel as keyof LevelRequirements;
+  const currentReq = dynamicRequirements[validCurrentLevel];
+
+  const nextReq = dynamicRequirements[nextLevel];
+
+  const calculatedProgress = (currentXP - currentReq) / (nextReq - currentReq);
+
+  return {
+    progress: Math.min(1, Math.max(0, calculatedProgress)),
+    nextLevel,
   };
+};
 
   const xpProgress = calculateXPProgress();
 
   useEffect(() => {
     if (user && progress.xp !== undefined) {
-      const newUnlockedLevels = ["A1"]; 
-
-      if (progress.xp >= LEVEL_REQUIREMENTS.A2) {
-        newUnlockedLevels.push("A2");
-      }
-      if (progress.xp >= LEVEL_REQUIREMENTS.B1) {
-        newUnlockedLevels.push("B1");
-      }
+      const newUnlockedLevels = ["A1"];
+      if (progress.xp >= dynamicRequirements.A2) newUnlockedLevels.push("A2");
+      if (progress.xp >= dynamicRequirements.B1) newUnlockedLevels.push("B1");
 
       setUnlockedLevels(newUnlockedLevels);
 
@@ -311,102 +360,17 @@ export default function Dashboard() {
         });
       }
     }
-  }, [user, progress.xp]);
-
-  useEffect(() => {
-    if (user) {
-      const checkUserProgress = async () => {
-        const progressRef = doc(db, "userProgress", user.uid);
-        const progressSnap = await getDoc(progressRef);
-
-        if (!progressSnap.exists()) {
-          await createNewUserProgress(user.uid);
-        }
-
-        const userProgress = progressSnap.exists() ? progressSnap.data() : null;
-
-        if (!userProgress || !userProgress.levels) {
-          const modulesSnapshot = await getDocs(collection(db, "modules"));
-          let totalLessons = {
-            A1: 0,
-            A2: 0,
-            B1: 0,
-          };
-
-          modulesSnapshot.forEach((doc) => {
-            const data = doc.data();
-            Object.entries(data.units || {}).forEach(([unitId, unit]) => {
-              if (unitId.startsWith("unitA1_")) {
-                totalLessons.A1 +=
-                  (unit as { lessons?: any[] }).lessons?.length || 0;
-              } else if (unitId.startsWith("unitA2_")) {
-                totalLessons.A2 +=
-                  (unit as { lessons?: any[] }).lessons?.length || 0;
-              } else if (unitId.startsWith("unitB1_")) {
-                totalLessons.B1 +=
-                  (unit as { lessons?: any[] }).lessons?.length || 0;
-              }
-            });
-          });
-
-          setProgress({
-            xp: userProgress?.xp || 0,
-            level: userProgress?.level || "A1",
-            unlockedLevels: userProgress?.unlockedLevels || ["A1"],
-            completedMissions: userProgress?.completedMissions || {},
-            levels: {
-              A1: {
-                completed: userProgress?.levels?.A1?.completed || 0,
-                total: totalLessons.A1,
-              },
-              A2: {
-                completed: userProgress?.levels?.A2?.completed || 0,
-                total: totalLessons.A2,
-              },
-              B1: {
-                completed: userProgress?.levels?.B1?.completed || 0,
-                total: totalLessons.B1,
-              },
-            },
-          });
-        } else {
-          setProgress(userProgress);
-        }
-      };
-
-      checkUserProgress();
-    }
-  }, [user]);
-
-  const handleRefresh = () => {
-    setRefreshKey((prev) => prev + 1);
-  };
-
-  const calculateLevelProgress = (
-    levelId: string
-  ): { completed: number; total: number } => {
-    if (!progress || !progress.levels || !progress.levels[levelId]) {
-      return { completed: 0, total: 0 };
-    }
-
-    const levelData = progress.levels[levelId];
-
-    return {
-      completed: levelData.completed || 0,
-      total: levelData.total || 0,
-    };
-  };
+  }, [user, progress.xp, dynamicRequirements]);
 
   const xpNeededForLevel = (levelId: string): number => {
     const currentXP = progress.xp || 0;
-
     switch (levelId) {
       case "A1":
         return 0;
       case "A2":
-        return Math.max(0, LEVEL_REQUIREMENTS.A2 - currentXP);
+        return Math.max(0, dynamicRequirements.A2 - currentXP);
       case "B1":
-        return Math.max(0, LEVEL_REQUIREMENTS.B1 - currentXP);
+        return Math.max(0, dynamicRequirements.B1 - currentXP);
       default:
         return 0;
     }
@@ -417,7 +381,6 @@ export default function Dashboard() {
       router.push("/login");
       return;
     }
-
     if (unlockedLevels.includes(levelId)) {
       router.push({
         pathname: "/level-modules/[level]",
@@ -430,6 +393,14 @@ export default function Dashboard() {
     await signOut(auth);
     router.replace("/");
   };
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -456,6 +427,14 @@ export default function Dashboard() {
                 {user.displayName || "Usuario"}
               </Text>
               <Text style={styles.userEmail}>{user.email}</Text>
+
+              <View style={styles.streakContainer}>
+                <Ionicons name="flame" size={20} color="#FF9500" />
+                <Text style={styles.streakText}>
+                  {progress.stats?.daysStreak ?? 1} días de racha
+                </Text>
+              </View>
+
               <Text style={styles.userLevel}>Nivel: {getCurrentLevel()}</Text>
               <Text style={styles.userXP}>{progress.xp || 0} XP</Text>
             </View>
@@ -659,6 +638,25 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     flex: 1,
   }, */
+  streakContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5,
+    backgroundColor: "#FFF3E0",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+  },
+  streakText: {
+    marginLeft: 5,
+    fontWeight: "bold",
+    color: "#E65100",
+  },
+  longestStreak: {
+    marginLeft: 5,
+    color: "#666",
+    fontSize: 12,
+  },
   badgesSection: {
     marginBottom: 25,
   },
