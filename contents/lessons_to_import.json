@@ -1,202 +1,329 @@
 {
   "lessons": {
-    "A1_colors": {
-      "id": "A1_colors",
-      "unit": "unitA1_basics",
-      "title": "Basic Colors",
-      "type": "vocabulary",
+     "A1_greetings":
+    {
+      "id": "A1_greetings",
+      "title": "Greetings and Introductions",
       "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
       "xpReward": 40,
       "objectives": [
-        "Identificar colores básicos",
-        "Asociar colores con objetos comunes"
+        "Use basic greetings",
+        "Introduce yourself and others"
       ],
       "content": {
         "vocabulary": [
           {
-            "word": "Red",
-            "translation": "Rojo",
-            "image": "colors/red.png",
-            "examples": ["The apple is red", "The car is red"]
+            "word": "Hello",
+            "translation": "Hola",
+            "examples": ["Hello, my name is John", "Hello, how are you?"],
+            "image": "https://example.com/hello_image.png"
           },
           {
-            "word": "Blue",
-            "translation": "Azul",
-            "image": "colors/blue.png",
-            "examples": ["The sky is blue", "The ocean is blue"]
+            "word": "Goodbye",
+            "translation": "Adiós",
+            "examples": ["Goodbye, see you tomorrow!", "It's time to say goodbye"],
+            "image": "https://example.com/goodbye_image.png"
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "title": "Match words",
+            "title": "Match greetings",
             "pairs": [
-              { "from": "Red", "to": "Rojo" },
-              { "from": "Blue", "to": "Azul" }
+              {"word": "Hello", "image": "https://example.com/hello_image.png"},
+              {"word": "Goodbye", "image": "https://example.com/goodbye_image.png"}
             ]
           },
           {
-            "type": "image_selection",
-            "title": "Select the correct color",
-            "question": "Which image shows something blue?",
-            "options": [
-              { "image": "colors/red_car.png", "isCorrect": false },
-              { "image": "colors/blue_sky.png", "isCorrect": true }
-            ]
-          }
-        ]
-      },
-      "metadata": {
-        "createdAt": "2023-11-20",
-        "version": 1
-      }
-    },
-    "A1_articles": {
-      "id": "A1_articles",
-      "unit": "unitA1_grammar",
-      "title": "Articles: A vs An",
-      "type": "grammar",
-      "xpReward": 50,
-      "objectives": [
-        "Diferenciar entre 'a' y 'an'",
-        "Aplicar la regla de sonido vocálico"
-      ],
-      "content": {
-        "grammarRules": [
-          {
-            "rule": "Use 'a' before consonant sounds",
-            "examples": ["a dog", "a university"]
-          },
-          {
-            "rule": "Use 'an' before vowel sounds",
-            "examples": ["an apple", "an hour"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "fill_blank",
-            "questions": [
-              {
-                "sentence": "I have ___ apple",
-                "answer": "an",
-                "options": ["a", "an"]
-              },
-              {
-                "sentence": "She is ___ doctor",
-                "answer": "a",
-                "options": ["a", "an"]
-              }
-            ]
+            "type": "conjugation",
+            "title": "Complete with 'to be'",
+            "verb": "to be",
+            "pronouns": ["I", "You", "He"],
+            "correct": {"I": "am", "You": "are", "He": "is"}
           }
         ]
       }
     },
-    "A1_family": {
-      "id": "A1_family",
-      "unit": "unitA1_relationships",
-      "title": "Immediate Family",
+    "A1_nationalities":{
+      "id": "A1_nationalities",
+      "title": "Countries and Nationalities",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
       "type": "vocabulary",
       "xpReward": 45,
       "objectives": [
-        "Nombrar miembros de la familia",
-        "Identificar relaciones básicas"
+        "Identify countries and nationalities",
+        "Use personal and possessive pronouns"
       ],
       "content": {
         "vocabulary": [
           {
-            "word": "Mother",
-            "translation": "Madre",
-            "image": "family/mother.png"
+            "word": "Spain",
+            "translation": "España",
+            "examples": ["I am from Spain", "She lives in Spain"],
+            "image": "https://example.com/spain_flag.png"
           },
           {
-            "word": "Father",
-            "translation": "Padre",
-            "image": "family/father.png"
+            "word": "Mexican",
+            "translation": "Mexicano/a",
+            "examples": ["He is Mexican", "Mexican food is delicious"],
+            "image": "https://example.com/mexico_flag.png"
           }
         ],
-        "familyTree": {
-          "image": "family/tree_example.png",
-          "relationships": [
-            {
-              "from": "mother",
-              "to": "child",
-              "relation": "parent"
-            }
-          ]
-        },
         "exercises": [
           {
-            "type": "relationship_matching",
+            "type": "memory_game",
+            "title": "Match countries with nationalities",
             "pairs": [
-              { "person": "mother", "relation": "parent" },
-              { "person": "brother", "relation": "sibling" }
+              {"word": "Spain", "image": "https://example.com/spain_flag.png"},
+              {"word": "Spanish", "image": "https://example.com/spanish_person.png"}
+            ]
+          },
+          {
+            "type": "sentence_formation",
+            "title": "Complete the sentence",
+            "words": ["She", "is", "from", "Brazil", "Brazilian"],
+            "required": ["She", "is", "from", "Brazil"],
+            "correct": "She is from Brazil"
+          }
+        ]
+      }
+    },
+    "A1_personal_info":{
+      "id": "A1_personal_info",
+      "title": "Personal Information",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
+      "xpReward": 50,
+      "objectives": [
+        "Ask for and give personal information",
+        "Use numbers and family vocabulary"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Age",
+            "translation": "Edad",
+            "examples": ["What is your age?", "My age is 25"],
+            "image": "https://example.com/age_image.png"
+          },
+          {
+            "word": "Family",
+            "translation": "Familia",
+            "examples": ["My family is big", "Family is important"],
+            "image": "https://example.com/family_image.png"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "numbers_game",
+            "title": "Listen and match numbers",
+            "modes": ["listen_match", "write_number"],
+            "options": {
+              "range": [1, 100],
+              "imageBaseUrl": "https://example.com/numbers/"
+            }
+          },
+          {
+            "type": "matching",
+            "title": "Match family members",
+            "pairs": [
+              {"word": "Mother", "image": "https://example.com/mother.png"},
+              {"word": "Father", "image": "https://example.com/father.png"}
             ]
           }
         ]
       }
     },
-    "A1_simple_present": {
-      "id": "A1_simple_present",
-      "unit": "unitA1_verbs",
-      "title": "Simple Present",
-      "type": "grammar",
-      "xpReward": 60,
+    "A1_descriptions":{
+      "id": "A1_descriptions",
+      "title": "Physical Descriptions",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
+      "xpReward": 55,
       "objectives": [
-        "Conjugar verbos en presente simple",
-        "Formar oraciones afirmativas"
+        "Describe people's appearance",
+        "Use possessive adjectives"
       ],
       "content": {
-        "conjugation": {
-          "I": "work",
-          "You": "work",
-          "He/She/It": "works",
-          "We/They": "work"
-        },
-        "examples": ["I eat breakfast at 7am", "She works in an office"],
+        "vocabulary": [
+          {
+            "word": "Tall",
+            "translation": "Alto/a",
+            "examples": ["He is very tall", "The tall building"],
+            "image": "https://example.com/tall_person.png"
+          },
+          {
+            "word": "Blonde",
+            "translation": "Rubio/a",
+            "examples": ["She has blonde hair", "The blonde boy"],
+            "image": "https://example.com/blonde_person.png"
+          }
+        ],
         "exercises": [
           {
-            "type": "conjugation",
-            "verb": "to eat",
-            "pronouns": ["I", "She", "They"]
+            "type": "image_selection",
+            "title": "Select the correct description",
+            "question": "Which person is tall?",
+            "options": [
+              {"image": "https://example.com/tall_person.png", "correct": true},
+              {"image": "https://example.com/short_person.png", "correct": false}
+            ]
           },
           {
             "type": "sentence_formation",
-            "words": ["She", "work", "hospital"],
-            "correct": "She works in a hospital"
+            "title": "Describe this person",
+            "words": ["My", "sister", "has", "long", "hair", "black"],
+            "required": ["My", "sister", "has", "long", "hair"],
+            "correct": "My sister has long hair"
           }
         ]
       }
     },
-    "A1_food": {
-      "id": "A1_food",
-      "unit": "unitA1_food",
-      "title": "Basic Foods",
-      "type": "vocabulary_game",
-      "xpReward": 55,
-      "objectives": ["Identificar comidas comunes", "Clasificar alimentos"],
+    "A1_likes_dislikes":{
+      "id": "A1_likes_dislikes",
+      "title": "Likes and Dislikes",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
+      "xpReward": 50,
+      "objectives": [
+        "Express preferences",
+        "Use modal verbs"
+      ],
       "content": {
         "vocabulary": [
           {
-            "word": "Apple",
-            "translation": "Manzana",
-            "image": "food/apple.png",
-            "category": "fruit"
+            "word": "Music",
+            "translation": "Música",
+            "examples": ["I like music", "She listens to music"],
+            "image": "https://example.com/music_image.png"
           },
           {
-            "word": "Bread",
-            "translation": "Pan",
-            "image": "food/bread.png",
-            "category": "grains"
+            "word": "Sports",
+            "translation": "Deportes",
+            "examples": ["He plays sports", "Do you like sports?"],
+            "image": "https://example.com/sports_image.png"
           }
         ],
-        "game": {
-          "type": "categorization",
-          "categories": ["Fruits", "Vegetables", "Grains"],
-          "items": [
-            { "image": "food/apple.png", "correct": "Fruits" },
-            { "image": "food/bread.png", "correct": "Grains" }
-          ]
-        }
+        "exercises": [
+          {
+            "type": "matching",
+            "title": "Match activities",
+            "pairs": [
+              {"word": "Swimming", "image": "https://example.com/swimming.png"},
+              {"word": "Singing", "image": "https://example.com/singing.png"}
+            ]
+          },
+          {
+            "type": "conjugation",
+            "title": "Complete with 'can'",
+            "verb": "can",
+            "pronouns": ["I", "You", "They"],
+            "correct": {"I": "can", "You": "can", "They": "can"}
+          }
+        ]
+      }
+    },
+      "A1_daily_routine":{
+      "id": "A1_daily_routine",
+      "title": "Daily Routine",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
+      "xpReward": 60,
+      "objectives": [
+        "Talk about daily activities",
+        "Use regular verbs in simple present"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Wake up",
+            "translation": "Despertarse",
+            "examples": ["I wake up at 7am", "She wakes up early"],
+            "image": "https://example.com/wake_up.png"
+          },
+          {
+            "word": "Work",
+            "translation": "Trabajar",
+            "examples": ["They work in an office", "I work from home"],
+            "image": "https://example.com/work_image.png"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "sentence_formation",
+            "title": "Order the routine",
+            "words": ["I", "at", "7am", "wake up", "usually"],
+            "required": ["I", "usually", "wake up", "at", "7am"],
+            "correct": "I usually wake up at 7am"
+          },
+          {
+            "type": "conjugation",
+            "title": "Conjugate regular verbs",
+            "verb": "to work",
+            "pronouns": ["I", "She", "We"],
+            "correct": {"I": "work", "She": "works", "We": "work"}
+          }
+        ]
+      }
+    },
+    "A1_time_expressions":{
+      "id": "A1_time_expressions",
+      "title": "Time and Schedules",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
+      "xpReward": 45,
+      "objectives": [
+        "Tell time",
+        "Use irregular verbs in simple present"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Morning",
+            "translation": "Mañana",
+            "examples": ["I study in the morning", "Good morning!"],
+            "image": "https://example.com/morning_image.png"
+          },
+          {
+            "word": "Evening",
+            "translation": "Tarde/noche",
+            "examples": ["We eat dinner in the evening", "Good evening!"],
+            "image": "https://example.com/evening_image.png"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "numbers_game",
+            "title": "Tell the time",
+            "modes": ["listen_match", "write_number"],
+            "options": {
+              "range": [1, 12],
+              "imageBaseUrl": "https://example.com/clock_images/"
+            }
+          },
+          {
+            "type": "conjugation",
+            "title": "Conjugate 'to go'",
+            "verb": "to go",
+            "pronouns": ["I", "She", "They"],
+            "correct": {"I": "go", "She": "goes", "They": "go"}
+          }
+        ]
       }
     }
   }

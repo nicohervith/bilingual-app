@@ -46,10 +46,15 @@ export default function Login() {
       if (response?.type !== "success" || !response.params) {
         throw new Error("Respuesta de autenticación inválida");
       }
+     /*  if (response?.type !== "success" || !response.params) {
+        throw new Error("Invalid authentication response");
+      } */
 
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
       const userCredential = await signInWithCredential(auth, credential);
+
+      await userCredential.user.getIdToken(true);
 
       const userProgressRef = doc(db, "userProgress", userCredential.user.uid);
       const userProgressSnap = await getDoc(userProgressRef);
