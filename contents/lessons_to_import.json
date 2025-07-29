@@ -1,7 +1,6 @@
 {
   "lessons": {
-     "A1_greetings":
-    {
+    "A1_greetings": {
       "id": "A1_greetings",
       "title": "Greetings and Introductions",
       "level": "A1",
@@ -9,10 +8,7 @@
       "unit": "unitA1_basics",
       "type": "vocabulary",
       "xpReward": 40,
-      "objectives": [
-        "Use basic greetings",
-        "Introduce yourself and others"
-      ],
+      "objectives": ["Use basic greetings", "Introduce yourself and others"],
       "content": {
         "vocabulary": [
           {
@@ -24,7 +20,10 @@
           {
             "word": "Goodbye",
             "translation": "Adiós",
-            "examples": ["Goodbye, see you tomorrow!", "It's time to say goodbye"],
+            "examples": [
+              "Goodbye, see you tomorrow!",
+              "It's time to say goodbye"
+            ],
             "image": "https://example.com/goodbye_image.png"
           }
         ],
@@ -33,8 +32,14 @@
             "type": "matching",
             "title": "Match greetings",
             "pairs": [
-              {"word": "Hello", "image": "https://example.com/hello_image.png"},
-              {"word": "Goodbye", "image": "https://example.com/goodbye_image.png"}
+              {
+                "word": "Hello",
+                "image": "https://example.com/hello_image.png"
+              },
+              {
+                "word": "Goodbye",
+                "image": "https://example.com/goodbye_image.png"
+              }
             ]
           },
           {
@@ -42,12 +47,12 @@
             "title": "Complete with 'to be'",
             "verb": "to be",
             "pronouns": ["I", "You", "He"],
-            "correct": {"I": "am", "You": "are", "He": "is"}
+            "correct": { "I": "am", "You": "are", "He": "is" }
           }
         ]
       }
     },
-    "A1_nationalities":{
+    "A1_nationalities": {
       "id": "A1_nationalities",
       "title": "Countries and Nationalities",
       "level": "A1",
@@ -79,8 +84,14 @@
             "type": "memory_game",
             "title": "Match countries with nationalities",
             "pairs": [
-              {"word": "Spain", "image": "https://example.com/spain_flag.png"},
-              {"word": "Spanish", "image": "https://example.com/spanish_person.png"}
+              {
+                "word": "Spain",
+                "image": "https://example.com/spain_flag.png"
+              },
+              {
+                "word": "Spanish",
+                "image": "https://example.com/spanish_person.png"
+              }
             ]
           },
           {
@@ -93,7 +104,7 @@
         ]
       }
     },
-    "A1_personal_info":{
+    "A1_personal_info": {
       "id": "A1_personal_info",
       "title": "Personal Information",
       "level": "A1",
@@ -134,14 +145,14 @@
             "type": "matching",
             "title": "Match family members",
             "pairs": [
-              {"word": "Mother", "image": "https://example.com/mother.png"},
-              {"word": "Father", "image": "https://example.com/father.png"}
+              { "word": "Mother", "image": "https://example.com/mother.png" },
+              { "word": "Father", "image": "https://example.com/father.png" }
             ]
           }
         ]
       }
     },
-    "A1_descriptions":{
+    "A1_descriptions": {
       "id": "A1_descriptions",
       "title": "Physical Descriptions",
       "level": "A1",
@@ -174,8 +185,14 @@
             "title": "Select the correct description",
             "question": "Which person is tall?",
             "options": [
-              {"image": "https://example.com/tall_person.png", "correct": true},
-              {"image": "https://example.com/short_person.png", "correct": false}
+              {
+                "image": "https://example.com/tall_person.png",
+                "correct": true
+              },
+              {
+                "image": "https://example.com/short_person.png",
+                "correct": false
+              }
             ]
           },
           {
@@ -188,53 +205,7 @@
         ]
       }
     },
-    "A1_likes_dislikes":{
-      "id": "A1_likes_dislikes",
-      "title": "Likes and Dislikes",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 50,
-      "objectives": [
-        "Express preferences",
-        "Use modal verbs"
-      ],
-      "content": {
-        "vocabulary": [
-          {
-            "word": "Music",
-            "translation": "Música",
-            "examples": ["I like music", "She listens to music"],
-            "image": "https://example.com/music_image.png"
-          },
-          {
-            "word": "Sports",
-            "translation": "Deportes",
-            "examples": ["He plays sports", "Do you like sports?"],
-            "image": "https://example.com/sports_image.png"
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "title": "Match activities",
-            "pairs": [
-              {"word": "Swimming", "image": "https://example.com/swimming.png"},
-              {"word": "Singing", "image": "https://example.com/singing.png"}
-            ]
-          },
-          {
-            "type": "conjugation",
-            "title": "Complete with 'can'",
-            "verb": "can",
-            "pronouns": ["I", "You", "They"],
-            "correct": {"I": "can", "You": "can", "They": "can"}
-          }
-        ]
-      }
-    },
-      "A1_daily_routine":{
+    "A1_daily_routine": {
       "id": "A1_daily_routine",
       "title": "Daily Routine",
       "level": "A1",
@@ -274,12 +245,12 @@
             "title": "Conjugate regular verbs",
             "verb": "to work",
             "pronouns": ["I", "She", "We"],
-            "correct": {"I": "work", "She": "works", "We": "work"}
+            "correct": { "I": "work", "She": "works", "We": "work" }
           }
         ]
       }
     },
-    "A1_time_expressions":{
+    "A1_time_expressions": {
       "id": "A1_time_expressions",
       "title": "Time and Schedules",
       "level": "A1",
@@ -287,10 +258,7 @@
       "unit": "unitA1_basics",
       "type": "vocabulary",
       "xpReward": 45,
-      "objectives": [
-        "Tell time",
-        "Use irregular verbs in simple present"
-      ],
+      "objectives": ["Tell time", "Use irregular verbs in simple present"],
       "content": {
         "vocabulary": [
           {
@@ -321,10 +289,64 @@
             "title": "Conjugate 'to go'",
             "verb": "to go",
             "pronouns": ["I", "She", "They"],
-            "correct": {"I": "go", "She": "goes", "They": "go"}
+            "correct": { "I": "go", "She": "goes", "They": "go" }
+          }
+        ]
+      }
+    },
+    "A1_likes_dislikes": {
+      "id": "A1_likes_dislikes",
+      "title": "Likes and Dislikes",
+      "level": "A1",
+      "module": "basics",
+      "unit": "unitA1_basics",
+      "type": "vocabulary",
+      "xpReward": 50,
+      "objectives": ["Express preferences", "Use modal verbs"],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "Music",
+            "translation": "Música",
+            "examples": ["I like music", "She listens to music"],
+            "image": "https://example.com/music_image.png"
+          },
+          {
+            "word": "Sports",
+            "translation": "Deportes",
+            "examples": ["He plays sports", "Do you like sports?"],
+            "image": "https://example.com/sports_image.png"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "title": "Match words",
+            "pairs": [
+              { "from": "I like", "to": "Me gusta" },
+              { "from": "You like", "to": "Te gusta" },
+              { "from": "Music", "to": "Música" },
+              { "from": "Sports", "to": "Deportes" }
+            ]
+          },
+          {
+            "type": "image_selection",
+            "title": "Select the correct image",
+            "question": "Which image shows someone who likes music?",
+            "options": [
+              {
+                "image": "https://example.com/person_listening_music.png",
+                "isCorrect": true
+              },
+              {
+                "image": "https://example.com/person_playing_sports.png",
+                "isCorrect": false
+              }
+            ]
           }
         ]
       }
     }
   }
+
 }

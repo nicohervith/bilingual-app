@@ -6,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -30,6 +31,7 @@ export default function UnitScreen() {
       if (!user) return;
 
       try {
+        // 1. Cargar datos de la unidad
         const unitDoc = await getDoc(doc(db, "units", id as string));
         if (!unitDoc.exists()) {
           console.warn("Unit not found");
@@ -38,6 +40,7 @@ export default function UnitScreen() {
 
         setUnit(unitDoc.data());
 
+        // 2. Cargar todas las lecciones de la unidad
         const lessonPromises = unitDoc
           .data()
           .lessons.map((lessonId: string) =>
@@ -45,15 +48,17 @@ export default function UnitScreen() {
           );
 
         const lessonSnapshots = await Promise.all(lessonPromises);
-        const lessonsData = lessonSnapshots.map((snap) => snap.data());
+        const lessonsData = lessonSnapshots.map((snap) => ({
+          id: snap.id,
+          ...snap.data(),
+        }));
         setLessons(lessonsData);
 
+        // 3. Cargar progreso del usuario
         const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
         if (progressDoc.exists()) {
           const progressData = progressDoc.data();
-          const completed = progressData.completedLessons || {};
-          console.log("User progress:", completed);
-          setCompletedLessons(completed);
+          setCompletedLessons(progressData.completedLessons || {});
         }
       } catch (error) {
         console.error("Error loading unit:", error);
@@ -107,36 +112,39 @@ export default function UnitScreen() {
       </View>
 
       {lessons.map((lesson, index) => (
-        <TouchableOpacity
+        <View
           key={lesson.id}
-          onPress={() =>
-            router.push({
-              pathname: "/lesson/[id]",
-              params: { id: lesson.id },
-            })
-          }
-          style={{
-            backgroundColor: completedLessons[lesson.id] ? "#E8F5E9" : "#fff",
-            padding: 16,
-            borderRadius: 8,
-            marginBottom: 12,
-            borderWidth: 1,
-            borderColor: completedLessons[lesson.id] ? "#4CAF50" : "#e0e0e0",
-          }}
+          style={[
+            styles.lessonContainer,
+            completedLessons[lesson.id] && styles.completedLesson,
+          ]}
         >
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          <TouchableOpacity
+            onPress={() => router.push(`/lesson/${lesson.id}`)}
+            style={styles.lessonTouchable}
           >
-            <Text style={{ fontWeight: "bold" }}>
-              {completedLessons[lesson.id] && "✓ "}
-              Lección {index + 1}: {lesson.title}
+            <View style={styles.lessonHeader}>
+              <Text style={styles.lessonTitle}>
+                {completedLessons[lesson.id] && "✓ "}
+                Lección {index + 1}: {lesson.title}
+              </Text>
+              {completedLessons[lesson.id] && <Text>✅</Text>}
+            </View>
+
+            <View style={styles.xpContainer}>
+              <Text style={styles.xpText}>+{lesson.xpReward} XP</Text>
+              {completedLessons[lesson.id] && (
+                <Text style={styles.completedText}>• Completada</Text>
+              )}
+            </View>
+          </TouchableOpacity>
+
+          {completedLessons[lesson.id] && (
+            <Text style={styles.reviewText}>
+              Toca para repasar esta lección
             </Text>
-            {completedLessons[lesson.id] && <Text>✅</Text>}
-          </View>
-          <Text style={{ color: "#FFC107", marginTop: 4 }}>
-            +{lesson.xpReward} XP
-          </Text>
-        </TouchableOpacity>
+          )}
+        </View>
       ))}
     </ScrollView>
   );
@@ -148,4 +156,69 @@ const styles = StyleSheet.create({
   moduleTitle: {},
   unitCard: {},
   unitTitle: {},
+  lessonItem: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+  },
+  completedLesson: {
+    backgroundColor: "#E8F5E9",
+    borderColor: "#4CAF50",
+  },
+  /* lessonHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }, */
+  lessonTitle: {
+    fontWeight: "bold",
+    flex: 1,
+  },
+  xpReward: {
+    color: "#FFC107",
+    marginTop: 4,
+  },
+ /*  completedText: {
+    color: "#4CAF50",
+    marginTop: 4,
+    fontSize: 12,
+  }, */
+  lessonContainer: {
+    marginBottom: 12,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  /* completedLesson: {
+    backgroundColor: "#E8F5E9",
+    borderColor: "#4CAF50",
+    borderWidth: 1,
+  }, */
+  lessonTouchable: {
+    padding: 16,
+  },
+  lessonHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  xpContainer: {
+    flexDirection: "row",
+    marginTop: 4,
+  },
+  xpText: {
+    color: "#FFC107",
+  },
+  completedText: {
+    color: "#4CAF50",
+    marginLeft: 8,
+  },
+  reviewText: {
+    backgroundColor: "#E3F2FD",
+    color: "#0D47A1",
+    padding: 8,
+    fontSize: 12,
+    textAlign: "center",
+  },
 });

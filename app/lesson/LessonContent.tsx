@@ -1,14 +1,3 @@
-import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Lottie from 'lottie-react-native';
 import CategorizationGame from "@/components/CategorizationGame";
 import ConjugationExercise from "@/components/ConjugationExercise";
 import DragDropExercise from "@/components/DragAndDropExercise";
@@ -21,11 +10,19 @@ import SentenceFormationExercise from "@/components/SentenceFormationExercise";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { completeLesson } from "@/services/courseService";
-import { collection, getDocs } from "firebase/firestore";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import Lottie from "lottie-react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 const LessonContent = ({
   lesson,
@@ -37,6 +34,8 @@ const LessonContent = ({
   const [completedExercises, setCompletedExercises] = useState<boolean[]>([]);
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
+const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+const [completionMessage, setCompletionMessage] = useState("");
 
   const [showXpReward, setShowXpReward] = useState(false);
   const animatedValue = useSharedValue(0);
@@ -49,7 +48,7 @@ const LessonContent = ({
     setShowXpReward(true);
   };
 
-  const handleCompleteLesson = async () => {
+  /*  const handleCompleteLesson = async () => {
     if (!user || !lesson || !allExercisesCompleted) return;
 
     try {
@@ -78,6 +77,115 @@ const LessonContent = ({
       startXpAnimation();
     } catch (error) {
       console.error("Error completing lesson:", error);
+    }
+  }; */
+
+  
+  useEffect(() => {
+    const checkIfCompleted = async () => {
+      if (!user || !lesson) return;
+
+      const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
+      if (progressDoc.exists()) {
+        const completed = progressDoc.data().completedLessons || {};
+        const alreadyCompleted = !!completed[lesson.id];
+        setIsAlreadyCompleted(alreadyCompleted);
+        if (alreadyCompleted) {
+          setCompletionMessage(
+            "Ya completaste esta lección (no obtendrás XP adicional)"
+          );
+        }
+      }
+    };
+
+    checkIfCompleted();
+  }, [user, lesson]);
+
+  // components/LessonContent.tsx
+/*   const handleCompleteLesson = async () => {
+    if (!user || !lesson || !allExercisesCompleted) return;
+
+    try {
+      const unitsQuery = await getDocs(collection(db, "modules"));
+      let unitInfo = null;
+
+      unitsQuery.forEach((moduleDoc) => {
+        Object.entries(moduleDoc.data().units || {}).forEach(
+          ([unitId, unit]: [string, any]) => {
+            if (unit.lessons.includes(lesson.id)) {
+              unitInfo = {
+                id: unitId,
+                insignia: unit.insignia,
+              };
+            }
+          }
+        );
+      });
+
+      // Verificar si la lección ya está completada
+      const userProgressRef = doc(db, "userProgress", user.uid);
+      const userProgressSnap = await getDoc(userProgressRef);
+
+      if (
+        userProgressSnap.exists() &&
+        userProgressSnap.data().completedLessons?.[lesson.id]
+      ) {
+        console.log("Lección ya completada, no se otorgará XP");
+        return;
+      }
+
+      await completeLesson(
+        user.uid,
+        lesson.id,
+        lesson.xpReward,
+        unitInfo || { id: "" }
+      );
+
+      setShowXpReward(true);
+      startXpAnimation();
+    } catch (error) {
+      console.error("Error completing lesson:", error);
+    }
+  }; */
+  const handleCompleteLesson = async () => {
+    if (!user || !lesson || !allExercisesCompleted) return;
+
+    if (isAlreadyCompleted) {
+      return; // No hacer nada si ya está completada
+    }
+
+    try {
+      const unitsQuery = await getDocs(collection(db, "modules"));
+      let unitInfo = null;
+
+      unitsQuery.forEach((moduleDoc) => {
+        Object.entries(moduleDoc.data().units || {}).forEach(
+          ([unitId, unit]: [string, any]) => {
+            if (unit.lessons.includes(lesson.id)) {
+              unitInfo = {
+                id: unitId,
+                insignia: unit.insignia,
+              };
+            }
+          }
+        );
+      });
+
+      await completeLesson(
+        user.uid,
+        lesson.id,
+        lesson.xpReward,
+        unitInfo || { id: "" }
+      );
+
+      setIsAlreadyCompleted(true);
+      setCompletionMessage(`¡Lección completada! +${lesson.xpReward} XP`);
+      setShowXpReward(true);
+      startXpAnimation();
+      onComplete?.(lesson.xpReward);
+    } catch (error) {
+      console.error("Error completing lesson:", error);
+      setCompletionMessage("Error al completar la lección");
     }
   };
 
@@ -297,7 +405,7 @@ const LessonContent = ({
         </ScrollView>
       </View>
       {/* Botón de completar */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={handleCompleteLesson}
         disabled={!allExercisesCompleted || showXpReward}
         style={[
@@ -310,13 +418,41 @@ const LessonContent = ({
             ? `Completar lección (+${lesson.xpReward} XP)`
             : "Completa todos los ejercicios"}
         </Text>
+      </TouchableOpacity> */}
+      {completionMessage ? (
+        <View
+          style={[
+            styles.messageContainer,
+            isAlreadyCompleted ? styles.infoMessage : styles.successMessage,
+          ]}
+        >
+          <Text style={styles.messageText}>{completionMessage}</Text>
+        </View>
+      ) : null}
+
+      <TouchableOpacity
+        onPress={handleCompleteLesson}
+        disabled={!allExercisesCompleted || isAlreadyCompleted}
+        style={[
+          styles.completeButton,
+          !allExercisesCompleted && styles.disabledButton,
+          isAlreadyCompleted && styles.completedButton,
+        ]}
+      >
+        <Text style={styles.buttonText}>
+          {isAlreadyCompleted
+            ? "Lección completada"
+            : allExercisesCompleted
+            ? `Completar lección (+${lesson.xpReward} XP)`
+            : "Completa todos los ejercicios"}
+        </Text>
       </TouchableOpacity>
 
       {/* Animación XP - Fuera del ScrollView */}
       {showXpReward && (
         <View style={styles.animationContainer}>
           <Lottie
-            source={require("@/assets/animations/xp-reward.json")} 
+            source={require("@/assets/animations/xp-reward.json")}
             autoPlay
             loop={false}
             style={styles.lottieAnimation}
@@ -449,7 +585,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1000,
-    backgroundColor: "rgba(0,0,0,0.4)", 
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
   lottieAnimation: {
     width: 300,
@@ -496,6 +632,28 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.5)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
+  },
+  messageContainer: {
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 10,
+    alignItems: "center",
+  },
+  successMessage: {
+    backgroundColor: "#E8F5E9",
+    borderColor: "#4CAF50",
+    borderWidth: 1,
+  },
+  infoMessage: {
+    backgroundColor: "#E3F2FD",
+    borderColor: "#2196F3",
+    borderWidth: 1,
+  },
+  messageText: {
+    color: "#2E7D32", 
+  },
+  completedButton: {
+    backgroundColor: "#E0E0E0",
   },
 });
 
