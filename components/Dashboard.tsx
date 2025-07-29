@@ -1,4 +1,5 @@
-import { auth, db } from "@/lib/firebaseConfig";
+import { getCachedData } from "@/contexts/cache";
+import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
@@ -7,15 +8,16 @@ import {
   doc,
   getDoc,
   getDocs,
-  onSnapshot,
   setDoc,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Button,
   Image,
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -87,12 +89,12 @@ export default function Dashboard() {
   const [unlockedLevels, setUnlockedLevels] = useState<string[]>(
     user ? ["A1"] : []
   );
-const [dynamicRequirements, setDynamicRequirements] =
-  useState<LevelRequirements>({
-    A1: 0,
-    A2: 1000,
-    B1: 2000,
-  });
+  const [dynamicRequirements, setDynamicRequirements] =
+    useState<LevelRequirements>({
+      A1: 0,
+      A2: 1000,
+      B1: 2000,
+    });
 
   const [progress, setProgress] = useState<ProgressData>({
     xp: 0,
@@ -140,61 +142,61 @@ const [dynamicRequirements, setDynamicRequirements] =
     };
   };
 
- const updateStreak = async (userProgress: any) => {
-   // Verificar primero si user existe
-   if (!user) {
-     console.error("No hay usuario autenticado");
-     return {
-       daysStreak: 1,
-       lastLogin: new Date(),
-       longestStreak: 1,
-     };
-   }
+  const updateStreak = async (userProgress: any) => {
+    // Verificar primero si user existe
+    if (!user) {
+      console.error("No hay usuario autenticado");
+      return {
+        daysStreak: 1,
+        lastLogin: new Date(),
+        longestStreak: 1,
+      };
+    }
 
-   const userProgressRef = doc(db, "userProgress", user.uid);
-   const lastLogin = userProgress.stats?.lastLogin;
+    const userProgressRef = doc(db, "userProgress", user.uid);
+    const lastLogin = userProgress.stats?.lastLogin;
 
-   const lastLoginDate = lastLogin?.toDate?.() || new Date();
-   const todayDate = new Date();
+    const lastLoginDate = lastLogin?.toDate?.() || new Date();
+    const todayDate = new Date();
 
-   lastLoginDate.setHours(0, 0, 0, 0);
-   todayDate.setHours(0, 0, 0, 0);
+    lastLoginDate.setHours(0, 0, 0, 0);
+    todayDate.setHours(0, 0, 0, 0);
 
-   const diffDays = Math.floor(
-     (todayDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)
-   );
+    const diffDays = Math.floor(
+      (todayDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
 
-   let newStreak = userProgress.stats?.daysStreak || 1;
+    let newStreak = userProgress.stats?.daysStreak || 1;
 
-   if (diffDays === 1) {
-     newStreak += 1;
-   } else if (diffDays > 1) {
-     newStreak = 1;
-   }
+    if (diffDays === 1) {
+      newStreak += 1;
+    } else if (diffDays > 1) {
+      newStreak = 1;
+    }
 
-   const longestStreak = Math.max(
-     newStreak,
-     userProgress.stats?.longestStreak || 1
-   );
+    const longestStreak = Math.max(
+      newStreak,
+      userProgress.stats?.longestStreak || 1
+    );
 
-   try {
-     await updateDoc(userProgressRef, {
-       "stats.daysStreak": newStreak,
-       "stats.lastLogin": new Date(),
-       "stats.longestStreak": longestStreak,
-     });
-   } catch (error) {
-     console.error("Error updating streak:", error);
-   }
+    try {
+      await updateDoc(userProgressRef, {
+        "stats.daysStreak": newStreak,
+        "stats.lastLogin": new Date(),
+        "stats.longestStreak": longestStreak,
+      });
+    } catch (error) {
+      console.error("Error updating streak:", error);
+    }
 
-   return {
-     daysStreak: newStreak,
-     lastLogin: new Date(),
-     longestStreak: longestStreak,
-   };
- };
+    return {
+      daysStreak: newStreak,
+      lastLogin: new Date(),
+      longestStreak: longestStreak,
+    };
+  };
 
-  const loadProgress = async () => {
+  /*   const loadProgress = async () => {
     if (!user) {
       console.error("No hay usuario autenticado");
       return {
@@ -263,11 +265,129 @@ const [dynamicRequirements, setDynamicRequirements] =
     } finally {
       setLoading(false);
     }
+  }; */
+
+  const loadProgress = async () => {
+    if (!user) return;
+
+    try {
+      const progressRef = doc(db, "userProgress", user.uid);
+      const progressSnap = await getDoc(progressRef);
+
+      if (!progressSnap.exists()) {
+        await createNewUserProgress(user.uid);
+        return;
+      }
+
+      const userProgress = progressSnap.data();
+
+      // Datos pesados con caché
+      const [modulesSnapshot] = await Promise.all([
+        getCachedData(`modules-${user.uid}`, () =>
+          getDocs(collection(db, "modules"))
+        ),
+        updateStreak(userProgress),
+      ]);
+
+      // Actualiza primero los datos básicos para mostrar
+      setProgress((prev) => ({
+        ...prev,
+        xp: userProgress.xp || 0,
+        level: userProgress.level || "A1",
+        unlockedLevels: userProgress.unlockedLevels || ["A1"],
+        stats: {
+          daysStreak: userProgress.stats?.daysStreak || 1,
+          lastLogin: userProgress.stats?.lastLogin || new Date(),
+          longestStreak: userProgress.stats?.longestStreak || 1,
+        },
+      }));
+
+      // Luego carga los datos pesados en segundo plano
+      loadHeavyData(userProgress);
+    } catch (error) {
+      console.error("Error loading progress:", error);
+    }
   };
 
+  const loadHeavyData = async (userProgress: any) => {
+    try {
+      const [modulesSnapshot] = await Promise.all([
+        getDocs(collection(db, "modules")),
+        updateStreak(userProgress), // Ejecuta en paralelo
+      ]);
+
+      const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
+      setDynamicRequirements(getDynamicLevelRequirements(modulesData));
+
+      const levelTotals = { A1: 0, A2: 0, B1: 0 };
+
+      modulesSnapshot.forEach((doc) => {
+        Object.entries(doc.data().units || {}).forEach(
+          ([unitId, unit]: [string, any]) => {
+            if (unitId.includes("A1_"))
+              levelTotals.A1 += unit.lessons?.length || 0;
+            else if (unitId.includes("A2_"))
+              levelTotals.A2 += unit.lessons?.length || 0;
+            else if (unitId.includes("B1_"))
+              levelTotals.B1 += unit.lessons?.length || 0;
+          }
+        );
+      });
+
+      setProgress((prev) => ({
+        ...prev,
+        completedLessons: userProgress.completedLessons || {},
+        earnedBadges: userProgress.earnedBadges || {},
+        levels: {
+          A1: {
+            completed: userProgress.levels?.A1?.completed || 0,
+            total: levelTotals.A1,
+          },
+          A2: {
+            completed: userProgress.levels?.A2?.completed || 0,
+            total: levelTotals.A2,
+          },
+          B1: {
+            completed: userProgress.levels?.B1?.completed || 0,
+            total: levelTotals.B1,
+          },
+        },
+      }));
+    } catch (error) {
+      console.error("Error loading heavy data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /*   useEffect(() => {
+    if (user) {
+      loadProgress(); 
+    }
+  }, [user, refreshKey]); */
   useEffect(() => {
-    if (!user) return;
-    loadProgress();
+    const initializeDashboard = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const isValidSession = await checkAuthState();
+        if (!isValidSession) {
+          router.replace("/login");
+          return;
+        }
+
+        await loadProgress();
+      } catch (error) {
+        console.error("Initialization error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeDashboard();
   }, [user, refreshKey]);
 
   const createNewUserProgress = async (userId: string) => {
@@ -319,27 +439,28 @@ const [dynamicRequirements, setDynamicRequirements] =
     return "A1";
   };
 
-const calculateXPProgress = (): { progress: number; nextLevel: string } => {
-  const currentXP = progress.xp || 0;
-  const currentLevel = getCurrentLevel();
+  const calculateXPProgress = (): { progress: number; nextLevel: string } => {
+    const currentXP = progress.xp || 0;
+    const currentLevel = getCurrentLevel();
 
-  const nextLevel: "A2" | "B1" | null =
-    currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
+    const nextLevel: "A2" | "B1" | null =
+      currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
 
-  if (!nextLevel) return { progress: 1, nextLevel: "Max" };
+    if (!nextLevel) return { progress: 1, nextLevel: "Max" };
 
-  const validCurrentLevel = currentLevel as keyof LevelRequirements;
-  const currentReq = dynamicRequirements[validCurrentLevel];
+    const validCurrentLevel = currentLevel as keyof LevelRequirements;
+    const currentReq = dynamicRequirements[validCurrentLevel];
 
-  const nextReq = dynamicRequirements[nextLevel];
+    const nextReq = dynamicRequirements[nextLevel];
 
-  const calculatedProgress = (currentXP - currentReq) / (nextReq - currentReq);
+    const calculatedProgress =
+      (currentXP - currentReq) / (nextReq - currentReq);
 
-  return {
-    progress: Math.min(1, Math.max(0, calculatedProgress)),
-    nextLevel,
+    return {
+      progress: Math.min(1, Math.max(0, calculatedProgress)),
+      nextLevel,
+    };
   };
-};
 
   const xpProgress = calculateXPProgress();
 
@@ -394,16 +515,36 @@ const calculateXPProgress = (): { progress: number; nextLevel: string } => {
     router.replace("/");
   };
 
-  if (loading) {
+  /*  if (loading) {
     return (
       <View>
         <Text>Loading...</Text>
+      </View>
+    );
+  } */
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+        <Text>Cargando tus datos...</Text>
+        {/* Muestra datos básicos del usuario si están disponibles */}
+        {user && (
+          <View style={styles.userPreview}>
+            <Text>Hola, {user.displayName || "Usuario"}!</Text>
+          </View>
+        )}
       </View>
     );
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/*   <TouchableOpacity
+        style={styles.instagramFloat}
+        onPress={() => Linking.openURL("https://www.instagram.com/bilingualsite01/")}
+      >
+        <Ionicons name="logo-instagram" size={28} color="#E1306C" />
+      </TouchableOpacity> */}
       <View style={styles.userSection}>
         {user ? (
           <>
@@ -427,6 +568,16 @@ const calculateXPProgress = (): { progress: number; nextLevel: string } => {
                 {user.displayName || "Usuario"}
               </Text>
               <Text style={styles.userEmail}>{user.email}</Text>
+
+              <TouchableOpacity
+                style={styles.instagramButton}
+                onPress={() =>
+                  Linking.openURL("https://www.instagram.com/bilingualsite01/")
+                }
+              >
+                <Ionicons name="logo-instagram" size={24} color="#E1306C" />
+                <Text style={styles.instagramText}>Síguenos en Instagram</Text>
+              </TouchableOpacity>
 
               <View style={styles.streakContainer}>
                 <Ionicons name="flame" size={20} color="#FF9500" />
@@ -781,4 +932,32 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "600",
   },
+  instagramButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+    padding: 8,
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#E1306C",
+  },
+  /*   instagramFloat: {
+  position: 'absolute',
+  top: 20,
+  right: 20,
+  zIndex: 10,
+  backgroundColor: 'white',
+  padding: 8,
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: '#E1306C'
+}, */
+  instagramText: {
+    marginLeft: 8,
+    color: "#E1306C",
+    fontWeight: "bold",
+  },
+  loadingContainer: {},
+  userPreview: {},
 });
