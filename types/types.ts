@@ -1,5 +1,8 @@
 import { Timestamp } from "firebase/firestore";
 
+export type LevelId = 'A1' | 'A2' | 'B1'; 
+
+
 type QuizQuestion = {
   question: string;
   options: string[];

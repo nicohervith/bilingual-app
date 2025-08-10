@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface ConjugationExerciseProps {
   verb: string;
@@ -10,56 +16,74 @@ interface ConjugationExerciseProps {
 
 const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
   verb,
-  pronouns,
-  correctConjugations,
+  pronouns = [],
+  correctConjugations = {},
   onComplete,
 }) => {
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [currentEditing, setCurrentEditing] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
 
-const handleConjugate = (pronoun: string, answer: string) => {
-  const updatedAnswers = { ...userAnswers, [pronoun]: answer.trim() };
-  setUserAnswers(updatedAnswers);
+  useEffect(() => {
+    if (
+      !verb ||
+      pronouns.length === 0 ||
+      Object.keys(correctConjugations).length === 0
+    ) {
+      console.error("Datos de conjugación incompletos:", {
+        verb,
+        pronouns,
+        correctConjugations,
+      });
+    }
+  }, [verb, pronouns, correctConjugations]);
 
-  // Verificar completitud y corrección
-  const checkAnswers = () => {
-    const allFilled = pronouns.every((p) => updatedAnswers[p]?.trim());
-    if (!allFilled) return;
+  const handleConjugate = (pronoun: string, answer: string) => {
+    const updatedAnswers = { ...userAnswers, [pronoun]: answer.trim() };
+    setUserAnswers(updatedAnswers);
 
-    const isAllCorrect = pronouns.every(
-      (p) =>
-        updatedAnswers[p]?.toLowerCase() ===
-        correctConjugations[p]?.toLowerCase()
-    );
+    // Verificar completitud y corrección
+    const checkAnswers = () => {
+      const allFilled = pronouns.every((p) => updatedAnswers[p]?.trim());
+      if (!allFilled) return;
 
-    setFeedback(
-      isAllCorrect
-        ? "¡Correcto! Todas las conjugaciones son correctas"
-        : "Algunas conjugaciones no son correctas. Revísalas."
-    );
+      const isAllCorrect = pronouns.every(
+        (p) =>
+          updatedAnswers[p]?.toLowerCase() ===
+          correctConjugations[p]?.toLowerCase()
+      );
 
-    if (isAllCorrect) onComplete();
+      setFeedback(
+        isAllCorrect
+          ? "¡Correcto! Todas las conjugaciones son correctas"
+          : "Algunas conjugaciones no son correctas. Revísalas."
+      );
+
+      if (isAllCorrect) onComplete();
+    };
+
+    checkAnswers();
   };
-
-  checkAnswers();
-};
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Conjuga el verbo "{verb}"</Text>
 
-      {pronouns.map((pronoun) => (
-        <View key={pronoun} style={styles.row}>
-          <Text style={styles.pronoun}>{pronoun}</Text>
-          <TouchableOpacity
-            style={styles.input}
-            onPress={() => setCurrentEditing(pronoun)}
-          >
-            <Text>{userAnswers[pronoun] || "________"}</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+      {pronouns.length > 0 ? (
+        pronouns.map((pronoun) => (
+          <View key={pronoun} style={styles.row}>
+            <Text style={styles.pronoun}>{pronoun}</Text>
+            <TouchableOpacity
+              style={styles.input}
+              onPress={() => setCurrentEditing(pronoun)}
+            >
+              <Text>{userAnswers[pronoun] || "________"}</Text>
+            </TouchableOpacity>
+          </View>
+        ))
+      ) : (
+        <Text style={styles.errorText}>No hay pronombres para conjugar</Text>
+      )}
 
       {currentEditing && (
         <View style={styles.modal}>
@@ -102,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
   },
-  confirmButton:{
+  confirmButton: {
     backgroundColor: "#4CAF50",
     padding: 10,
     borderRadius: 5,
@@ -157,6 +181,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "#4CAF50",
     textAlign: "center",
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 

@@ -276,11 +276,10 @@
         ],
         "exercises": [
           {
-            "type": "numbers_game",
+            "type": "time_game",
             "title": "Tell the time",
-            "modes": ["listen_match", "write_number"],
+            "modes": ["listen_match", "image_match"],
             "options": {
-              "range": [1, 12],
               "imageBaseUrl": "https://example.com/clock_images/"
             }
           },
@@ -289,7 +288,14 @@
             "title": "Conjugate 'to go'",
             "verb": "to go",
             "pronouns": ["I", "She", "They"],
-            "correct": { "I": "go", "She": "goes", "They": "go" }
+            "tenses": ["present"], 
+            "correct": {
+              "present": {
+                "I": "go",
+                "She": "goes",
+                "They": "go"
+              }
+            }
           }
         ]
       }

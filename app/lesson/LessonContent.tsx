@@ -295,14 +295,49 @@ const [completionMessage, setCompletionMessage] = useState("");
 
             return (
               <View key={`ex-${index}`} style={styles.exerciseContainer}>
-                {exercise.type === "numbers_game" && (
+                {/* {exercise.type === "numbers_game" && (
                   <NumbersGame
                     vocabulary={lesson.content.vocabulary}
                     range={exercise.options?.range || [1, 20]}
                     imageBaseUrl={exercise.options?.imageBaseUrl || ""}
                     onComplete={() => handleExerciseComplete(index)}
                   />
+                )} */}
+                {/*  {exercise.type === "numbers_game" && (
+                  <NumbersGame
+                    vocabulary={lesson.content.vocabulary || []}
+                    range={exercise.options?.range || [1, 20]}
+                    imageBaseUrl={exercise.options?.imageBaseUrl || ""}
+                    onComplete={() => handleExerciseComplete(index)}
+                  />
+                )} */}
+
+                {exercise.type === "numbers_game" && (
+                  <NumbersGame
+                    vocabulary={lesson.content.vocabulary}
+                    range={exercise.options?.range || [1, 20]}
+                    onComplete={() => handleExerciseComplete(index)}
+                    gameType="numbers"
+                  />
                 )}
+
+                {exercise.type === "time_game" && (
+                  <NumbersGame
+                    vocabulary={lesson.content.vocabulary}
+                    onComplete={() => handleExerciseComplete(index)}
+                    gameType="time"
+                  />
+                )}
+
+                {exercise.type === "conjugation" && (
+                  <ConjugationExercise
+                    verb={exercise.verb}
+                    pronouns={exercise.pronouns || []}
+                    correctConjugations={exercise.correct?.present || {}}
+                    onComplete={() => handleExerciseComplete(index)}
+                  />
+                )}
+
                 {exercise.type === "drag_drop" && (
                   <DragDropExercise
                     dragItems={exercise.items.map((item: any) => ({
@@ -358,14 +393,22 @@ const [completionMessage, setCompletionMessage] = useState("");
                   />
                 )}
 
-                {exercise.type === "conjugation" && (
+                {/* {exercise.type === "conjugation" && (
                   <ConjugationExercise
                     verb={exercise?.verb}
                     pronouns={exercise?.pronouns}
                     correctConjugations={exercise?.correct}
                     onComplete={() => handleExerciseComplete(index)}
                   />
-                )}
+                )} */}
+                {/*   {exercise.type === "conjugation" && (
+                  <ConjugationExercise
+                    verb={exercise.verb || ""}
+                    pronouns={exercise.pronouns || []}
+                    correctConjugations={exercise.correct || {}}
+                    onComplete={() => handleExerciseComplete(index)}
+                  />
+                )} */}
 
                 {exercise.type === "sentence_formation" && (
                   <SentenceFormationExercise
