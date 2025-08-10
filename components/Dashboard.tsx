@@ -1,6 +1,7 @@
 import { getCachedData } from "@/contexts/cache";
 import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
+/* import { useStripe } from "@stripe/stripe-react-native"; */
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
 import {
@@ -18,6 +19,7 @@ import {
   Button,
   Image,
   Linking,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,28 +29,23 @@ import {
 import * as Progress from "react-native-progress";
 import { useAuth } from "../contexts/AuthContext";
 
+/* import { usePayment } from "@/hooks/usePayment"; */
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "../components/ToastConfig";
+import PurchaseLevel from "./PurchaseLevel";
+
 interface Level {
   id: string;
   name: string;
   missions: any[];
 }
 
-const availableLevels: Level[] = [
-  {
-    id: "A1",
-    name: "Beginner",
-    missions: [],
-  },
-  {
-    id: "A2",
-    name: "Elementary",
-    missions: [],
-  },
-  {
-    id: "B1",
-    name: "Intermediate",
-    missions: [],
-  },
+const availableLevels: { id: LevelId; name: string }[] = [
+  { id: "A1", name: "A1 - Principiante" },
+  { id: "A2", name: "A2 - Básico" },
+  { id: "B1", name: "B1 - Intermedio" },
 ];
 
 interface ProgressData {
@@ -78,23 +75,44 @@ type LevelRequirements = {
   A2: number;
   B1: number;
 };
+type LevelId = "A1" | "A2" | "B1";
+
+const LEVEL_PRICES: Record<LevelId, number> = {
+  A1: 9.99,
+  A2: 14.99,
+  B1: 19.99,
+};
 
 const BASE_XP_PER_LESSON = 50;
+
+const stripePromise = loadStripe(
+  "pk_test_51LAIJWIlL7CBuxtZcmAPD1sA5suFZEldPhSnwUIeq7COSXRCTuz4V19Yhp1Ziqy202co2iWzqg3jnft25AzK23dV00IAPmkVVO"
+);
 
 export default function Dashboard() {
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [isLoadingData, setLoadingData] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
   const [unlockedLevels, setUnlockedLevels] = useState<string[]>(
     user ? ["A1"] : []
   );
+
+  /*   const [selectedLevel, setSelectedLevel] = useState<LevelId>("A1"); */
+
+  const [selectedLevel, setSelectedLevel] = useState<LevelId | null>(null);
+
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
   const [dynamicRequirements, setDynamicRequirements] =
     useState<LevelRequirements>({
       A1: 0,
       A2: 1000,
       B1: 2000,
     });
+
+  /*   const { initPaymentSheet, presentPaymentSheet } = useStripe(); */
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   const [progress, setProgress] = useState<ProgressData>({
     xp: 0,
@@ -143,7 +161,6 @@ export default function Dashboard() {
   };
 
   const updateStreak = async (userProgress: any) => {
-    // Verificar primero si user existe
     if (!user) {
       console.error("No hay usuario autenticado");
       return {
@@ -195,77 +212,6 @@ export default function Dashboard() {
       longestStreak: longestStreak,
     };
   };
-
-  /*   const loadProgress = async () => {
-    if (!user) {
-      console.error("No hay usuario autenticado");
-      return {
-        daysStreak: 1,
-        lastLogin: new Date(),
-        longestStreak: 1,
-      };
-    }
-    try {
-      const progressRef = doc(db, "userProgress", user.uid);
-      const progressSnap = await getDoc(progressRef);
-
-      if (!progressSnap.exists()) {
-        await createNewUserProgress(user.uid);
-        return;
-      }
-
-      const userProgress = progressSnap.data();
-      const updatedStats = await updateStreak(userProgress);
-
-      // Obtener módulos y calcular requisitos dinámicos
-      const modulesSnapshot = await getDocs(collection(db, "modules"));
-      const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
-      const newRequirements = getDynamicLevelRequirements(modulesData);
-      setDynamicRequirements(newRequirements);
-
-      // Calcular lecciones totales por nivel
-      const levelTotals = { A1: 0, A2: 0, B1: 0 };
-      modulesSnapshot.forEach((doc) => {
-        Object.entries(doc.data().units || {}).forEach(
-          ([unitId, unit]: [string, any]) => {
-            if (unitId.includes("A1_"))
-              levelTotals.A1 += unit.lessons?.length || 0;
-            else if (unitId.includes("A2_"))
-              levelTotals.A2 += unit.lessons?.length || 0;
-            else if (unitId.includes("B1_"))
-              levelTotals.B1 += unit.lessons?.length || 0;
-          }
-        );
-      });
-
-      setProgress({
-        xp: userProgress.xp || 0,
-        level: userProgress.level || "A1",
-        unlockedLevels: userProgress.unlockedLevels || ["A1"],
-        completedLessons: userProgress.completedLessons || {},
-        earnedBadges: userProgress.earnedBadges || {},
-        levels: {
-          A1: {
-            completed: userProgress.levels?.A1?.completed || 0,
-            total: levelTotals.A1,
-          },
-          A2: {
-            completed: userProgress.levels?.A2?.completed || 0,
-            total: levelTotals.A2,
-          },
-          B1: {
-            completed: userProgress.levels?.B1?.completed || 0,
-            total: levelTotals.B1,
-          },
-        },
-        stats: updatedStats,
-      });
-    } catch (error) {
-      console.error("Error loading progress:", error);
-    } finally {
-      setLoading(false);
-    }
-  }; */
 
   const loadProgress = async () => {
     if (!user) return;
@@ -360,11 +306,6 @@ export default function Dashboard() {
     }
   };
 
-  /*   useEffect(() => {
-    if (user) {
-      loadProgress(); 
-    }
-  }, [user, refreshKey]); */
   useEffect(() => {
     const initializeDashboard = async () => {
       if (!user) {
@@ -497,16 +438,24 @@ export default function Dashboard() {
     }
   };
 
-  const navigateToLevel = (levelId: string) => {
+  const handleBuyLevel = (levelId: LevelId) => {
+    setSelectedLevel(levelId);
+  };
+
+  const navigateToLevel = (levelId: LevelId) => {
     if (!user) {
       router.push("/login");
       return;
     }
+
     if (unlockedLevels.includes(levelId)) {
       router.push({
         pathname: "/level-modules/[level]",
         params: { level: levelId },
       });
+    } else {
+      setSelectedLevel(levelId);
+      setPaymentModalVisible(true);
     }
   };
 
@@ -515,19 +464,15 @@ export default function Dashboard() {
     router.replace("/");
   };
 
-  /*  if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  } */
+  function isLevelId(level: string): level is LevelId {
+    return ["A1", "A2", "B1"].includes(level);
+  }
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" />
         <Text>Cargando tus datos...</Text>
-        {/* Muestra datos básicos del usuario si están disponibles */}
         {user && (
           <View style={styles.userPreview}>
             <Text>Hola, {user.displayName || "Usuario"}!</Text>
@@ -538,171 +483,234 @@ export default function Dashboard() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/*   <TouchableOpacity
-        style={styles.instagramFloat}
-        onPress={() => Linking.openURL("https://www.instagram.com/bilingualsite01/")}
-      >
-        <Ionicons name="logo-instagram" size={28} color="#E1306C" />
-      </TouchableOpacity> */}
-      <View style={styles.userSection}>
-        {user ? (
-          <>
-            <View style={styles.avatarContainer}>
-              {user.photoURL ? (
-                <Image
-                  source={{ uri: user.photoURL }}
-                  style={styles.userAvatar}
-                />
-              ) : (
-                <View style={[styles.userAvatar, styles.placeholderAvatar]}>
-                  <Text style={styles.avatarText}>
-                    {user.displayName?.charAt(0).toUpperCase() || "U"}
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Sección del usuario */}
+        <View style={styles.userSection}>
+          {user ? (
+            <>
+              <View style={styles.avatarContainer}>
+                {user.photoURL ? (
+                  <Image
+                    source={{ uri: user.photoURL }}
+                    style={styles.userAvatar}
+                  />
+                ) : (
+                  <View style={[styles.userAvatar, styles.placeholderAvatar]}>
+                    <Text style={styles.avatarText}>
+                      {user.displayName?.charAt(0).toUpperCase() || "U"}
+                    </Text>
+                  </View>
+                )}
+              </View>
+
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>
+                  {user.displayName || "Usuario"}
+                </Text>
+                <Text style={styles.userEmail}>{user.email}</Text>
+
+                <TouchableOpacity
+                  style={styles.instagramButton}
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://www.instagram.com/bilingualsite01/"
+                    )
+                  }
+                >
+                  <Ionicons name="logo-instagram" size={24} color="#E1306C" />
+                  <Text style={styles.instagramText}>
+                    Síguenos en Instagram
+                  </Text>
+                </TouchableOpacity>
+
+                <View style={styles.streakContainer}>
+                  <Ionicons name="flame" size={20} color="#FF9500" />
+                  <Text style={styles.streakText}>
+                    {progress.stats?.daysStreak ?? 1} días de racha
                   </Text>
                 </View>
-              )}
-            </View>
 
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>
-                {user.displayName || "Usuario"}
-              </Text>
-              <Text style={styles.userEmail}>{user.email}</Text>
-
-              <TouchableOpacity
-                style={styles.instagramButton}
-                onPress={() =>
-                  Linking.openURL("https://www.instagram.com/bilingualsite01/")
-                }
-              >
-                <Ionicons name="logo-instagram" size={24} color="#E1306C" />
-                <Text style={styles.instagramText}>Síguenos en Instagram</Text>
-              </TouchableOpacity>
-
-              <View style={styles.streakContainer}>
-                <Ionicons name="flame" size={20} color="#FF9500" />
-                <Text style={styles.streakText}>
-                  {progress.stats?.daysStreak ?? 1} días de racha
-                </Text>
+                <Text style={styles.userLevel}>Nivel: {getCurrentLevel()}</Text>
+                <Text style={styles.userXP}>{progress.xp || 0} XP</Text>
               </View>
-
-              <Text style={styles.userLevel}>Nivel: {getCurrentLevel()}</Text>
-              <Text style={styles.userXP}>{progress.xp || 0} XP</Text>
+            </>
+          ) : (
+            <View style={styles.guestInfo}>
+              <Text style={styles.guestTitle}>Bienvenido invitado</Text>
+              <Text style={styles.guestText}>
+                Inicia sesión para acceder a todo el contenido
+              </Text>
+              <Button
+                title="Iniciar sesión con Google"
+                onPress={() => router.push("/login")}
+              />
             </View>
-          </>
-        ) : (
-          <View style={styles.guestInfo}>
-            <Text style={styles.guestTitle}>Bienvenido invitado</Text>
-            <Text style={styles.guestText}>
-              Inicia sesión para acceder a todo el contenido
-            </Text>
-            <Button
-              title="Iniciar sesión con Google"
-              onPress={() => router.push("/login")}
-            />
-          </View>
-        )}
-      </View>
+          )}
+        </View>
 
-      {/* Sección de insignias */}
-      {user &&
-        progress.earnedBadges &&
-        Object.keys(progress.earnedBadges).length > 0 && (
-          <View style={styles.badgesSection}>
-            <Text style={styles.sectionTitle}>Tus Insignias</Text>
-            <View style={styles.badgesContainer}>
-              {Object.entries(progress.earnedBadges).map(([unitId, badge]) => (
-                <View key={unitId} style={styles.badgeCard}>
-                  <Image
-                    source={{ uri: badge.insigniaUrl }}
-                    style={styles.badgeImage}
-                  />
-                  <Text style={styles.badgeTitle}>{badge.unitTitle}</Text>
+        {/* Sección de insignias */}
+        {user &&
+          progress.earnedBadges &&
+          Object.keys(progress.earnedBadges).length > 0 && (
+            <View style={styles.badgesSection}>
+              <Text style={styles.sectionTitle}>Tus Insignias</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.badgesContainer}>
+                  {Object.entries(progress.earnedBadges).map(
+                    ([unitId, badge]) => (
+                      <View key={unitId} style={styles.badgeCard}>
+                        <Image
+                          source={{ uri: badge.insigniaUrl }}
+                          style={styles.badgeImage}
+                        />
+                        <Text style={styles.badgeTitle}>{badge.unitTitle}</Text>
+                      </View>
+                    )
+                  )}
                 </View>
-              ))}
+              </ScrollView>
             </View>
-          </View>
-        )}
+          )}
 
-      <Text style={styles.sectionTitle}>Your Progress</Text>
+        <Text style={styles.sectionTitle}>Tu Progreso</Text>
 
-      {/* Barra de progreso global (XP total) */}
-      <View style={styles.globalXpBar}>
-        <Text style={styles.xpText}>{progress.xp || 0} XP</Text>
-        <Progress.Bar
-          progress={xpProgress.progress}
-          width={200}
-          color="#4CAF50"
-        />
-        <Text style={styles.levelText}>
-          Current: {getCurrentLevel()} → Next: {xpProgress.nextLevel}
-        </Text>
-      </View>
+        {/* Barra de progreso global */}
+        <View style={styles.globalXpBar}>
+          <Text style={styles.xpText}>{progress.xp || 0} XP</Text>
+          <Progress.Bar
+            progress={calculateXPProgress().progress}
+            width={200}
+            color="#4CAF50"
+          />
+          <Text style={styles.levelText}>
+            Actual: {getCurrentLevel()} → Siguiente:{" "}
+            {calculateXPProgress().nextLevel}
+          </Text>
+        </View>
 
-      {/* Tarjetas de niveles */}
-      {availableLevels.map((level) => {
-        const levelData = progress.levels?.[level.id] || {
-          completed: 0,
-          total: 0,
-        };
-        const completedCount = Object.keys(
-          progress.completedLessons || {}
-        ).filter((id) => id.includes(level.id)).length;
-        const isUnlocked = user && unlockedLevels.includes(level.id);
-        const disabled = !isUnlocked;
+        {availableLevels.map((level) => {
+          const levelData = progress.levels?.[level.id] || {
+            completed: 0,
+            total: 0,
+          };
+          const completedCount = Object.keys(
+            progress.completedLessons || {}
+          ).filter((id) => id.includes(level.id)).length;
+          const isUnlocked = user && unlockedLevels.includes(level.id);
+          const progressPercentage =
+            levelData.total > 0 ? (completedCount / levelData.total) * 100 : 0;
+          const disabled = !isUnlocked;
 
-        const progressPercentage =
-          levelData.total > 0 ? (completedCount / levelData.total) * 100 : 0;
+          return (
+            <View key={level.id} style={styles.levelCard}>
+              <View style={styles.levelHeader}>
+                <Text style={styles.levelTitle}>Nivel {level.name}</Text>
+                {!isUnlocked && (
+                  <Text style={styles.locked}>
+                    {user
+                      ? `🔒 Necesitas ${xpNeededForLevel(
+                          level.id
+                        )} XP o comprar acceso`
+                      : "🔒 Inicia sesión para acceder"}
+                  </Text>
+                )}
+              </View>
 
-        console.log("Progress data:", {
-          xp: progress.xp,
-          levels: progress.levels,
-          completedLessons: Object.keys(progress.completedLessons || {}).length,
-        });
-
-        return (
-          <View key={level.id} style={styles.levelCard}>
-            <View style={styles.levelHeader}>
-              <Text style={styles.levelTitle}>Level {level.name}</Text>
-              {disabled && (
-                <Text style={styles.locked}>
-                  {user
-                    ? `🔒 ${xpNeededForLevel(level.id)} XP needed`
-                    : "🔒 Login required"}
+              <View style={styles.progressContainer}>
+                <Text>
+                  Completadas: {completedCount}/{levelData.total} lecciones
                 </Text>
+                <View style={styles.progressBar}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${progressPercentage}%` },
+                    ]}
+                  />
+                </View>
+                <Text>{Math.round(progressPercentage)}% completado</Text>
+              </View>
+              {Platform.OS === "web" ? (
+                disabled ? (
+                  <TouchableOpacity
+                    style={[styles.levelButton]}
+                    onPress={() => handleBuyLevel(level.id)}
+                  >
+                    <Text style={styles.buttonText}>Comprar nivel</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => navigateToLevel(level.id)}
+                    style={styles.levelButton}
+                  >
+                    <Text style={styles.buttonText}>Acceder</Text>
+                  </TouchableOpacity>
+                )
+              ) : (
+                <TouchableOpacity
+                  disabled={disabled}
+                  onPress={() => navigateToLevel(level.id)}
+                  style={[
+                    styles.levelButton,
+                    disabled && styles.disabledButton,
+                  ]}
+                >
+                  <Text style={styles.buttonText}>Acceder</Text>
+                </TouchableOpacity>
+              )}
+
+              {/*     {availableLevels.map((level) => (
+                <TouchableOpacity
+                  key={level.id}
+                  onPress={() => handleBuyLevel(level.id)}
+                >
+                  <Text>Comprar {level.name}</Text>
+                </TouchableOpacity>
+              ))} */}
+
+              {/* Modal de Stripe */}
+              {selectedLevel && (
+                <Elements stripe={stripePromise}>
+                  <PurchaseLevel
+                    levelId={selectedLevel}
+                    onClose={() => setSelectedLevel(null)}
+                  />
+                </Elements>
               )}
             </View>
+          );
+        })}
 
-            <View style={styles.progressContainer}>
-              <Text>
-                Completed: {completedCount}/{levelData.total}
-              </Text>
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    {
-                      width: `${progressPercentage}%`,
-                    },
-                  ]}
-                />
-              </View>
-              <Text>{Math.round(progressPercentage)}% complete</Text>
-            </View>
+        {user && (
+          <Button
+            title="Cerrar sesión"
+            onPress={handleLogout}
+            color="#FF5A5F"
+          />
+        )}
 
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Síguenos en redes sociales</Text>
+          <View style={styles.socialIcons}>
             <TouchableOpacity
-              disabled={disabled}
-              onPress={() => navigateToLevel(level.id)}
-              style={[styles.levelButton, disabled && styles.disabledButton]}
+              onPress={() =>
+                Linking.openURL("https://www.instagram.com/bilingualsite01/")
+              }
+              style={styles.socialButton}
             >
-              <Text style={styles.buttonText}>Access Level</Text>
+              <Ionicons name="logo-instagram" size={24} color="#E1306C" />
+              <Text style={styles.socialText}>Instagram</Text>
             </TouchableOpacity>
           </View>
-        );
-      })}
-
-      {user && <Button title="Logout" onPress={handleLogout} color="#FF5A5F" />}
-    </ScrollView>
+          <Text style={styles.copyright}>
+            © {new Date().getFullYear()} Bilingual Site
+          </Text>
+        </View>
+      </ScrollView>
+      <Toast config={toastConfig} />
+    </View>
   );
 }
 
@@ -778,17 +786,6 @@ const styles = StyleSheet.create({
     color: "#FFD700",
     fontWeight: "bold",
   },
-  /*  userAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#EDE9FE",
-  }, */
-
-  /*  userInfo: {
-    marginLeft: 15,
-    flex: 1,
-  }, */
   streakContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -809,7 +806,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   badgesSection: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
   badgesContainer: {
     flexDirection: "row",
@@ -818,7 +815,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   badgeCard: {
-    width: 100,
+    width: 80,
     alignItems: "center",
     margin: 8,
     padding: 10,
@@ -826,8 +823,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   badgeImage: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     resizeMode: "contain",
     marginBottom: 5,
   },
@@ -836,18 +833,11 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "center",
   },
-  /*  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 15,
-    marginTop: 10,
-  }, */
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
     color: "#D82989",
-    marginTop: 30,
+    /* marginTop: 20, */
     marginBottom: 10,
   },
 
@@ -942,17 +932,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E1306C",
   },
-  /*   instagramFloat: {
-  position: 'absolute',
-  top: 20,
-  right: 20,
-  zIndex: 10,
-  backgroundColor: 'white',
-  padding: 8,
-  borderRadius: 20,
-  borderWidth: 1,
-  borderColor: '#E1306C'
-}, */
   instagramText: {
     marginLeft: 8,
     color: "#E1306C",
@@ -960,4 +939,111 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {},
   userPreview: {},
+  footer: {
+    /* backgroundColor: "#f8f8f8", */
+    marginTop: 10,
+    padding: 16,
+    /* borderTopWidth: 1, */
+    /* borderTopColor: "#eee", */
+    alignItems: "center",
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 12,
+    color: "#eeeeeeff",
+  },
+  socialIcons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 12,
+  },
+  socialButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 12,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  socialText: {
+    marginLeft: 8,
+    color: "#D82989",
+  },
+  copyright: {
+    fontSize: 12,
+    color: "#eeeeeeff",
+  },
+  subscribeButton: {
+    backgroundColor: "#6C63FF",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  subscribeButtonText: {
+    color: "white",
+    marginLeft: 8,
+    fontWeight: "bold",
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cancelButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#e0e0e0",
+    flex: 1,
+    marginRight: 10,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    color: "#333",
+  },
+  payButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#4CAF50",
+    flex: 1,
+    alignItems: "center",
+  },
+  payButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  lockedButton: {
+    backgroundColor: "#6c757d",
+  },
 });

@@ -19,17 +19,16 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <View style={styles.globalContainer}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
-          <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
-        </Stack>
-      </View>
+        <View style={styles.globalContainer}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
+            <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
+          </Stack>
+        </View>
     </AuthProvider>
   );
 }
-
 const styles = StyleSheet.create({
   globalContainer: {
     width: 800,
@@ -40,12 +39,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     alignSelf: "center",
-    flex: 1, 
+    flex: 1,
   },
   header: {
     backgroundColor: "#f5f5f5",
-    elevation: 0, 
-    shadowOpacity: 0, 
+    elevation: 0,
+    shadowOpacity: 0,
   },
   headerTitle: {
     fontWeight: "bold",
