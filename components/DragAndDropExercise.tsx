@@ -30,8 +30,8 @@ interface DropZone {
 }
 
 interface DragDropExerciseProps {
-  dragItems: DragItem[];
-  dropZones: DropZone[];
+   dragItems?: DragItem[];  // Hacer opcional
+  dropZones?: DropZone[];
   instructions?: string;
   question?: string;
   onComplete: () => void;
@@ -46,8 +46,8 @@ interface DropZoneLayout {
 }
 
 const DragDropExercise: React.FC<DragDropExerciseProps> = ({
-  dragItems,
-  dropZones,
+  dragItems = [],
+  dropZones = [],
   instructions = "Arrastra cada elemento a su posición correcta",
   question = "Relaciona los elementos",
   onComplete,
@@ -114,7 +114,7 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
       );
       console.log("allCorrect", allCorrect);
       if (allCorrect) {
-        runOnJS(onComplete)(); 
+        runOnJS(onComplete)();
       }
     } else {
       setFeedback("Incorrecto, intenta de nuevo");
