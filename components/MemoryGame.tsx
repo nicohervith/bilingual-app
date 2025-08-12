@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import ExerciseFeedback from "./ExerciseFeedback";
 
 type Card = {
   id: string;
@@ -7,21 +8,118 @@ type Card = {
   image: string;
   isFlipped: boolean;
   isMatched: boolean;
+  matchId?: string; // Nuevo campo para el sistema de matching
 };
 
 type MemoryGameProps = {
-  pairs: Array<{ image: string; word: string }>;
+  pairs?: Array<{ image: string; word: string }>; // Opcional para compatibilidad
+  config?: {
+    pairs?: Array<{
+      id?: string;
+      word: string;
+      image: string;
+      matchId?: string;
+      audio?: string;
+    }>;
+    timeLimit?: number;
+    maxAttempts?: number;
+  };
   onComplete: () => void;
 };
 
-export default function MemoryGame({ pairs, onComplete }: MemoryGameProps) {
+export default function MemoryGame({
+  pairs: oldFormatPairs,
+  config,
+  onComplete,
+}: MemoryGameProps) {
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  // Determinar qué pares usar (formato antiguo o nuevo)
+  const effectivePairs = config?.pairs || oldFormatPairs || [];
 
   // Inicializar el juego
   useEffect(() => {
+    if (!effectivePairs || effectivePairs.length === 0) {
+      console.error("No pairs provided to MemoryGame");
+      return;
+    }
+
+    const initialCards: Card[] = [];
+
+    // Formato nuevo con matchId
+    if (config?.pairs) {
+      config.pairs.forEach((pair) => {
+        initialCards.push({
+          id: pair.id || `card-${Math.random().toString(36).substr(2, 9)}`,
+          content: pair.word,
+          image: pair.image,
+          isFlipped: false,
+          isMatched: false,
+          matchId: pair.matchId,
+        });
+      });
+    }
+    // Formato antiguo (crear pares automáticamente)
+    else if (oldFormatPairs) {
+      oldFormatPairs.forEach((pair, index) => {
+        initialCards.push({
+          id: `image-${index}`,
+          content: pair.image,
+          image: pair.image,
+          isFlipped: false,
+          isMatched: false,
+        });
+        initialCards.push({
+          id: `word-${index}`,
+          content: pair.word,
+          image: pair.image,
+          isFlipped: false,
+          isMatched: false,
+        });
+      });
+    }
+
+    setCards(shuffleArray(initialCards));
+  }, [effectivePairs]);
+
+  // Verificar coincidencias
+  useEffect(() => {
+    if (flippedCards.length === 2) {
+      const [firstIndex, secondIndex] = flippedCards;
+      const firstCard = cards[firstIndex];
+      const secondCard = cards[secondIndex];
+
+      // Sistema de matching mejorado (compatible con ambos formatos)
+      const isMatch = config?.pairs
+        ? firstCard.matchId === secondCard.id ||
+          secondCard.matchId === firstCard.id
+        : firstCard.image === secondCard.image;
+
+      if (isMatch) {
+        const newCards = [...cards];
+        newCards[firstIndex].isMatched = true;
+        newCards[secondIndex].isMatched = true;
+        setCards(newCards);
+        checkGameCompletion(newCards);
+      }
+
+      setTimeout(() => {
+        const newCards = [...cards];
+        if (!isMatch) {
+          newCards[firstIndex].isFlipped = false;
+          newCards[secondIndex].isFlipped = false;
+        }
+        setCards(newCards);
+        setFlippedCards([]);
+      }, 1000);
+    }
+  }, [flippedCards]);
+
+  // Inicializar el juego
+  /*   useEffect(() => {
     const initialCards: Card[] = [];
 
     // Duplicar las parejas para crear pares de cartas
@@ -44,10 +142,10 @@ export default function MemoryGame({ pairs, onComplete }: MemoryGameProps) {
 
     // Barajar las cartas
     setCards(shuffleArray(initialCards));
-  }, []);
+  }, []); */
 
   // Verificar coincidencias
-  useEffect(() => {
+/*   useEffect(() => {
     if (flippedCards.length === 2) {
       const [firstIndex, secondIndex] = flippedCards;
       const firstCard = cards[firstIndex];
@@ -74,11 +172,12 @@ export default function MemoryGame({ pairs, onComplete }: MemoryGameProps) {
         setFlippedCards([]);
       }, 1000);
     }
-  }, [flippedCards]);
+  }, [flippedCards]); */
 
   const checkGameCompletion = (currentCards: Card[]) => {
     if (currentCards.every((card) => card.isMatched)) {
       setGameCompleted(true);
+      setShowSuccess(true);
       onComplete();
     }
   };
@@ -152,6 +251,12 @@ export default function MemoryGame({ pairs, onComplete }: MemoryGameProps) {
           <Text style={styles.movesText}>Total de movimientos: {moves}</Text>
         </View>
       )}
+
+      <ExerciseFeedback
+        visible={showSuccess}
+        message="¡Oración correcta! Ejercicio completado"
+        type="success"
+      />
     </View>
   );
 }

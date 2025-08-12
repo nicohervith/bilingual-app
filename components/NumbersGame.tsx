@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { Audio } from "expo-av";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  StyleSheet,
   ActivityIndicator,
   Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Audio } from "expo-av";
 
 interface VocabularyItem {
   word: string;
@@ -75,7 +75,7 @@ const NumbersGame: React.FC<NumbersGameProps> = ({
       if (numWord) {
         map[
           numWord
-        ] = `https://res.cloudinary.com/dltwwat1r/video/upload/v1752430957/22032__acclivity__numbers_englishfemale_gw88nf.mp3`;
+        ] = `https://res.cloudinary.com/dltwwat1r/video/upload/v1754923099/one_kiffw0.mp3`;
       }
     }
     return map;
@@ -124,63 +124,57 @@ const NumbersGame: React.FC<NumbersGameProps> = ({
   }, [numbersInRange]);
 
   // Reproducir audio del número
- const playNumberAudio = useCallback(
-   async (numWord: string) => {
-     try {
-       console.log(`Intentando reproducir: ${numWord.toLowerCase()}`);
+  const playNumberAudio = useCallback(
+    async (numWord: string) => {
+      try {
+        console.log(`Intentando reproducir: ${numWord.toLowerCase()}`);
 
-       // 1. Detener y limpiar sonido anterior
-       if (sound) {
-         await sound.stopAsync();
-         await sound.unloadAsync();
-       }
+        // 1. Detener y limpiar sonido anterior
+        if (sound) {
+          await sound.stopAsync();
+          await sound.unloadAsync();
+        }
 
-       // 2. Configurar modo de audio
-       await Audio.setAudioModeAsync({
-         allowsRecordingIOS: false,
-         playsInSilentModeIOS: true,
-         staysActiveInBackground: false,
-         shouldDuckAndroid: true,
-       });
+        // 2. Configurar modo de audio
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          playsInSilentModeIOS: true,
+          staysActiveInBackground: false,
+          shouldDuckAndroid: true,
+        });
 
-       // 3. Obtener URL del audio
-       const audioUrl = NUMBER_AUDIO_MAP[numWord.toLowerCase()];
-       if (!audioUrl) {
-         Alert.alert("Error", `No hay audio disponible para: ${numWord}`);
-         return;
-       }
+        // 3. Obtener URL del audio
+        const audioUrl = NUMBER_AUDIO_MAP[numWord.toLowerCase()];
+        if (!audioUrl) {
+          Alert.alert("Error", `No hay audio disponible para: ${numWord}`);
+          return;
+        }
 
-       console.log(`Reproduciendo desde: ${audioUrl}`);
+        console.log(`Reproduciendo desde: ${audioUrl}`);
 
-       // 4. Cargar y reproducir (sin el callback)
-       const { sound: newSound } = await Audio.Sound.createAsync(
-         { uri: audioUrl },
-         { shouldPlay: true }
-       );
+        // 4. Cargar y reproducir (sin el callback)
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          { uri: audioUrl },
+          { shouldPlay: true }
+        );
 
-       setSound(newSound);
+        setSound(newSound);
 
-       // 5. Manejar eventos
-       newSound.setOnPlaybackStatusUpdate((playbackStatus) => {
-         if (playbackStatus.isLoaded) {
-           if (!playbackStatus.isPlaying) {
-             newSound.playAsync(); // Reproducir si no está sonando
-           }
-           if (playbackStatus.didJustFinish) {
-             newSound.unloadAsync();
-           }
-         }
-         if ("error" in playbackStatus && playbackStatus.error) {
-           console.error("Error de reproducción:", playbackStatus.error);
-         }
-       });
-     } catch (error) {
-       console.error("Error en playNumberAudio:", error);
-       Alert.alert("Error", "No se pudo reproducir el audio");
-     }
-   },
-   [sound, NUMBER_AUDIO_MAP]
- );
+        // 5. Manejar eventos
+        newSound.setOnPlaybackStatusUpdate((status) => {
+          if (!status.isLoaded) return; // aquí TS ya sabe que es AVPlaybackStatusSuccess
+
+          if (status.didJustFinish) {
+            newSound.unloadAsync();
+          }
+        });
+      } catch (error) {
+        console.error("Error en playNumberAudio:", error);
+        Alert.alert("Error", "No se pudo reproducir el audio");
+      }
+    },
+    [sound, NUMBER_AUDIO_MAP]
+  );
 
   // Efecto inicial
   useEffect(() => {

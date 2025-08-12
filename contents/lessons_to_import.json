@@ -1,358 +1,257 @@
 {
   "lessons": {
-    "A1_greetings": {
-      "id": "A1_greetings",
-      "title": "Greetings and Introductions",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 40,
-      "objectives": ["Use basic greetings", "Introduce yourself and others"],
-      "content": {
-        "vocabulary": [
-          {
-            "word": "Hello",
-            "translation": "Hola",
-            "examples": ["Hello, my name is John", "Hello, how are you?"],
-            "image": "https://example.com/hello_image.png"
-          },
-          {
-            "word": "Goodbye",
-            "translation": "Adiós",
-            "examples": [
-              "Goodbye, see you tomorrow!",
-              "It's time to say goodbye"
-            ],
-            "image": "https://example.com/goodbye_image.png"
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "title": "Match greetings",
-            "pairs": [
-              {
-                "word": "Hello",
-                "image": "https://example.com/hello_image.png"
-              },
-              {
-                "word": "Goodbye",
-                "image": "https://example.com/goodbye_image.png"
-              }
-            ]
-          },
-          {
-            "type": "conjugation",
-            "title": "Complete with 'to be'",
-            "verb": "to be",
-            "pronouns": ["I", "You", "He"],
-            "correct": { "I": "am", "You": "are", "He": "is" }
-          }
-        ]
-      }
-    },
-    "A1_nationalities": {
-      "id": "A1_nationalities",
-      "title": "Countries and Nationalities",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 45,
+    "A1_directions": {
+      "id": "A1_directions",
+      "title": "Directions and City Places",
+      "xpReward": 70,
+      "metadata": {
+        "level": "A1",
+        "module": "city",
+        "unit": "unitA1_city",
+        "xpReward": 70,
+        "estimatedDuration": 25,
+        "tags": ["directions", "prepositions", "city"]
+      },
       "objectives": [
-        "Identify countries and nationalities",
-        "Use personal and possessive pronouns"
+        "Ask for and give directions",
+        "Use prepositions of place",
+        "Identify places in the city"
       ],
       "content": {
         "vocabulary": [
           {
-            "word": "Spain",
-            "translation": "España",
-            "examples": ["I am from Spain", "She lives in Spain"],
-            "image": "https://example.com/spain_flag.png"
+            "id": "voc_bank",
+            "word": "Bank",
+            "translation": "Banco",
+            "examples": ["The bank is next to the post office"],
+            "media": {
+              "image": "https://example.com/bank.png"
+            }
           },
           {
-            "word": "Mexican",
-            "translation": "Mexicano/a",
-            "examples": ["He is Mexican", "Mexican food is delicious"],
-            "image": "https://example.com/mexico_flag.png"
+            "id": "prep_between",
+            "word": "Between",
+            "translation": "Entre",
+            "examples": [
+              "The pharmacy is between the bank and the supermarket"
+            ],
+            "media": null
           }
         ],
         "exercises": [
+          {
+            "type": "drag_drop",
+            "id": "ex1_drag_drop",
+            "title": "Build directions",
+            "config": {
+              "pairs": [
+                {
+                  "id": "dir1",
+                  "from": "Go straight",
+                  "to": "Sigue derecho"
+                },
+                {
+                  "id": "dir2",
+                  "from": "Turn left",
+                  "to": "Gira a la izquierda"
+                }
+              ],
+              "question": "Match the directions with their translations"
+            }
+          },
           {
             "type": "memory_game",
-            "title": "Match countries with nationalities",
-            "pairs": [
-              {
-                "word": "Spain",
-                "image": "https://example.com/spain_flag.png"
-              },
-              {
-                "word": "Spanish",
-                "image": "https://example.com/spanish_person.png"
-              }
-            ]
-          },
-          {
-            "type": "sentence_formation",
-            "title": "Complete the sentence",
-            "words": ["She", "is", "from", "Brazil", "Brazilian"],
-            "required": ["She", "is", "from", "Brazil"],
-            "correct": "She is from Brazil"
-          }
-        ]
-      }
-    },
-    "A1_personal_info": {
-      "id": "A1_personal_info",
-      "title": "Personal Information",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 50,
-      "objectives": [
-        "Ask for and give personal information",
-        "Use numbers and family vocabulary"
-      ],
-      "content": {
-        "vocabulary": [
-          {
-            "word": "Age",
-            "translation": "Edad",
-            "examples": ["What is your age?", "My age is 25"],
-            "image": "https://example.com/age_image.png"
-          },
-          {
-            "word": "Family",
-            "translation": "Familia",
-            "examples": ["My family is big", "Family is important"],
-            "image": "https://example.com/family_image.png"
-          }
-        ],
-        "exercises": [
-          {
-            "type": "numbers_game",
-            "title": "Listen and match numbers",
-            "modes": ["listen_match", "write_number"],
-            "options": {
-              "range": [1, 100],
-              "imageBaseUrl": "https://example.com/numbers/"
+            "id": "ex2_memory_game",
+            "title": "Match prepositions with images",
+            "config": {
+              "pairs": [
+                {
+                  "id": "prep1",
+                  "front": "Next to",
+                  "back": "https://example.com/next_to.png"
+                },
+                {
+                  "id": "prep2",
+                  "front": "Behind",
+                  "back": "https://example.com/behind.png"
+                }
+              ]
             }
           },
           {
-            "type": "matching",
-            "title": "Match family members",
-            "pairs": [
-              { "word": "Mother", "image": "https://example.com/mother.png" },
-              { "word": "Father", "image": "https://example.com/father.png" }
-            ]
+            "type": "map_interactive",
+            "id": "ex3_map_interactive",
+            "title": "Give directions on the map",
+            "config": {
+              "mapImage": "https://example.com/city_map.png",
+              "scenarios": [
+                {
+                  "start": "You are at the bank",
+                  "destination": "Post office",
+                  "correctPath": ["left", "straight", "right"]
+                }
+              ]
+            }
           }
         ]
       }
     },
-    "A1_descriptions": {
-      "id": "A1_descriptions",
-      "title": "Physical Descriptions",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 55,
+    "A1_future_plans": {
+      "id": "A1_future_plans",
+      "title": "Future Plans",
+      "xpReward": 80,
+      "metadata": {
+        "level": "A1",
+        "module": "future",
+        "unit": "unitA1_future",
+        "xpReward": 80,
+        "estimatedDuration": 30,
+        "tags": ["future", "plans", "activities"]
+      },
       "objectives": [
-        "Describe people's appearance",
-        "Use possessive adjectives"
+        "Use 'going to' for future plans",
+        "Talk about activities and events"
       ],
       "content": {
         "vocabulary": [
           {
-            "word": "Tall",
-            "translation": "Alto/a",
-            "examples": ["He is very tall", "The tall building"],
-            "image": "https://example.com/tall_person.png"
-          },
-          {
-            "word": "Blonde",
-            "translation": "Rubio/a",
-            "examples": ["She has blonde hair", "The blonde boy"],
-            "image": "https://example.com/blonde_person.png"
+            "id": "act_movie",
+            "word": "Watch a movie",
+            "translation": "Ver una película",
+            "media": {
+              "image": "https://example.com/movie.png"
+            }
           }
         ],
         "exercises": [
-          {
-            "type": "image_selection",
-            "title": "Select the correct description",
-            "question": "Which person is tall?",
-            "options": [
-              {
-                "image": "https://example.com/tall_person.png",
-                "correct": true
-              },
-              {
-                "image": "https://example.com/short_person.png",
-                "correct": false
-              }
-            ]
-          },
-          {
-            "type": "sentence_formation",
-            "title": "Describe this person",
-            "words": ["My", "sister", "has", "long", "hair", "black"],
-            "required": ["My", "sister", "has", "long", "hair"],
-            "correct": "My sister has long hair"
-          }
-        ]
-      }
-    },
-    "A1_daily_routine": {
-      "id": "A1_daily_routine",
-      "title": "Daily Routine",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 60,
-      "objectives": [
-        "Talk about daily activities",
-        "Use regular verbs in simple present"
-      ],
-      "content": {
-        "vocabulary": [
-          {
-            "word": "Wake up",
-            "translation": "Despertarse",
-            "examples": ["I wake up at 7am", "She wakes up early"],
-            "image": "https://example.com/wake_up.png"
-          },
-          {
-            "word": "Work",
-            "translation": "Trabajar",
-            "examples": ["They work in an office", "I work from home"],
-            "image": "https://example.com/work_image.png"
-          }
-        ],
-        "exercises": [
-          {
-            "type": "sentence_formation",
-            "title": "Order the routine",
-            "words": ["I", "at", "7am", "wake up", "usually"],
-            "required": ["I", "usually", "wake up", "at", "7am"],
-            "correct": "I usually wake up at 7am"
-          },
           {
             "type": "conjugation",
-            "title": "Conjugate regular verbs",
-            "verb": "to work",
-            "pronouns": ["I", "She", "We"],
-            "correct": { "I": "work", "She": "works", "We": "work" }
-          }
-        ]
-      }
-    },
-    "A1_time_expressions": {
-      "id": "A1_time_expressions",
-      "title": "Time and Schedules",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 45,
-      "objectives": ["Tell time", "Use irregular verbs in simple present"],
-      "content": {
-        "vocabulary": [
-          {
-            "word": "Morning",
-            "translation": "Mañana",
-            "examples": ["I study in the morning", "Good morning!"],
-            "image": "https://example.com/morning_image.png"
-          },
-          {
-            "word": "Evening",
-            "translation": "Tarde/noche",
-            "examples": ["We eat dinner in the evening", "Good evening!"],
-            "image": "https://example.com/evening_image.png"
-          }
-        ],
-        "exercises": [
-          {
-            "type": "time_game",
-            "title": "Tell the time",
-            "modes": ["listen_match", "image_match"],
-            "options": {
-              "imageBaseUrl": "https://example.com/clock_images/"
-            }
-          },
-          {
-            "type": "conjugation",
-            "title": "Conjugate 'to go'",
-            "verb": "to go",
-            "pronouns": ["I", "She", "They"],
-            "tenses": ["present"], 
-            "correct": {
-              "present": {
-                "I": "go",
-                "She": "goes",
-                "They": "go"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "A1_likes_dislikes": {
-      "id": "A1_likes_dislikes",
-      "title": "Likes and Dislikes",
-      "level": "A1",
-      "module": "basics",
-      "unit": "unitA1_basics",
-      "type": "vocabulary",
-      "xpReward": 50,
-      "objectives": ["Express preferences", "Use modal verbs"],
-      "content": {
-        "vocabulary": [
-          {
-            "word": "Music",
-            "translation": "Música",
-            "examples": ["I like music", "She listens to music"],
-            "image": "https://example.com/music_image.png"
-          },
-          {
-            "word": "Sports",
-            "translation": "Deportes",
-            "examples": ["He plays sports", "Do you like sports?"],
-            "image": "https://example.com/sports_image.png"
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "title": "Match words",
-            "pairs": [
-              { "from": "I like", "to": "Me gusta" },
-              { "from": "You like", "to": "Te gusta" },
-              { "from": "Music", "to": "Música" },
-              { "from": "Sports", "to": "Deportes" }
-            ]
-          },
-          {
-            "type": "image_selection",
-            "title": "Select the correct image",
-            "question": "Which image shows someone who likes music?",
-            "options": [
-              {
-                "image": "https://example.com/person_listening_music.png",
-                "isCorrect": true
+            "id": "ex1_conjugation",
+            "title": "Practice 'going to'",
+            "config": {
+              "verb": "to go",
+              "tenses": ["future"],
+              "pronouns": ["I", "We"],
+              "correct": {
+                "future": {
+                  "I": "am going to",
+                  "We": "are going to"
+                }
               },
-              {
-                "image": "https://example.com/person_playing_sports.png",
-                "isCorrect": false
+              "hints": {
+                "showBaseForm": true
               }
-            ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex2_sentence_formation",
+            "title": "Build future plans",
+            "config": {
+              "wordBank": [
+                "I",
+                "am",
+                "going",
+                "to",
+                "travel",
+                "next",
+                "summer"
+              ],
+              "correctAnswers": ["I am going to travel next summer"],
+              "timeLimit": 90
+            }
+          },
+          {
+            "type": "calendar_planner",
+            "id": "ex3_calendar_planner",
+            "title": "Plan a week schedule",
+            "config": {
+              "activities": ["Doctor appointment", "Dinner with friends"],
+              "constraints": {
+                "maxActivitiesPerDay": 3
+              }
+            }
+          }
+        ]
+      }
+    },
+    "A1_food_restaurants": {
+      "id": "A1_food_restaurants",
+      "title": "Food and Restaurants",
+      "xpReward": 90,
+      "metadata": {
+        "level": "A1",
+        "module": "food",
+        "unit": "unitA1_food",
+        "xpReward": 90,
+        "estimatedDuration": 35,
+        "tags": ["food", "restaurant", "countable"]
+      },
+      "objectives": [
+        "Order food in a restaurant",
+        "Distinguish countable/uncountable nouns"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "id": "food_water",
+            "word": "Water",
+            "translation": "Agua",
+            "tags": ["uncountable"],
+            "media": {
+              "image": "https://example.com/water.png"
+            }
+          }
+        ],
+        "exercises": [
+          {
+            "type": "categorization",
+            "id": "ex1_categorization",
+            "title": "Countable or Uncountable?",
+            "config": {
+              "categories": ["Countable", "Uncountable"],
+              "items": [
+                {
+                  "id": "item1",
+                  "content": "Apple",
+                  "correctCategory": "Countable"
+                },
+                {
+                  "id": "item2",
+                  "content": "Rice",
+                  "correctCategory": "Uncountable"
+                }
+              ]
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex2_dialogue_simulation",
+            "title": "Restaurant Conversation",
+            "config": {
+              "scenario": "Ordering food",
+              "phrases": {
+                "Waiter": ["What would you like to drink?"],
+                "UserOptions": ["I'll have water", "Can I see the menu?"]
+              }
+            }
+          },
+          {
+            "type": "audio_matching",
+            "title": "Match food pronunciations",
+            "id": "ex3_audio_matching",
+            "config": {
+              "mode": "audio_to_image",
+              "pairs": [
+                {
+                  "audio": "https://example.com/pasta_audio.mp3",
+                  "image": "https://example.com/pasta.png"
+                }
+              ]
+            }
           }
         ]
       }
     }
   }
-
 }

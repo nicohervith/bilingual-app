@@ -11,6 +11,13 @@ const shuffleArray = (array: any[]) => {
   return newArray;
 };
 
+interface MatchingPair {
+  left: string;
+  right: string;
+  leftType?: "image" | "text";
+  rightType?: "image" | "text";
+}
+
 const MatchingExercise = ({
   pairs = [],
   onComplete,
@@ -25,9 +32,11 @@ const MatchingExercise = ({
   const [leftItems, setLeftItems] = useState<string[]>([]);
   const [rightItems, setRightItems] = useState<string[]>([]);
 
-  // Normalizar y mezclar los pares al montar el componente
   useEffect(() => {
+    if (pairs.length === 0) return;
+
     const normalizedPairs = pairs.map((pair) => {
+      // Normalización de pares
       if ("image" in pair && "word" in pair) {
         return {
           left: pair.image,
@@ -57,13 +66,15 @@ const MatchingExercise = ({
       return pair;
     });
 
-    // Extraer y mezclar elementos únicos para cada columna
-    const uniqueLeftItems = [...new Set(normalizedPairs.map((p) => p.left))];
-    const uniqueRightItems = [...new Set(normalizedPairs.map((p) => p.right))];
+    // Mezclar y separar en columnas
+    const shuffled = [...normalizedPairs].sort(() => Math.random() - 0.5);
+    setLeftItems(shuffled.map((p) => p.left));
+    setRightItems(shuffled.map((p) => p.right));
 
-    setLeftItems(shuffleArray(uniqueLeftItems));
-    setRightItems(shuffleArray(uniqueRightItems));
-  }, [pairs, vocabulary]);
+    // Limpiar selecciones y pares coincidentes al cambiar los pares
+    setSelected(null);
+    setMatchedPairs([]);
+  }, [pairs]); // Solo depende de pairs
 
   const handleSelect = (item: string) => {
     if (!selected) {
@@ -79,14 +90,14 @@ const MatchingExercise = ({
       );
 
       if (isValidPair) {
-        setMatchedPairs([...matchedPairs, selected, item]);
+        setMatchedPairs((prev) => [...prev, selected, item]);
+
+        // Verificar si todos los pares están completos
+        if (matchedPairs.length + 2 === pairs.length * 2) {
+          onComplete();
+        }
       }
       setSelected(null);
-
-      // Verificar si todos los pares están completos
-      if (matchedPairs.length + 2 === pairs.length * 2) {
-        onComplete();
-      }
     }
   };
 

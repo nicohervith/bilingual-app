@@ -9,7 +9,6 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-// 2. Función principal
 async function importLessons() {
   try {
     const batch = db.batch();
@@ -18,47 +17,60 @@ async function importLessons() {
 
     console.log("🔥 Iniciando importación...");
 
-    // 3. Procesar cada lección
     for (const [lessonId, lesson] of Object.entries(lessonsData.lessons)) {
       try {
-        // Validación básica
-        if (!lesson.id || !lesson.title || !lesson.type) {
+        // Validación corregida
+        if (!lesson.id || !lesson.title || !lesson.metadata?.level) {
           console.warn(
             `⚠️ Lección omitida: ${lessonId} - Faltan campos requeridos`
           );
           continue;
         }
 
-        // Estructura Firestore
+        // Estructura Firestore corregida
         const lessonData = {
-          id: lessonId,
-          unit: lesson.unit || null,
-          level: lesson.level || "A1",
+          id: lesson.id,
           title: lesson.title,
-          type: lesson.type,
-          xpReward: lesson.xpReward || 50,
+          metadata: {
+            level: lesson.metadata.level,
+            module: lesson.metadata.module || null,
+            unit: lesson.metadata.unit || null,
+            xpReward: lesson.metadata.xpReward || 50,
+            estimatedDuration: lesson.metadata.estimatedDuration || 0,
+            tags: lesson.metadata.tags || [],
+          },
           objectives: lesson.objectives || [],
           content: {
             vocabulary:
               lesson.content?.vocabulary?.map((item) => ({
+                id: item.id,
                 word: item.word,
                 translation: item.translation,
-                image: item.image || null,
                 examples: item.examples || [],
+                conjugations: item.conjugations || null,
+                media: item.media || null,
+                tags: item.tags || [],
               })) || [],
             exercises:
               lesson.content?.exercises?.map((ex) => ({
+                id: ex.id,
                 type: ex.type,
                 title: ex.title || ex.type,
-                question: ex.question || "",
-                pairs: ex.pairs || [],
-                options: ex.options || [],
+                instructions: ex.instructions || "",
+                config: ex.config || {},
+                feedback: ex.feedback || {},
+                scoring: ex.scoring || { pointsPerCorrect: 1 },
               })) || [],
           },
+          settings: {
+            unlockCondition: lesson.settings?.unlockCondition || null,
+            retryLimit: lesson.settings?.retryLimit || 3,
+            accessibility: lesson.settings?.accessibility || {},
+          },
           createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         };
 
-        // Añadir al batch
         batch.set(lessonsRef.doc(lessonId), lessonData);
         count++;
         console.log(`✓ Lección preparada: ${lessonId}`);
@@ -67,7 +79,6 @@ async function importLessons() {
       }
     }
 
-    // 4. Ejecutar batch
     await batch.commit();
     console.log(`\n🎉 ¡Importación completada! ${count} lecciones procesadas.`);
   } catch (error) {
@@ -77,5 +88,4 @@ async function importLessons() {
   }
 }
 
-// Ejecutar
 importLessons();
