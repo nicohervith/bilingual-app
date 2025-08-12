@@ -3,61 +3,77 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 
 type Option = {
   image: string;
-  isCorrect: boolean;
+  correct: boolean; // Cambiado de isCorrect a correct para coincidir con el JSON
+  feedback?: string; // Opcional para mensajes específicos
 };
 
 type ImageSelectionExerciseProps = {
-  question: string;
-  options: Option[];
+  config: {
+    question: string;
+    options: Option[];
+    multipleSelection?: boolean;
+  };
   onComplete: () => void;
 };
 
 export default function ImageSelectionExercise({
-  question,
-  options,
+  config = {
+    question: "",
+    options: [],
+    multipleSelection: false,
+  },
   onComplete,
 }: ImageSelectionExerciseProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const [completed, setCompleted] = useState(false);
+
+  // Asegurarnos de que siempre tenemos un array válido
+  const safeOptions = config?.options || [];
 
   const handleSelect = (index: number) => {
     if (completed) return;
 
     setSelected(index);
 
-    if (options[index].isCorrect) {
+    if (safeOptions[index]?.correct) {
       setCompleted(true);
-      setTimeout(onComplete, 1000); 
+      setTimeout(onComplete, 1000);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>{question}</Text>
-      <View style={styles.optionsContainer}>
-        {options.map((option, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => handleSelect(index)}
-            disabled={completed}
-            style={[
-              styles.option,
-              selected === index && styles.selected,
-              selected !== null && options[index].isCorrect && styles.correct,
-              selected !== null &&
-                selected === index &&
-                !options[index].isCorrect &&
-                styles.incorrect,
-            ]}
-          >
-            <Image
-              source={{ uri: option.image }}
-              style={styles.image}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
+      <Text style={styles.question}>{config.question}</Text>
+
+      {safeOptions.length > 0 ? (
+        <View style={styles.optionsContainer}>
+          {safeOptions.map((option, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleSelect(index)}
+              disabled={completed}
+              style={[
+                styles.option,
+                selected === index && styles.selected,
+                selected !== null && option.correct && styles.correct,
+                selected !== null &&
+                  selected === index &&
+                  !option.correct &&
+                  styles.incorrect,
+              ]}
+            >
+              <Image
+                source={{ uri: option.image }}
+                style={styles.image}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : (
+        <Text style={styles.errorText}>No hay opciones disponibles</Text>
+      )}
+
       {completed && <Text style={styles.successText}>¡Correcto!</Text>}
     </View>
   );
@@ -107,5 +123,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 8,
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginVertical: 20,
   },
 });

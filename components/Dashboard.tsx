@@ -670,7 +670,7 @@ export default function Dashboard() {
               ))} */}
 
               {/* Modal de Stripe */}
-              {selectedLevel && (
+              {selectedLevel === level.id && (
                 <Elements stripe={stripePromise}>
                   <PurchaseLevel
                     levelId={selectedLevel}
