@@ -43,21 +43,15 @@
             "type": "drag_drop",
             "id": "ex1_drag_drop",
             "title": "Build directions",
-            "config": {
-              "pairs": [
-                {
-                  "id": "dir1",
-                  "from": "Go straight",
-                  "to": "Sigue derecho"
-                },
-                {
-                  "id": "dir2",
-                  "from": "Turn left",
-                  "to": "Gira a la izquierda"
-                }
-              ],
-              "question": "Match the directions with their translations"
-            }
+            "items": [
+              { "id": "dir1", "from": "Go straight" },
+              { "id": "dir2", "from": "Turn left" }
+            ],
+            "pairs": [
+              { "id": "dir1", "to": "Sigue derecho" },
+              { "id": "dir2", "to": "Gira a la izquierda" }
+            ],
+            "question": "Match the directions"
           },
           {
             "type": "memory_game",

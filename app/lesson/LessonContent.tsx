@@ -3,6 +3,9 @@ import AudioToImageMatching from "@/components/AudioToImageMatching";
 import CategorizationGame from "@/components/CategorizationGame";
 import ConjugationExercise from "@/components/ConjugationExercise";
 import DragDropExercise from "@/components/DragAndDropExercise";
+import CalendarPlanner from "@/components/games/CalendarPlanner";
+import DialogueSimulation from "@/components/games/DialogueSimulation";
+import MapInteractive from "@/components/games/MapInteractive";
 import ImageSelectionExercise from "@/components/ImageSelectionExercise";
 import MatchingExercise from "@/components/MatchingExercise";
 import MemoryGame from "@/components/MemoryGame";
@@ -251,7 +254,7 @@ const LessonContent = ({
           />
         );
 
-      case "drag_drop":
+      /* case "drag_drop":
         return (
           <DragDropExercise
             {...commonProps}
@@ -269,6 +272,30 @@ const LessonContent = ({
               "Arrastra cada elemento a su posición correcta"
             }
             question={exercise.question}
+          />
+        ); */
+      case "drag_drop":
+        return (
+          <DragDropExercise
+            {...commonProps}
+            dragItems={
+              exercise.items?.map((item: any) => ({
+                // Usar ?. opcional
+                id:
+                  item.id || `items-${Math.random().toString(36).substr(2, 9)}`,
+                content: item.from,
+              })) || []
+            } // Fallback a array vacío
+            dropZones={
+              exercise.pairs?.map((pair: any) => ({
+                // Usar ?. opcional
+                id:
+                  pair.id || `zone-${Math.random().toString(36).substr(2, 9)}`,
+                content: pair.to,
+                correctMatch: pair.id,
+              })) || []
+            } // Fallback a array vacío
+            instructions={exercise.question || "Arrastra cada elemento..."}
           />
         );
 
@@ -318,6 +345,15 @@ const LessonContent = ({
             items={exercise.items}
           />
         );
+
+      case "map_interactive":
+        return <MapInteractive {...commonProps} config={exercise.config} />;
+
+      case "calendar_planner":
+        return <CalendarPlanner {...commonProps} config={exercise.config} />;
+
+      case "dialogue_simulation":
+        return <DialogueSimulation {...commonProps} config={exercise.config} />;
 
       default:
         console.warn(`Tipo de ejercicio no soportado: ${exercise.type}`);
