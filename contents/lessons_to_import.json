@@ -25,7 +25,7 @@
             "translation": "Banco",
             "examples": ["The bank is next to the post office"],
             "media": {
-              "image": "https://example.com/bank.png"
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755001394/bank_awn9w8.png"
             }
           },
           {
@@ -40,18 +40,22 @@
         ],
         "exercises": [
           {
-            "type": "drag_drop",
-            "id": "ex1_drag_drop",
-            "title": "Build directions",
-            "items": [
-              { "id": "dir1", "from": "Go straight" },
-              { "id": "dir2", "from": "Turn left" }
-            ],
-            "pairs": [
-              { "id": "dir1", "to": "Sigue derecho" },
-              { "id": "dir2", "to": "Gira a la izquierda" }
-            ],
-            "question": "Match the directions"
+            "type": "matching",
+            "id": "ex1_matching",
+            "title": "Match Directions",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Go straight",
+                  "to": "Sigue derecho"
+                },
+                {
+                  "from": "Turn left",
+                  "to": "Gira a la izquierda"
+                }
+              ]
+            },
+            "question": "Match each direction with its translation"
           },
           {
             "type": "memory_game",
@@ -62,12 +66,12 @@
                 {
                   "id": "prep1",
                   "front": "Next to",
-                  "back": "https://example.com/next_to.png"
+                  "back": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755002732/nextto_xrzlib.png"
                 },
                 {
                   "id": "prep2",
                   "front": "Behind",
-                  "back": "https://example.com/behind.png"
+                  "back": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755037469/behind_gn3bon.png"
                 }
               ]
             }
@@ -77,169 +81,12 @@
             "id": "ex3_map_interactive",
             "title": "Give directions on the map",
             "config": {
-              "mapImage": "https://example.com/city_map.png",
+              "mapImage": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755037761/city_vr6pjn.png",
               "scenarios": [
                 {
                   "start": "You are at the bank",
                   "destination": "Post office",
                   "correctPath": ["left", "straight", "right"]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A1_future_plans": {
-      "id": "A1_future_plans",
-      "title": "Future Plans",
-      "xpReward": 80,
-      "metadata": {
-        "level": "A1",
-        "module": "future",
-        "unit": "unitA1_future",
-        "xpReward": 80,
-        "estimatedDuration": 30,
-        "tags": ["future", "plans", "activities"]
-      },
-      "objectives": [
-        "Use 'going to' for future plans",
-        "Talk about activities and events"
-      ],
-      "content": {
-        "vocabulary": [
-          {
-            "id": "act_movie",
-            "word": "Watch a movie",
-            "translation": "Ver una película",
-            "media": {
-              "image": "https://example.com/movie.png"
-            }
-          }
-        ],
-        "exercises": [
-          {
-            "type": "conjugation",
-            "id": "ex1_conjugation",
-            "title": "Practice 'going to'",
-            "config": {
-              "verb": "to go",
-              "tenses": ["future"],
-              "pronouns": ["I", "We"],
-              "correct": {
-                "future": {
-                  "I": "am going to",
-                  "We": "are going to"
-                }
-              },
-              "hints": {
-                "showBaseForm": true
-              }
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_sentence_formation",
-            "title": "Build future plans",
-            "config": {
-              "wordBank": [
-                "I",
-                "am",
-                "going",
-                "to",
-                "travel",
-                "next",
-                "summer"
-              ],
-              "correctAnswers": ["I am going to travel next summer"],
-              "timeLimit": 90
-            }
-          },
-          {
-            "type": "calendar_planner",
-            "id": "ex3_calendar_planner",
-            "title": "Plan a week schedule",
-            "config": {
-              "activities": ["Doctor appointment", "Dinner with friends"],
-              "constraints": {
-                "maxActivitiesPerDay": 3
-              }
-            }
-          }
-        ]
-      }
-    },
-    "A1_food_restaurants": {
-      "id": "A1_food_restaurants",
-      "title": "Food and Restaurants",
-      "xpReward": 90,
-      "metadata": {
-        "level": "A1",
-        "module": "food",
-        "unit": "unitA1_food",
-        "xpReward": 90,
-        "estimatedDuration": 35,
-        "tags": ["food", "restaurant", "countable"]
-      },
-      "objectives": [
-        "Order food in a restaurant",
-        "Distinguish countable/uncountable nouns"
-      ],
-      "content": {
-        "vocabulary": [
-          {
-            "id": "food_water",
-            "word": "Water",
-            "translation": "Agua",
-            "tags": ["uncountable"],
-            "media": {
-              "image": "https://example.com/water.png"
-            }
-          }
-        ],
-        "exercises": [
-          {
-            "type": "categorization",
-            "id": "ex1_categorization",
-            "title": "Countable or Uncountable?",
-            "config": {
-              "categories": ["Countable", "Uncountable"],
-              "items": [
-                {
-                  "id": "item1",
-                  "content": "Apple",
-                  "correctCategory": "Countable"
-                },
-                {
-                  "id": "item2",
-                  "content": "Rice",
-                  "correctCategory": "Uncountable"
-                }
-              ]
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex2_dialogue_simulation",
-            "title": "Restaurant Conversation",
-            "config": {
-              "scenario": "Ordering food",
-              "phrases": {
-                "Waiter": ["What would you like to drink?"],
-                "UserOptions": ["I'll have water", "Can I see the menu?"]
-              }
-            }
-          },
-          {
-            "type": "audio_matching",
-            "title": "Match food pronunciations",
-            "id": "ex3_audio_matching",
-            "config": {
-              "mode": "audio_to_image",
-              "pairs": [
-                {
-                  "audio": "https://example.com/pasta_audio.mp3",
-                  "image": "https://example.com/pasta.png"
                 }
               ]
             }

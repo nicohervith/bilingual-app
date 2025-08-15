@@ -52,15 +52,35 @@ async function importLessons() {
                 tags: item.tags || [],
               })) || [],
             exercises:
-              lesson.content?.exercises?.map((ex) => ({
-                id: ex.id,
-                type: ex.type,
-                title: ex.title || ex.type,
-                instructions: ex.instructions || "",
-                config: ex.config || {},
-                feedback: ex.feedback || {},
-                scoring: ex.scoring || { pointsPerCorrect: 1 },
-              })) || [],
+              lesson.content?.exercises?.map((ex) => {
+                const baseExercise = {
+                  id: ex.id,
+                  type: ex.type,
+                  title: ex.title || ex.type,
+                  instructions: ex.instructions || "",
+                  question: ex.question || "",
+                  config: ex.config || {},
+                  feedback: ex.feedback || {},
+                  scoring: ex.scoring || { pointsPerCorrect: 1 },
+                };
+
+                // Añade campos específicos para cada tipo de ejercicio
+                switch (ex.type) {
+                  case "drag_drop":
+                    return {
+                      ...baseExercise,
+                      dragItems: ex.dragItems || [],
+                      dropZones: ex.dropZones || [],
+                    };
+                  case "memory_game":
+                    return {
+                      ...baseExercise,
+                      pairs: ex.config?.pairs || [],
+                    };
+                  default:
+                    return baseExercise;
+                }
+              }) || [],
           },
           settings: {
             unlockCondition: lesson.settings?.unlockCondition || null,
