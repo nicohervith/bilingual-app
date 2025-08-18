@@ -1,93 +1,234 @@
 {
   "lessons": {
-    "A1_directions": {
-      "id": "A1_directions",
-      "title": "Directions and City Places",
+    "A1_abilities":{
+      "id": "A1_abilities",
+      "title": "Abilities and Talents",
       "xpReward": 70,
       "metadata": {
         "level": "A1",
-        "module": "city",
-        "unit": "unitA1_city",
+        "module": "grammar",
+        "unit": "unitA1_abilities",
         "xpReward": 70,
-        "estimatedDuration": 25,
-        "tags": ["directions", "prepositions", "city"]
+        "estimatedDuration": 20,
+        "tags": ["can", "abilities", "talents"]
       },
-      "objectives": [
-        "Ask for and give directions",
-        "Use prepositions of place",
-        "Identify places in the city"
-      ],
       "content": {
         "vocabulary": [
           {
-            "id": "voc_bank",
-            "word": "Bank",
-            "translation": "Banco",
-            "examples": ["The bank is next to the post office"],
-            "media": {
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755001394/bank_awn9w8.png"
-            }
-          },
-          {
-            "id": "prep_between",
-            "word": "Between",
-            "translation": "Entre",
-            "examples": [
-              "The pharmacy is between the bank and the supermarket"
-            ],
-            "media": null
+            "id": "voc_swim",
+            "word": "Swim",
+            "translation": "Nadar",
+            "examples": ["I can swim very well"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_matching",
-            "title": "Match Directions",
+            "id": "ex1_abilities",
+            "title": "Match Abilities",
             "config": {
               "pairs": [
-                {
-                  "from": "Go straight",
-                  "to": "Sigue derecho"
-                },
-                {
-                  "from": "Turn left",
-                  "to": "Gira a la izquierda"
-                }
-              ]
-            },
-            "question": "Match each direction with its translation"
-          },
-          {
-            "type": "memory_game",
-            "id": "ex2_memory_game",
-            "title": "Match prepositions with images",
-            "config": {
-              "pairs": [
-                {
-                  "id": "prep1",
-                  "front": "Next to",
-                  "back": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755002732/nextto_xrzlib.png"
-                },
-                {
-                  "id": "prep2",
-                  "front": "Behind",
-                  "back": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755037469/behind_gn3bon.png"
-                }
+                {"from": "Sing", "to": "Cantar"},
+                {"from": "Dance", "to": "Bailar"}
               ]
             }
           },
           {
-            "type": "map_interactive",
-            "id": "ex3_map_interactive",
-            "title": "Give directions on the map",
+            "type": "sentence_formation",
+            "id": "ex2_can_sentences",
+            "title": "Build Can/Can't Sentences",
             "config": {
-              "mapImage": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755037761/city_vr6pjn.png",
-              "scenarios": [
-                {
-                  "start": "You are at the bank",
-                  "destination": "Post office",
-                  "correctPath": ["left", "straight", "right"]
-                }
+              "wordBank": ["I", "can", "can't", "play", "piano", "the"],
+              "correctAnswers": ["I can play the piano", "I can't play the piano"]
+            }
+          }
+        ]
+      }
+    },
+    "A1_health":{
+      "id": "A1_health",
+      "title": "Health and Symptoms",
+      "xpReward": 75,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_health",
+        "xpReward": 75,
+        "estimatedDuration": 25,
+        "tags": ["health", "symptoms", "present_simple"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_headache",
+            "word": "Headache",
+            "translation": "Dolor de cabeza",
+            "examples": ["I have a headache"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_symptoms",
+            "title": "Match Symptoms",
+            "config": {
+              "pairs": [
+                {"front": "Fever", "back": "Fiebre"},
+                {"front": "Cough", "back": "Tos"}
+              ]
+            }
+          },
+          {
+            "type": "image_selection",
+            "id": "ex2_health_quiz",
+            "title": "Select the Symptom",
+            "config": {
+              "question": "Which image shows a headache?",
+              "options": [
+                {"image": "headache.jpg", "text": "", "correct": true},
+                {"image": "broken_arm.jpg", "text": "", "correct": false}
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A1_family_2":{
+      "id": "A1_family_2",
+      "title": "Family and Relationships",
+      "xpReward": 65,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_family",
+        "xpReward": 65,
+        "estimatedDuration": 20,
+        "tags": ["family", "relationships", "reflexives"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_nephew",
+            "word": "Nephew",
+            "translation": "Sobrino",
+            "examples": ["My nephew is 10 years old"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_family",
+            "title": "Match Family Members",
+            "config": {
+              "pairs": [
+                {"from": "Mother-in-law", "to": "Suegra"},
+                {"from": "Stepbrother", "to": "Hermanastro"}
+              ]
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex2_reflexives",
+            "title": "Reflexive Pronouns",
+            "config": {
+              "pronouns": ["I", "You", "He"],
+              "correct": {
+                "I": "myself",
+                "You": "yourself",
+                "He": "himself"
+              }
+            }
+          }
+        ]
+      }
+    },
+      "A1_jobs_and_professions":{
+      "id": "A1_jobs_and_professions",
+      "title": "Jobs and Professions",
+      "xpReward": 80,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_jobs",
+        "xpReward": 80,
+        "estimatedDuration": 30,
+        "tags": ["jobs", "present_simple", "professions"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_chef",
+            "word": "Chef",
+            "translation": "Chef",
+            "examples": ["She works as a chef"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_jobs",
+            "title": "Job Pairs",
+            "config": {
+              "pairs": [
+                {"front": "Teacher", "back": "Profesor"},
+                {"front": "Doctor", "back": "Médico"}
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex2_work_routines",
+            "title": "Build Work Sentences",
+            "config": {
+              "wordBank": ["He", "works", "in", "an", "office", "hospital"],
+              "correctAnswers": ["He works in an office", "He works in a hospital"]
+            }
+          }
+        ]
+      }
+    },
+    "A1_housing":{
+      "id": "A1_housing",
+      "title": "Housing and Places",
+      "xpReward": 70,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_housing",
+        "xpReward": 70,
+        "estimatedDuration": 25,
+        "tags": ["housing", "demonstratives", "places"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_balcony",
+            "word": "Balcony",
+            "translation": "Balcón",
+            "examples": ["This apartment has a balcony"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "image_selection",
+            "id": "ex1_house_parts",
+            "title": "Select the Correct Word",
+            "config": {
+              "question": "Which is the kitchen?",
+              "options": [
+                {"image": "livingroom.jpg", "text": "Living room", "correct": false},
+                {"image": "kitchen.jpg", "text": "Kitchen", "correct": true}
+              ]
+            }
+          },
+          {
+            "type": "matching",
+            "id": "ex2_demonstratives",
+            "title": "Match Demonstratives",
+            "config": {
+              "pairs": [
+                {"from": "This house", "to": "Esta casa (cerca)"},
+                {"from": "That house", "to": "Esa casa (lejos)"}
               ]
             }
           }
