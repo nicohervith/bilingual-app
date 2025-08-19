@@ -208,21 +208,23 @@ const LessonContent = ({
         );
 
       case "conjugation":
-        // Manejar ambos formatos de conjugación
+        // Manejar diferentes formatos de conjugación
         const conjugationConfig = exercise.config
-          ? exercise.config
+          ? {
+              ...exercise.config,
+              exerciseType: exercise.config.verb ? "verb" : "reflexive",
+              tenses: exercise.config.tenses || ["Presente"],
+            }
           : {
-              verb: exercise.verb,
-              pronouns: exercise.pronouns,
-              correct: exercise.correct,
+              pronouns: exercise.pronouns || [],
+              correct: exercise.correct || {},
+              exerciseType: "reflexive",
+              tenses: ["Presente"],
+              title: exercise.title,
             };
 
         return (
-          <ConjugationExercise
-            {...commonProps}
-            config={conjugationConfig}
-            title={exercise.title}
-          />
+          <ConjugationExercise {...commonProps} config={conjugationConfig} />
         );
 
       case "sentence_formation":
@@ -308,11 +310,20 @@ const LessonContent = ({
           />
         );
 
-      case "matching":
+      /*   case "matching":
         return (
           <MatchingExercise
             {...commonProps}
             pairs={exercise.pairs}
+            vocabulary={lesson.content.vocabulary}
+            title={exercise.title}
+          />
+        ); */
+      case "matching":
+        return (
+          <MatchingExercise
+            {...commonProps}
+            pairs={exercise.config?.pairs || exercise.pairs}
             vocabulary={lesson.content.vocabulary}
             title={exercise.title}
           />

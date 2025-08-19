@@ -1,157 +1,208 @@
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-// Función para mezclar un array (Fisher-Yates algorithm)
-const shuffleArray = (array: any[]) => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-};
-
-interface MatchingPair {
+type MatchingPair = {
+  id: string;
   left: string;
   right: string;
-  leftType?: "image" | "text";
-  rightType?: "image" | "text";
+  leftType: "image" | "text";
+  rightType: "image" | "text";
+};
+
+type ExercisePair =
+  | { from: string; to: string }
+  | {
+      left: string;
+      right: string;
+      leftType?: "image" | "text";
+      rightType?: "image" | "text";
+      id?: string;
+    }
+  | { image: string; word: string }
+  | { person: string; relation: string; image?: string };
+
+interface MatchingExerciseProps {
+  pairs: ExercisePair[];
+  onComplete: () => void;
+  vocabulary?: any[];
+  title?: string;
 }
 
-const MatchingExercise = ({
+const MatchingExercise: React.FC<MatchingExerciseProps> = ({
   pairs = [],
   onComplete,
   vocabulary = [],
-}: {
-  pairs: any[];
-  onComplete: () => void;
-  vocabulary?: any[];
+  title = "Empareja los elementos correspondientes",
 }) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
-  const [leftItems, setLeftItems] = useState<string[]>([]);
-  const [rightItems, setRightItems] = useState<string[]>([]);
+  const [leftItems, setLeftItems] = useState<MatchingPair[]>([]);
+  const [rightItems, setRightItems] = useState<MatchingPair[]>([]);
+  const [normalizedPairs, setNormalizedPairs] = useState<MatchingPair[]>([]);
 
+  // Normalizar los pares a una estructura común
   useEffect(() => {
-    if (pairs.length === 0) return;
+    if (!pairs || pairs.length === 0) {
+      setNormalizedPairs([]);
+      return;
+    }
 
-    const normalizedPairs = pairs.map((pair) => {
-      // Normalización de pares
-      if ("image" in pair && "word" in pair) {
+    const normalized = pairs.map((pair, index) => {
+      // Caso 1: Formato {from, to}
+      if ("from" in pair && "to" in pair) {
         return {
-          left: pair.image,
-          right: pair.word,
-          leftType: "image",
-          rightType: "text",
-        };
-      } else if ("from" in pair && "to" in pair) {
-        return {
+          id: `pair-${index}`,
           left: pair.from,
           right: pair.to,
           leftType: "text",
           rightType: "text",
         };
-      } else if ("person" in pair && "relation" in pair) {
+      }
+      // Caso 2: Formato {image, word}
+      else if ("image" in pair && "word" in pair) {
+        return {
+          id: `pair-${index}`,
+          left: pair.image,
+          right: pair.word,
+          leftType: "image",
+          rightType: "text",
+        };
+      }
+      // Caso 3: Formato {left, right} (con tipos opcionales)
+      else if ("left" in pair && "right" in pair) {
+        return {
+          id: pair.id || `pair-${index}`,
+          left: pair.left,
+          right: pair.right,
+          leftType:
+            pair.leftType || (pair.left.startsWith("http") ? "image" : "text"),
+          rightType: pair.rightType || "text",
+        };
+      }
+      // Caso 4: Formato {person, relation, image?}
+      else if ("person" in pair && "relation" in pair) {
         const translation =
-          vocabulary.find(
+          vocabulary?.find(
             (v) => v.word.toLowerCase() === pair.person.toLowerCase()
           )?.translation || pair.person;
+
         return {
+          id: `pair-${index}`,
           left: pair.image || translation,
           right: pair.relation,
           leftType: pair.image ? "image" : "text",
           rightType: "text",
         };
       }
-      return pair;
+      // Caso por defecto (no debería ocurrir)
+      return {
+        id: `pair-${index}`,
+        left: JSON.stringify(pair),
+        right: "No definido",
+        leftType: "text",
+        rightType: "text",
+      };
     });
 
-    // Mezclar y separar en columnas
-    const shuffled = [...normalizedPairs].sort(() => Math.random() - 0.5);
-    setLeftItems(shuffled.map((p) => p.left));
-    setRightItems(shuffled.map((p) => p.right));
+    setNormalizedPairs(normalized);
+  }, [pairs, vocabulary]);
 
-    // Limpiar selecciones y pares coincidentes al cambiar los pares
+  // Mezclar y preparar los items para mostrar
+  useEffect(() => {
+    if (normalizedPairs.length === 0) return;
+
+    const shuffled = [...normalizedPairs].sort(() => Math.random() - 0.5);
+    setLeftItems(shuffled.map((pair) => ({ ...pair, id: `left-${pair.id}` })));
+    setRightItems(
+      shuffled.map((pair) => ({ ...pair, id: `right-${pair.id}` }))
+    );
+
     setSelected(null);
     setMatchedPairs([]);
-  }, [pairs]); // Solo depende de pairs
+  }, [normalizedPairs]);
 
-  const handleSelect = (item: string) => {
+  const handleSelect = (id: string, type: "left" | "right") => {
     if (!selected) {
-      setSelected(item);
+      setSelected(id);
     } else {
+      const [selectedType, selectedId] = selected.split("-");
+
       // Verificar si es un par válido
-      const isValidPair = pairs.some(
-        (pair) =>
-          (pair.from === selected && pair.to === item) ||
-          (pair.to === selected && pair.from === item) ||
-          (pair.image === selected && pair.word === item) ||
-          (pair.word === selected && pair.image === item)
-      );
+      const isValidPair = normalizedPairs.some((pair) => {
+        const baseId = id.replace(`${type}-`, "");
+        const selectedBaseId = selected.replace(`${selectedType}-`, "");
+        return baseId === selectedBaseId;
+      });
 
       if (isValidPair) {
-        setMatchedPairs((prev) => [...prev, selected, item]);
+        setMatchedPairs((prev) => [...prev, id, selected]);
 
         // Verificar si todos los pares están completos
-        if (matchedPairs.length + 2 === pairs.length * 2) {
-          onComplete();
+        if (matchedPairs.length + 2 === normalizedPairs.length * 2) {
+          setTimeout(onComplete, 500); // Pequeño delay para feedback visual
         }
       }
       setSelected(null);
     }
   };
 
-  // Obtener el tipo de cada item (para saber si mostrar imagen o texto)
-  const getItemType = (item: string): "image" | "text" => {
-    // Verificar si es una URL de imagen (simplificado)
-    if (
-      item.startsWith("http") &&
-      (item.includes(".png") || item.includes(".jpg"))
-    ) {
-      return "image";
-    }
-    return "text";
-  };
+  if (normalizedPairs.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>
+          No se encontraron elementos para emparejar
+        </Text>
+        <Text style={styles.debugText}>
+          Formato recibido: {JSON.stringify(pairs, null, 2)}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Empareja los elementos correspondientes</Text>
+      <Text style={styles.title}>{title}</Text>
 
       <View style={styles.columnsContainer}>
-        {/* Columna izquierda - mezclada */}
+        {/* Columna izquierda */}
         <View style={styles.column}>
-          {leftItems.map((item, index) => (
+          {leftItems.map((item) => (
             <TouchableOpacity
-              key={`left-${index}`}
-              onPress={() => !matchedPairs.includes(item) && handleSelect(item)}
+              key={item.id}
+              onPress={() =>
+                !matchedPairs.includes(item.id) && handleSelect(item.id, "left")
+              }
               style={[
                 styles.itemButton,
-                selected === item && styles.selectedItem,
-                matchedPairs.includes(item) && styles.matchedItem,
+                selected === item.id && styles.selectedItem,
+                matchedPairs.includes(item.id) && styles.matchedItem,
               ]}
             >
-              {getItemType(item) === "image" ? (
-                <Image source={{ uri: item }} style={styles.imageItem} />
+              {item.leftType === "image" ? (
+                <Image source={{ uri: item.left }} style={styles.imageItem} />
               ) : (
-                <Text>{item}</Text>
+                <Text style={styles.textItem}>{item.left}</Text>
               )}
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* Columna derecha - mezclada */}
+        {/* Columna derecha */}
         <View style={styles.column}>
-          {rightItems.map((item, index) => (
+          {rightItems.map((item) => (
             <TouchableOpacity
-              key={`right-${index}`}
-              onPress={() => !matchedPairs.includes(item) && handleSelect(item)}
+              key={item.id}
+              onPress={() =>
+                !matchedPairs.includes(item.id) &&
+                handleSelect(item.id, "right")
+              }
               style={[
                 styles.itemButton,
-                selected === item && styles.selectedItem,
-                matchedPairs.includes(item) && styles.matchedItem,
+                selected === item.id && styles.selectedItem,
+                matchedPairs.includes(item.id) && styles.matchedItem,
               ]}
             >
-              <Text>{item}</Text>
+              <Text style={styles.textItem}>{item.right}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -163,10 +214,10 @@ const MatchingExercise = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 20,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
@@ -179,28 +230,41 @@ const styles = StyleSheet.create({
     width: "48%",
   },
   itemButton: {
-    padding: 12,
-    marginVertical: 6,
+    padding: 15,
+    marginVertical: 5,
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
+    minHeight: 60,
   },
   selectedItem: {
-    backgroundColor: "#d0e0ff",
-    borderWidth: 1,
-    borderColor: "#4a90e2",
+    backgroundColor: "#d4e6ff",
   },
   matchedItem: {
-    backgroundColor: "#e0ffe0",
-    borderWidth: 1,
-    borderColor: "#4CAF50",
+    backgroundColor: "#c8e6c9",
+    opacity: 0.6,
   },
   imageItem: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     resizeMode: "contain",
   },
+  textItem: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+  },
+  debugText: {
+    color: "#666",
+    fontSize: 12,
+    marginTop: 10,
+  },
 });
-export default MatchingExercise;
 
+export default MatchingExercise;
