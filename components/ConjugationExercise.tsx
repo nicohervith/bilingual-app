@@ -10,11 +10,11 @@ import {
 
 type ConjugationExerciseProps = {
   config: {
-    verb: string;
-    tenses: string[];
-    pronouns: string[];
+    verb?: string; // Hacer opcional para soportar otros tipos
+    tenses?: string[]; // Hacer opcional
+    pronouns: string[]; // Mantener requerido ya que es esencial
     correct?: {
-      [tense: string]: {
+      [key: string]: {
         [pronoun: string]: string;
       };
     };
@@ -22,6 +22,9 @@ type ConjugationExerciseProps = {
       showInfinitive?: boolean;
       highlightIrregular?: boolean;
     };
+    // Nuevas propiedades para soportar otros tipos de ejercicios
+    exerciseType?: "verb" | "reflexive" | "other";
+    title?: string;
   };
   onComplete: () => void;
 };
@@ -30,10 +33,30 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
   config,
   onComplete,
 }) => {
+  // Validación inicial
+  if (
+    !config?.pronouns ||
+    !Array.isArray(config.pronouns) ||
+    config.pronouns.length === 0
+  ) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>
+          Configuración de ejercicio inválida: faltan pronombres
+        </Text>
+      </View>
+    );
+  }
+
+  // Valores por defecto
+  const exerciseType =
+    config.exerciseType || (config.verb ? "verb" : "reflexive");
+  const tenses = config.tenses || ["Presente"]; // Default tense if not provided
+
   const [answers, setAnswers] = useState<
     Record<string, Record<string, string>>
   >({});
-  const [currentTense, setCurrentTense] = useState(config.tenses[0]);
+  const [currentTense, setCurrentTense] = useState(tenses[0]);
   const [activePronoun, setActivePronoun] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
@@ -41,7 +64,18 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
 
   useEffect(() => {
     const initialAnswers: Record<string, Record<string, string>> = {};
-    config.tenses.forEach((tense) => {
+    tenses.forEach((tense) => {
+      initialAnswers[tense] = {};
+      config.pronouns.forEach((pronoun) => {
+        initialAnswers[tense][pronoun] = "";
+      });
+    });
+    setAnswers(initialAnswers);
+  }, [config.pronouns, tenses]);
+
+  useEffect(() => {
+    const initialAnswers: Record<string, Record<string, string>> = {};
+    tenses.forEach((tense) => {
       initialAnswers[tense] = {};
       config.pronouns.forEach((pronoun) => {
         initialAnswers[tense][pronoun] = "";
@@ -65,7 +99,7 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
 
   const checkCompletion = (currentAnswers: typeof answers) => {
     // Verificar que todas las conjugaciones estén completas
-    const allTensesComplete = config.tenses.every((tense) =>
+    const allTensesComplete =tenses.every((tense) =>
       config.pronouns.every((pronoun) =>
         currentAnswers[tense]?.[pronoun]?.trim()
       )
@@ -74,7 +108,7 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
     if (!allTensesComplete) return;
 
     // Verificar que todas las conjugaciones sean correctas
-    const allCorrect = config.tenses.every((tense) => {
+    const allCorrect =tenses.every((tense) => {
       return config.pronouns.every((pronoun) => {
         // Usar la respuesta correcta del config o una por defecto
         const correctAnswer =
@@ -102,7 +136,7 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
       <Text style={styles.title}>Conjuga el verbo "{config.verb}"</Text>
 
       <View style={styles.tensesTab}>
-        {config.tenses.map((tense) => (
+        {tenses.map((tense) => (
           <TouchableOpacity
             key={tense}
             style={[
@@ -115,6 +149,23 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
           </TouchableOpacity>
         ))}
       </View>
+
+      {tenses.length > 1 && (
+        <View style={styles.tensesTab}>
+          {tenses.map((tense) => (
+            <TouchableOpacity
+              key={tense}
+              style={[
+                styles.tenseTab,
+                currentTense === tense && styles.activeTenseTab,
+              ]}
+              onPress={() => setCurrentTense(tense)}
+            >
+              <Text style={styles.tenseText}>{tense}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
 
       <View style={styles.conjugationTable}>
         {config.pronouns.map((pronoun) => (
@@ -331,6 +382,11 @@ const styles = StyleSheet.create({
   feedbackText: {
     textAlign: "center",
     fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    margin: 20,
   },
 });
 
