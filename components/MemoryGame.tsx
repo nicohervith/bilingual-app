@@ -1,29 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import ExerciseFeedback from "./ExerciseFeedback";
 
-type Card = {
+type CardType = {
   id: string;
   content: string;
   image?: string;
   isFlipped: boolean;
   isMatched: boolean;
-  type: "front" | "back";
   pairId: string;
+  type: "text" | "image"; // Nuevo campo para saber qué tipo de contenido mostrar
 };
 
+type PairType =
+  | { front: string; back: string; id?: string }
+  | { image: string; word: string; id?: string; matchId?: string }
+  | { back: string; front: string; id?: string };
+
 type MemoryGameProps = {
-  pairs?: Array<
-    { front: string; back: string } | { image: string; word: string }
-  >;
+  pairs?: PairType[];
   config?: {
-    pairs?: Array<
-      { front: string; back: string } | { image: string; word: string }
-    >;
+    pairs?: PairType[];
     timeLimit?: number;
     maxAttempts?: number;
   };
   onComplete: () => void;
+};
+
+const getPairType = (pair: any): string => {
+  if (
+    ("front" in pair && "back" in pair) ||
+    ("back" in pair && "front" in pair)
+  ) {
+    // Si el back es una URL, es un par de imagen-texto
+    if (
+      pair.back &&
+      typeof pair.back === "string" &&
+      pair.back.startsWith("http")
+    ) {
+      return "imageText";
+    }
+    return "textText";
+  }
+  if ("image" in pair && "word" in pair) {
+    return "imageWord";
+  }
+  return "unknown";
 };
 
 export default function MemoryGame({
@@ -31,110 +52,140 @@ export default function MemoryGame({
   config,
   onComplete,
 }: MemoryGameProps) {
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<CardType[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
-  // Determinar qué pares usar (formato antiguo o nuevo)
   const effectivePairs = config?.pairs || oldFormatPairs || [];
 
-  // Inicializar el juego
   useEffect(() => {
-    if (!effectivePairs || effectivePairs.length === 0) {
+    if (effectivePairs.length === 0) {
       console.error("No pairs provided to MemoryGame");
       return;
     }
 
-    const initialCards: Card[] = [];
+    const initialCards: CardType[] = [];
 
-    // Procesar todos los formatos posibles
     effectivePairs.forEach((pair, index) => {
-      // Formato {front, back}
-      if ("front" in pair && "back" in pair) {
-        initialCards.push({
-          id: `front-${index}`,
-          content: pair.front,
-          isFlipped: false,
-          isMatched: false,
-          type: "front",
-          pairId: `pair-${index}`,
-        });
-        initialCards.push({
-          id: `back-${index}`,
-          content: pair.back,
-          isFlipped: false,
-          isMatched: false,
-          type: "back",
-          pairId: `pair-${index}`,
-        });
-      }
-      // Formato {image, word}
-      else if ("image" in pair && "word" in pair) {
-        initialCards.push({
-          id: `image-${index}`,
-          content: pair.word,
-          image: pair.image,
-          isFlipped: false,
-          isMatched: false,
-          type: "front",
-          pairId: `pair-${index}`,
-        });
-        initialCards.push({
-          id: `word-${index}`,
-          content: pair.word,
-          image: pair.image,
-          isFlipped: false,
-          isMatched: false,
-          type: "back",
-          pairId: `pair-${index}`,
-        });
+      const pairType = getPairType(pair);
+      const pairId = (pair as any).id || `pair-${index}`;
+
+      switch (pairType) {
+        case "imageText": // Formato: {front: "text", back: "url", id: "id"}
+          const imageTextPair = pair as {
+            front: string;
+            back: string;
+            id?: string;
+          };
+
+          // Carta de texto (front)
+          initialCards.push({
+            id: `text-${pairId}`,
+            content: imageTextPair.front,
+            isFlipped: false,
+            isMatched: false,
+            pairId: pairId,
+            type: "text",
+          });
+
+          // Carta de imagen (back)
+          initialCards.push({
+            id: `image-${pairId}`,
+            content: imageTextPair.front, // El contenido es el mismo texto para matching
+            image: imageTextPair.back, // Pero también tiene la imagen
+            isFlipped: false,
+            isMatched: false,
+            pairId: pairId,
+            type: "image",
+          });
+          break;
+
+        case "textText": // Formato: {front: "text1", back: "text2", id: "id"}
+          const textTextPair = pair as {
+            front: string;
+            back: string;
+            id?: string;
+          };
+          initialCards.push({
+            id: `front-${pairId}`,
+            content: textTextPair.front,
+            isFlipped: false,
+            isMatched: false,
+            pairId: pairId,
+            type: "text",
+          });
+          initialCards.push({
+            id: `back-${pairId}`,
+            content: textTextPair.back,
+            isFlipped: false,
+            isMatched: false,
+            pairId: pairId,
+            type: "text",
+          });
+          break;
+
+        case "imageWord": // Formato: {image: "url", word: "text", id: "id", matchId: "matchId"}
+          const imageWordPair = pair as {
+            image: string;
+            word: string;
+            id?: string;
+            matchId?: string;
+          };
+          const matchId = imageWordPair.matchId || pairId;
+
+          initialCards.push({
+            id: imageWordPair.id || `img-${index}`,
+            content: imageWordPair.word,
+            image: imageWordPair.image,
+            isFlipped: false,
+            isMatched: false,
+            pairId: matchId,
+            type: "image",
+          });
+
+          // Buscar el par correspondiente
+          const matchingPair = effectivePairs.find(
+            (p) => (p as any).id === imageWordPair.matchId
+          ) as { image: string; word: string; id?: string };
+
+          if (matchingPair) {
+            initialCards.push({
+              id: matchingPair.id || `word-${index}`,
+              content: matchingPair.word,
+              image: matchingPair.image,
+              isFlipped: false,
+              isMatched: false,
+              pairId: matchId,
+              type: "text",
+            });
+          }
+          break;
+
+        default:
+          console.warn("Unknown pair format:", pair);
+          break;
       }
     });
 
-    setCards(shuffleArray(initialCards));
+    // Eliminar duplicados y barajar
+    const uniqueCards = initialCards.filter(
+      (card, index, array) => index === array.findIndex((c) => c.id === card.id)
+    );
+
+    setCards(shuffleArray(uniqueCards));
     setFlippedCards([]);
     setMoves(0);
     setGameCompleted(false);
   }, [effectivePairs]);
 
-  // Verificar coincidencias
-  useEffect(() => {
-    if (flippedCards.length === 2) {
-      const [firstIndex, secondIndex] = flippedCards;
-      const firstCard = cards[firstIndex];
-      const secondCard = cards[secondIndex];
-
-      // Verificar si son del mismo par
-      const isMatch = firstCard.pairId === secondCard.pairId;
-
-      if (isMatch) {
-        const newCards = [...cards];
-        newCards[firstIndex].isMatched = true;
-        newCards[secondIndex].isMatched = true;
-        setCards(newCards);
-        checkGameCompletion(newCards);
-      }
-
-      setTimeout(() => {
-        const newCards = [...cards];
-        if (!isMatch) {
-          newCards[firstIndex].isFlipped = false;
-          newCards[secondIndex].isFlipped = false;
-        }
-        setCards(newCards);
-        setFlippedCards([]);
-      }, 1000);
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-  }, [flippedCards, cards]);
-
-  const checkGameCompletion = (currentCards: Card[]) => {
-    if (currentCards.every((card) => card.isMatched)) {
-      setGameCompleted(true);
-      setShowSuccess(true);
-      setTimeout(() => onComplete(), 1500);
-    }
+    return newArray;
   };
 
   const handleCardPress = (index: number) => {
@@ -153,27 +204,74 @@ export default function MemoryGame({
     setMoves(moves + 1);
   };
 
-  const shuffleArray = (array: any[]) => {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  useEffect(() => {
+    if (flippedCards.length === 2) {
+      const [firstIndex, secondIndex] = flippedCards;
+      const firstCard = cards[firstIndex];
+      const secondCard = cards[secondIndex];
+
+      const isMatch = firstCard.pairId === secondCard.pairId;
+
+      if (isMatch) {
+        const newCards = [...cards];
+        newCards[firstIndex].isMatched = true;
+        newCards[secondIndex].isMatched = true;
+        setCards(newCards);
+
+        if (newCards.every((card) => card.isMatched)) {
+          setGameCompleted(true);
+          setTimeout(() => onComplete(), 1500);
+        }
+      }
+
+      setTimeout(() => {
+        const newCards = [...cards];
+        if (!isMatch) {
+          newCards[firstIndex].isFlipped = false;
+          newCards[secondIndex].isFlipped = false;
+        }
+        setCards(newCards);
+        setFlippedCards([]);
+      }, 1000);
     }
-    return newArray;
+  }, [flippedCards, cards, onComplete]);
+
+  const renderCardContent = (card: CardType) => {
+    if (card.type === "image" && card.image) {
+      return (
+        <Image
+          source={{ uri: card.image }}
+          style={styles.image}
+          resizeMode="cover"
+          onError={(e) =>
+            console.log("Image loading error:", e.nativeEvent.error)
+          }
+        />
+      );
+    } else {
+      return <Text style={styles.cardText}>{card.content}</Text>;
+    }
   };
+
+  if (effectivePairs.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>
+          No hay elementos para el juego de memoria
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Juego de Memoria</Text>
-      <Text style={styles.subtitle}>
-        Empareja las palabras correspondientes
-      </Text>
       <Text style={styles.moves}>Movimientos: {moves}</Text>
 
       <View style={styles.board}>
         {cards.map((card, index) => (
           <TouchableOpacity
-            key={`${card.id}-${index}`}
+            key={card.id}
             onPress={() => handleCardPress(index)}
             style={[
               styles.card,
@@ -182,17 +280,10 @@ export default function MemoryGame({
                 : styles.cardBack,
               card.isMatched && styles.cardMatched,
             ]}
+            disabled={card.isMatched}
           >
             {card.isFlipped || card.isMatched ? (
-              card.image ? (
-                <Image
-                  source={{ uri: card.image }}
-                  style={styles.image}
-                  resizeMode="contain"
-                />
-              ) : (
-                <Text style={styles.cardText}>{card.content}</Text>
-              )
+              renderCardContent(card)
             ) : (
               <Text style={styles.cardBackText}>?</Text>
             )}
@@ -203,7 +294,7 @@ export default function MemoryGame({
       {gameCompleted && (
         <View style={styles.completionMessage}>
           <Text style={styles.completionText}>¡Juego completado!</Text>
-          <Text style={styles.movesText}>Total de movimientos: {moves}</Text>
+          <Text style={styles.movesText}>Movimientos totales: {moves}</Text>
         </View>
       )}
     </View>
@@ -212,83 +303,76 @@ export default function MemoryGame({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    flex: 1,
+    padding: 20,
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 8,
-  },
-  image: {
-    width: "100%",
-    height: 120,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 16,
-    color: "#666",
+    marginBottom: 20,
   },
   moves: {
-    marginBottom: 16,
-    fontWeight: "600",
+    fontSize: 16,
+    marginBottom: 20,
   },
   board: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginHorizontal: 10,
+    gap: 10,
   },
   card: {
-    width: 80,
-    height: 100,
-    margin: 8,
-    borderRadius: 8,
+    width: 100,
+    height: 120,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+    padding: 10,
   },
   cardBack: {
-    backgroundColor: "#6200ee",
+    backgroundColor: "#3498db",
   },
   cardFlipped: {
     backgroundColor: "#fff",
     borderWidth: 2,
-    borderColor: "#6200ee",
+    borderColor: "#3498db",
   },
   cardMatched: {
-    backgroundColor: "#c8e6c9",
-    borderColor: "#4caf50",
-  },
-  cardImage: {
-    width: 70,
-    height: 70,
-    resizeMode: "contain",
+    backgroundColor: "#2ecc71",
+    borderColor: "#27ae60",
   },
   cardText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
   },
   cardBackText: {
-    color: "white",
     fontSize: 24,
+    color: "#fff",
     fontWeight: "bold",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   completionMessage: {
     marginTop: 20,
-    padding: 16,
-    backgroundColor: "#e8f5e9",
-    borderRadius: 8,
     alignItems: "center",
   },
   completionText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#2e7d32",
-    marginBottom: 8,
+    color: "#2ecc71",
   },
   movesText: {
     fontSize: 16,
-    color: "#666",
+    marginTop: 5,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
   },
 });

@@ -1,5 +1,5 @@
 // types/routes.d.ts
-import { type Router } from "expo-router";
+import "expo-router";
 
 type AppRoutes = {
   "/": undefined;
@@ -10,6 +10,12 @@ type AppRoutes = {
   "/lesson/[id]": { id: string };
   "/level/[level]": { level: string };
   "/level/unit": undefined;
+  "/payment-success": {
+    session_id: string;
+    levelId: string;
+    userId: string;
+  };
+  "/payment-cancel": undefined;
 };
 
 declare module "expo-router" {

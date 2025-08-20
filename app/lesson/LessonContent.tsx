@@ -14,6 +14,8 @@ import SentenceBuilder from "@/components/SentenceBuilder";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { completeLesson } from "@/services/courseService";
+import { useNavigation } from "@react-navigation/native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import Lottie from "lottie-react-native";
 import React, { useEffect, useState } from "react";
@@ -43,12 +45,15 @@ const LessonContent = ({
   lesson: any;
   onComplete?: (xpGained: number) => void;
 }) => {
+  const { id, unitId } = useLocalSearchParams();
+  const router = useRouter();
+  const navigation = useNavigation();
   const [completedExercises, setCompletedExercises] = useState<boolean[]>([]);
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
   const [completionMessage, setCompletionMessage] = useState("");
-
+  const [isAnimating, setIsAnimating] = useState(false);
   const [showXpReward, setShowXpReward] = useState(false);
   const animatedValue = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -81,11 +86,14 @@ const LessonContent = ({
   }, [user, lesson]);
 
   const handleCompleteLesson = async () => {
-    if (!user || !lesson || !allExercisesCompleted) return;
-
-    if (isAlreadyCompleted) {
+    if (!user || !lesson || !allExercisesCompleted || isAlreadyCompleted)
       return;
-    }
+
+    setShowXpReward(true);
+    setIsAnimating(true);
+
+    setCompletionMessage(`¡Lección completada! +${lesson.xpReward} XP`);
+    setIsAlreadyCompleted(true);
 
     try {
       const unitsQuery = await getDocs(collection(db, "modules"));
@@ -110,15 +118,24 @@ const LessonContent = ({
         lesson.xpReward,
         unitInfo || { id: "" }
       );
-
-      setIsAlreadyCompleted(true);
-      setCompletionMessage(`¡Lección completada! +${lesson.xpReward} XP`);
-      setShowXpReward(true);
-      startXpAnimation();
       onComplete?.(lesson.xpReward);
+
+      setTimeout(() => {
+        if (unitId) {
+          router.replace({
+            pathname: "/unit/[id]",
+            params: { id: Array.isArray(unitId) ? unitId[0] : unitId },
+          });
+        } else {
+          router.replace("/");
+        }
+      }, 1000);
     } catch (error) {
       console.error("Error completing lesson:", error);
+      setIsAlreadyCompleted(false);
       setCompletionMessage("Error al completar la lección");
+      setShowXpReward(false);
+      setIsAnimating(false);
     }
   };
 
@@ -147,41 +164,7 @@ const LessonContent = ({
     });
   };
 
-  /*  const ExerciseComponent = ({
-    exercise,
-    onComplete,
-  }: {
-    exercise: any;
-    onComplete: () => void;
-  }) => {
-    switch (exercise.type) {
-      case "audio_matching":
-        return (
-          <AudioMatchingGame
-            key={exercise.id}
-            config={exercise.config}
-            vocabulary={lesson.content.vocabulary}
-            onComplete={onComplete}
-          />
-        );
-
-      case "conjugation":
-        return (
-          <ConjugationExercise
-            config={exercise.config}
-            onComplete={onComplete}
-          />
-        );
-
-      case "sentence_formation":
-        return (
-          <SentenceBuilder config={exercise.config} onComplete={onComplete} />
-        );
-
-      default:
-        return null;
-    }
-  }; */
+  const xpReward = lesson.metadata?.xpReward ?? lesson.xpReward ?? 0;
 
   const ExerciseComponent = ({
     exercise,
@@ -208,7 +191,6 @@ const LessonContent = ({
         );
 
       case "conjugation":
-        // Manejar diferentes formatos de conjugación
         const conjugationConfig = exercise.config
           ? {
               ...exercise.config,
@@ -228,7 +210,6 @@ const LessonContent = ({
         );
 
       case "sentence_formation":
-        // Manejar ambos formatos (con y sin config)
         const sentenceProps = exercise.config
           ? exercise.config
           : {
@@ -256,26 +237,6 @@ const LessonContent = ({
           />
         );
 
-      /* case "drag_drop":
-        return (
-          <DragDropExercise
-            {...commonProps}
-            dragItems={exercise.items.map((item: any) => ({
-              id: item.id || `items-${Math.random().toString(36).substr(2, 9)}`,
-              content: item.from,
-            }))}
-            dropZones={exercise.pairs.map((pair: any) => ({
-              id: pair.id || `zone-${Math.random().toString(36).substr(2, 9)}`,
-              content: pair.to,
-              correctMatch: pair.id,
-            }))}
-            instructions={
-              exercise.question ||
-              "Arrastra cada elemento a su posición correcta"
-            }
-            question={exercise.question}
-          />
-        ); */
       case "drag_drop":
         return (
           <DragDropExercise
@@ -305,20 +266,11 @@ const LessonContent = ({
         return (
           <MemoryGame
             {...commonProps}
-            pairs={exercise.pairs} // Formato antiguo
-            config={exercise.config} // Formato nuevo
+            pairs={exercise.pairs}
+            config={exercise.config}
           />
         );
 
-      /*   case "matching":
-        return (
-          <MatchingExercise
-            {...commonProps}
-            pairs={exercise.pairs}
-            vocabulary={lesson.content.vocabulary}
-            title={exercise.title}
-          />
-        ); */
       case "matching":
         return (
           <MatchingExercise
@@ -330,7 +282,6 @@ const LessonContent = ({
         );
 
       case "image_selection":
-        // Manejar tanto el formato antiguo como el nuevo
         const imageSelectionProps = exercise.config || {
           question: exercise.question,
           options: exercise.options.map((opt: any) => ({
@@ -454,111 +405,6 @@ const LessonContent = ({
               })}
             </View>
           )}
-          {/* Ejercicios */}
-          {/*  {lesson.content.exercises?.map((exercise: any, index: number) => {
-            console.log(`Rendering exercise ${index}:`, exercise); // Debug
-
-            return (
-              <View key={`ex-${index}`} style={styles.exerciseContainer}>
-                {exercise.type === "numbers_game" && (
-                  <NumbersGame
-                    vocabulary={lesson.content.vocabulary || []}
-                    range={exercise.options?.range || [1, 20]}
-                    imageBaseUrl={exercise.options?.imageBaseUrl || ""}
-                    onComplete={() => handleExerciseComplete(index)}
-                  />
-                )}
-
-                {lesson.content.exercises.map(
-                  (exercise: unknown, index: number) => (
-                    <ExerciseComponent
-                      key={`ex-${index}`}
-                      exercise={exercise}
-                      onComplete={() => handleExerciseComplete(index)}
-                    />
-                  )
-                )}
-                {exercise.type === "drag_drop" && (
-                  <DragDropExercise
-                    dragItems={exercise.items.map((item: any) => ({
-                      id:
-                        item.id ||
-                        `items-${Math.random().toString(36).substr(2, 9)}`,
-                      content: item.from,
-                    }))}
-                    dropZones={exercise.pairs.map((pair: any) => ({
-                      id:
-                        pair.id ||
-                        `zone-${Math.random().toString(36).substr(2, 9)}`,
-                      content: pair.to,
-                      correctMatch: pair.id,
-                    }))}
-                    instructions={
-                      exercise.question ||
-                      "Arrastra cada elemento a su posición correcta"
-                    }
-                    onComplete={() => {
-                      console.log(`Ejercicio ${index} completado`);
-                      handleExerciseComplete(index);
-                    }}
-                    question={exercise.question}
-                  />
-                )}
-                {exercise.type === "memory_game" && (
-                  <MemoryGame
-                    pairs={exercise.pairs}
-                    onComplete={() => handleExerciseComplete(index)}
-                  />
-                )}
-                {exercise.type === "matching" && (
-                  <MatchingExercise
-                    pairs={exercise.pairs}
-                    vocabulary={lesson.content.vocabulary}
-                    onComplete={() => handleExerciseComplete(index)}
-                    title={exercise.title}
-                  />
-                )}
-                {exercise.type === "image_selection" && (
-                  <ImageSelectionExercise
-                    question={exercise.question}
-                    options={exercise.options}
-                    onComplete={() => handleExerciseComplete(index)}
-                  />
-                )}
-                {exercise.type === "vocabulary" && (
-                  <CategorizationGame
-                    categories={exercise.categories}
-                    items={exercise.items}
-                    onComplete={() => handleExerciseComplete(index)}
-                  />
-                )}
-              </View>
-            );
-          })}
-
-          {lesson.content?.game && (
-            <View style={styles.gameContainer}>
-              {lesson.content.game.type === "categorization" && (
-                <CategorizationGame
-                  categories={lesson.content.game.categories}
-                  items={lesson.content.game.items}
-                  onComplete={() => handleExerciseComplete(0)}
-                />
-              )}
-              {lesson.content.game.type === "memory_game" && (
-                <MemoryGame
-                  pairs={lesson.content.game.pairs}
-                  onComplete={() => handleExerciseComplete(0)}
-                />
-              )}
-              {lesson.content.game.type === "listening_quiz" && (
-                <Quiz
-                  quiz={lesson.content.game}
-                  onComplete={() => handleExerciseComplete(0)}
-                />
-              )}
-            </View>
-          )} */}
           {lesson.content.exercises?.map(
             (exercise: Exercise, index: number) => (
               <View
@@ -610,13 +456,13 @@ const LessonContent = ({
           {isAlreadyCompleted
             ? "Lección completada"
             : allExercisesCompleted
-            ? `Completar lección (+${lesson.xpReward} XP)`
+            ? `Completar lección (+${xpReward} XP)`
             : "Completa todos los ejercicios"}
         </Text>
       </TouchableOpacity>
 
       {/* Animación XP - Fuera del ScrollView */}
-      {showXpReward && (
+      {/* {showXpReward && (
         <View style={styles.animationContainer}>
           <Lottie
             source={require("@/assets/animations/xp-reward.json")}
@@ -626,6 +472,22 @@ const LessonContent = ({
             onAnimationFinish={() => {
               setShowXpReward(false);
               onComplete?.(lesson.xpReward);
+            }}
+          />
+          <Text style={styles.xpText}>+{lesson.xpReward} XP</Text>
+        </View>
+      )} */}
+      {showXpReward && (
+        <View style={styles.animationContainer}>
+          <Lottie
+            source={require("@/assets/animations/xp-reward.json")}
+            autoPlay
+            loop={false}
+            style={styles.lottieAnimation}
+            speed={1.5} // Aumentar la velocidad
+            onAnimationFinish={() => {
+              setShowXpReward(false);
+              setIsAnimating(false);
             }}
           />
           <Text style={styles.xpText}>+{lesson.xpReward} XP</Text>

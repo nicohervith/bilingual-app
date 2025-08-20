@@ -94,7 +94,7 @@ export default function UnitScreen() {
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
       <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 8 }}>
-        {unit.title}
+        {unit.title} 
       </Text>
       <Text style={{ color: "#666", marginBottom: 16 }}>
         {lessons.length} lecciones • {unit.rewardXP} XP
