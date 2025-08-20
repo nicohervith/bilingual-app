@@ -1,35 +1,73 @@
-// components/PurchaseLevel.tsx
 import { useAuth } from "@/contexts/AuthContext";
-import React, { useState } from "react";
-/* import { ActivityIndicator, Button, Text, View } from "react-native"; */
+import { useNavigation } from "@react-navigation/native";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
-import { Alert, Button, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Button, Platform, Text, View } from "react-native";
+
+type LevelId = "A1" | "A2" | "B1";
 
 interface PurchaseLevelProps {
-  levelId: string; // or number, depending on your usage
+  levelId: LevelId;
   onClose: () => void;
-}
-
-interface PurchaseLevelProps {
-  levelId: string;
-  onClose: () => void;
+  levelPrices: Record<LevelId, number>;
 }
 
 export default function PurchaseLevel({
   levelId,
   onClose,
+  levelPrices,
 }: PurchaseLevelProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const navigation = useNavigation(); // Hook de navegación
 
   const handleSubmit = async () => {
     if (!stripe || !elements || !user) return;
 
     setLoading(true);
 
-    try {
+    /* try {
+       const response = await fetch(
+         "https://billingual-app-back.onrender.com/create-checkout-session",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({
+             levelId,
+             userId: user.uid,
+             successUrl: `${window.location.origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&levelId=${levelId}&userId=${user.uid}`,
+             cancelUrl: `${window.location.origin}/payment-cancel`,
+           }),
+         }
+       );
+
+       if (!response.ok) {
+         const errorData = await response.json();
+         throw new Error(
+           errorData.error || "Failed to create checkout session"
+         );
+       }
+
+       const { sessionId } = await response.json();
+
+       const { error } = await stripe.redirectToCheckout({
+         sessionId: sessionId,
+       });
+
+       if (error) {
+         throw error;
+       }
+     } */ try {
+      // Obtener la URL base correctamente para web
+      const baseUrl = Platform.select({
+        web: window.location.origin,
+        default: "http://localhost:8081/", // fallback para otros entornos
+      });
+
       const response = await fetch(
         "https://billingual-app-back.onrender.com/create-checkout-session",
         {
@@ -40,8 +78,8 @@ export default function PurchaseLevel({
           body: JSON.stringify({
             levelId,
             userId: user.uid,
-            successUrl: `${window.location.origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&levelId=${levelId}&userId=${user.uid}`,
-            cancelUrl: `${window.location.origin}/payment-cancel`,
+            successUrl: `${baseUrl}/payment-success?session_id={CHECKOUT_SESSION_ID}&levelId=${levelId}&userId=${user.uid}`,
+            cancelUrl: `${baseUrl}/payment-cancel`,
           }),
         }
       );
@@ -77,9 +115,7 @@ export default function PurchaseLevel({
         Comprar Nivel {levelId}
       </Text>
 
-      <Text style={{ marginBottom: 15 }}>
-        Precio: {levelId === "A2" ? "€150" : levelId === "B1" ? "€200" : "€100"}
-      </Text>
+      <Text style={{ marginBottom: 15 }}>Precio: {levelPrices[levelId]}€</Text>
 
       <Text style={{ marginBottom: 20, color: "#666" }}>
         Acceso completo a todas las lecciones y ejercicios del nivel {levelId}
@@ -87,22 +123,14 @@ export default function PurchaseLevel({
 
       <Button
         title={
-          loading
-            ? "Procesando..."
-            : `Comprar por ${
-                levelId === "A2" ? "€150" : levelId === "B1" ? "€200" : "€100"
-              }`
+          loading ? "Procesando..." : `Comprar por ${levelPrices[levelId]}€`
         }
         onPress={handleSubmit}
         disabled={loading}
       />
 
       <View style={{ marginTop: 10 }}>
-        <Button
-          title="Cancelar"
-          onPress={onClose}
-          color="red"
-        />
+        <Button title="Cancelar" onPress={onClose} color="red" />
       </View>
     </View>
   );
