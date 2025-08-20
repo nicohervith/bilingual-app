@@ -80,9 +80,9 @@ type LevelRequirements = {
 type LevelId = "A1" | "A2" | "B1";
 
 const LEVEL_PRICES: Record<LevelId, number> = {
-  A1: 9.99,
-  A2: 14.99,
-  B1: 19.99,
+  A1: 100,
+  A2: 150,
+  B1: 200,
 };
 
 const BASE_XP_PER_LESSON = 50;
@@ -128,7 +128,7 @@ export default function Dashboard() {
     },
   });
 
- /*  const syncUnlockedLevels = async () => {
+  /*  const syncUnlockedLevels = async () => {
     if (!user) return;
 
     try {
@@ -336,7 +336,7 @@ export default function Dashboard() {
         xp: userProgress.xp || 0,
         level: userProgress.level || "A1",
         unlockedLevels: userProgress.unlockedLevels || ["A1"],
-        purchasedLevels: userProgress.purchasedLevels || {}, 
+        purchasedLevels: userProgress.purchasedLevels || {},
         stats: {
           daysStreak: userProgress.stats?.daysStreak || 1,
           lastLogin: userProgress.stats?.lastLogin || new Date(),
@@ -477,7 +477,7 @@ export default function Dashboard() {
     return "A1";
   };
 
-/*   const calculateXPProgress = (): { progress: number; nextLevel: string } => {
+  /*   const calculateXPProgress = (): { progress: number; nextLevel: string } => {
     const currentXP = progress.xp || 0;
     const currentLevel = getCurrentLevel();
 
@@ -499,35 +499,35 @@ export default function Dashboard() {
       nextLevel,
     };
   }; */
-const calculateXPProgress = (): { progress: number; nextLevel: string } => {
-  const currentXP = progress.xp || 0;
+  const calculateXPProgress = (): { progress: number; nextLevel: string } => {
+    const currentXP = progress.xp || 0;
 
-  // Si no hay requisitos dinámicos cargados aún
-  if (Object.keys(dynamicRequirements).length === 0) {
-    return { progress: 0, nextLevel: "A2" };
-  }
+    // Si no hay requisitos dinámicos cargados aún
+    if (Object.keys(dynamicRequirements).length === 0) {
+      return { progress: 0, nextLevel: "A2" };
+    }
 
-  const currentLevel = getCurrentLevel();
-  const nextLevel: "A2" | "B1" | null =
-    currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
+    const currentLevel = getCurrentLevel();
+    const nextLevel: "A2" | "B1" | null =
+      currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
 
-  if (!nextLevel) return { progress: 1, nextLevel: "Máximo" };
+    if (!nextLevel) return { progress: 1, nextLevel: "Máximo" };
 
-  const currentReq =
-    dynamicRequirements[currentLevel as keyof LevelRequirements] || 0;
-  const nextReq = dynamicRequirements[nextLevel] || 1; // Evitar división por 0
+    const currentReq =
+      dynamicRequirements[currentLevel as keyof LevelRequirements] || 0;
+    const nextReq = dynamicRequirements[nextLevel] || 1; // Evitar división por 0
 
-  // Calcular progreso de manera segura
-  let calculatedProgress = 0;
-  if (nextReq > currentReq) {
-    calculatedProgress = (currentXP - currentReq) / (nextReq - currentReq);
-  }
+    // Calcular progreso de manera segura
+    let calculatedProgress = 0;
+    if (nextReq > currentReq) {
+      calculatedProgress = (currentXP - currentReq) / (nextReq - currentReq);
+    }
 
-  return {
-    progress: Math.min(1, Math.max(0, calculatedProgress)),
-    nextLevel,
+    return {
+      progress: Math.min(1, Math.max(0, calculatedProgress)),
+      nextLevel,
+    };
   };
-};
 
   const xpProgress = calculateXPProgress();
 
@@ -929,6 +929,7 @@ const calculateXPProgress = (): { progress: number; nextLevel: string } => {
                   <PurchaseLevel
                     levelId={selectedLevel}
                     onClose={() => setSelectedLevel(null)}
+                    levelPrices={LEVEL_PRICES}
                   />
                 </Elements>
               )}
@@ -1311,28 +1312,28 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 
-   loadingContainer: {
+  loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f8f9fa",
     padding: 20,
   },
   loadingText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#2c3e50',
+    fontWeight: "600",
+    color: "#2c3e50",
     marginTop: 20,
-    fontFamily: 'System', // o la fuente que uses en tu app
-    textAlign: 'center',
+    fontFamily: "System", // o la fuente que uses en tu app
+    textAlign: "center",
   },
   userPreview: {
     marginTop: 30,
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -1341,16 +1342,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     borderWidth: 1,
-    borderColor: '#e9ecef',
+    borderColor: "#e9ecef",
   },
   userPreviewText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#495057',
-    fontFamily: 'System',
+    fontWeight: "500",
+    color: "#495057",
+    fontFamily: "System",
   },
   loaderAnimation: {
     marginBottom: 20,
-  }
-
+  },
 });

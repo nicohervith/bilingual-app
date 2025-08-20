@@ -19,13 +19,27 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-        <View style={styles.globalContainer}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
-            <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
-          </Stack>
-        </View>
+      <View style={styles.globalContainer}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
+          <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
+          <Stack.Screen
+            name="payment-success"
+            options={{
+              title: "Pago Exitoso",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="payment-cancel"
+            options={{
+              title: "Pago Cancelado",
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </View>
     </AuthProvider>
   );
 }

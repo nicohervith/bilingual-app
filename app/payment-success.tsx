@@ -1,10 +1,17 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { useAuth } from "@/contexts/AuthContext";
+
 import { db } from "@/lib/firebaseConfig";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 export default function PaymentSuccess() {
   const { session_id, levelId, userId } = useLocalSearchParams();
@@ -32,7 +39,7 @@ export default function PaymentSuccess() {
         const paymentData = await response.json();
 
         if (paymentData.status === "paid") {
-          // Actualizar Firebase directamente por si el webhook falló
+          // Actualizar Firebase
           if (user && user.uid === userId) {
             await updateDoc(doc(db, "userProgress", user.uid), {
               [`purchasedLevels.${levelId}`]: true,
@@ -57,16 +64,34 @@ export default function PaymentSuccess() {
   }, [session_id, levelId, userId, user]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>✅ Pago Exitoso</Text>
-      <Text style={styles.message}>{message}</Text>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+      }}
+    >
+      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}>
+        ✅ Pago Exitoso
+      </Text>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <Text style={{ fontSize: 16, textAlign: "center", marginBottom: 20 }}>
+          {message}
+        </Text>
+      )}
 
       {!loading && (
         <TouchableOpacity
-          style={styles.button}
+          style={{ backgroundColor: "#007AFF", padding: 15, borderRadius: 8 }}
           onPress={() => router.replace("/dashboard")}
         >
-          <Text style={styles.buttonText}>Volver al Dashboard</Text>
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Volver al Dashboard
+          </Text>
         </TouchableOpacity>
       )}
     </View>
