@@ -190,7 +190,6 @@
     "A1_housing":{
       "id": "A1_housing",
       "title": "Housing and Places",
-      "xpReward": 70,
       "metadata": {
         "level": "A1",
         "module": "vocabulary",

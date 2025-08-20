@@ -52,6 +52,7 @@ interface ProgressData {
   xp?: number;
   level?: string;
   unlockedLevels?: string[];
+  purchasedLevels: { [key: string]: boolean };
   completedMissions?: Record<string, string[]>;
   completedLessons?: Record<string, boolean>;
   levels?: Record<string, { completed: number; total: number }>;
@@ -70,6 +71,7 @@ interface ProgressData {
     longestStreak: number;
   };
 }
+
 type LevelRequirements = {
   A1: number;
   A2: number;
@@ -98,9 +100,6 @@ export default function Dashboard() {
   const [unlockedLevels, setUnlockedLevels] = useState<string[]>(
     user ? ["A1"] : []
   );
-
-  /*   const [selectedLevel, setSelectedLevel] = useState<LevelId>("A1"); */
-
   const [selectedLevel, setSelectedLevel] = useState<LevelId | null>(null);
 
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
@@ -111,13 +110,11 @@ export default function Dashboard() {
       B1: 2000,
     });
 
-  /*   const { initPaymentSheet, presentPaymentSheet } = useStripe(); */
-  const [paymentLoading, setPaymentLoading] = useState(false);
-
   const [progress, setProgress] = useState<ProgressData>({
     xp: 0,
     level: "A1",
     unlockedLevels: user ? ["A1"] : [],
+    purchasedLevels: {},
     completedLessons: {},
     levels: {
       A1: { completed: 0, total: 0 },
@@ -130,6 +127,103 @@ export default function Dashboard() {
       longestStreak: 1,
     },
   });
+
+ /*  const syncUnlockedLevels = async () => {
+    if (!user) return;
+
+    try {
+      // Verificar en el backend si hay niveles comprados recientemente
+      const response = await fetch(
+        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/all`
+      );
+
+      if (response.ok) {
+        const { unlockedLevels } = await response.json();
+
+        // Actualizar el estado local si hay cambios
+        if (
+          unlockedLevels &&
+          JSON.stringify(unlockedLevels) !==
+            JSON.stringify(progress.unlockedLevels)
+        ) {
+          setProgress((prev) => ({
+            ...prev,
+            unlockedLevels: unlockedLevels,
+          }));
+
+          // También actualizar Firebase localmente por si acaso
+          await updateDoc(doc(db, "userProgress", user.uid), {
+            unlockedLevels: unlockedLevels,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error syncing unlocked levels:", error);
+    }
+  }; */
+
+  const syncUnlockedLevels = async () => {
+    if (!user) return;
+
+    try {
+      // Verificar en el backend los niveles desbloqueados
+      const response = await fetch(
+        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Actualizar el estado local si hay cambios
+        if (
+          data.unlockedLevels &&
+          JSON.stringify(data.unlockedLevels) !==
+            JSON.stringify(progress.unlockedLevels)
+        ) {
+          setProgress((prev) => ({
+            ...prev,
+            unlockedLevels: data.unlockedLevels,
+            purchasedLevels: data.purchasedLevels || {},
+          }));
+
+          console.log("Niveles sincronizados:", data.unlockedLevels);
+        }
+      }
+    } catch (error) {
+      console.error("Error syncing unlocked levels:", error);
+    }
+  };
+
+  const checkPurchaseStatus = async (levelId: LevelId) => {
+    if (!user) return false;
+
+    try {
+      const response = await fetch(
+        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/${levelId}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.hasAccess;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error checking purchase status:", error);
+      return false;
+    }
+  };
+
+  // Usar useEffect para sincronizar periódicamente
+  useEffect(() => {
+    if (user) {
+      // Sincronizar inmediatamente al cargar
+      syncUnlockedLevels();
+
+      // Sincronizar cada 30 segundos por si hay compras recientes
+      const interval = setInterval(syncUnlockedLevels, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
 
   const calculateTotalLevelXP = (units: any[]): number => {
     return units.reduce((total, unit) => {
@@ -235,12 +329,14 @@ export default function Dashboard() {
         updateStreak(userProgress),
       ]);
 
-      // Actualiza primero los datos básicos para mostrar
+      console.log("userProgress:", userProgress);
+
       setProgress((prev) => ({
         ...prev,
         xp: userProgress.xp || 0,
         level: userProgress.level || "A1",
         unlockedLevels: userProgress.unlockedLevels || ["A1"],
+        purchasedLevels: userProgress.purchasedLevels || {}, 
         stats: {
           daysStreak: userProgress.stats?.daysStreak || 1,
           lastLogin: userProgress.stats?.lastLogin || new Date(),
@@ -248,7 +344,6 @@ export default function Dashboard() {
         },
       }));
 
-      // Luego carga los datos pesados en segundo plano
       loadHeavyData(userProgress);
     } catch (error) {
       console.error("Error loading progress:", error);
@@ -283,6 +378,7 @@ export default function Dashboard() {
       setProgress((prev) => ({
         ...prev,
         completedLessons: userProgress.completedLessons || {},
+        purchasedLevels: userProgress.purchasedLevels || {},
         earnedBadges: userProgress.earnedBadges || {},
         levels: {
           A1: {
@@ -356,6 +452,7 @@ export default function Dashboard() {
         xp: 0,
         level: "A1",
         unlockedLevels: ["A1"],
+        purchasedLevels: {},
         completedLessons: {},
         levels: {
           A1: { completed: 0, total: totalLessons.A1 },
@@ -380,7 +477,7 @@ export default function Dashboard() {
     return "A1";
   };
 
-  const calculateXPProgress = (): { progress: number; nextLevel: string } => {
+/*   const calculateXPProgress = (): { progress: number; nextLevel: string } => {
     const currentXP = progress.xp || 0;
     const currentLevel = getCurrentLevel();
 
@@ -401,7 +498,36 @@ export default function Dashboard() {
       progress: Math.min(1, Math.max(0, calculatedProgress)),
       nextLevel,
     };
+  }; */
+const calculateXPProgress = (): { progress: number; nextLevel: string } => {
+  const currentXP = progress.xp || 0;
+
+  // Si no hay requisitos dinámicos cargados aún
+  if (Object.keys(dynamicRequirements).length === 0) {
+    return { progress: 0, nextLevel: "A2" };
+  }
+
+  const currentLevel = getCurrentLevel();
+  const nextLevel: "A2" | "B1" | null =
+    currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
+
+  if (!nextLevel) return { progress: 1, nextLevel: "Máximo" };
+
+  const currentReq =
+    dynamicRequirements[currentLevel as keyof LevelRequirements] || 0;
+  const nextReq = dynamicRequirements[nextLevel] || 1; // Evitar división por 0
+
+  // Calcular progreso de manera segura
+  let calculatedProgress = 0;
+  if (nextReq > currentReq) {
+    calculatedProgress = (currentXP - currentReq) / (nextReq - currentReq);
+  }
+
+  return {
+    progress: Math.min(1, Math.max(0, calculatedProgress)),
+    nextLevel,
   };
+};
 
   const xpProgress = calculateXPProgress();
 
@@ -442,7 +568,7 @@ export default function Dashboard() {
     setSelectedLevel(levelId);
   };
 
-  const navigateToLevel = (levelId: LevelId) => {
+  /*   const navigateToLevel = (levelId: LevelId) => {
     if (!user) {
       router.push("/login");
       return;
@@ -457,6 +583,54 @@ export default function Dashboard() {
       setSelectedLevel(levelId);
       setPaymentModalVisible(true);
     }
+  }; */
+
+  const navigateToLevel = async (levelId: LevelId) => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    // Verificar acceso local primero
+    if (unlockedLevels.includes(levelId)) {
+      router.push({
+        pathname: "/level-modules/[level]",
+        params: { level: levelId },
+      });
+      return;
+    }
+
+    // Si no tiene acceso local, verificar en el backend por si acaba de comprar
+    try {
+      const response = await fetch(
+        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/${levelId}`
+      );
+
+      if (response.ok) {
+        const { hasAccess } = await response.json();
+
+        if (hasAccess) {
+          // Actualizar estado local y navegar
+          setUnlockedLevels((prev) => [...prev, levelId]);
+          setProgress((prev) => ({
+            ...prev,
+            unlockedLevels: [...(prev.unlockedLevels ?? []), levelId],
+          }));
+
+          router.push({
+            pathname: "/level-modules/[level]",
+            params: { level: levelId },
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error("Error checking level access:", error);
+    }
+
+    // Si no tiene acceso en ningún lado, mostrar modal de pago
+    setSelectedLevel(levelId);
+    setPaymentModalVisible(true);
   };
 
   const handleLogout = async () => {
@@ -589,7 +763,7 @@ export default function Dashboard() {
           </Text>
         </View>
 
-        {availableLevels.map((level) => {
+        {/* {availableLevels.map((level) => {
           const levelData = progress.levels?.[level.id] || {
             completed: 0,
             total: 0,
@@ -660,16 +834,96 @@ export default function Dashboard() {
                 </TouchableOpacity>
               )}
 
-              {/*     {availableLevels.map((level) => (
-                <TouchableOpacity
-                  key={level.id}
-                  onPress={() => handleBuyLevel(level.id)}
-                >
-                  <Text>Comprar {level.name}</Text>
-                </TouchableOpacity>
-              ))} */}
+              {selectedLevel === level.id && (
+                <Elements stripe={stripePromise}>
+                  <PurchaseLevel
+                    levelId={selectedLevel}
+                    onClose={() => setSelectedLevel(null)}
+                  />
+                </Elements>
+              )}
+            </View>
+          );
+        })} */}
+        {availableLevels.map((level) => {
+          const levelData = progress.levels?.[level.id] || {
+            completed: 0,
+            total: 0,
+          };
+          const completedCount = Object.keys(
+            progress.completedLessons || {}
+          ).filter((id) => id.includes(level.id)).length;
 
-              {/* Modal de Stripe */}
+          // ✅ Nueva lógica: A1 siempre accesible, otros niveles por compra
+          const hasAccess =
+            level.id === "A1" || progress.purchasedLevels?.[level.id];
+          const progressPercentage =
+            levelData.total > 0 ? (completedCount / levelData.total) * 100 : 0;
+
+          return (
+            <View key={level.id} style={styles.levelCard}>
+              <View style={styles.levelHeader}>
+                <Text style={styles.levelTitle}>Nivel {level.name}</Text>
+
+                {/* Mostrar estado de compra */}
+                {level.id !== "A1" && progress.purchasedLevels?.[level.id] && (
+                  <Text style={styles.purchasedBadge}>✅ Comprado</Text>
+                )}
+
+                {!hasAccess && level.id !== "A1" && (
+                  <Text style={styles.locked}>
+                    {user
+                      ? "🔒 Compra para desbloquear"
+                      : "🔒 Inicia sesión para acceder"}
+                  </Text>
+                )}
+              </View>
+
+              {/* MANTENER las barras de progreso */}
+              <View style={styles.progressContainer}>
+                <Text>
+                  Completadas: {completedCount}/{levelData.total} lecciones
+                </Text>
+                <View style={styles.progressBar}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${progressPercentage}%` },
+                    ]}
+                  />
+                </View>
+                <Text>{Math.round(progressPercentage)}% completado</Text>
+
+                {/* Mostrar XP ganado en este nivel */}
+                {completedCount > 0 && (
+                  <Text style={styles.xpEarned}>
+                    🎯 {completedCount * BASE_XP_PER_LESSON} XP ganados
+                  </Text>
+                )}
+              </View>
+
+              {/* Botones de acceso */}
+              {hasAccess ? (
+                <TouchableOpacity
+                  onPress={() => navigateToLevel(level.id)}
+                  style={styles.levelButton}
+                >
+                  <Text style={styles.buttonText}>
+                    {completedCount > 0 ? "Continuar" : "Comenzar"}
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                level.id !== "A1" && (
+                  <TouchableOpacity
+                    onPress={() => handleBuyLevel(level.id)}
+                    style={[styles.levelButton, styles.buyButton]}
+                  >
+                    <Text style={styles.buttonText}>Comprar Nivel</Text>
+                  </TouchableOpacity>
+                )
+              )}
+
+              {/* Modal de pago */}
               {selectedLevel === level.id && (
                 <Elements stripe={stripePromise}>
                   <PurchaseLevel
@@ -689,8 +943,6 @@ export default function Dashboard() {
             color="#FF5A5F"
           />
         )}
-
-        {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Síguenos en redes sociales</Text>
           <View style={styles.socialIcons}>
@@ -937,14 +1189,9 @@ const styles = StyleSheet.create({
     color: "#E1306C",
     fontWeight: "bold",
   },
-  loadingContainer: {},
-  userPreview: {},
   footer: {
-    /* backgroundColor: "#f8f8f8", */
     marginTop: 10,
     padding: 16,
-    /* borderTopWidth: 1, */
-    /* borderTopColor: "#eee", */
     alignItems: "center",
   },
   footerText: {
@@ -1046,4 +1293,64 @@ const styles = StyleSheet.create({
   lockedButton: {
     backgroundColor: "#6c757d",
   },
+  purchasedBadge: {
+    color: "green",
+    fontWeight: "bold",
+    fontSize: 12,
+    backgroundColor: "#E8F5E9",
+    padding: 4,
+    borderRadius: 4,
+  },
+  buyButton: {
+    backgroundColor: "#FF9500", // Color naranja para comprar
+  },
+  xpEarned: {
+    color: "#666",
+    fontSize: 12,
+    marginTop: 4,
+    fontStyle: "italic",
+  },
+
+   loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
+    padding: 20,
+  },
+  loadingText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2c3e50',
+    marginTop: 20,
+    fontFamily: 'System', // o la fuente que uses en tu app
+    textAlign: 'center',
+  },
+  userPreview: {
+    marginTop: 30,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+  },
+  userPreviewText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#495057',
+    fontFamily: 'System',
+  },
+  loaderAnimation: {
+    marginBottom: 20,
+  }
+
 });
