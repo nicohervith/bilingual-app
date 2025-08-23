@@ -1,7 +1,7 @@
 /* import { db } from "@/lib/firebaseConfig"; */
+import { CheckmarkIcon } from "@/components/SvgIcons";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
-import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -188,7 +188,8 @@ export default function UnitScreen() {
                     marginLeft: 8,
                   }}
                 >
-                  <Ionicons name="checkmark" size={20} color="white" />
+                  {/* <Ionicons name="checkmark" size={20} color="white" /> */}
+                  <CheckmarkIcon size={20} color="white" />
                 </View>
               )}
             </View>

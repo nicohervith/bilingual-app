@@ -1,6 +1,5 @@
 import { auth } from "@/lib/firebaseConfig";
 import { checkUserProgress } from "@/services/userProgress";
-import { Ionicons } from "@expo/vector-icons";
 import * as AuthSession from "expo-auth-session";
 import * as Google from "expo-auth-session/providers/google";
 import { Redirect, router } from "expo-router";
@@ -22,6 +21,7 @@ import {
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../lib/firebaseConfig";
+import { ArrowBackIcon } from "@/components/SvgIcons";
 
 export default function Login() {
   const { user, loading: authLoading } = useAuth();
@@ -46,7 +46,7 @@ export default function Login() {
       if (response?.type !== "success" || !response.params) {
         throw new Error("Respuesta de autenticación inválida");
       }
-     /*  if (response?.type !== "success" || !response.params) {
+      /*  if (response?.type !== "success" || !response.params) {
         throw new Error("Invalid authentication response");
       } */
 
@@ -145,7 +145,8 @@ export default function Login() {
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }}>
       <TouchableOpacity onPress={() => router.replace("/")}>
-        <Ionicons name="arrow-back" size={24} color="black" />
+        {/* <Ionicons name="arrow-back" size={24} color="black" /> */}
+        <ArrowBackIcon size={24} color="black" />
       </TouchableOpacity>
       <View style={styles.container}>
         <Image
