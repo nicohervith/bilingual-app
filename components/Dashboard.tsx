@@ -1,6 +1,5 @@
 import { getCachedData } from "@/contexts/cache";
 import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
-import { Ionicons } from "@expo/vector-icons";
 /* import { useStripe } from "@stripe/stripe-react-native"; */
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
@@ -34,6 +33,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/ToastConfig";
 import PurchaseLevel from "./PurchaseLevel";
+import { FlameIcon, InstagramIcon } from "./SvgIcons";
 
 interface Level {
   id: string;
@@ -602,14 +602,15 @@ export default function Dashboard() {
                     )
                   }
                 >
-                  <Ionicons name="logo-instagram" size={24} color="#E1306C" />
+                  {/* <Ionicons name="logo-instagram" size={24} color="#E1306C" /> */}
+                  <InstagramIcon />
                   <Text style={styles.instagramText}>
                     Síguenos en Instagram
                   </Text>
                 </TouchableOpacity>
 
                 <View style={styles.streakContainer}>
-                  <Ionicons name="flame" size={20} color="#FF9500" />
+                  <FlameIcon size={20} color="#FF9500" />
                   <Text style={styles.streakText}>
                     {progress.stats?.daysStreak ?? 1} días de racha
                   </Text>
@@ -769,8 +770,8 @@ export default function Dashboard() {
               style={styles.socialButton}
             >
               {/* <Ionicons name="logo-instagram" size={24} color="#E1306C" /> */}
-              
-              {/* <CommonIcons.Instagram /> */}
+
+              <InstagramIcon />
               <Text style={styles.socialText}>Instagram</Text>
             </TouchableOpacity>
           </View>
