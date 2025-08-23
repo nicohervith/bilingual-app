@@ -197,7 +197,7 @@ export default function LevelModulesScreen() {
 
                   <View style={styles.unitHeader}>
                     <Text style={styles.unitTitle}>{unit.title}</Text>
-                    <Text style={styles.xpReward}>{unit.rewardXP} XP</Text>
+                    <Text style={styles.xpReward}>Progreso</Text>
                   </View>
 
                   <Text style={styles.lessonCount}>

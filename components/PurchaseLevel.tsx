@@ -27,45 +27,10 @@ export default function PurchaseLevel({
     if (!stripe || !elements || !user) return;
 
     setLoading(true);
-
-    /* try {
-       const response = await fetch(
-         "https://billingual-app-back.onrender.com/create-checkout-session",
-         {
-           method: "POST",
-           headers: {
-             "Content-Type": "application/json",
-           },
-           body: JSON.stringify({
-             levelId,
-             userId: user.uid,
-             successUrl: `${window.location.origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&levelId=${levelId}&userId=${user.uid}`,
-             cancelUrl: `${window.location.origin}/payment-cancel`,
-           }),
-         }
-       );
-
-       if (!response.ok) {
-         const errorData = await response.json();
-         throw new Error(
-           errorData.error || "Failed to create checkout session"
-         );
-       }
-
-       const { sessionId } = await response.json();
-
-       const { error } = await stripe.redirectToCheckout({
-         sessionId: sessionId,
-       });
-
-       if (error) {
-         throw error;
-       }
-     } */ try {
-      // Obtener la URL base correctamente para web
+ try {
       const baseUrl = Platform.select({
         web: window.location.origin,
-        default: "http://localhost:8081/", // fallback para otros entornos
+        default: "https://bilingual-site-65404.web.app/", 
       });
 
       const response = await fetch(

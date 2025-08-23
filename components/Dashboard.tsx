@@ -19,7 +19,6 @@ import {
   Button,
   Image,
   Linking,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -128,45 +127,10 @@ export default function Dashboard() {
     },
   });
 
-  /*  const syncUnlockedLevels = async () => {
-    if (!user) return;
-
-    try {
-      // Verificar en el backend si hay niveles comprados recientemente
-      const response = await fetch(
-        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/all`
-      );
-
-      if (response.ok) {
-        const { unlockedLevels } = await response.json();
-
-        // Actualizar el estado local si hay cambios
-        if (
-          unlockedLevels &&
-          JSON.stringify(unlockedLevels) !==
-            JSON.stringify(progress.unlockedLevels)
-        ) {
-          setProgress((prev) => ({
-            ...prev,
-            unlockedLevels: unlockedLevels,
-          }));
-
-          // También actualizar Firebase localmente por si acaso
-          await updateDoc(doc(db, "userProgress", user.uid), {
-            unlockedLevels: unlockedLevels,
-          });
-        }
-      }
-    } catch (error) {
-      console.error("Error syncing unlocked levels:", error);
-    }
-  }; */
-
   const syncUnlockedLevels = async () => {
     if (!user) return;
 
     try {
-      // Verificar en el backend los niveles desbloqueados
       const response = await fetch(
         `https://billingual-app-back.onrender.com/check-level-access/${user.uid}`
       );
@@ -213,13 +177,10 @@ export default function Dashboard() {
     }
   };
 
-  // Usar useEffect para sincronizar periódicamente
   useEffect(() => {
     if (user) {
-      // Sincronizar inmediatamente al cargar
       syncUnlockedLevels();
 
-      // Sincronizar cada 30 segundos por si hay compras recientes
       const interval = setInterval(syncUnlockedLevels, 30000);
       return () => clearInterval(interval);
     }
@@ -335,7 +296,7 @@ export default function Dashboard() {
         ...prev,
         xp: userProgress.xp || 0,
         level: userProgress.level || "A1",
-        unlockedLevels: userProgress.unlockedLevels || ["A1"],
+        unlockedLevels: userProgress.unlockedLevels || [],
         purchasedLevels: userProgress.purchasedLevels || {},
         stats: {
           daysStreak: userProgress.stats?.daysStreak || 1,
@@ -430,9 +391,6 @@ export default function Dashboard() {
   const createNewUserProgress = async (userId: string) => {
     try {
       const modulesSnapshot = await getDocs(collection(db, "modules"));
-      const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
-      const newRequirements = getDynamicLevelRequirements(modulesData);
-      setDynamicRequirements(newRequirements);
 
       let totalLessons = { A1: 0, A2: 0, B1: 0 };
       modulesSnapshot.forEach((doc) => {
@@ -448,11 +406,12 @@ export default function Dashboard() {
         );
       });
 
+      // ✅ TODOS los niveles bloqueados inicialmente
       await setDoc(doc(db, "userProgress", userId), {
         xp: 0,
-        level: "A1",
-        unlockedLevels: ["A1"],
-        purchasedLevels: {},
+        level: "A1", // Nivel actual, pero no significa que esté desbloqueado
+        unlockedLevels: [], // ✅ Vacío - todos bloqueados
+        purchasedLevels: {}, // ✅ Vacío - ninguno comprado inicialmente
         completedLessons: {},
         levels: {
           A1: { completed: 0, total: totalLessons.A1 },
@@ -469,7 +428,6 @@ export default function Dashboard() {
       console.error("Error creating user progress:", error);
     }
   };
-
   const getCurrentLevel = (): string => {
     if (!progress || !progress.xp) return "A1";
     if (progress.xp >= dynamicRequirements.B1) return "B1";
@@ -477,32 +435,9 @@ export default function Dashboard() {
     return "A1";
   };
 
-  /*   const calculateXPProgress = (): { progress: number; nextLevel: string } => {
-    const currentXP = progress.xp || 0;
-    const currentLevel = getCurrentLevel();
-
-    const nextLevel: "A2" | "B1" | null =
-      currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
-
-    if (!nextLevel) return { progress: 1, nextLevel: "Max" };
-
-    const validCurrentLevel = currentLevel as keyof LevelRequirements;
-    const currentReq = dynamicRequirements[validCurrentLevel];
-
-    const nextReq = dynamicRequirements[nextLevel];
-
-    const calculatedProgress =
-      (currentXP - currentReq) / (nextReq - currentReq);
-
-    return {
-      progress: Math.min(1, Math.max(0, calculatedProgress)),
-      nextLevel,
-    };
-  }; */
   const calculateXPProgress = (): { progress: number; nextLevel: string } => {
     const currentXP = progress.xp || 0;
 
-    // Si no hay requisitos dinámicos cargados aún
     if (Object.keys(dynamicRequirements).length === 0) {
       return { progress: 0, nextLevel: "A2" };
     }
@@ -550,40 +485,13 @@ export default function Dashboard() {
     }
   }, [user, progress.xp, dynamicRequirements]);
 
-  const xpNeededForLevel = (levelId: string): number => {
-    const currentXP = progress.xp || 0;
-    switch (levelId) {
-      case "A1":
-        return 0;
-      case "A2":
-        return Math.max(0, dynamicRequirements.A2 - currentXP);
-      case "B1":
-        return Math.max(0, dynamicRequirements.B1 - currentXP);
-      default:
-        return 0;
-    }
-  };
-
+  /*   const handleBuyLevel = (levelId: LevelId) => {
+    setSelectedLevel(levelId);
+  }; */
   const handleBuyLevel = (levelId: LevelId) => {
     setSelectedLevel(levelId);
+    setPaymentModalVisible(true);
   };
-
-  /*   const navigateToLevel = (levelId: LevelId) => {
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-
-    if (unlockedLevels.includes(levelId)) {
-      router.push({
-        pathname: "/level-modules/[level]",
-        params: { level: levelId },
-      });
-    } else {
-      setSelectedLevel(levelId);
-      setPaymentModalVisible(true);
-    }
-  }; */
 
   const navigateToLevel = async (levelId: LevelId) => {
     if (!user) {
@@ -591,30 +499,34 @@ export default function Dashboard() {
       return;
     }
 
-    // Verificar acceso local primero
-    if (unlockedLevels.includes(levelId)) {
-      router.push({
-        pathname: "/level-modules/[level]",
-        params: { level: levelId },
-      });
-      return;
-    }
-
-    // Si no tiene acceso local, verificar en el backend por si acaba de comprar
     try {
+      // Verificar acceso EN purchasedLevels - TODOS los niveles requieren compra
+      const hasPurchased = progress.purchasedLevels?.[levelId];
+
+      if (hasPurchased) {
+        router.push({
+          pathname: "/level-modules/[level]",
+          params: { level: levelId },
+        });
+        return;
+      }
+
+      // Si no tiene acceso local, verificar en el backend
       const response = await fetch(
         `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/${levelId}`
       );
 
       if (response.ok) {
-        const { hasAccess } = await response.json();
+        const { hasAccess: backendAccess } = await response.json();
 
-        if (hasAccess) {
-          // Actualizar estado local y navegar
-          setUnlockedLevels((prev) => [...prev, levelId]);
+        if (backendAccess) {
+          // Actualizar estado local
           setProgress((prev) => ({
             ...prev,
-            unlockedLevels: [...(prev.unlockedLevels ?? []), levelId],
+            purchasedLevels: {
+              ...prev.purchasedLevels,
+              [levelId]: true,
+            },
           }));
 
           router.push({
@@ -624,23 +536,21 @@ export default function Dashboard() {
           return;
         }
       }
+
+      // Si no tiene acceso en ningún lado, mostrar modal de pago
+      setSelectedLevel(levelId);
+      setPaymentModalVisible(true);
     } catch (error) {
       console.error("Error checking level access:", error);
+      setSelectedLevel(levelId);
+      setPaymentModalVisible(true);
     }
-
-    // Si no tiene acceso en ningún lado, mostrar modal de pago
-    setSelectedLevel(levelId);
-    setPaymentModalVisible(true);
   };
 
   const handleLogout = async () => {
     await signOut(auth);
     router.replace("/");
   };
-
-  function isLevelId(level: string): level is LevelId {
-    return ["A1", "A2", "B1"].includes(level);
-  }
 
   if (loading) {
     return (
@@ -762,89 +672,6 @@ export default function Dashboard() {
             {calculateXPProgress().nextLevel}
           </Text>
         </View>
-
-        {/* {availableLevels.map((level) => {
-          const levelData = progress.levels?.[level.id] || {
-            completed: 0,
-            total: 0,
-          };
-          const completedCount = Object.keys(
-            progress.completedLessons || {}
-          ).filter((id) => id.includes(level.id)).length;
-          const isUnlocked = user && unlockedLevels.includes(level.id);
-          const progressPercentage =
-            levelData.total > 0 ? (completedCount / levelData.total) * 100 : 0;
-          const disabled = !isUnlocked;
-
-          return (
-            <View key={level.id} style={styles.levelCard}>
-              <View style={styles.levelHeader}>
-                <Text style={styles.levelTitle}>Nivel {level.name}</Text>
-                {!isUnlocked && (
-                  <Text style={styles.locked}>
-                    {user
-                      ? `🔒 Necesitas ${xpNeededForLevel(
-                          level.id
-                        )} XP o comprar acceso`
-                      : "🔒 Inicia sesión para acceder"}
-                  </Text>
-                )}
-              </View>
-
-              <View style={styles.progressContainer}>
-                <Text>
-                  Completadas: {completedCount}/{levelData.total} lecciones
-                </Text>
-                <View style={styles.progressBar}>
-                  <View
-                    style={[
-                      styles.progressFill,
-                      { width: `${progressPercentage}%` },
-                    ]}
-                  />
-                </View>
-                <Text>{Math.round(progressPercentage)}% completado</Text>
-              </View>
-              {Platform.OS === "web" ? (
-                disabled ? (
-                  <TouchableOpacity
-                    style={[styles.levelButton]}
-                    onPress={() => handleBuyLevel(level.id)}
-                  >
-                    <Text style={styles.buttonText}>Comprar nivel</Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => navigateToLevel(level.id)}
-                    style={styles.levelButton}
-                  >
-                    <Text style={styles.buttonText}>Acceder</Text>
-                  </TouchableOpacity>
-                )
-              ) : (
-                <TouchableOpacity
-                  disabled={disabled}
-                  onPress={() => navigateToLevel(level.id)}
-                  style={[
-                    styles.levelButton,
-                    disabled && styles.disabledButton,
-                  ]}
-                >
-                  <Text style={styles.buttonText}>Acceder</Text>
-                </TouchableOpacity>
-              )}
-
-              {selectedLevel === level.id && (
-                <Elements stripe={stripePromise}>
-                  <PurchaseLevel
-                    levelId={selectedLevel}
-                    onClose={() => setSelectedLevel(null)}
-                  />
-                </Elements>
-              )}
-            </View>
-          );
-        })} */}
         {availableLevels.map((level) => {
           const levelData = progress.levels?.[level.id] || {
             completed: 0,
@@ -854,9 +681,8 @@ export default function Dashboard() {
             progress.completedLessons || {}
           ).filter((id) => id.includes(level.id)).length;
 
-          // ✅ Nueva lógica: A1 siempre accesible, otros niveles por compra
-          const hasAccess =
-            level.id === "A1" || progress.purchasedLevels?.[level.id];
+          const hasAccess = progress.purchasedLevels?.[level.id];
+
           const progressPercentage =
             levelData.total > 0 ? (completedCount / levelData.total) * 100 : 0;
 
@@ -864,18 +690,10 @@ export default function Dashboard() {
             <View key={level.id} style={styles.levelCard}>
               <View style={styles.levelHeader}>
                 <Text style={styles.levelTitle}>Nivel {level.name}</Text>
-
-                {/* Mostrar estado de compra */}
-                {level.id !== "A1" && progress.purchasedLevels?.[level.id] && (
+                {hasAccess ? (
                   <Text style={styles.purchasedBadge}>✅ Comprado</Text>
-                )}
-
-                {!hasAccess && level.id !== "A1" && (
-                  <Text style={styles.locked}>
-                    {user
-                      ? "🔒 Compra para desbloquear"
-                      : "🔒 Inicia sesión para acceder"}
-                  </Text>
+                ) : (
+                  <Text style={styles.locked}>🔒 Compra para desbloquear</Text>
                 )}
               </View>
 
@@ -902,7 +720,6 @@ export default function Dashboard() {
                 )}
               </View>
 
-              {/* Botones de acceso */}
               {hasAccess ? (
                 <TouchableOpacity
                   onPress={() => navigateToLevel(level.id)}
@@ -913,14 +730,12 @@ export default function Dashboard() {
                   </Text>
                 </TouchableOpacity>
               ) : (
-                level.id !== "A1" && (
-                  <TouchableOpacity
-                    onPress={() => handleBuyLevel(level.id)}
-                    style={[styles.levelButton, styles.buyButton]}
-                  >
-                    <Text style={styles.buttonText}>Comprar Nivel</Text>
-                  </TouchableOpacity>
-                )
+                <TouchableOpacity
+                  onPress={() => handleBuyLevel(level.id)}
+                  style={[styles.levelButton, styles.buyButton]}
+                >
+                  <Text style={styles.buttonText}>Comprar Nivel</Text>
+                </TouchableOpacity>
               )}
 
               {/* Modal de pago */}
@@ -953,7 +768,9 @@ export default function Dashboard() {
               }
               style={styles.socialButton}
             >
-              <Ionicons name="logo-instagram" size={24} color="#E1306C" />
+              {/* <Ionicons name="logo-instagram" size={24} color="#E1306C" /> */}
+              
+              {/* <CommonIcons.Instagram /> */}
               <Text style={styles.socialText}>Instagram</Text>
             </TouchableOpacity>
           </View>

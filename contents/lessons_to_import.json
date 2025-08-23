@@ -1,234 +1,223 @@
 {
   "lessons": {
-    "A1_abilities":{
-      "id": "A1_abilities",
-      "title": "Abilities and Talents",
-      "xpReward": 70,
-      "metadata": {
-        "level": "A1",
-        "module": "grammar",
-        "unit": "unitA1_abilities",
-        "xpReward": 70,
-        "estimatedDuration": 20,
-        "tags": ["can", "abilities", "talents"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_swim",
-            "word": "Swim",
-            "translation": "Nadar",
-            "examples": ["I can swim very well"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_abilities",
-            "title": "Match Abilities",
-            "config": {
-              "pairs": [
-                {"from": "Sing", "to": "Cantar"},
-                {"from": "Dance", "to": "Bailar"}
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_can_sentences",
-            "title": "Build Can/Can't Sentences",
-            "config": {
-              "wordBank": ["I", "can", "can't", "play", "piano", "the"],
-              "correctAnswers": ["I can play the piano", "I can't play the piano"]
-            }
-          }
-        ]
-      }
-    },
-    "A1_health":{
-      "id": "A1_health",
-      "title": "Health and Symptoms",
+    "A1_sports": {
+      "id": "A1_sports",
+      "title": "Sports Activities",
       "xpReward": 75,
       "metadata": {
         "level": "A1",
         "module": "vocabulary",
-        "unit": "unitA1_health",
+        "unit": "unitA1_sports",
         "xpReward": 75,
         "estimatedDuration": 25,
-        "tags": ["health", "symptoms", "present_simple"]
+        "tags": ["sports", "present_continuous", "action_verbs"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_headache",
-            "word": "Headache",
-            "translation": "Dolor de cabeza",
-            "examples": ["I have a headache"]
+            "id": "voc_soccer",
+            "word": "Playing soccer",
+            "translation": "Jugando fútbol",
+            "examples": ["I am playing soccer with my friends"],
+            "media": {
+              "image": "https://example.com/soccer.jpg"
+            }
+          },
+          {
+            "id": "voc_swimming",
+            "word": "Swimming",
+            "translation": "Nadando",
+            "examples": ["She is swimming in the pool"]
           }
         ],
         "exercises": [
           {
             "type": "memory_game",
-            "id": "ex1_symptoms",
-            "title": "Match Symptoms",
+            "id": "ex1_sports_memory",
+            "title": "Sports Memory Match",
             "config": {
               "pairs": [
-                {"front": "Fever", "back": "Fiebre"},
-                {"front": "Cough", "back": "Tos"}
+                {
+                  "front": "Basketball",
+                  "back": "Baloncesto"
+                },
+                {
+                  "front": "Tennis",
+                  "back": "Tenis"
+                },
+                {
+                  "front": "Running",
+                  "back": "Corriendo"
+                }
               ]
             }
           },
           {
-            "type": "image_selection",
-            "id": "ex2_health_quiz",
-            "title": "Select the Symptom",
+            "type": "sentence_formation",
+            "id": "ex2_sports_actions",
+            "title": "Build Sports Sentences",
             "config": {
-              "question": "Which image shows a headache?",
-              "options": [
-                {"image": "headache.jpg", "text": "", "correct": true},
-                {"image": "broken_arm.jpg", "text": "", "correct": false}
-              ]
+              "wordBank": [
+                "I",
+                "am",
+                "playing",
+                "watching",
+                "soccer",
+                "tennis",
+                "on",
+                "TV"
+              ],
+              "correctAnswers": [
+                "I am playing soccer",
+                "I am playing tennis",
+                "I am watching soccer on TV"
+              ],
+              "requiredWords": ["am", "playing"],
+              "timeLimit": 60
             }
           }
         ]
       }
     },
-    "A1_family_2":{
-      "id": "A1_family_2",
-      "title": "Family and Relationships",
-      "xpReward": 65,
+    "A1_past_experiences_2": {
+      "id": "A1_past_experiences_2",
+      "title": "Past Experiences",
+      "xpReward": 80,
       "metadata": {
         "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_family",
-        "xpReward": 65,
-        "estimatedDuration": 20,
-        "tags": ["family", "relationships", "reflexives"]
+        "module": "grammar",
+        "unit": "unitA1_past",
+        "xpReward": 80,
+        "estimatedDuration": 30,
+        "tags": ["past_simple", "irregular_verbs", "experiences"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_nephew",
-            "word": "Nephew",
-            "translation": "Sobrino",
-            "examples": ["My nephew is 10 years old"]
+            "id": "voc_went",
+            "word": "Went",
+            "translation": "Fui",
+            "examples": ["I went to the beach last summer"]
+          },
+          {
+            "id": "voc_ate",
+            "word": "Ate",
+            "translation": "Comí",
+            "examples": ["We ate pizza yesterday"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_family",
-            "title": "Match Family Members",
+            "id": "ex1_irregular_verbs",
+            "title": "Match Irregular Verbs",
             "config": {
               "pairs": [
-                {"from": "Mother-in-law", "to": "Suegra"},
-                {"from": "Stepbrother", "to": "Hermanastro"}
+                {
+                  "from": "Go → Went",
+                  "to": "Ir → Fui"
+                },
+                {
+                  "from": "Eat → Ate",
+                  "to": "Comer → Comí"
+                },
+                {
+                  "from": "See → Saw",
+                  "to": "Ver → Vi"
+                }
               ]
             }
           },
           {
             "type": "conjugation",
-            "id": "ex2_reflexives",
-            "title": "Reflexive Pronouns",
+            "id": "ex2_past_conjugation",
+            "title": "Conjugate in Past Simple",
             "config": {
-              "pronouns": ["I", "You", "He"],
+              "verb": "to go",
+              "pronouns": ["I", "You", "He", "We"],
               "correct": {
-                "I": "myself",
-                "You": "yourself",
-                "He": "himself"
+                "I": "went",
+                "You": "went",
+                "He": "went",
+                "We": "went"
+              },
+              "hints": {
+                "showBaseForm": true
               }
             }
           }
         ]
       }
     },
-      "A1_jobs_and_professions":{
-      "id": "A1_jobs_and_professions",
-      "title": "Jobs and Professions",
-      "xpReward": 80,
+    "A1_goals": {
+      "id": "A1_goals",
+      "title": "Goals and Aspirations",
+      "xpReward": 85,
       "metadata": {
         "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_jobs",
-        "xpReward": 80,
-        "estimatedDuration": 30,
-        "tags": ["jobs", "present_simple", "professions"]
+        "module": "grammar",
+        "unit": "unitA1_goals",
+        "xpReward": 85,
+        "estimatedDuration": 35,
+        "tags": ["future", "goals", "aspirations", "will", "going_to"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_chef",
-            "word": "Chef",
-            "translation": "Chef",
-            "examples": ["She works as a chef"]
+            "id": "voc_travel",
+            "word": "Will travel",
+            "translation": "Viajaré",
+            "examples": ["I will travel to Japan next year"]
+          },
+          {
+            "id": "voc_study",
+            "word": "Going to study",
+            "translation": "Voy a estudiar",
+            "examples": ["I am going to study medicine"]
           }
         ],
         "exercises": [
           {
-            "type": "memory_game",
-            "id": "ex1_jobs",
-            "title": "Job Pairs",
+            "type": "matching",
+            "id": "ex1_future_forms",
+            "title": "Match Future Expressions",
             "config": {
               "pairs": [
-                {"front": "Teacher", "back": "Profesor"},
-                {"front": "Doctor", "back": "Médico"}
+                {
+                  "from": "I will",
+                  "to": "Yo haré (decisión)"
+                },
+                {
+                  "from": "I am going to",
+                  "to": "Yo voy a (plan)"
+                }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex2_work_routines",
-            "title": "Build Work Sentences",
+            "id": "ex2_goals_sentences",
+            "title": "Build Future Goals",
             "config": {
-              "wordBank": ["He", "works", "in", "an", "office", "hospital"],
-              "correctAnswers": ["He works in an office", "He works in a hospital"]
-            }
-          }
-        ]
-      }
-    },
-    "A1_housing":{
-      "id": "A1_housing",
-      "title": "Housing and Places",
-      "metadata": {
-        "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_housing",
-        "xpReward": 70,
-        "estimatedDuration": 25,
-        "tags": ["housing", "demonstratives", "places"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_balcony",
-            "word": "Balcony",
-            "translation": "Balcón",
-            "examples": ["This apartment has a balcony"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "image_selection",
-            "id": "ex1_house_parts",
-            "title": "Select the Correct Word",
-            "config": {
-              "question": "Which is the kitchen?",
-              "options": [
-                {"image": "livingroom.jpg", "text": "Living room", "correct": false},
-                {"image": "kitchen.jpg", "text": "Kitchen", "correct": true}
-              ]
-            }
-          },
-          {
-            "type": "matching",
-            "id": "ex2_demonstratives",
-            "title": "Match Demonstratives",
-            "config": {
-              "pairs": [
-                {"from": "This house", "to": "Esta casa (cerca)"},
-                {"from": "That house", "to": "Esa casa (lejos)"}
-              ]
+              "wordBank": [
+                "I",
+                "will",
+                "am",
+                "going",
+                "to",
+                "study",
+                "travel",
+                "work",
+                "next",
+                "year"
+              ],
+              "correctAnswers": [
+                "I will study next year",
+                "I am going to travel next year",
+                "I will work next year"
+              ],
+              "requiredWords": ["I"],
+              "timeLimit": 90
             }
           }
         ]
