@@ -4,7 +4,7 @@ const serviceAccount = require("../service-account-key.json");// Ajusta la ruta
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://bilingual-site-65404-default-rtdb.firebaseio.com",
+  databaseURL: "https://bilingualsite-ee6f8-default-rtdb.firebaseio.com",
 });
 
 const db = admin.firestore();
