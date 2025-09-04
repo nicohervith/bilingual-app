@@ -33,7 +33,7 @@ export default function Login() {
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId:
-      "984553559330-fghgjn0fq3n494gihhgo171if3cdem91.apps.googleusercontent.com",
+      "871050529166-eed5potpoiq1rubl6b2rp2af83hb8qeo.apps.googleusercontent.com",
     androidClientId:
       "984553559330-ltb8morobffr7o0utemf4kpbss1nhatp.apps.googleusercontent.com",
     redirectUri: redirectUri,
