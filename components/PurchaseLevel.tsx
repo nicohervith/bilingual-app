@@ -30,7 +30,7 @@ export default function PurchaseLevel({
  try {
       const baseUrl = Platform.select({
         web: window.location.origin,
-        default: "https://bilingual-site-65404.web.app/", 
+        default: "https://bilingualsite-ee6f8.web.app/",
       });
 
       const response = await fetch(

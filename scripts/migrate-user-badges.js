@@ -11,13 +11,13 @@ import {
 
 // Configuración de Firebase (reemplaza con tu configuración)
 const firebaseConfig = {
-  apiKey: "AIzaSyC40iEVDPzMrQBEjPAuYss5lzvhpH_ZrsU",
-  authDomain: "bilingual-site-65404.firebaseapp.com",
-  databaseURL: "https://bilingual-site-65404-default-rtdb.firebaseio.com",
-  projectId: "bilingual-site-65404",
-  storageBucket: "bilingual-site-65404.firebasestorage.app",
-  messagingSenderId: "500497750948",
-  appId: "1:500497750948:web:082933a226e1224f5abf31",
+  apiKey: "AIzaSyBUm57cQI67Joupf4dovElZYeOnmXcpYcs",
+  authDomain: "bilingualsite-ee6f8.firebaseapp.com",
+  projectId: "bilingualsite-ee6f8",
+  storageBucket: "bilingualsite-ee6f8.firebasestorage.app",
+  messagingSenderId: "871050529166",
+  appId: "1:871050529166:web:b1d0a762819fed9be6bcdf",
+  measurementId: "G-RED4ZSZMD4",
 };
 
 // Inicializar Firebase
