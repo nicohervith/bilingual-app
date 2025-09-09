@@ -491,7 +491,53 @@ export default function Dashboard() {
   const handleBuyLevel = (levelId: LevelId) => {
     setSelectedLevel(levelId);
     setPaymentModalVisible(true);
+
+    wakeUpBackend();
   };
+
+  // Función para despertar el backend
+  const wakeUpBackend = async () => {
+    try {
+      console.log("⏰ Waking up backend...");
+      const response = await fetch(
+        "https://billingual-app-back.onrender.com/wake-up",
+        {
+          method: "GET",
+          signal: AbortSignal.timeout(5000),
+        }
+      );
+
+      if (response.ok) {
+        console.log("✅ Backend is awake and ready");
+      }
+    } catch (error) {
+      console.log(
+        "⚠️ Backend wake-up call failed (expected for cold starts):",
+        error
+      );
+    }
+  };
+
+  // Mantener el backend caliente periódicamente
+  useEffect(() => {
+    const keepBackendAlive = async () => {
+      try {
+        await fetch("https://billingual-app-back.onrender.com/wake-up", {
+          signal: AbortSignal.timeout(3000),
+        });
+      } catch (error) {
+        // Silenciar errores, es solo un keep-alive
+      }
+    };
+
+    // Llamar cada 5 minutos para mantener el backend activo
+    const interval = setInterval(keepBackendAlive, 5 * 60 * 1000);
+
+    // Llamar inmediatamente al cargar
+    keepBackendAlive();
+
+    return () => clearInterval(interval);
+  }, []);
 
   const navigateToLevel = async (levelId: LevelId) => {
     if (!user) {
