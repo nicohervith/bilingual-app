@@ -7,7 +7,7 @@ import {
 } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(
-  "pk_test_51LAIJWIlL7CBuxtZcmAPD1sA5suFZEldPhSnwUIeq7COSXRCTuz4V19Yhp1Ziqy202co2iWzqg3jnft25AzK23dV00IAPmkVVO"
+  "pk_test_51S3hjvFHOc1l5YQO8l0CMWxS6uw0DveEVfznaJez5nL8jiG6RPdcP8ZSVH4YaLwpKUvPe0LvZiugKeesKC6GNSMB00Ed7Lc3HA"
 );
 
 export function StripePayment() {
