@@ -1,223 +1,479 @@
 {
+  
   "lessons": {
-    "A1_sports": {
-      "id": "A1_sports",
-      "title": "Sports Activities",
-      "xpReward": 75,
+    "A2_future_plans": {
+      "id": "A2_future_plans",
+      "title": "Planes Futuros",
+      "xpReward": 140,
       "metadata": {
-        "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_sports",
-        "xpReward": 75,
-        "estimatedDuration": 25,
-        "tags": ["sports", "present_continuous", "action_verbs"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_soccer",
-            "word": "Playing soccer",
-            "translation": "Jugando fútbol",
-            "examples": ["I am playing soccer with my friends"],
-            "media": {
-              "image": "https://example.com/soccer.jpg"
-            }
-          },
-          {
-            "id": "voc_swimming",
-            "word": "Swimming",
-            "translation": "Nadando",
-            "examples": ["She is swimming in the pool"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_sports_memory",
-            "title": "Sports Memory Match",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Basketball",
-                  "back": "Baloncesto"
-                },
-                {
-                  "front": "Tennis",
-                  "back": "Tenis"
-                },
-                {
-                  "front": "Running",
-                  "back": "Corriendo"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_sports_actions",
-            "title": "Build Sports Sentences",
-            "config": {
-              "wordBank": [
-                "I",
-                "am",
-                "playing",
-                "watching",
-                "soccer",
-                "tennis",
-                "on",
-                "TV"
-              ],
-              "correctAnswers": [
-                "I am playing soccer",
-                "I am playing tennis",
-                "I am watching soccer on TV"
-              ],
-              "requiredWords": ["am", "playing"],
-              "timeLimit": 60
-            }
-          }
-        ]
-      }
-    },
-    "A1_past_experiences_2": {
-      "id": "A1_past_experiences_2",
-      "title": "Past Experiences",
-      "xpReward": 80,
-      "metadata": {
-        "level": "A1",
+        "level": "A2",
         "module": "grammar",
-        "unit": "unitA1_past",
-        "xpReward": 80,
-        "estimatedDuration": 30,
-        "tags": ["past_simple", "irregular_verbs", "experiences"]
+        "unit": "unitA2_future",
+        "xpReward": 140,
+        "estimatedDuration": 45,
+        "tags": ["future_plans", "going_to", "will", "intentions"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_went",
-            "word": "Went",
-            "translation": "Fui",
-            "examples": ["I went to the beach last summer"]
+            "id": "voc_graduate",
+            "word": "Will graduate",
+            "translation": "Me graduaré",
+            "examples": ["I will graduate next year"],
+            "tags": ["future", "education"]
           },
           {
-            "id": "voc_ate",
-            "word": "Ate",
-            "translation": "Comí",
-            "examples": ["We ate pizza yesterday"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_irregular_verbs",
-            "title": "Match Irregular Verbs",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Go → Went",
-                  "to": "Ir → Fui"
-                },
-                {
-                  "from": "Eat → Ate",
-                  "to": "Comer → Comí"
-                },
-                {
-                  "from": "See → Saw",
-                  "to": "Ver → Vi"
-                }
-              ]
-            }
+            "id": "voc_travel_plan",
+            "word": "Going to travel",
+            "translation": "Voy a viajar",
+            "examples": ["I am going to travel to Europe"],
+            "tags": ["future", "plans"]
           },
           {
-            "type": "conjugation",
-            "id": "ex2_past_conjugation",
-            "title": "Conjugate in Past Simple",
-            "config": {
-              "verb": "to go",
-              "pronouns": ["I", "You", "He", "We"],
-              "correct": {
-                "I": "went",
-                "You": "went",
-                "He": "went",
-                "We": "went"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
-            }
-          }
-        ]
-      }
-    },
-    "A1_goals": {
-      "id": "A1_goals",
-      "title": "Goals and Aspirations",
-      "xpReward": 85,
-      "metadata": {
-        "level": "A1",
-        "module": "grammar",
-        "unit": "unitA1_goals",
-        "xpReward": 85,
-        "estimatedDuration": 35,
-        "tags": ["future", "goals", "aspirations", "will", "going_to"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_travel",
-            "word": "Will travel",
-            "translation": "Viajaré",
-            "examples": ["I will travel to Japan next year"]
-          },
-          {
-            "id": "voc_study",
-            "word": "Going to study",
-            "translation": "Voy a estudiar",
-            "examples": ["I am going to study medicine"]
+            "id": "voc_start_business",
+            "word": "Will start a business",
+            "translation": "Empezaré un negocio",
+            "examples": ["She will start her own business"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
             "id": "ex1_future_forms",
-            "title": "Match Future Expressions",
+            "title": "Diferencia entre Will y Going To",
             "config": {
               "pairs": [
                 {
-                  "from": "I will",
-                  "to": "Yo haré (decisión)"
+                  "from": "I will study medicine",
+                  "to": "Decisión espontánea"
                 },
                 {
-                  "from": "I am going to",
-                  "to": "Yo voy a (plan)"
+                  "from": "I am going to visit my family",
+                  "to": "Plan previo"
+                },
+                {
+                  "from": "It will rain tomorrow",
+                  "to": "Predicción"
                 }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex2_goals_sentences",
-            "title": "Build Future Goals",
+            "id": "ex2_future_sentences",
+            "title": "Construye Oraciones Futuras",
             "config": {
               "wordBank": [
-                "I",
-                "will",
-                "am",
-                "going",
-                "to",
-                "study",
-                "travel",
-                "work",
-                "next",
-                "year"
+                "I", "will", "am", "going", "to",
+                "study", "travel", "work", "buy",
+                "next", "year", "month", "in", "the",
+                "a", "car", "house", "university"
               ],
               "correctAnswers": [
-                "I will study next year",
-                "I am going to travel next year",
-                "I will work next year"
+                "I will study at the university",
+                "I am going to travel next month",
+                "I will buy a car next year"
               ],
               "requiredWords": ["I"],
+              "timeLimit": 120
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex3_future_plans_dialogue",
+            "title": "Diálogo: Planes Futuros",
+            "config": {
+              "scenario": "Talking about future plans with a friend",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "What are your plans for next year?",
+                  "options": ["I'm going to study abroad", "I will look for a new job"]
+                },
+                {
+                  "character": "user",
+                  "text": "That sounds great! Where are you going to study?",
+                  "options": ["In Canada", "I'm not sure yet"]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_describing_people": {
+      "id": "A2_describing_people",
+      "title": "Describir Personas",
+      "xpReward": 150,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_descriptions",
+        "xpReward": 150,
+        "estimatedDuration": 50,
+        "tags": ["adjectives", "possessive", "physical_description", "personality"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_tall",
+            "word": "Tall",
+            "translation": "Alto/Alta",
+            "examples": ["My brother is very tall"],
+            "tags": ["physical", "appearance"]
+          },
+          {
+            "id": "voc_friendly",
+            "word": "Friendly",
+            "translation": "Amigable",
+            "examples": ["She is a friendly person"],
+            "tags": ["personality"]
+          },
+          {
+            "id": "voc_curly_hair",
+            "word": "Curly hair",
+            "translation": "Pelo rizado",
+            "examples": ["He has curly hair"],
+            "tags": ["appearance"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_adjectives_memory",
+            "title": "Memory: Adjetivos de Descripción",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Tall",
+                  "back": "Alto/Alta"
+                },
+                {
+                  "front": "Friendly",
+                  "back": "Amigable"
+                },
+                {
+                  "front": "Intelligent",
+                  "back": "Inteligente"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_describe_people",
+            "title": "Arrastra para Describir Personas",
+            "config": {
+              "question": "Completa las descripciones físicas",
+              "pairs": [
+                {
+                  "id": "desc1",
+                  "from": "My sister has",
+                  "to": "long brown hair"
+                },
+                {
+                  "id": "desc2",
+                  "from": "He is",
+                  "to": "tall and athletic"
+                },
+                {
+                  "id": "desc3",
+                  "from": "She has",
+                  "to": "blue eyes"
+                }
+              ]
+            }
+          },
+          {
+            "type": "image_selection",
+            "id": "ex3_personality_traits",
+            "title": "Selecciona el Adjetivo Correcto",
+            "config": {
+              "question": "Choose the correct adjective for each description",
+              "options": [
+                {
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758555583/friendly_person_vnr51w.png",
+                  "text": "Always helps others",
+                  "correct": true,
+                  "feedback": "Correct! This describes a friendly person"
+                },
+                {
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758555277/serious_person_mroqiy.png",
+                  "text": "Very organized and punctual",
+                  "correct": false,
+                  "feedback": "This describes a serious person"
+                }
+              ],
+              "multipleSelection": false
+            }
+          }
+        ]
+      }
+    },
+    "A2_weather_seasons": {
+      "id": "A2_weather_seasons",
+      "title": "Clima y Estaciones",
+      "xpReward": 145,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_weather",
+        "xpReward": 145,
+        "estimatedDuration": 40,
+        "tags": ["weather", "seasons", "present_simple", "present_continuous"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_sunny",
+            "word": "Sunny",
+            "translation": "Soleado",
+            "examples": ["It is sunny today"],
+            "tags": ["weather"]
+          },
+          {
+            "id": "voc_raining",
+            "word": "Raining",
+            "translation": "Lloviendo",
+            "examples": ["It is raining right now"],
+            "tags": ["weather", "present_continuous"]
+          },
+          {
+            "id": "voc_winter",
+            "word": "Winter",
+            "translation": "Invierno",
+            "examples": ["I like winter because it snows"],
+            "tags": ["seasons"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_weather_matching",
+            "title": "Empareja Clima y Estaciones",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Summer",
+                  "to": "Hot and sunny"
+                },
+                {
+                  "from": "Winter",
+                  "to": "Cold and snowy"
+                },
+                {
+                  "from": "Spring",
+                  "to": "Rainy and warm"
+                }
+              ]
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex2_weather_verbs",
+            "title": "Verbos del Clima",
+            "config": {
+              "verb": "to rain",
+              "pronouns": ["It"],
+              "tenses": ["Present", "Present Continuous"],
+              "correct": {
+                "Present": "rains",
+                "Present Continuous": "is raining"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_weather_sentences",
+            "title": "Describe el Clima Actual",
+            "config": {
+              "wordBank": [
+                "It", "is", "raining", "snowing", "sunny",
+                "cloudy", "windy", "today", "right", "now",
+                "very", "quite", "a", "little"
+              ],
+              "correctAnswers": [
+                "It is raining today",
+                "It is sunny right now",
+                "It is very windy"
+              ],
+              "requiredWords": ["It", "is"],
               "timeLimit": 90
+            }
+          },
+          {
+            "type": "audio_matching",
+            "id": "ex4_seasons_audio",
+            "title": "Audio: Clima por Estaciones",
+            "config": {
+              "mode": "audio_to_text",
+              "pairs": [
+                {
+                  "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1758555032/hotinsummer_qgpkv8.mp3",
+                  "text": "It's usually hot in summer"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1758555091/snows_in_winter_lhevmb.mp3",
+                  "text": "It often snows in winter"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_multiple_choice": {
+      "id": "A2_multiple_choice",
+      "title": "Preguntas de Opción Múltiple",
+      "xpReward": 155,
+      "metadata": {
+        "level": "A2",
+        "module": "grammar",
+        "unit": "unitA2_questions",
+        "xpReward": 155,
+        "estimatedDuration": 55,
+        "tags": ["comparatives", "superlatives", "questions", "multiple_choice"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_taller",
+            "word": "Taller",
+            "translation": "Más alto",
+            "examples": ["My brother is taller than me"],
+            "tags": ["comparative"]
+          },
+          {
+            "id": "voc_best",
+            "word": "Best",
+            "translation": "El mejor",
+            "examples": ["This is the best restaurant in town"],
+            "tags": ["superlative"]
+          },
+          {
+            "id": "voc_more_interesting",
+            "word": "More interesting",
+            "translation": "Más interesante",
+            "examples": ["The book is more interesting than the movie"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "drag_drop",
+            "id": "ex1_comparatives_drag",
+            "title": "Completa Comparativos",
+            "config": {
+              "question": "Arrastra la forma comparativa correcta",
+              "pairs": [
+                {
+                  "id": "comp1",
+                  "from": "Big →",
+                  "to": "Bigger"
+                },
+                {
+                  "id": "comp2",
+                  "from": "Interesting →",
+                  "to": "More interesting"
+                },
+                {
+                  "id": "comp3",
+                  "from": "Good →",
+                  "to": "Better"
+                }
+              ]
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex2_superlatives_memory",
+            "title": "Memory: Superlativos",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Tall → Superlative",
+                  "back": "Tallest"
+                },
+                {
+                  "front": "Good → Superlative",
+                  "back": "Best"
+                },
+                {
+                  "front": "Beautiful → Superlative",
+                  "back": "Most beautiful"
+                }
+              ]
+            }
+          },
+          {
+            "type": "vocabulary",
+            "id": "ex3_question_categories",
+            "title": "Categoriza Tipos de Preguntas",
+            "config": {
+              "categories": [
+                {
+                  "id": "comparative",
+                  "name": "Comparativas",
+                  "color": "#FF6B6B"
+                },
+                {
+                  "id": "superlative",
+                  "name": "Superlativas",
+                  "color": "#4ECDC4"
+                },
+                {
+                  "id": "general",
+                  "name": "Preguntas Generales",
+                  "color": "#45B7D1"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item1",
+                  "text": "Which is bigger?",
+                  "category": "comparative"
+                },
+                {
+                  "id": "item2",
+                  "text": "What is the best option?",
+                  "category": "superlative"
+                },
+                {
+                  "id": "item3",
+                  "text": "How are you?",
+                  "category": "general"
+                }
+              ]
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_multiple_choice_dialogue",
+            "title": "Simulación: Entrevista con Opciones",
+            "config": {
+              "scenario": "Job interview with multiple choice questions",
+              "dialogues": [
+                {
+                  "character": "interviewer",
+                  "text": "Which of these describes you best?",
+                  "options": [
+                    "I work well in teams",
+                    "I prefer working alone",
+                    "I'm very organized"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "Why do you think you're the best candidate?",
+                  "options": [
+                    "Because I have more experience",
+                    "I learn quickly and adapt well",
+                    "I'm the most motivated person"
+                  ]
+                }
+              ]
             }
           }
         ]
@@ -225,3 +481,4 @@
     }
   }
 }
+
