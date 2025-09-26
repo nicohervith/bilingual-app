@@ -1,284 +1,87 @@
 {
-  
   "lessons": {
-    "A2_future_plans": {
-      "id": "A2_future_plans",
-      "title": "Planes Futuros",
-      "xpReward": 140,
-      "metadata": {
-        "level": "A2",
-        "module": "grammar",
-        "unit": "unitA2_future",
-        "xpReward": 140,
-        "estimatedDuration": 45,
-        "tags": ["future_plans", "going_to", "will", "intentions"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_graduate",
-            "word": "Will graduate",
-            "translation": "Me graduaré",
-            "examples": ["I will graduate next year"],
-            "tags": ["future", "education"]
-          },
-          {
-            "id": "voc_travel_plan",
-            "word": "Going to travel",
-            "translation": "Voy a viajar",
-            "examples": ["I am going to travel to Europe"],
-            "tags": ["future", "plans"]
-          },
-          {
-            "id": "voc_start_business",
-            "word": "Will start a business",
-            "translation": "Empezaré un negocio",
-            "examples": ["She will start her own business"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_future_forms",
-            "title": "Diferencia entre Will y Going To",
-            "config": {
-              "pairs": [
-                {
-                  "from": "I will study medicine",
-                  "to": "Decisión espontánea"
-                },
-                {
-                  "from": "I am going to visit my family",
-                  "to": "Plan previo"
-                },
-                {
-                  "from": "It will rain tomorrow",
-                  "to": "Predicción"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_future_sentences",
-            "title": "Construye Oraciones Futuras",
-            "config": {
-              "wordBank": [
-                "I", "will", "am", "going", "to",
-                "study", "travel", "work", "buy",
-                "next", "year", "month", "in", "the",
-                "a", "car", "house", "university"
-              ],
-              "correctAnswers": [
-                "I will study at the university",
-                "I am going to travel next month",
-                "I will buy a car next year"
-              ],
-              "requiredWords": ["I"],
-              "timeLimit": 120
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_future_plans_dialogue",
-            "title": "Diálogo: Planes Futuros",
-            "config": {
-              "scenario": "Talking about future plans with a friend",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "What are your plans for next year?",
-                  "options": ["I'm going to study abroad", "I will look for a new job"]
-                },
-                {
-                  "character": "user",
-                  "text": "That sounds great! Where are you going to study?",
-                  "options": ["In Canada", "I'm not sure yet"]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_describing_people": {
-      "id": "A2_describing_people",
-      "title": "Describir Personas",
-      "xpReward": 150,
+    "A2_travel_vacations": {
+      "id": "A2_travel_vacations",
+      "title": "Viajes y Vacaciones",
+      "xpReward": 160,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_descriptions",
-        "xpReward": 150,
+        "unit": "unitA2_travel",
+        "xpReward": 160,
         "estimatedDuration": 50,
-        "tags": ["adjectives", "possessive", "physical_description", "personality"]
+        "tags": ["present_perfect", "travel", "vacations", "holiday_activities"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_tall",
-            "word": "Tall",
-            "translation": "Alto/Alta",
-            "examples": ["My brother is very tall"],
-            "tags": ["physical", "appearance"]
+            "id": "voc_visited_countries",
+            "word": "Have visited",
+            "translation": "He visitado",
+            "examples": ["I have visited three countries"],
+            "tags": ["present_perfect", "travel"]
           },
           {
-            "id": "voc_friendly",
-            "word": "Friendly",
-            "translation": "Amigable",
-            "examples": ["She is a friendly person"],
-            "tags": ["personality"]
+            "id": "voc_beach_vacation",
+            "word": "Beach vacation",
+            "translation": "Vacaciones en la playa",
+            "examples": ["We have been on a beach vacation"],
+            "tags": ["vacations", "activities"]
           },
           {
-            "id": "voc_curly_hair",
-            "word": "Curly hair",
-            "translation": "Pelo rizado",
-            "examples": ["He has curly hair"],
-            "tags": ["appearance"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_adjectives_memory",
-            "title": "Memory: Adjetivos de Descripción",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Tall",
-                  "back": "Alto/Alta"
-                },
-                {
-                  "front": "Friendly",
-                  "back": "Amigable"
-                },
-                {
-                  "front": "Intelligent",
-                  "back": "Inteligente"
-                }
-              ]
-            }
+            "id": "voc_suitcase",
+            "word": "Suitcase",
+            "translation": "Maleta",
+            "examples": ["I have packed my suitcase"],
+            "tags": ["travel_items"]
           },
           {
-            "type": "drag_drop",
-            "id": "ex2_describe_people",
-            "title": "Arrastra para Describir Personas",
-            "config": {
-              "question": "Completa las descripciones físicas",
-              "pairs": [
-                {
-                  "id": "desc1",
-                  "from": "My sister has",
-                  "to": "long brown hair"
-                },
-                {
-                  "id": "desc2",
-                  "from": "He is",
-                  "to": "tall and athletic"
-                },
-                {
-                  "id": "desc3",
-                  "from": "She has",
-                  "to": "blue eyes"
-                }
-              ]
-            }
-          },
-          {
-            "type": "image_selection",
-            "id": "ex3_personality_traits",
-            "title": "Selecciona el Adjetivo Correcto",
-            "config": {
-              "question": "Choose the correct adjective for each description",
-              "options": [
-                {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758555583/friendly_person_vnr51w.png",
-                  "text": "Always helps others",
-                  "correct": true,
-                  "feedback": "Correct! This describes a friendly person"
-                },
-                {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758555277/serious_person_mroqiy.png",
-                  "text": "Very organized and punctual",
-                  "correct": false,
-                  "feedback": "This describes a serious person"
-                }
-              ],
-              "multipleSelection": false
-            }
-          }
-        ]
-      }
-    },
-    "A2_weather_seasons": {
-      "id": "A2_weather_seasons",
-      "title": "Clima y Estaciones",
-      "xpReward": 145,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_weather",
-        "xpReward": 145,
-        "estimatedDuration": 40,
-        "tags": ["weather", "seasons", "present_simple", "present_continuous"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_sunny",
-            "word": "Sunny",
-            "translation": "Soleado",
-            "examples": ["It is sunny today"],
-            "tags": ["weather"]
-          },
-          {
-            "id": "voc_raining",
-            "word": "Raining",
-            "translation": "Lloviendo",
-            "examples": ["It is raining right now"],
-            "tags": ["weather", "present_continuous"]
-          },
-          {
-            "id": "voc_winter",
-            "word": "Winter",
-            "translation": "Invierno",
-            "examples": ["I like winter because it snows"],
-            "tags": ["seasons"]
+            "id": "voc_passport",
+            "word": "Passport",
+            "translation": "Pasaporte",
+            "examples": ["Don't forget your passport!"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_weather_matching",
-            "title": "Empareja Clima y Estaciones",
+            "id": "ex1_travel_vocabulary",
+            "title": "Vocabulario de Viajes",
             "config": {
               "pairs": [
                 {
-                  "from": "Summer",
-                  "to": "Hot and sunny"
+                  "from": "Suitcase",
+                  "to": "Maleta"
                 },
                 {
-                  "from": "Winter",
-                  "to": "Cold and snowy"
+                  "from": "Passport",
+                  "to": "Pasaporte"
                 },
                 {
-                  "from": "Spring",
-                  "to": "Rainy and warm"
+                  "from": "Hotel reservation",
+                  "to": "Reserva de hotel"
+                },
+                {
+                  "from": "Flight ticket",
+                  "to": "Boleto de avión"
                 }
               ]
             }
           },
           {
             "type": "conjugation",
-            "id": "ex2_weather_verbs",
-            "title": "Verbos del Clima",
+            "id": "ex2_present_perfect",
+            "title": "Presente Perfecto - Viajes",
             "config": {
-              "verb": "to rain",
-              "pronouns": ["It"],
-              "tenses": ["Present", "Present Continuous"],
+              "verb": "to travel",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": ["Present Perfect"],
               "correct": {
-                "Present": "rains",
-                "Present Continuous": "is raining"
+                "I": "have traveled",
+                "You": "have traveled",
+                "He": "has traveled",
+                "We": "have traveled",
+                "They": "have traveled"
               },
               "hints": {
                 "showBaseForm": true
@@ -287,37 +90,40 @@
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_weather_sentences",
-            "title": "Describe el Clima Actual",
+            "id": "ex3_vacation_experiences",
+            "title": "Experiencias de Vacaciones",
             "config": {
               "wordBank": [
-                "It", "is", "raining", "snowing", "sunny",
-                "cloudy", "windy", "today", "right", "now",
-                "very", "quite", "a", "little"
+                "I", "have", "has", "visited", "been",
+                "to", "never", "already", "just",
+                "Spain", "France", "the beach", "mountains",
+                "this", "year", "last", "summer"
               ],
               "correctAnswers": [
-                "It is raining today",
-                "It is sunny right now",
-                "It is very windy"
+                "I have been to Spain",
+                "She has visited France",
+                "We have just returned from vacation"
               ],
-              "requiredWords": ["It", "is"],
-              "timeLimit": 90
+              "requiredWords": ["have", "has"],
+              "timeLimit": 120
             }
           },
           {
-            "type": "audio_matching",
-            "id": "ex4_seasons_audio",
-            "title": "Audio: Clima por Estaciones",
+            "type": "dialogue_simulation",
+            "id": "ex4_travel_planning",
+            "title": "Planificando un Viaje",
             "config": {
-              "mode": "audio_to_text",
-              "pairs": [
+              "scenario": "Planning a vacation with friends",
+              "dialogues": [
                 {
-                  "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1758555032/hotinsummer_qgpkv8.mp3",
-                  "text": "It's usually hot in summer"
+                  "character": "friend",
+                  "text": "Where have you traveled before?",
+                  "options": ["I have been to Mexico", "I've never traveled abroad"]
                 },
                 {
-                  "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1758555091/snows_in_winter_lhevmb.mp3",
-                  "text": "It often snows in winter"
+                  "character": "user",
+                  "text": "What should we pack for the trip?",
+                  "options": ["We should bring warm clothes", "Don't forget swimsuits"]
                 }
               ]
             }
@@ -325,153 +131,419 @@
         ]
       }
     },
-    "A2_multiple_choice": {
-      "id": "A2_multiple_choice",
-      "title": "Preguntas de Opción Múltiple",
+    "A2_abilities_skills": {
+      "id": "A2_abilities_skills",
+      "title": "Habilidades y Capacidades",
       "xpReward": 155,
       "metadata": {
         "level": "A2",
         "module": "grammar",
-        "unit": "unitA2_questions",
+        "unit": "unitA2_abilities",
         "xpReward": 155,
-        "estimatedDuration": 55,
-        "tags": ["comparatives", "superlatives", "questions", "multiple_choice"]
+        "estimatedDuration": 45,
+        "tags": ["modal_verbs", "can", "could", "abilities", "skills"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_taller",
-            "word": "Taller",
-            "translation": "Más alto",
-            "examples": ["My brother is taller than me"],
-            "tags": ["comparative"]
+            "id": "voc_swim",
+            "word": "Can swim",
+            "translation": "Puedo nadar",
+            "examples": ["I can swim very well"],
+            "tags": ["abilities", "can"]
           },
           {
-            "id": "voc_best",
-            "word": "Best",
-            "translation": "El mejor",
-            "examples": ["This is the best restaurant in town"],
-            "tags": ["superlative"]
+            "id": "voc_play_instrument",
+            "word": "Could play",
+            "translation": "Podía tocar",
+            "examples": ["I could play piano when I was young"],
+            "tags": ["past_ability", "could"]
           },
           {
-            "id": "voc_more_interesting",
-            "word": "More interesting",
-            "translation": "Más interesante",
-            "examples": ["The book is more interesting than the movie"]
+            "id": "voc_speak_languages",
+            "word": "Can speak",
+            "translation": "Puedo hablar",
+            "examples": ["She can speak three languages"]
+          },
+          {
+            "id": "voc_cook",
+            "word": "Could cook",
+            "translation": "Podía cocinar",
+            "examples": ["He could cook when he lived alone"]
           }
         ],
         "exercises": [
           {
-            "type": "drag_drop",
-            "id": "ex1_comparatives_drag",
-            "title": "Completa Comparativos",
-            "config": {
-              "question": "Arrastra la forma comparativa correcta",
-              "pairs": [
-                {
-                  "id": "comp1",
-                  "from": "Big →",
-                  "to": "Bigger"
-                },
-                {
-                  "id": "comp2",
-                  "from": "Interesting →",
-                  "to": "More interesting"
-                },
-                {
-                  "id": "comp3",
-                  "from": "Good →",
-                  "to": "Better"
-                }
-              ]
-            }
-          },
-          {
             "type": "memory_game",
-            "id": "ex2_superlatives_memory",
-            "title": "Memory: Superlativos",
+            "id": "ex1_abilities_memory",
+            "title": "Memory: Habilidades",
             "config": {
               "pairs": [
                 {
-                  "front": "Tall → Superlative",
-                  "back": "Tallest"
+                  "front": "Can swim",
+                  "back": "Puedo nadar"
                 },
                 {
-                  "front": "Good → Superlative",
-                  "back": "Best"
+                  "front": "Could play",
+                  "back": "Podía tocar"
                 },
                 {
-                  "front": "Beautiful → Superlative",
-                  "back": "Most beautiful"
+                  "front": "Can speak",
+                  "back": "Puedo hablar"
                 }
               ]
             }
           },
           {
-            "type": "vocabulary",
-            "id": "ex3_question_categories",
-            "title": "Categoriza Tipos de Preguntas",
+            "type": "drag_drop",
+            "id": "ex2_modal_verbs",
+            "title": "Can vs Could",
             "config": {
-              "categories": [
+              "question": "Arrastra el verbo modal correcto",
+              "pairs": [
                 {
-                  "id": "comparative",
-                  "name": "Comparativas",
-                  "color": "#FF6B6B"
+                  "id": "modal1",
+                  "from": "I ___ swim when I was five",
+                  "to": "could"
                 },
                 {
-                  "id": "superlative",
-                  "name": "Superlativas",
-                  "color": "#4ECDC4"
+                  "id": "modal2",
+                  "from": "She ___ speak French very well",
+                  "to": "can"
                 },
                 {
-                  "id": "general",
-                  "name": "Preguntas Generales",
-                  "color": "#45B7D1"
+                  "id": "modal3",
+                  "from": "They ___ play soccer now",
+                  "to": "can"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_abilities_sentences",
+            "title": "Forma Oraciones con Can/Could",
+            "config": {
+              "wordBank": [
+                "I", "you", "he", "she", "can", "could",
+                "swim", "dance", "sing", "cook", "drive",
+                "when", "I", "was", "young", "now", "very", "well"
+              ],
+              "correctAnswers": [
+                "I can swim very well",
+                "She could dance when she was young",
+                "He can drive now"
+              ],
+              "requiredWords": ["can", "could"],
+              "timeLimit": 100
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_skills_interview",
+            "title": "Entrevista de Habilidades",
+            "config": {
+              "scenario": "Job interview talking about skills",
+              "dialogues": [
+                {
+                  "character": "interviewer",
+                  "text": "What languages can you speak?",
+                  "options": ["I can speak English and Spanish", "I could speak French in school"]
+                },
+                {
+                  "character": "user",
+                  "text": "What software can you use?",
+                  "options": ["I can use Microsoft Office", "I could learn quickly"]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_family_relationships": {
+      "id": "A2_family_relationships",
+      "title": "Familia y Relaciones",
+      "xpReward": 150,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_family",
+        "xpReward": 150,
+        "estimatedDuration": 48,
+        "tags": ["adverbs_frequency", "family", "relationships", "family_vocabulary"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_always_visit",
+            "word": "Always visit",
+            "translation": "Siempre visito",
+            "examples": ["I always visit my parents on weekends"],
+            "tags": ["adverbs", "family"]
+          },
+          {
+            "id": "voc_often_call",
+            "word": "Often call",
+            "translation": "A menudo llamo",
+            "examples": ["We often call our relatives"],
+            "tags": ["adverbs", "communication"]
+          },
+          {
+            "id": "voc_siblings",
+            "word": "Siblings",
+            "translation": "Hermanos",
+            "examples": ["I have two siblings"]
+          },
+          {
+            "id": "voc_relatives",
+            "word": "Relatives",
+            "translation": "Parientes",
+            "examples": ["We visit our relatives during holidays"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_family_vocabulary",
+            "title": "Vocabulario Familiar",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Siblings",
+                  "to": "Hermanos"
+                },
+                {
+                  "from": "Relatives",
+                  "to": "Parientes"
+                },
+                {
+                  "from": "Parents",
+                  "to": "Padres"
+                },
+                {
+                  "from": "Cousins",
+                  "to": "Primos"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_adverbs_frequency",
+            "title": "Adverbios de Frecuencia",
+            "config": {
+              "question": "Ordena los adverbios de frecuencia",
+              "pairs": [
+                {
+                  "id": "adv1",
+                  "from": "___ I visit my family",
+                  "to": "Always"
+                },
+                {
+                  "id": "adv2",
+                  "from": "I ___ call my sister",
+                  "to": "often"
+                },
+                {
+                  "id": "adv3",
+                  "from": "We ___ see our cousins",
+                  "to": "sometimes"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_family_routines",
+            "title": "Rutinas Familiares",
+            "config": {
+              "wordBank": [
+                "I", "always", "often", "sometimes", "never",
+                "visit", "call", "see", "my", "family",
+                "parents", "siblings", "relatives", "on",
+                "weekends", "Sundays", "holidays"
+              ],
+              "correctAnswers": [
+                "I always visit my parents on weekends",
+                "We often call our relatives",
+                "They sometimes see their cousins"
+              ],
+              "requiredWords": ["always", "often", "sometimes"],
+              "timeLimit": 110
+            }
+          },
+          {
+            "type": "image_selection",
+            "id": "ex4_family_relationships",
+            "title": "Selecciona la Descripción Correcta",
+            "config": {
+              "question": "Choose the correct family relationship",
+              "options": [
+                {
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758899883/parents_with_their_childrens_ubz7ol.png",
+                  "text": "Parents with their children",
+                  "correct": true,
+                  "feedback": "Correct! This shows parents and children"
+                },
+                {
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758900185/siblings_z6jtuk.png",
+                  "text": "Brothers and sisters together",
+                  "correct": false,
+                  "feedback": "This shows siblings, not parents"
                 }
               ],
-              "items": [
+              "multipleSelection": false
+            }
+          }
+        ]
+      }
+    },
+    "A2_food_restaurants": {
+      "id": "A2_food_restaurants",
+      "title": "Comida y Restaurantes",
+      "xpReward": 165,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_food",
+        "xpReward": 165,
+        "estimatedDuration": 52,
+        "tags": ["modal_verbs", "must", "should", "food", "restaurants", "ordering"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_should_try",
+            "word": "Should try",
+            "translation": "Deberías probar",
+            "examples": ["You should try the pasta"],
+            "tags": ["should", "recommendations"]
+          },
+          {
+            "id": "voc_must_taste",
+            "word": "Must taste",
+            "translation": "Debe probar",
+            "examples": ["You must taste this dessert"],
+            "tags": ["must", "strong_recommendation"]
+          },
+          {
+            "id": "voc_appetizer",
+            "word": "Appetizer",
+            "translation": "Entrada",
+            "examples": ["We should order an appetizer first"]
+          },
+          {
+            "id": "voc_main_course",
+            "word": "Main course",
+            "translation": "Plato principal",
+            "examples": ["The main course was delicious"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_food_vocabulary",
+            "title": "Memory: Comida y Restaurantes",
+            "config": {
+              "pairs": [
                 {
-                  "id": "item1",
-                  "text": "Which is bigger?",
-                  "category": "comparative"
+                  "front": "Appetizer",
+                  "back": "Entrada"
                 },
                 {
-                  "id": "item2",
-                  "text": "What is the best option?",
-                  "category": "superlative"
+                  "front": "Main course",
+                  "back": "Plato principal"
                 },
                 {
-                  "id": "item3",
-                  "text": "How are you?",
-                  "category": "general"
+                  "front": "Dessert",
+                  "back": "Postre"
+                },
+                {
+                  "front": "Menu",
+                  "back": "Menú"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_modal_verbs_food",
+            "title": "Must vs Should en Restaurantes",
+            "config": {
+              "question": "Arrastra el verbo modal correcto",
+              "pairs": [
+                {
+                  "id": "modal1",
+                  "from": "You ___ try the special dish",
+                  "to": "should"
+                },
+                {
+                  "id": "modal2",
+                  "from": "We ___ make a reservation",
+                  "to": "must"
+                },
+                {
+                  "id": "modal3",
+                  "from": "They ___ taste this wine",
+                  "to": "must"
                 }
               ]
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_multiple_choice_dialogue",
-            "title": "Simulación: Entrevista con Opciones",
+            "id": "ex3_restaurant_ordering",
+            "title": "Simulación: Pedir en Restaurante",
             "config": {
-              "scenario": "Job interview with multiple choice questions",
+              "scenario": "Ordering food at a restaurant",
               "dialogues": [
                 {
-                  "character": "interviewer",
-                  "text": "Which of these describes you best?",
-                  "options": [
-                    "I work well in teams",
-                    "I prefer working alone",
-                    "I'm very organized"
-                  ]
+                  "character": "waiter",
+                  "text": "Are you ready to order?",
+                  "options": ["Yes, I'll have the pasta", "Could you recommend something?"]
                 },
                 {
                   "character": "user",
-                  "text": "Why do you think you're the best candidate?",
-                  "options": [
-                    "Because I have more experience",
-                    "I learn quickly and adapt well",
-                    "I'm the most motivated person"
-                  ]
+                  "text": "What should I try for dessert?",
+                  "options": ["You must try the chocolate cake", "The ice cream is excellent"]
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex4_restaurant_recommendations",
+            "title": "Recomendaciones en Restaurantes",
+            "config": {
+              "wordBank": [
+                "You", "should", "must", "try", "taste",
+                "the", "pasta", "salad", "dessert", "wine",
+                "this", "is", "delicious", "excellent", "very", "good"
+              ],
+              "correctAnswers": [
+                "You should try the pasta",
+                "You must taste this dessert",
+                "This wine is excellent"
+              ],
+              "requiredWords": ["should", "must"],
+              "timeLimit": 100
+            }
+          },
+          {
+            "type": "audio_matching",
+            "id": "ex5_food_orders",
+            "title": "Audio: Pedidos de Comida",
+            "config": {
+              "mode": "audio_to_text",
+              "pairs": [
+                {
+                  "audio": "audio_order_pasta.mp3",
+                  "text": "I'll have the pasta with salad"
+                },
+                {
+                  "audio": "audio_recommendation.mp3",
+                  "text": "You should try our special dessert"
                 }
               ]
             }
@@ -481,4 +553,3 @@
     }
   }
 }
-
