@@ -1,87 +1,254 @@
 {
   "lessons": {
-    "A2_travel_vacations": {
-      "id": "A2_travel_vacations",
-      "title": "Viajes y Vacaciones",
-      "xpReward": 160,
+    "A2_health_symptoms": {
+      "id": "A2_health_symptoms",
+      "title": "Salud y Síntomas",
+      "xpReward": 170,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_travel",
-        "xpReward": 160,
-        "estimatedDuration": 50,
-        "tags": ["present_perfect", "travel", "vacations", "holiday_activities"]
+        "unit": "unitA2_health",
+        "xpReward": 170,
+        "estimatedDuration": 55,
+        "tags": ["modal_verbs", "should", "shouldnt", "health", "medical", "symptoms"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_visited_countries",
-            "word": "Have visited",
-            "translation": "He visitado",
-            "examples": ["I have visited three countries"],
-            "tags": ["present_perfect", "travel"]
+            "id": "voc_should_rest",
+            "word": "Should rest",
+            "translation": "Debería descansar",
+            "examples": ["You should rest if you're sick"],
+            "tags": ["should", "advice"]
           },
           {
-            "id": "voc_beach_vacation",
-            "word": "Beach vacation",
-            "translation": "Vacaciones en la playa",
-            "examples": ["We have been on a beach vacation"],
-            "tags": ["vacations", "activities"]
+            "id": "voc_shouldnt_smoke",
+            "word": "Shouldn't smoke",
+            "translation": "No debería fumar",
+            "examples": ["You shouldn't smoke when you're sick"],
+            "tags": ["shouldnt", "prohibition"]
           },
           {
-            "id": "voc_suitcase",
-            "word": "Suitcase",
-            "translation": "Maleta",
-            "examples": ["I have packed my suitcase"],
-            "tags": ["travel_items"]
+            "id": "voc_headache",
+            "word": "Headache",
+            "translation": "Dolor de cabeza",
+            "examples": ["I have a headache"],
+            "tags": ["symptoms"]
           },
           {
-            "id": "voc_passport",
-            "word": "Passport",
-            "translation": "Pasaporte",
-            "examples": ["Don't forget your passport!"]
+            "id": "voc_fever",
+            "word": "Fever",
+            "translation": "Fiebre",
+            "examples": ["She has a fever and should see a doctor"]
+          },
+          {
+            "id": "voc_medicine",
+            "word": "Medicine",
+            "translation": "Medicina",
+            "examples": ["You should take this medicine"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_travel_vocabulary",
-            "title": "Vocabulario de Viajes",
+            "id": "ex1_health_vocabulary",
+            "title": "Vocabulario Médico",
             "config": {
               "pairs": [
                 {
-                  "from": "Suitcase",
-                  "to": "Maleta"
+                  "from": "Headache",
+                  "to": "Dolor de cabeza"
                 },
                 {
-                  "from": "Passport",
-                  "to": "Pasaporte"
+                  "from": "Fever",
+                  "to": "Fiebre"
                 },
                 {
-                  "from": "Hotel reservation",
-                  "to": "Reserva de hotel"
+                  "from": "Medicine",
+                  "to": "Medicina"
                 },
                 {
-                  "from": "Flight ticket",
-                  "to": "Boleto de avión"
+                  "from": "Doctor",
+                  "to": "Doctor/Doctora"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_health_advice",
+            "title": "Consejos de Salud: Should/Shouldn't",
+            "config": {
+              "question": "Arrastra el consejo médico correcto",
+              "pairs": [
+                {
+                  "id": "advice1",
+                  "from": "If you have a fever, you ___ see a doctor",
+                  "to": "should"
+                },
+                {
+                  "id": "advice2",
+                  "from": "You ___ smoke when you're sick",
+                  "to": "shouldn't"
+                },
+                {
+                  "id": "advice3",
+                  "from": "You ___ drink more water",
+                  "to": "should"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_medical_sentences",
+            "title": "Forma Consejos Médicos",
+            "config": {
+              "wordBank": [
+                "You", "should", "shouldn't", "see", "take",
+                "drink", "a", "doctor", "medicine", "water",
+                "rest", "if", "you", "have", "fever", "headache"
+              ],
+              "correctAnswers": [
+                "You should see a doctor",
+                "You shouldn't smoke",
+                "You should drink more water"
+              ],
+              "requiredWords": ["should", "shouldn't"],
+              "timeLimit": 120
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_doctor_visit",
+            "title": "Simulación: Visita al Doctor",
+            "config": {
+              "scenario": "Talking to a doctor about symptoms",
+              "dialogues": [
+                {
+                  "character": "doctor",
+                  "text": "What symptoms do you have?",
+                  "options": ["I have a headache and fever", "I feel very tired"]
+                },
+                {
+                  "character": "user",
+                  "text": "What should I do?",
+                  "options": ["You should rest and drink water", "You shouldn't go to work today"]
+                }
+              ]
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex5_symptoms_memory",
+            "title": "Memory: Síntomas y Consejos",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Headache",
+                  "back": "You should rest"
+                },
+                {
+                  "front": "Fever",
+                  "back": "You should see a doctor"
+                },
+                {
+                  "front": "Cough",
+                  "back": "You shouldn't smoke"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_work_professions": {
+      "id": "A2_work_professions",
+      "title": "Trabajo y Profesiones",
+      "xpReward": 165,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_work",
+        "xpReward": 165,
+        "estimatedDuration": 50,
+        "tags": ["present_continuous", "work", "professions", "jobs", "careers"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_working",
+            "word": "Working",
+            "translation": "Trabajando",
+            "examples": ["I am working on a new project"],
+            "tags": ["present_continuous", "work"]
+          },
+          {
+            "id": "voc_meeting",
+            "word": "Having a meeting",
+            "translation": "Teniendo una reunión",
+            "examples": ["They are having a meeting right now"],
+            "tags": ["present_continuous", "work_activities"]
+          },
+          {
+            "id": "voc_teacher",
+            "word": "Teacher",
+            "translation": "Maestro/Profesor",
+            "examples": ["She is a teacher at the school"]
+          },
+          {
+            "id": "voc_engineer",
+            "word": "Engineer",
+            "translation": "Ingeniero/Ingeniera",
+            "examples": ["He is working as an engineer"]
+          },
+          {
+            "id": "voc_office",
+            "word": "Office",
+            "translation": "Oficina",
+            "examples": ["I am working in the office today"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_professions_memory",
+            "title": "Memory: Profesiones",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Teacher",
+                  "back": "Maestro/Profesor"
+                },
+                {
+                  "front": "Engineer",
+                  "back": "Ingeniero/Ingeniera"
+                },
+                {
+                  "front": "Doctor",
+                  "back": "Doctor/Doctora"
+                },
+                {
+                  "front": "Nurse",
+                  "back": "Enfermero/Enfermera"
                 }
               ]
             }
           },
           {
             "type": "conjugation",
-            "id": "ex2_present_perfect",
-            "title": "Presente Perfecto - Viajes",
+            "id": "ex2_work_activities",
+            "title": "Actividades Laborales en Presente Continuo",
             "config": {
-              "verb": "to travel",
+              "verb": "to work",
               "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Present Perfect"],
+              "tenses": ["Present Continuous"],
               "correct": {
-                "I": "have traveled",
-                "You": "have traveled",
-                "He": "has traveled",
-                "We": "have traveled",
-                "They": "have traveled"
+                "I": "am working",
+                "You": "are working",
+                "He": "is working",
+                "We": "are working",
+                "They": "are working"
               },
               "hints": {
                 "showBaseForm": true
@@ -90,22 +257,315 @@
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_vacation_experiences",
-            "title": "Experiencias de Vacaciones",
+            "id": "ex3_work_sentences",
+            "title": "Describe tu Trabajo",
             "config": {
               "wordBank": [
-                "I", "have", "has", "visited", "been",
-                "to", "never", "already", "just",
-                "Spain", "France", "the beach", "mountains",
-                "this", "year", "last", "summer"
+                "I", "am", "working", "as", "a",
+                "teacher", "engineer", "doctor", "nurse",
+                "in", "an", "office", "hospital", "school",
+                "today", "right", "now", "this", "week"
               ],
               "correctAnswers": [
-                "I have been to Spain",
-                "She has visited France",
-                "We have just returned from vacation"
+                "I am working as a teacher",
+                "He is working in an office",
+                "They are working at the hospital"
               ],
-              "requiredWords": ["have", "has"],
-              "timeLimit": 120
+              "requiredWords": ["am", "is", "are"],
+              "timeLimit": 110
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_job_interview",
+            "title": "Simulación: Entrevista de Trabajo",
+            "config": {
+              "scenario": "Job interview about work experience",
+              "dialogues": [
+                {
+                  "character": "interviewer",
+                  "text": "What are you currently working on?",
+                  "options": ["I'm working on a software project", "I'm teaching at a school"]
+                },
+                {
+                  "character": "user",
+                  "text": "Where do you see yourself in five years?",
+                  "options": ["I'm hoping to be a manager", "I want to continue learning"]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_recent_past": {
+      "id": "A2_recent_past",
+      "title": "Pasado Reciente",
+      "xpReward": 175,
+      "metadata": {
+        "level": "A2",
+        "module": "grammar",
+        "unit": "unitA2_recent_past",
+        "xpReward": 175,
+        "estimatedDuration": 58,
+        "tags": ["present_perfect", "past_simple", "recent_past", "time_expressions"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_just_finished",
+            "word": "Just finished",
+            "translation": "Acabo de terminar",
+            "examples": ["I have just finished my work"],
+            "tags": ["present_perfect", "recent"]
+          },
+          {
+            "id": "voc_already_seen",
+            "word": "Already seen",
+            "translation": "Ya he visto",
+            "examples": ["I have already seen that movie"],
+            "tags": ["present_perfect", "experience"]
+          },
+          {
+            "id": "voc_yesterday_went",
+            "word": "Went yesterday",
+            "translation": "Fui ayer",
+            "examples": ["I went to the store yesterday"],
+            "tags": ["past_simple", "specific_time"]
+          },
+          {
+            "id": "voc_last_week",
+            "word": "Last week",
+            "translation": "La semana pasada",
+            "examples": ["We traveled last week"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_time_expressions",
+            "title": "Expresiones de Tiempo",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Just",
+                  "to": "Usado con Present Perfect"
+                },
+                {
+                  "from": "Yesterday",
+                  "to": "Usado con Past Simple"
+                },
+                {
+                  "from": "Already",
+                  "to": "Usado con Present Perfect"
+                },
+                {
+                  "from": "Last week",
+                  "to": "Usado con Past Simple"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_present_vs_past",
+            "title": "Present Perfect vs Past Simple",
+            "config": {
+              "question": "Elige el tiempo verbal correcto",
+              "pairs": [
+                {
+                  "id": "tense1",
+                  "from": "I ___ just finished my homework",
+                  "to": "have"
+                },
+                {
+                  "id": "tense2",
+                  "from": "She ___ to Paris last year",
+                  "to": "went"
+                },
+                {
+                  "id": "tense3",
+                  "from": "They ___ already seen that movie",
+                  "to": "have"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_recent_actions",
+            "title": "Acciones Recientes vs Pasadas",
+            "config": {
+              "wordBank": [
+                "I", "have", "has", "went", "seen",
+                "finished", "just", "already", "yesterday",
+                "last", "week", "year", "to", "the", "store"
+              ],
+              "correctAnswers": [
+                "I have just finished my work",
+                "She went to Paris last year",
+                "They have already seen that movie"
+              ],
+              "requiredWords": ["have", "has", "went"],
+              "timeLimit": 130
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_recent_experiences",
+            "title": "Hablando de Experiencias Recientes",
+            "config": {
+              "scenario": "Talking about recent and past experiences",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "What have you done recently?",
+                  "options": ["I've just started a new job", "I already finished my course"]
+                },
+                {
+                  "character": "user",
+                  "text": "What did you do last weekend?",
+                  "options": ["I went to the beach", "I visited my family"]
+                }
+              ]
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex5_verb_tenses",
+            "title": "Conjugación: Present Perfect vs Past Simple",
+            "config": {
+              "verb": "to see",
+              "pronouns": ["I", "You", "He", "We"],
+              "tenses": ["Present Perfect", "Past Simple"],
+              "correct": {
+                "Present Perfect": "have seen",
+                "Past Simple": "saw"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    "A2_transportation": {
+      "id": "A2_transportation",
+      "title": "Medios de Transporte",
+      "xpReward": 160,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_transport",
+        "xpReward": 160,
+        "estimatedDuration": 52,
+        "tags": ["modal_verbs", "can", "could", "transportation", "travel", "vehicles"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_can_take",
+            "word": "Can take",
+            "translation": "Puedo tomar",
+            "examples": ["You can take the bus to the city"],
+            "tags": ["can", "transportation"]
+          },
+          {
+            "id": "voc_could_drive",
+            "word": "Could drive",
+            "translation": "Podría conducir",
+            "examples": ["We could drive to the beach"],
+            "tags": ["could", "suggestion"]
+          },
+          {
+            "id": "voc_bus",
+            "word": "Bus",
+            "translation": "Autobús",
+            "examples": ["The bus arrives at 8:00 AM"]
+          },
+          {
+            "id": "voc_train",
+            "word": "Train",
+            "translation": "Tren",
+            "examples": ["The train is faster than the bus"]
+          },
+          {
+            "id": "voc_subway",
+            "word": "Subway",
+            "translation": "Metro",
+            "examples": ["You can take the subway to downtown"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_transport_memory",
+            "title": "Memory: Medios de Transporte",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Bus",
+                  "back": "Autobús"
+                },
+                {
+                  "front": "Train",
+                  "back": "Tren"
+                },
+                {
+                  "front": "Subway",
+                  "back": "Metro"
+                },
+                {
+                  "front": "Taxi",
+                  "back": "Taxi"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_transport_suggestions",
+            "title": "Sugerencias de Transporte: Can/Could",
+            "config": {
+              "question": "Completa las sugerencias de transporte",
+              "pairs": [
+                {
+                  "id": "sugg1",
+                  "from": "You ___ take the bus to the city",
+                  "to": "can"
+                },
+                {
+                  "id": "sugg2",
+                  "from": "We ___ drive to the beach",
+                  "to": "could"
+                },
+                {
+                  "id": "sugg3",
+                  "from": "She ___ take the train tomorrow",
+                  "to": "can"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_transport_options",
+            "title": "Opciones de Transporte",
+            "config": {
+              "wordBank": [
+                "I", "you", "we", "can", "could",
+                "take", "drive", "the", "bus", "train",
+                "subway", "taxi", "to", "city", "beach",
+                "airport", "tomorrow", "today"
+              ],
+              "correctAnswers": [
+                "You can take the bus to the city",
+                "We could drive to the beach",
+                "I can take the train tomorrow"
+              ],
+              "requiredWords": ["can", "could"],
+              "timeLimit": 115
             }
           },
           {
@@ -113,439 +573,42 @@
             "id": "ex4_travel_planning",
             "title": "Planificando un Viaje",
             "config": {
-              "scenario": "Planning a vacation with friends",
+              "scenario": "Planning how to get to different places",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "Where have you traveled before?",
-                  "options": ["I have been to Mexico", "I've never traveled abroad"]
+                  "text": "How can we get to the airport?",
+                  "options": ["We can take a taxi", "We could take the airport bus"]
                 },
                 {
                   "character": "user",
-                  "text": "What should we pack for the trip?",
-                  "options": ["We should bring warm clothes", "Don't forget swimsuits"]
+                  "text": "What's the best way to get downtown?",
+                  "options": ["You can take the subway", "The train is faster"]
                 }
               ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_abilities_skills": {
-      "id": "A2_abilities_skills",
-      "title": "Habilidades y Capacidades",
-      "xpReward": 155,
-      "metadata": {
-        "level": "A2",
-        "module": "grammar",
-        "unit": "unitA2_abilities",
-        "xpReward": 155,
-        "estimatedDuration": 45,
-        "tags": ["modal_verbs", "can", "could", "abilities", "skills"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_swim",
-            "word": "Can swim",
-            "translation": "Puedo nadar",
-            "examples": ["I can swim very well"],
-            "tags": ["abilities", "can"]
-          },
-          {
-            "id": "voc_play_instrument",
-            "word": "Could play",
-            "translation": "Podía tocar",
-            "examples": ["I could play piano when I was young"],
-            "tags": ["past_ability", "could"]
-          },
-          {
-            "id": "voc_speak_languages",
-            "word": "Can speak",
-            "translation": "Puedo hablar",
-            "examples": ["She can speak three languages"]
-          },
-          {
-            "id": "voc_cook",
-            "word": "Could cook",
-            "translation": "Podía cocinar",
-            "examples": ["He could cook when he lived alone"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_abilities_memory",
-            "title": "Memory: Habilidades",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Can swim",
-                  "back": "Puedo nadar"
-                },
-                {
-                  "front": "Could play",
-                  "back": "Podía tocar"
-                },
-                {
-                  "front": "Can speak",
-                  "back": "Puedo hablar"
-                }
-              ]
-            }
-          },
-          {
-            "type": "drag_drop",
-            "id": "ex2_modal_verbs",
-            "title": "Can vs Could",
-            "config": {
-              "question": "Arrastra el verbo modal correcto",
-              "pairs": [
-                {
-                  "id": "modal1",
-                  "from": "I ___ swim when I was five",
-                  "to": "could"
-                },
-                {
-                  "id": "modal2",
-                  "from": "She ___ speak French very well",
-                  "to": "can"
-                },
-                {
-                  "id": "modal3",
-                  "from": "They ___ play soccer now",
-                  "to": "can"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_abilities_sentences",
-            "title": "Forma Oraciones con Can/Could",
-            "config": {
-              "wordBank": [
-                "I", "you", "he", "she", "can", "could",
-                "swim", "dance", "sing", "cook", "drive",
-                "when", "I", "was", "young", "now", "very", "well"
-              ],
-              "correctAnswers": [
-                "I can swim very well",
-                "She could dance when she was young",
-                "He can drive now"
-              ],
-              "requiredWords": ["can", "could"],
-              "timeLimit": 100
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_skills_interview",
-            "title": "Entrevista de Habilidades",
-            "config": {
-              "scenario": "Job interview talking about skills",
-              "dialogues": [
-                {
-                  "character": "interviewer",
-                  "text": "What languages can you speak?",
-                  "options": ["I can speak English and Spanish", "I could speak French in school"]
-                },
-                {
-                  "character": "user",
-                  "text": "What software can you use?",
-                  "options": ["I can use Microsoft Office", "I could learn quickly"]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_family_relationships": {
-      "id": "A2_family_relationships",
-      "title": "Familia y Relaciones",
-      "xpReward": 150,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_family",
-        "xpReward": 150,
-        "estimatedDuration": 48,
-        "tags": ["adverbs_frequency", "family", "relationships", "family_vocabulary"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_always_visit",
-            "word": "Always visit",
-            "translation": "Siempre visito",
-            "examples": ["I always visit my parents on weekends"],
-            "tags": ["adverbs", "family"]
-          },
-          {
-            "id": "voc_often_call",
-            "word": "Often call",
-            "translation": "A menudo llamo",
-            "examples": ["We often call our relatives"],
-            "tags": ["adverbs", "communication"]
-          },
-          {
-            "id": "voc_siblings",
-            "word": "Siblings",
-            "translation": "Hermanos",
-            "examples": ["I have two siblings"]
-          },
-          {
-            "id": "voc_relatives",
-            "word": "Relatives",
-            "translation": "Parientes",
-            "examples": ["We visit our relatives during holidays"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_family_vocabulary",
-            "title": "Vocabulario Familiar",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Siblings",
-                  "to": "Hermanos"
-                },
-                {
-                  "from": "Relatives",
-                  "to": "Parientes"
-                },
-                {
-                  "from": "Parents",
-                  "to": "Padres"
-                },
-                {
-                  "from": "Cousins",
-                  "to": "Primos"
-                }
-              ]
-            }
-          },
-          {
-            "type": "drag_drop",
-            "id": "ex2_adverbs_frequency",
-            "title": "Adverbios de Frecuencia",
-            "config": {
-              "question": "Ordena los adverbios de frecuencia",
-              "pairs": [
-                {
-                  "id": "adv1",
-                  "from": "___ I visit my family",
-                  "to": "Always"
-                },
-                {
-                  "id": "adv2",
-                  "from": "I ___ call my sister",
-                  "to": "often"
-                },
-                {
-                  "id": "adv3",
-                  "from": "We ___ see our cousins",
-                  "to": "sometimes"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_family_routines",
-            "title": "Rutinas Familiares",
-            "config": {
-              "wordBank": [
-                "I", "always", "often", "sometimes", "never",
-                "visit", "call", "see", "my", "family",
-                "parents", "siblings", "relatives", "on",
-                "weekends", "Sundays", "holidays"
-              ],
-              "correctAnswers": [
-                "I always visit my parents on weekends",
-                "We often call our relatives",
-                "They sometimes see their cousins"
-              ],
-              "requiredWords": ["always", "often", "sometimes"],
-              "timeLimit": 110
             }
           },
           {
             "type": "image_selection",
-            "id": "ex4_family_relationships",
-            "title": "Selecciona la Descripción Correcta",
+            "id": "ex5_transport_identification",
+            "title": "Identifica el Medio de Transporte",
             "config": {
-              "question": "Choose the correct family relationship",
+              "question": "Select the correct transportation method",
               "options": [
                 {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758899883/parents_with_their_childrens_ubz7ol.png",
-                  "text": "Parents with their children",
+                  "image": "https://example.com/bus_stop.jpg",
+                  "text": "This is a bus stop",
                   "correct": true,
-                  "feedback": "Correct! This shows parents and children"
+                  "feedback": "Correct! People wait for buses here"
                 },
                 {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758900185/siblings_z6jtuk.png",
-                  "text": "Brothers and sisters together",
+                  "image": "https://example.com/train_station.jpg",
+                  "text": "This is a train station",
                   "correct": false,
-                  "feedback": "This shows siblings, not parents"
+                  "feedback": "This is where trains arrive and depart"
                 }
               ],
               "multipleSelection": false
-            }
-          }
-        ]
-      }
-    },
-    "A2_food_restaurants": {
-      "id": "A2_food_restaurants",
-      "title": "Comida y Restaurantes",
-      "xpReward": 165,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_food",
-        "xpReward": 165,
-        "estimatedDuration": 52,
-        "tags": ["modal_verbs", "must", "should", "food", "restaurants", "ordering"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_should_try",
-            "word": "Should try",
-            "translation": "Deberías probar",
-            "examples": ["You should try the pasta"],
-            "tags": ["should", "recommendations"]
-          },
-          {
-            "id": "voc_must_taste",
-            "word": "Must taste",
-            "translation": "Debe probar",
-            "examples": ["You must taste this dessert"],
-            "tags": ["must", "strong_recommendation"]
-          },
-          {
-            "id": "voc_appetizer",
-            "word": "Appetizer",
-            "translation": "Entrada",
-            "examples": ["We should order an appetizer first"]
-          },
-          {
-            "id": "voc_main_course",
-            "word": "Main course",
-            "translation": "Plato principal",
-            "examples": ["The main course was delicious"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_food_vocabulary",
-            "title": "Memory: Comida y Restaurantes",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Appetizer",
-                  "back": "Entrada"
-                },
-                {
-                  "front": "Main course",
-                  "back": "Plato principal"
-                },
-                {
-                  "front": "Dessert",
-                  "back": "Postre"
-                },
-                {
-                  "front": "Menu",
-                  "back": "Menú"
-                }
-              ]
-            }
-          },
-          {
-            "type": "drag_drop",
-            "id": "ex2_modal_verbs_food",
-            "title": "Must vs Should en Restaurantes",
-            "config": {
-              "question": "Arrastra el verbo modal correcto",
-              "pairs": [
-                {
-                  "id": "modal1",
-                  "from": "You ___ try the special dish",
-                  "to": "should"
-                },
-                {
-                  "id": "modal2",
-                  "from": "We ___ make a reservation",
-                  "to": "must"
-                },
-                {
-                  "id": "modal3",
-                  "from": "They ___ taste this wine",
-                  "to": "must"
-                }
-              ]
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_restaurant_ordering",
-            "title": "Simulación: Pedir en Restaurante",
-            "config": {
-              "scenario": "Ordering food at a restaurant",
-              "dialogues": [
-                {
-                  "character": "waiter",
-                  "text": "Are you ready to order?",
-                  "options": ["Yes, I'll have the pasta", "Could you recommend something?"]
-                },
-                {
-                  "character": "user",
-                  "text": "What should I try for dessert?",
-                  "options": ["You must try the chocolate cake", "The ice cream is excellent"]
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex4_restaurant_recommendations",
-            "title": "Recomendaciones en Restaurantes",
-            "config": {
-              "wordBank": [
-                "You", "should", "must", "try", "taste",
-                "the", "pasta", "salad", "dessert", "wine",
-                "this", "is", "delicious", "excellent", "very", "good"
-              ],
-              "correctAnswers": [
-                "You should try the pasta",
-                "You must taste this dessert",
-                "This wine is excellent"
-              ],
-              "requiredWords": ["should", "must"],
-              "timeLimit": 100
-            }
-          },
-          {
-            "type": "audio_matching",
-            "id": "ex5_food_orders",
-            "title": "Audio: Pedidos de Comida",
-            "config": {
-              "mode": "audio_to_text",
-              "pairs": [
-                {
-                  "audio": "audio_order_pasta.mp3",
-                  "text": "I'll have the pasta with salad"
-                },
-                {
-                  "audio": "audio_recommendation.mp3",
-                  "text": "You should try our special dessert"
-                }
-              ]
             }
           }
         ]
