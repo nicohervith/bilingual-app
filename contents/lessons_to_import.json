@@ -1,284 +1,280 @@
 {
-  
   "lessons": {
-    "A2_future_plans": {
-      "id": "A2_future_plans",
-      "title": "Planes Futuros",
-      "xpReward": 140,
+    "A2_health_symptoms": {
+      "id": "A2_health_symptoms",
+      "title": "Salud y Síntomas",
+      "xpReward": 170,
       "metadata": {
         "level": "A2",
-        "module": "grammar",
-        "unit": "unitA2_future",
-        "xpReward": 140,
-        "estimatedDuration": 45,
-        "tags": ["future_plans", "going_to", "will", "intentions"]
+        "module": "vocabulary",
+        "unit": "unitA2_health",
+        "xpReward": 170,
+        "estimatedDuration": 55,
+        "tags": [
+          "modal_verbs",
+          "should",
+          "shouldnt",
+          "health",
+          "medical",
+          "symptoms"
+        ]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_graduate",
-            "word": "Will graduate",
-            "translation": "Me graduaré",
-            "examples": ["I will graduate next year"],
-            "tags": ["future", "education"]
+            "id": "voc_should_rest",
+            "word": "Should rest",
+            "translation": "Debería descansar",
+            "examples": ["You should rest if you're sick"],
+            "tags": ["should", "advice"]
           },
           {
-            "id": "voc_travel_plan",
-            "word": "Going to travel",
-            "translation": "Voy a viajar",
-            "examples": ["I am going to travel to Europe"],
-            "tags": ["future", "plans"]
+            "id": "voc_shouldnt_smoke",
+            "word": "Shouldn't smoke",
+            "translation": "No debería fumar",
+            "examples": ["You shouldn't smoke when you're sick"],
+            "tags": ["shouldnt", "prohibition"]
           },
           {
-            "id": "voc_start_business",
-            "word": "Will start a business",
-            "translation": "Empezaré un negocio",
-            "examples": ["She will start her own business"]
+            "id": "voc_headache",
+            "word": "Headache",
+            "translation": "Dolor de cabeza",
+            "examples": ["I have a headache"],
+            "tags": ["symptoms"]
+          },
+          {
+            "id": "voc_fever",
+            "word": "Fever",
+            "translation": "Fiebre",
+            "examples": ["She has a fever and should see a doctor"]
+          },
+          {
+            "id": "voc_medicine",
+            "word": "Medicine",
+            "translation": "Medicina",
+            "examples": ["You should take this medicine"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_future_forms",
-            "title": "Diferencia entre Will y Going To",
+            "id": "ex1_health_vocabulary",
+            "title": "Vocabulario Médico",
             "config": {
               "pairs": [
                 {
-                  "from": "I will study medicine",
-                  "to": "Decisión espontánea"
+                  "from": "Headache",
+                  "to": "Dolor de cabeza"
                 },
                 {
-                  "from": "I am going to visit my family",
-                  "to": "Plan previo"
+                  "from": "Fever",
+                  "to": "Fiebre"
                 },
                 {
-                  "from": "It will rain tomorrow",
-                  "to": "Predicción"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_future_sentences",
-            "title": "Construye Oraciones Futuras",
-            "config": {
-              "wordBank": [
-                "I", "will", "am", "going", "to",
-                "study", "travel", "work", "buy",
-                "next", "year", "month", "in", "the",
-                "a", "car", "house", "university"
-              ],
-              "correctAnswers": [
-                "I will study at the university",
-                "I am going to travel next month",
-                "I will buy a car next year"
-              ],
-              "requiredWords": ["I"],
-              "timeLimit": 120
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_future_plans_dialogue",
-            "title": "Diálogo: Planes Futuros",
-            "config": {
-              "scenario": "Talking about future plans with a friend",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "What are your plans for next year?",
-                  "options": ["I'm going to study abroad", "I will look for a new job"]
+                  "from": "Medicine",
+                  "to": "Medicina"
                 },
                 {
-                  "character": "user",
-                  "text": "That sounds great! Where are you going to study?",
-                  "options": ["In Canada", "I'm not sure yet"]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_describing_people": {
-      "id": "A2_describing_people",
-      "title": "Describir Personas",
-      "xpReward": 150,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_descriptions",
-        "xpReward": 150,
-        "estimatedDuration": 50,
-        "tags": ["adjectives", "possessive", "physical_description", "personality"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_tall",
-            "word": "Tall",
-            "translation": "Alto/Alta",
-            "examples": ["My brother is very tall"],
-            "tags": ["physical", "appearance"]
-          },
-          {
-            "id": "voc_friendly",
-            "word": "Friendly",
-            "translation": "Amigable",
-            "examples": ["She is a friendly person"],
-            "tags": ["personality"]
-          },
-          {
-            "id": "voc_curly_hair",
-            "word": "Curly hair",
-            "translation": "Pelo rizado",
-            "examples": ["He has curly hair"],
-            "tags": ["appearance"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_adjectives_memory",
-            "title": "Memory: Adjetivos de Descripción",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Tall",
-                  "back": "Alto/Alta"
-                },
-                {
-                  "front": "Friendly",
-                  "back": "Amigable"
-                },
-                {
-                  "front": "Intelligent",
-                  "back": "Inteligente"
+                  "from": "Doctor",
+                  "to": "Doctor/Doctora"
                 }
               ]
             }
           },
           {
             "type": "drag_drop",
-            "id": "ex2_describe_people",
-            "title": "Arrastra para Describir Personas",
+            "id": "ex2_health_advice",
+            "title": "Consejos de Salud: Should/Shouldn't",
             "config": {
-              "question": "Completa las descripciones físicas",
+              "question": "Arrastra el consejo médico correcto",
               "pairs": [
                 {
-                  "id": "desc1",
-                  "from": "My sister has",
-                  "to": "long brown hair"
+                  "id": "advice1",
+                  "from": "If you have a fever, you ___ see a doctor",
+                  "to": "should"
                 },
                 {
-                  "id": "desc2",
-                  "from": "He is",
-                  "to": "tall and athletic"
+                  "id": "advice2",
+                  "from": "You ___ smoke when you're sick",
+                  "to": "shouldn't"
                 },
                 {
-                  "id": "desc3",
-                  "from": "She has",
-                  "to": "blue eyes"
+                  "id": "advice3",
+                  "from": "You ___ drink more water",
+                  "to": "should"
                 }
               ]
             }
           },
           {
-            "type": "image_selection",
-            "id": "ex3_personality_traits",
-            "title": "Selecciona el Adjetivo Correcto",
+            "type": "sentence_formation",
+            "id": "ex3_medical_sentences",
+            "title": "Forma Consejos Médicos",
             "config": {
-              "question": "Choose the correct adjective for each description",
-              "options": [
+              "wordBank": [
+                "You",
+                "should",
+                "shouldn't",
+                "see",
+                "take",
+                "drink",
+                "a",
+                "doctor",
+                "medicine",
+                "water",
+                "rest",
+                "if",
+                "you",
+                "have",
+                "fever",
+                "headache"
+              ],
+              "correctAnswers": [
+                "You should see a doctor",
+                "You shouldn't smoke",
+                "You should drink more water"
+              ],
+              "requiredWords": ["should", "shouldn't"],
+              "timeLimit": 120
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_doctor_visit",
+            "title": "Simulación: Visita al Doctor",
+            "config": {
+              "scenario": "Talking to a doctor about symptoms",
+              "dialogues": [
                 {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758555583/friendly_person_vnr51w.png",
-                  "text": "Always helps others",
-                  "correct": true,
-                  "feedback": "Correct! This describes a friendly person"
+                  "character": "doctor",
+                  "text": "What symptoms do you have?",
+                  "options": [
+                    "I have a headache and fever",
+                    "I feel very tired"
+                  ]
                 },
                 {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1758555277/serious_person_mroqiy.png",
-                  "text": "Very organized and punctual",
-                  "correct": false,
-                  "feedback": "This describes a serious person"
+                  "character": "user",
+                  "text": "What should I do?",
+                  "options": [
+                    "You should rest and drink water",
+                    "You shouldn't go to work today"
+                  ]
                 }
-              ],
-              "multipleSelection": false
+              ]
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex5_symptoms_memory",
+            "title": "Memory: Síntomas y Consejos",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Headache",
+                  "back": "You should rest"
+                },
+                {
+                  "front": "Fever",
+                  "back": "You should see a doctor"
+                },
+                {
+                  "front": "Cough",
+                  "back": "You shouldn't smoke"
+                }
+              ]
             }
           }
         ]
       }
     },
-    "A2_weather_seasons": {
-      "id": "A2_weather_seasons",
-      "title": "Clima y Estaciones",
-      "xpReward": 145,
+    "A2_work_professions": {
+      "id": "A2_work_professions",
+      "title": "Trabajo y Profesiones",
+      "xpReward": 165,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_weather",
-        "xpReward": 145,
-        "estimatedDuration": 40,
-        "tags": ["weather", "seasons", "present_simple", "present_continuous"]
+        "unit": "unitA2_work",
+        "xpReward": 165,
+        "estimatedDuration": 50,
+        "tags": ["present_continuous", "work", "professions", "jobs", "careers"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_sunny",
-            "word": "Sunny",
-            "translation": "Soleado",
-            "examples": ["It is sunny today"],
-            "tags": ["weather"]
+            "id": "voc_working",
+            "word": "Working",
+            "translation": "Trabajando",
+            "examples": ["I am working on a new project"],
+            "tags": ["present_continuous", "work"]
           },
           {
-            "id": "voc_raining",
-            "word": "Raining",
-            "translation": "Lloviendo",
-            "examples": ["It is raining right now"],
-            "tags": ["weather", "present_continuous"]
+            "id": "voc_meeting",
+            "word": "Having a meeting",
+            "translation": "Teniendo una reunión",
+            "examples": ["They are having a meeting right now"],
+            "tags": ["present_continuous", "work_activities"]
           },
           {
-            "id": "voc_winter",
-            "word": "Winter",
-            "translation": "Invierno",
-            "examples": ["I like winter because it snows"],
-            "tags": ["seasons"]
+            "id": "voc_teacher",
+            "word": "Teacher",
+            "translation": "Maestro/Profesor",
+            "examples": ["She is a teacher at the school"]
+          },
+          {
+            "id": "voc_engineer",
+            "word": "Engineer",
+            "translation": "Ingeniero/Ingeniera",
+            "examples": ["He is working as an engineer"]
+          },
+          {
+            "id": "voc_office",
+            "word": "Office",
+            "translation": "Oficina",
+            "examples": ["I am working in the office today"]
           }
         ],
         "exercises": [
           {
-            "type": "matching",
-            "id": "ex1_weather_matching",
-            "title": "Empareja Clima y Estaciones",
+            "type": "memory_game",
+            "id": "ex1_professions_memory",
+            "title": "Memory: Profesiones",
             "config": {
               "pairs": [
                 {
-                  "from": "Summer",
-                  "to": "Hot and sunny"
+                  "front": "Teacher",
+                  "back": "Maestro/Profesor"
                 },
                 {
-                  "from": "Winter",
-                  "to": "Cold and snowy"
+                  "front": "Engineer",
+                  "back": "Ingeniero/Ingeniera"
                 },
                 {
-                  "from": "Spring",
-                  "to": "Rainy and warm"
+                  "front": "Doctor",
+                  "back": "Doctor/Doctora"
+                },
+                {
+                  "front": "Nurse",
+                  "back": "Enfermero/Enfermera"
                 }
               ]
             }
           },
           {
             "type": "conjugation",
-            "id": "ex2_weather_verbs",
-            "title": "Verbos del Clima",
+            "id": "ex2_work_activities",
+            "title": "Actividades Laborales en Presente Continuo",
             "config": {
-              "verb": "to rain",
-              "pronouns": ["It"],
-              "tenses": ["Present", "Present Continuous"],
+              "verb": "to work",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": ["Present Continuous"],
               "correct": {
-                "Present": "rains",
-                "Present Continuous": "is raining"
+                "I": "am working",
+                "You": "are working",
+                "He": "is working",
+                "We": "are working",
+                "They": "are working"
               },
               "hints": {
                 "showBaseForm": true
@@ -287,37 +283,61 @@
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_weather_sentences",
-            "title": "Describe el Clima Actual",
+            "id": "ex3_work_sentences",
+            "title": "Describe tu Trabajo",
             "config": {
               "wordBank": [
-                "It", "is", "raining", "snowing", "sunny",
-                "cloudy", "windy", "today", "right", "now",
-                "very", "quite", "a", "little"
+                "I",
+                "am",
+                "working",
+                "as",
+                "a",
+                "teacher",
+                "engineer",
+                "doctor",
+                "nurse",
+                "in",
+                "an",
+                "office",
+                "hospital",
+                "school",
+                "today",
+                "right",
+                "now",
+                "this",
+                "week"
               ],
               "correctAnswers": [
-                "It is raining today",
-                "It is sunny right now",
-                "It is very windy"
+                "I am working as a teacher",
+                "He is working in an office",
+                "They are working at the hospital"
               ],
-              "requiredWords": ["It", "is"],
-              "timeLimit": 90
+              "requiredWords": ["am", "is", "are"],
+              "timeLimit": 110
             }
           },
           {
-            "type": "audio_matching",
-            "id": "ex4_seasons_audio",
-            "title": "Audio: Clima por Estaciones",
+            "type": "dialogue_simulation",
+            "id": "ex4_job_interview",
+            "title": "Simulación: Entrevista de Trabajo",
             "config": {
-              "mode": "audio_to_text",
-              "pairs": [
+              "scenario": "Job interview about work experience",
+              "dialogues": [
                 {
-                  "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1758555032/hotinsummer_qgpkv8.mp3",
-                  "text": "It's usually hot in summer"
+                  "character": "interviewer",
+                  "text": "What are you currently working on?",
+                  "options": [
+                    "I'm working on a software project",
+                    "I'm teaching at a school"
+                  ]
                 },
                 {
-                  "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1758555091/snows_in_winter_lhevmb.mp3",
-                  "text": "It often snows in winter"
+                  "character": "user",
+                  "text": "Where do you see yourself in five years?",
+                  "options": [
+                    "I'm hoping to be a manager",
+                    "I want to continue learning"
+                  ]
                 }
               ]
             }
@@ -325,155 +345,361 @@
         ]
       }
     },
-    "A2_multiple_choice": {
-      "id": "A2_multiple_choice",
-      "title": "Preguntas de Opción Múltiple",
-      "xpReward": 155,
+    "A2_recent_past": {
+      "id": "A2_recent_past",
+      "title": "Pasado Reciente",
+      "xpReward": 175,
       "metadata": {
         "level": "A2",
         "module": "grammar",
-        "unit": "unitA2_questions",
-        "xpReward": 155,
-        "estimatedDuration": 55,
-        "tags": ["comparatives", "superlatives", "questions", "multiple_choice"]
+        "unit": "unitA2_recent_past",
+        "xpReward": 175,
+        "estimatedDuration": 58,
+        "tags": [
+          "present_perfect",
+          "past_simple",
+          "recent_past",
+          "time_expressions"
+        ]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_taller",
-            "word": "Taller",
-            "translation": "Más alto",
-            "examples": ["My brother is taller than me"],
-            "tags": ["comparative"]
+            "id": "voc_just_finished",
+            "word": "Just finished",
+            "translation": "Acabo de terminar",
+            "examples": ["I have just finished my work"],
+            "tags": ["present_perfect", "recent"]
           },
           {
-            "id": "voc_best",
-            "word": "Best",
-            "translation": "El mejor",
-            "examples": ["This is the best restaurant in town"],
-            "tags": ["superlative"]
+            "id": "voc_already_seen",
+            "word": "Already seen",
+            "translation": "Ya he visto",
+            "examples": ["I have already seen that movie"],
+            "tags": ["present_perfect", "experience"]
           },
           {
-            "id": "voc_more_interesting",
-            "word": "More interesting",
-            "translation": "Más interesante",
-            "examples": ["The book is more interesting than the movie"]
+            "id": "voc_yesterday_went",
+            "word": "Went yesterday",
+            "translation": "Fui ayer",
+            "examples": ["I went to the store yesterday"],
+            "tags": ["past_simple", "specific_time"]
+          },
+          {
+            "id": "voc_last_week",
+            "word": "Last week",
+            "translation": "La semana pasada",
+            "examples": ["We traveled last week"]
           }
         ],
         "exercises": [
           {
+            "type": "matching",
+            "id": "ex1_time_expressions",
+            "title": "Expresiones de Tiempo",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Just",
+                  "to": "Usado con Present Perfect"
+                },
+                {
+                  "from": "Yesterday",
+                  "to": "Usado con Past Simple"
+                },
+                {
+                  "from": "Already",
+                  "to": "Usado con Present Perfect"
+                },
+                {
+                  "from": "Last week",
+                  "to": "Usado con Past Simple"
+                }
+              ]
+            }
+          },
+          {
             "type": "drag_drop",
-            "id": "ex1_comparatives_drag",
-            "title": "Completa Comparativos",
+            "id": "ex2_present_vs_past",
+            "title": "Present Perfect vs Past Simple",
             "config": {
-              "question": "Arrastra la forma comparativa correcta",
+              "question": "Elige el tiempo verbal correcto",
               "pairs": [
                 {
-                  "id": "comp1",
-                  "from": "Big →",
-                  "to": "Bigger"
+                  "id": "tense1",
+                  "from": "I ___ just finished my homework",
+                  "to": "have"
                 },
                 {
-                  "id": "comp2",
-                  "from": "Interesting →",
-                  "to": "More interesting"
+                  "id": "tense2",
+                  "from": "She ___ to Paris last year",
+                  "to": "went"
                 },
                 {
-                  "id": "comp3",
-                  "from": "Good →",
-                  "to": "Better"
+                  "id": "tense3",
+                  "from": "They ___ already seen that movie",
+                  "to": "have"
                 }
               ]
             }
           },
           {
-            "type": "memory_game",
-            "id": "ex2_superlatives_memory",
-            "title": "Memory: Superlativos",
+            "type": "sentence_formation",
+            "id": "ex3_recent_actions",
+            "title": "Acciones Recientes vs Pasadas",
             "config": {
-              "pairs": [
-                {
-                  "front": "Tall → Superlative",
-                  "back": "Tallest"
-                },
-                {
-                  "front": "Good → Superlative",
-                  "back": "Best"
-                },
-                {
-                  "front": "Beautiful → Superlative",
-                  "back": "Most beautiful"
-                }
-              ]
-            }
-          },
-          {
-            "type": "vocabulary",
-            "id": "ex3_question_categories",
-            "title": "Categoriza Tipos de Preguntas",
-            "config": {
-              "categories": [
-                {
-                  "id": "comparative",
-                  "name": "Comparativas",
-                  "color": "#FF6B6B"
-                },
-                {
-                  "id": "superlative",
-                  "name": "Superlativas",
-                  "color": "#4ECDC4"
-                },
-                {
-                  "id": "general",
-                  "name": "Preguntas Generales",
-                  "color": "#45B7D1"
-                }
+              "wordBank": [
+                "I",
+                "have",
+                "has",
+                "went",
+                "seen",
+                "finished",
+                "just",
+                "already",
+                "yesterday",
+                "last",
+                "week",
+                "year",
+                "to",
+                "the",
+                "store"
               ],
-              "items": [
-                {
-                  "id": "item1",
-                  "text": "Which is bigger?",
-                  "category": "comparative"
-                },
-                {
-                  "id": "item2",
-                  "text": "What is the best option?",
-                  "category": "superlative"
-                },
-                {
-                  "id": "item3",
-                  "text": "How are you?",
-                  "category": "general"
-                }
-              ]
+              "correctAnswers": [
+                "I have just finished my work",
+                "She went to Paris last year",
+                "They have already seen that movie"
+              ],
+              "requiredWords": ["have", "has", "went"],
+              "timeLimit": 130
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_multiple_choice_dialogue",
-            "title": "Simulación: Entrevista con Opciones",
+            "id": "ex4_recent_experiences",
+            "title": "Hablando de Experiencias Recientes",
             "config": {
-              "scenario": "Job interview with multiple choice questions",
+              "scenario": "Talking about recent and past experiences",
               "dialogues": [
                 {
-                  "character": "interviewer",
-                  "text": "Which of these describes you best?",
+                  "character": "friend",
+                  "text": "What have you done recently?",
                   "options": [
-                    "I work well in teams",
-                    "I prefer working alone",
-                    "I'm very organized"
+                    "I've just started a new job",
+                    "I already finished my course"
                   ]
                 },
                 {
                   "character": "user",
-                  "text": "Why do you think you're the best candidate?",
-                  "options": [
-                    "Because I have more experience",
-                    "I learn quickly and adapt well",
-                    "I'm the most motivated person"
-                  ]
+                  "text": "What did you do last weekend?",
+                  "options": ["I went to the beach", "I visited my family"]
                 }
               ]
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex5_verb_tenses",
+            "title": "Conjugación: Present Perfect vs Past Simple",
+            "config": {
+              "verb": "to see",
+              "pronouns": ["I", "You", "He", "We"],
+              "tenses": ["Present Perfect", "Past Simple"],
+              "correct": {
+                "Present Perfect": "have seen",
+                "Past Simple": "saw"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    "A2_transportation": {
+      "id": "A2_transportation",
+      "title": "Medios de Transporte",
+      "xpReward": 160,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_transport",
+        "xpReward": 160,
+        "estimatedDuration": 52,
+        "tags": [
+          "modal_verbs",
+          "can",
+          "could",
+          "transportation",
+          "travel",
+          "vehicles"
+        ]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_can_take",
+            "word": "Can take",
+            "translation": "Puedo tomar",
+            "examples": ["You can take the bus to the city"],
+            "tags": ["can", "transportation"]
+          },
+          {
+            "id": "voc_could_drive",
+            "word": "Could drive",
+            "translation": "Podría conducir",
+            "examples": ["We could drive to the beach"],
+            "tags": ["could", "suggestion"]
+          },
+          {
+            "id": "voc_bus",
+            "word": "Bus",
+            "translation": "Autobús",
+            "examples": ["The bus arrives at 8:00 AM"]
+          },
+          {
+            "id": "voc_train",
+            "word": "Train",
+            "translation": "Tren",
+            "examples": ["The train is faster than the bus"]
+          },
+          {
+            "id": "voc_subway",
+            "word": "Subway",
+            "translation": "Metro",
+            "examples": ["You can take the subway to downtown"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_transport_memory",
+            "title": "Memory: Medios de Transporte",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Bus",
+                  "back": "Autobús"
+                },
+                {
+                  "front": "Train",
+                  "back": "Tren"
+                },
+                {
+                  "front": "Subway",
+                  "back": "Metro"
+                },
+                {
+                  "front": "Taxi",
+                  "back": "Taxi"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_transport_suggestions",
+            "title": "Sugerencias de Transporte: Can/Could",
+            "config": {
+              "question": "Completa las sugerencias de transporte",
+              "pairs": [
+                {
+                  "id": "sugg1",
+                  "from": "You ___ take the bus to the city",
+                  "to": "can"
+                },
+                {
+                  "id": "sugg2",
+                  "from": "We ___ drive to the beach",
+                  "to": "could"
+                },
+                {
+                  "id": "sugg3",
+                  "from": "She ___ take the train tomorrow",
+                  "to": "can"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_transport_options",
+            "title": "Opciones de Transporte",
+            "config": {
+              "wordBank": [
+                "I",
+                "you",
+                "we",
+                "can",
+                "could",
+                "take",
+                "drive",
+                "the",
+                "bus",
+                "train",
+                "subway",
+                "taxi",
+                "to",
+                "city",
+                "beach",
+                "airport",
+                "tomorrow",
+                "today"
+              ],
+              "correctAnswers": [
+                "You can take the bus to the city",
+                "We could drive to the beach",
+                "I can take the train tomorrow"
+              ],
+              "requiredWords": ["can", "could"],
+              "timeLimit": 115
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_travel_planning",
+            "title": "Planificando un Viaje",
+            "config": {
+              "scenario": "Planning how to get to different places",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "How can we get to the airport?",
+                  "options": [
+                    "We can take a taxi",
+                    "We could take the airport bus"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "What's the best way to get downtown?",
+                  "options": ["You can take the subway", "The train is faster"]
+                }
+              ]
+            }
+          },
+          {
+            "type": "image_selection",
+            "id": "ex5_transport_identification",
+            "title": "Identifica el Medio de Transporte",
+            "config": {
+              "question": "Select the correct transportation method",
+              "options": [
+                {
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1759346878/bus_stop_tcptab.png",
+                  "text": "This is a bus stop",
+                  "correct": true,
+                  "feedback": "Correct! People wait for buses here"
+                },
+                {
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1759347176/train_station_bbxsbq.png",
+                  "text": "This is a train station",
+                  "correct": false,
+                  "feedback": "This is where trains arrive and depart"
+                }
+              ],
+              "multipleSelection": false
             }
           }
         ]
@@ -481,4 +707,3 @@
     }
   }
 }
-

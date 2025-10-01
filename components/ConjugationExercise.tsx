@@ -150,7 +150,7 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
         ))}
       </View>
 
-      {tenses.length > 1 && (
+     {/*  {tenses.length > 1 && (
         <View style={styles.tensesTab}>
           {tenses.map((tense) => (
             <TouchableOpacity
@@ -165,7 +165,7 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
             </TouchableOpacity>
           ))}
         </View>
-      )}
+      )} */}
 
       <View style={styles.conjugationTable}>
         {config.pronouns.map((pronoun) => (
