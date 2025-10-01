@@ -5,10 +5,16 @@ import ExerciseFeedback from "./ExerciseFeedback";
 
 type AudioMatchingGameProps = {
   config: {
-    items: Array<{
+    items?: Array<{
       audio: string;
       correctMatch: string;
     }>;
+    pairs?: Array<{
+      audio: string;
+      text: string;
+      image?: string;
+    }>;
+    mode?: "audio_to_image" | "audio_to_text";
     options?: {
       imageSource: "vocabulary" | "custom";
       attemptsBeforeHint?: number;
@@ -17,6 +23,7 @@ type AudioMatchingGameProps = {
   vocabulary: Array<{
     id: string;
     word: string;
+    translation?: string;
     media?: {
       image?: string;
       audio?: string;
@@ -37,6 +44,23 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   const [showHint, setShowHint] = useState(false);
   const [hasPlayedFirstAudio, setHasPlayedFirstAudio] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  // Determinar qué estructura de datos usar
+  const usePairsStructure = !!config.pairs;
+  const currentItems = usePairsStructure ? config.pairs : config.items;
+
+  // Validación para evitar errores
+  if (!currentItems || currentItems.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>Configuración de audio no válida</Text>
+        <TouchableOpacity style={styles.continueButton} onPress={onComplete}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   const playSound = async (audioUri: string) => {
     try {
@@ -55,13 +79,34 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
     }
   };
 
-  const handleSelect = (id: string) => {
-    setSelectedOption(id);
+  const handleSelect = (selectedId: string) => {
+    setSelectedOption(selectedId);
     setAttempts((prev) => prev + 1);
 
-    if (id === config.items[currentItem].correctMatch) {
-      if (currentItem < config.items.length - 1) {
-        setShowSuccess(true);
+    let isCorrect = false;
+
+    if (usePairsStructure) {
+      // Para estructura pairs: comparar con el texto del audio actual
+      const currentPair = currentItems[currentItem] as {
+        audio: string;
+        text: string;
+        image?: string;
+      };
+      isCorrect = selectedId === currentPair.text;
+    } else {
+      // Para estructura items: comparar con correctMatch
+      const currentItemData = currentItems[currentItem] as {
+        audio: string;
+        correctMatch: string;
+      };
+      isCorrect = selectedId === currentItemData.correctMatch;
+    }
+
+    if (isCorrect) {
+      setShowSuccess(true);
+      setShowError(false);
+
+      if (currentItem < currentItems.length - 1) {
         setTimeout(() => {
           setCurrentItem((prev) => prev + 1);
           setSelectedOption(null);
@@ -70,47 +115,143 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
           setShowSuccess(false);
         }, 1000);
       } else {
-        setShowSuccess(true);
         setTimeout(() => {
           onComplete();
         }, 1500);
       }
-    } else if (
-      config.options?.attemptsBeforeHint &&
-      attempts >= config.options.attemptsBeforeHint - 1
-    ) {
-      setShowHint(true);
+    } else {
+      setShowError(true);
+      setShowSuccess(false);
+
+      if (
+        config.options?.attemptsBeforeHint &&
+        attempts >= config.options.attemptsBeforeHint - 1
+      ) {
+        setShowHint(true);
+      }
     }
   };
 
   const options = React.useMemo(() => {
-    if (!vocabulary || !config?.items || currentItem >= config.items.length)
-      return [];
+    if (!currentItems || currentItem >= currentItems.length) return [];
 
-    const currentItemId = config.items[currentItem]?.correctMatch;
-    const currentItemData = vocabulary.find(
-      (item) => item.id === currentItemId
-    );
+    if (usePairsStructure) {
+      // Para estructura pairs: usar los textos de todos los pairs como opciones
+      const currentPair = currentItems[currentItem] as {
+        audio: string;
+        text: string;
+        image?: string;
+      };
+      const allTexts = currentItems.map(
+        (item) => (item as { audio: string; text: string; image?: string }).text
+      );
 
-    if (!currentItemData) {
-      console.error(`No se encontró el ítem con id: ${currentItemId}`);
-      return [];
+      // Mezclar y seleccionar opciones (incluyendo la correcta)
+      const shuffledOptions = [...allTexts]
+        .filter((text) => text !== currentPair.text) // Excluir la correcta temporalmente
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3); // 3 distractores
+
+      // Agregar la opción correcta y mezclar
+      return [currentPair.text, ...shuffledOptions].sort(
+        () => Math.random() - 0.5
+      );
+    } else {
+      // Para estructura items original
+      const currentItemData = currentItems[currentItem] as {
+        audio: string;
+        correctMatch: string;
+      };
+      const currentItemId = currentItemData.correctMatch;
+      const vocabularyItem = vocabulary.find(
+        (item) => item.id === currentItemId
+      );
+
+      if (!vocabularyItem) {
+        console.error(`No se encontró el ítem con id: ${currentItemId}`);
+        return [];
+      }
+
+      // Obtener opciones posibles (excluyendo la correcta)
+      let distractors = vocabulary
+        .filter(
+          (item) =>
+            item.id !== currentItemId &&
+            item.media &&
+            (item.media.image || item.word)
+        )
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3); // 3 distractores
+
+      // Mezclar la opción correcta con los distractores
+      return [vocabularyItem, ...distractors].sort(() => Math.random() - 0.5);
     }
+  }, [vocabulary, currentItems, currentItem, usePairsStructure]);
 
-    // Obtener opciones posibles (excluyendo la correcta)
-    let distractors = vocabulary
-      .filter(
-        (item) =>
-          item.id !== currentItemId &&
-          item.media &&
-          (item.media.image || item.word)
-      )
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3); // 3 distractores
+  const getCurrentAudio = (): string => {
+    if (usePairsStructure) {
+      const currentPair = currentItems[currentItem] as {
+        audio: string;
+        text: string;
+        image?: string;
+      };
+      return currentPair.audio;
+    } else {
+      const currentItemData = currentItems[currentItem] as {
+        audio: string;
+        correctMatch: string;
+      };
+      return currentItemData.audio;
+    }
+  };
 
-    // Mezclar la opción correcta con los distractores
-    return [currentItemData, ...distractors].sort(() => Math.random() - 0.5);
-  }, [vocabulary, config.items, currentItem]);
+  const getHintText = (): string => {
+    if (usePairsStructure) {
+      const currentPair = currentItems[currentItem] as {
+        audio: string;
+        text: string;
+        image?: string;
+      };
+      return currentPair.text;
+    } else {
+      const currentItemData = currentItems[currentItem] as {
+        audio: string;
+        correctMatch: string;
+      };
+      const currentItemId = currentItemData.correctMatch;
+      return vocabulary.find((v) => v.id === currentItemId)?.word || "";
+    }
+  };
+
+  const isOptionCorrect = (option: string | any): boolean => {
+    if (usePairsStructure) {
+      const currentPair = currentItems[currentItem] as {
+        audio: string;
+        text: string;
+        image?: string;
+      };
+      return option === currentPair.text;
+    } else {
+      const currentItemData = currentItems[currentItem] as {
+        audio: string;
+        correctMatch: string;
+      };
+      const optionId = (option as any).id;
+      return optionId === currentItemData.correctMatch;
+    }
+  };
+
+  const getOptionId = (option: string | any): string => {
+    return usePairsStructure ? (option as string) : (option as any).id;
+  };
+
+  const getOptionText = (option: string | any): string => {
+    return usePairsStructure ? (option as string) : (option as any).word;
+  };
+
+  const getOptionImage = (option: string | any): string | undefined => {
+    return usePairsStructure ? undefined : (option as any).media?.image;
+  };
 
   return (
     <View style={styles.container}>
@@ -118,65 +259,71 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
 
       <TouchableOpacity
         style={styles.playButton}
-        onPress={() => playSound(config.items[currentItem].audio)}
+        onPress={() => playSound(getCurrentAudio())}
       >
-        <Text>🔊 Reproducir</Text>
+        <Text style={styles.playButtonText}>🔊 Reproducir Audio</Text>
       </TouchableOpacity>
 
-      {showHint && (
-        <Text style={styles.hint}>
-          Pista:{" "}
-          {
-            vocabulary.find(
-              (v) => v.id === config.items[currentItem].correctMatch
-            )?.word
-          }
-        </Text>
-      )}
+      {showHint && <Text style={styles.hint}>Pista: {getHintText()}</Text>}
 
       <View style={styles.optionsGrid}>
-        {options.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            style={[
-              styles.optionCard,
-              selectedOption === item.id && styles.selectedOption,
-              selectedOption === item.id &&
-                item.id === config.items[currentItem].correctMatch &&
-                styles.correctOption,
-              selectedOption === item.id &&
-                item.id !== config.items[currentItem].correctMatch &&
-                styles.incorrectOption,
-            ]}
-            onPress={() => handleSelect(item.id)}
-            disabled={selectedOption !== null}
-          >
-            {item.media?.image ? (
-              <Image
-                source={{ uri: item.media.image }}
-                style={styles.optionImage}
-                resizeMode="contain"
-              />
-            ) : (
-              <View style={styles.textOption}>
-                <Text style={styles.optionText}>{item.word}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        ))}
+        {options.map((option, index) => {
+          const optionId = getOptionId(option);
+          const optionText = getOptionText(option);
+          const optionImage = getOptionImage(option);
+          const isCorrectOption = isOptionCorrect(option);
+
+          return (
+            <TouchableOpacity
+              key={usePairsStructure ? `${option}-${index}` : optionId}
+              style={[
+                styles.optionCard,
+                selectedOption === optionId && styles.selectedOption,
+                selectedOption === optionId &&
+                  isCorrectOption &&
+                  styles.correctOption,
+                selectedOption === optionId &&
+                  selectedOption !== null &&
+                  !isCorrectOption &&
+                  styles.incorrectOption,
+              ]}
+              onPress={() => handleSelect(optionId)}
+              disabled={selectedOption !== null}
+            >
+              {optionImage ? (
+                <Image
+                  source={{ uri: optionImage }}
+                  style={styles.optionImage}
+                  resizeMode="contain"
+                />
+              ) : (
+                <View style={styles.textOption}>
+                  <Text style={styles.optionText}>{optionText}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          );
+        })}
       </View>
 
       <Text style={styles.progress}>
-        {currentItem + 1}/{config.items.length}
+        {currentItem + 1}/{currentItems.length}
       </Text>
 
+      {/* Usar ExerciseFeedback para los mensajes */}
       <ExerciseFeedback
         visible={showSuccess}
-        message="¡Correcto!"
+        message="¡Correcto! 🎉"
         type="success"
       />
-      
-      {currentItem === config.items.length - 1 && (
+
+      <ExerciseFeedback
+        visible={showError}
+        message="Inténtalo de nuevo"
+        type="error"
+      />
+
+      {currentItem === currentItems.length - 1 && showSuccess && (
         <ExerciseFeedback
           visible={showSuccess}
           message="¡Ejercicio completado con éxito!"
@@ -187,90 +334,96 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   );
 };
 
+// Estilos (los mismos que antes)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 16,
     alignItems: "center",
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  continueButton: {
+    backgroundColor: "#007AFF",
+    padding: 16,
+    borderRadius: 8,
+  },
+  continueButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
+    textAlign: "center",
   },
   playButton: {
+    backgroundColor: "#F0F0F0",
     padding: 15,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 10,
+    borderRadius: 8,
     marginBottom: 20,
+  },
+  playButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  hint: {
+    backgroundColor: "#FFF3CD",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 15,
+    textAlign: "center",
+    color: "#856404",
   },
   optionsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
+    gap: 10,
     marginBottom: 20,
   },
   optionCard: {
-    width: 100,
+    width: 150,
     height: 100,
-    margin: 10,
+    backgroundColor: "#F8F9FA",
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    borderRadius: 10,
     borderWidth: 2,
-    borderColor: "transparent",
+    borderColor: "#E9ECEF",
   },
   selectedOption: {
-    borderColor: "#2196F3",
+    borderColor: "#007AFF",
   },
   correctOption: {
-    backgroundColor: "#a5d6a7",
+    borderColor: "#28A745",
+    backgroundColor: "#D4EDDA",
   },
   incorrectOption: {
-    backgroundColor: "#ef9a9a",
+    borderColor: "#DC3545",
+    backgroundColor: "#F8D7DA",
   },
   optionImage: {
     width: 80,
     height: 80,
   },
-  hint: {
-    fontStyle: "italic",
-    color: "#757575",
-    marginBottom: 15,
-  },
-  progress: {
-    fontSize: 16,
-    color: "#616161",
-  },
   textOption: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
     padding: 10,
   },
   optionText: {
     fontSize: 16,
     textAlign: "center",
   },
-  successOverlay: {
-    position: "absolute",
-    /* top: 0, */
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(76, 175, 80, 0.8)",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 100,
-    height: 30,
-  },
-  successText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
+  progress: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 10,
   },
 });
 

@@ -173,13 +173,46 @@ const LessonContent = ({
     exercise: Exercise;
     index: number;
   }) => {
+
+    console.log(`Renderizando ejercicio ${index}:`, {
+      type: exercise.type,
+      id: exercise.id,
+      hasConfig: !!exercise.config,
+      config: exercise.config,
+    });
+
+    
     const commonProps = {
       key: `ex-${exercise.id || index}`,
       onComplete: () => handleExerciseComplete(index),
     };
 
     switch (exercise.type) {
+      /*  case "audio_matching":
+        return exercise.config.mode === "audio_to_image" ? (
+          <AudioToImageMatching {...commonProps} config={exercise.config} />
+        ) : (
+          <AudioMatchingGame
+            {...commonProps}
+            config={exercise.config}
+            vocabulary={lesson.content.vocabulary}
+          />
+        ); */
       case "audio_matching":
+        if (!exercise.config) {
+          console.warn(
+            `Ejercicio ${exercise.id} no tiene configuración para audio_matching`
+          );
+          return (
+            <View style={styles.errorContainer}>
+              <Text>Configuración del ejercicio no válida</Text>
+              <TouchableOpacity onPress={() => handleExerciseComplete(index)}>
+                <Text>Continuar</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+
         return exercise.config.mode === "audio_to_image" ? (
           <AudioToImageMatching {...commonProps} config={exercise.config} />
         ) : (
@@ -237,7 +270,7 @@ const LessonContent = ({
           />
         );
 
-      case "drag_drop":
+      /* case "drag_drop":
         return (
           <DragDropExercise
             {...commonProps}
@@ -259,6 +292,34 @@ const LessonContent = ({
               })) || []
             } // Fallback a array vacío
             instructions={exercise.question || "Arrastra cada elemento..."}
+          />
+        ); */
+      case "drag_drop":
+        return (
+          <DragDropExercise
+            {...commonProps}
+            dragItems={
+              exercise.config?.pairs?.map((pair: any) => ({
+                id:
+                  pair.id || `drag-${Math.random().toString(36).substr(2, 9)}`,
+                content: pair.from, // Usar "from" como contenido del drag item
+              })) || []
+            }
+            dropZones={
+              exercise.config?.pairs?.map((pair: any) => ({
+                id:
+                  pair.id || `zone-${Math.random().toString(36).substr(2, 9)}`,
+                content: pair.to, // Usar "to" como contenido del drop zone
+                correctMatch:
+                  pair.id || `drag-${Math.random().toString(36).substr(2, 9)}`, // Mismo ID que el drag item
+              })) || []
+            }
+            instructions={
+              exercise.config?.question ||
+              exercise.question ||
+              "Arrastra cada elemento a su posición correcta"
+            }
+            question={exercise.title || "Completa las oraciones"}
           />
         );
 
@@ -684,6 +745,7 @@ const styles = StyleSheet.create({
   completedButton: {
     backgroundColor: "#E0E0E0",
   },
+  errorContainer: {},
 });
 
 export default LessonContent;

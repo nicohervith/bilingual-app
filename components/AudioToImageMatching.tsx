@@ -4,15 +4,15 @@ import { Audio } from "expo-av";
 import ExerciseFeedback from "./ExerciseFeedback";
 
 interface AudioToImageMatchingProps {
-  config: {
-    pairs: Array<{
+  config?: {
+    pairs?: Array<{
       id: string;
       text?: string;
       matchId?: string;
-      audio: string;
+      audio?: string;
       image?: string;
     }>;
-    mode: string;
+    mode?: string;
   };
   onComplete: () => void;
 }
@@ -28,9 +28,59 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
   const [showError, setShowError] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
 
-  // Separar los pares en audios e imágenes
-  const audioItems = config.pairs.filter((item) => item.audio);
-  const imageItems = config.pairs.filter((item) => item.image);
+  // Validación completa para evitar errores
+  if (!config || !config.pairs || !Array.isArray(config.pairs)) {
+    console.warn("Configuración inválida para AudioToImageMatching:", config);
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>
+          Configuración del ejercicio no válida
+        </Text>
+        <TouchableOpacity style={styles.continueButton} onPress={onComplete}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  // Separar los pares en audios e imágenes con validación
+  const validPairs = config.pairs.filter(
+    (pair) => pair && typeof pair === "object" && pair.id
+  );
+
+  if (validPairs.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>
+          No se encontraron elementos válidos para el ejercicio
+        </Text>
+        <TouchableOpacity style={styles.continueButton} onPress={onComplete}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const audioItems = validPairs.filter((item) => item.audio);
+  const imageItems = validPairs.filter((item) => item.image);
+
+  // Si no hay elementos válidos, mostrar error
+  if (audioItems.length === 0 || imageItems.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>
+          No se encontraron elementos de audio o imagen válidos
+        </Text>
+        <TouchableOpacity style={styles.continueButton} onPress={onComplete}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  // Validar que el índice actual sea válido
+  const safeCurrentIndex = Math.min(currentIndex, audioItems.length - 1);
+  const currentAudio = audioItems[safeCurrentIndex];
 
   // Reproducir el audio actual
   const playSound = async () => {
@@ -39,8 +89,13 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
         await sound.unloadAsync();
       }
 
+      if (!currentAudio?.audio) {
+        console.error("Audio no válido en el índice:", safeCurrentIndex);
+        return;
+      }
+
       const { sound: newSound } = await Audio.Sound.createAsync(
-        { uri: audioItems[currentIndex].audio },
+        { uri: currentAudio.audio },
         { shouldPlay: true }
       );
       setSound(newSound);
@@ -62,7 +117,6 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
   const handleImageSelect = (imageId: string) => {
     if (!hasPlayed) return;
 
-    const currentAudio = audioItems[currentIndex];
     const isCorrect = currentAudio.matchId === imageId;
 
     setSelectedImage(imageId);
@@ -70,7 +124,7 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
     if (isCorrect) {
       setShowSuccess(true);
       setTimeout(() => {
-        if (currentIndex < audioItems.length - 1) {
+        if (safeCurrentIndex < audioItems.length - 1) {
           setCurrentIndex((prev) => prev + 1);
           setSelectedImage(null);
           setHasPlayed(false);
@@ -98,7 +152,7 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
 
       <View style={styles.audioSection}>
         <Text style={styles.audioPrompt}>
-          Audio {currentIndex + 1} de {audioItems.length}
+          Audio {safeCurrentIndex + 1} de {audioItems.length}
         </Text>
         <TouchableOpacity style={styles.playButton} onPress={playSound}>
           <Text style={styles.playButtonText}>▶ Reproducir Audio</Text>
@@ -118,11 +172,20 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
             onPress={() => handleImageSelect(item.id)}
             disabled={!hasPlayed || selectedImage !== null}
           >
-            <Image
-              source={{ uri: item.image }}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            {item.image ? (
+              <Image
+                source={{ uri: item.image }}
+                style={styles.image}
+                resizeMode="contain"
+                onError={(e) =>
+                  console.log("Error loading image:", e.nativeEvent.error)
+                }
+              />
+            ) : (
+              <View style={styles.placeholder}>
+                <Text>Imagen no disponible</Text>
+              </View>
+            )}
           </TouchableOpacity>
         ))}
       </View>
@@ -144,8 +207,25 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 16,
     alignItems: "center",
-    padding: 20,
+    justifyContent: "center",
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  continueButton: {
+    backgroundColor: "#007AFF",
+    padding: 16,
+    borderRadius: 8,
+  },
+  continueButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   title: {
     fontSize: 20,
@@ -154,48 +234,61 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   audioSection: {
-    marginBottom: 30,
     alignItems: "center",
+    marginBottom: 30,
   },
   audioPrompt: {
     fontSize: 16,
     marginBottom: 10,
+    color: "#666",
   },
   playButton: {
-    backgroundColor: "#4CAF50",
-    padding: 15,
+    backgroundColor: "#007AFF",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 8,
   },
   playButtonText: {
     color: "white",
+    fontSize: 16,
     fontWeight: "bold",
   },
   imagesContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
+    gap: 15,
   },
   imageButton: {
-    margin: 10,
-    width: 150,
-    height: 150,
+    padding: 10,
+    borderRadius: 12,
+    backgroundColor: "#f8f9fa",
     borderWidth: 2,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    overflow: "hidden",
+    borderColor: "#e9ecef",
   },
   selectedImage: {
-    borderColor: "#2196F3",
+    borderColor: "#007AFF",
   },
   correctImage: {
-    borderColor: "#4CAF50",
+    borderColor: "#28a745",
+    backgroundColor: "#d4edda",
   },
   incorrectImage: {
-    borderColor: "#F44336",
+    borderColor: "#dc3545",
+    backgroundColor: "#f8d7da",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: 120,
+    height: 120,
+    borderRadius: 8,
+  },
+  placeholder: {
+    width: 120,
+    height: 120,
+    backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
   },
 });
 
