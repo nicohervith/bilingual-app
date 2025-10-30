@@ -1,155 +1,132 @@
 {
   "lessons": {
-    "A2_technology_social_media": {
-      "id": "A2_technology_social_media",
-      "title": "Tecnología y Redes Sociales",
-      "xpReward": 170,
+    "A2_education_studies": {
+      "id": "A2_education_studies",
+      "title": "Educación y Estudios",
+      "xpReward": 185,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_technology",
-        "xpReward": 170,
-        "estimatedDuration": 50,
-        "tags": [
-          "adverbs_frequency",
-          "technology",
-          "social_media",
-          "digital_life"
-        ]
+        "unit": "unitA2_education",
+        "xpReward": 185,
+        "estimatedDuration": 60,
+        "tags": ["modal_verbs", "should", "ought_to", "education", "studies", "subjects"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_always_online",
-            "word": "Always online",
-            "translation": "Siempre en línea",
-            "examples": ["I am always online in the evening"],
-            "tags": ["adverbs", "technology"]
+            "id": "voc_should_study",
+            "word": "Should study",
+            "translation": "Debería estudiar",
+            "examples": ["You should study for the exam"],
+            "tags": ["should", "advice"]
           },
           {
-            "id": "voc_often_post",
-            "word": "Often post",
-            "translation": "A menudo publico",
-            "examples": ["She often posts photos on Instagram"],
-            "tags": ["adverbs", "social_media"]
+            "id": "voc_ought_to_practice",
+            "word": "Ought to practice",
+            "translation": "Debería practicar",
+            "examples": ["We ought to practice more"],
+            "tags": ["ought_to", "recommendation"]
           },
           {
-            "id": "voc_smartphone",
-            "word": "Smartphone",
-            "translation": "Teléfono inteligente",
-            "examples": ["I use my smartphone every day"]
+            "id": "voc_homework",
+            "word": "Homework",
+            "translation": "Tarea",
+            "examples": ["I have a lot of homework tonight"]
           },
           {
-            "id": "voc_wifi",
-            "word": "Wi-Fi",
-            "translation": "Wi-Fi",
-            "examples": ["The Wi-Fi connection is very fast"]
+            "id": "voc_exam",
+            "word": "Exam",
+            "translation": "Examen",
+            "examples": ["The English exam is next week"]
           }
         ],
         "exercises": [
           {
             "type": "memory_game",
-            "id": "ex1_tech_vocabulary",
-            "title": "Memory: Vocabulario Tecnológico",
+            "id": "ex1_education_vocabulary",
+            "title": "Memory: Vocabulario Educativo",
             "config": {
               "pairs": [
                 {
-                  "front": "Smartphone",
-                  "back": "Teléfono inteligente"
+                  "front": "Homework",
+                  "back": "Tarea"
                 },
                 {
-                  "front": "Wi-Fi",
-                  "back": "Wi-Fi"
+                  "front": "Exam",
+                  "back": "Examen"
                 },
                 {
-                  "front": "Social media",
-                  "back": "Redes sociales"
+                  "front": "Subject",
+                  "back": "Materia"
                 },
                 {
-                  "front": "Download",
-                  "back": "Descargar"
+                  "front": "Teacher",
+                  "back": "Profesor"
+                }
+              ]
+            }
+          },
+          {
+            "type": "drag_drop",
+            "id": "ex2_study_advice",
+            "title": "Consejos de Estudio: Should/Ought to",
+            "config": {
+              "question": "Completa los consejos educativos",
+              "pairs": [
+                {
+                  "id": "edu1",
+                  "from": "You ___ study every day",
+                  "to": "should"
+                },
+                {
+                  "id": "edu2",
+                  "from": "We ___ practice speaking",
+                  "to": "ought to"
+                },
+                {
+                  "id": "edu3",
+                  "from": "They ___ do their homework",
+                  "to": "should"
                 }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex2_digital_habits",
-            "title": "Hábitos Digitales con Adverbios",
+            "id": "ex3_educational_advice",
+            "title": "Forma Consejos Educativos",
             "config": {
               "wordBank": [
-                "I",
-                "always",
-                "often",
-                "sometimes",
-                "never",
-                "use",
-                "check",
-                "post",
-                "on",
-                "social",
-                "media",
-                "my",
-                "phone",
-                "computer",
-                "in",
-                "the",
-                "morning",
-                "evening"
+                "You", "should", "ought", "to", "study",
+                "practice", "do", "your", "homework", "for",
+                "the", "exam", "every", "day", "more"
               ],
               "correctAnswers": [
-                "I always use my phone in the morning",
-                "I often check social media",
-                "I never post on social media"
+                "You should study every day",
+                "You ought to practice more",
+                "You should do your homework"
               ],
-              "requiredWords": ["always", "often", "sometimes", "never"],
+              "requiredWords": ["should", "ought to"],
               "timeLimit": 120
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex3_social_media_talk",
-            "title": "Conversación sobre Redes Sociales",
+            "id": "ex4_study_conversation",
+            "title": "Conversación sobre Estudios",
             "config": {
-              "scenario": "Talking about social media habits with a friend",
+              "scenario": "Giving study advice to a classmate",
               "dialogues": [
                 {
-                  "character": "friend",
-                  "text": "How often do you use social media?",
-                  "options": [
-                    "I always check it in the morning",
-                    "I sometimes post photos"
-                  ]
+                  "character": "classmate",
+                  "text": "I have an English exam next week. What should I do?",
+                  "options": ["You should study every day", "You ought to practice speaking"]
                 },
                 {
                   "character": "user",
-                  "text": "Which app do you use the most?",
-                  "options": ["I often use Instagram", "I always use WhatsApp"]
-                }
-              ]
-            }
-          },
-          {
-            "type": "matching",
-            "id": "ex4_tech_adverbs",
-            "title": "Adverbios de Frecuencia Tecnológicos",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Always",
-                  "to": "100% del tiempo"
-                },
-                {
-                  "from": "Often",
-                  "to": "Frecuentemente"
-                },
-                {
-                  "from": "Sometimes",
-                  "to": "Algunas veces"
-                },
-                {
-                  "from": "Never",
-                  "to": "Nunca"
+                  "text": "How much time should I spend studying?",
+                  "options": ["You ought to study at least one hour daily", "You should focus on vocabulary"]
                 }
               ]
             }
@@ -157,94 +134,87 @@
         ]
       }
     },
-    "A2_nature_environment": {
-      "id": "A2_nature_environment",
-      "title": "Naturaleza y Medio Ambiente",
-      "xpReward": 175,
+    "A2_free_time_hobbies": {
+      "id": "A2_free_time_hobbies",
+      "title": "Tiempo Libre y Pasatiempos",
+      "xpReward": 170,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_nature",
-        "xpReward": 175,
+        "unit": "unitA2_hobbies",
+        "xpReward": 170,
         "estimatedDuration": 55,
-        "tags": [
-          "modal_verbs",
-          "must",
-          "have_to",
-          "nature",
-          "environment",
-          "ecology"
-        ]
+        "tags": ["present_simple", "stative_verbs", "hobbies", "free_time", "leisure"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_must_recycle",
-            "word": "Must recycle",
-            "translation": "Debo reciclar",
-            "examples": ["We must recycle to protect the environment"],
-            "tags": ["must", "environment"]
+            "id": "voc_like_reading",
+            "word": "Like reading",
+            "translation": "Me gusta leer",
+            "examples": ["I like reading books in my free time"],
+            "tags": ["stative_verbs", "hobbies"]
           },
           {
-            "id": "voc_have_to_save",
-            "word": "Have to save",
-            "translation": "Tengo que ahorrar",
-            "examples": ["We have to save water"],
-            "tags": ["have_to", "conservation"]
+            "id": "voc_enjoy_watching",
+            "word": "Enjoy watching",
+            "translation": "Disfruto ver",
+            "examples": ["She enjoys watching movies"],
+            "tags": ["stative_verbs", "entertainment"]
           },
           {
-            "id": "voc_recycling",
-            "word": "Recycling",
-            "translation": "Reciclaje",
-            "examples": ["Recycling is important for the planet"]
+            "id": "voc_hobby",
+            "word": "Hobby",
+            "translation": "Pasatiempo",
+            "examples": ["My hobby is photography"]
           },
           {
-            "id": "voc_pollution",
-            "word": "Pollution",
-            "translation": "Contaminación",
-            "examples": ["Air pollution is a big problem"]
+            "id": "voc_leisure",
+            "word": "Leisure",
+            "translation": "Ocio",
+            "examples": ["What do you do in your leisure time?"]
           }
         ],
         "exercises": [
           {
-            "type": "drag_drop",
-            "id": "ex1_environmental_rules",
-            "title": "Normas Ambientales: Must/Have to",
+            "type": "matching",
+            "id": "ex1_hobbies_matching",
+            "title": "Empareja Pasatiempos",
             "config": {
-              "question": "Completa las normas ambientales",
               "pairs": [
                 {
-                  "id": "env1",
-                  "from": "We ___ recycle plastic",
-                  "to": "must"
+                  "from": "Reading books",
+                  "to": "Leer libros"
                 },
                 {
-                  "id": "env2",
-                  "from": "You ___ turn off the lights",
-                  "to": "have to"
+                  "from": "Watching movies",
+                  "to": "Ver películas"
                 },
                 {
-                  "id": "env3",
-                  "from": "They ___ save water",
-                  "to": "must"
+                  "from": "Listening to music",
+                  "to": "Escuchar música"
+                },
+                {
+                  "from": "Playing sports",
+                  "to": "Practicar deportes"
                 }
               ]
             }
           },
           {
             "type": "conjugation",
-            "id": "ex2_environmental_verbs",
-            "title": "Conjugación: Must y Have to",
+            "id": "ex2_stative_verbs",
+            "title": "Verbos Estativos en Presente",
             "config": {
-              "verb": "to recycle",
+              "verb": "to like",
               "pronouns": ["I", "You", "He", "We", "They"],
               "tenses": ["Present"],
               "correct": {
-                "I": "must recycle",
-                "You": "must recycle",
-                "He": "must recycle",
-                "We": "must recycle",
-                "They": "must recycle"
+                "I": "like",
+                "You": "like",
+                "He": "likes",
+                "We": "like",
+                "They": "like"
               },
               "hints": {
                 "showBaseForm": true
@@ -253,55 +223,39 @@
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_eco_sentences",
-            "title": "Forma Oraciones Ecológicas",
+            "id": "ex3_hobby_sentences",
+            "title": "Describe tus Pasatiempos",
             "config": {
               "wordBank": [
-                "We",
-                "must",
-                "have",
-                "to",
-                "recycle",
-                "save",
-                "water",
-                "energy",
-                "protect",
-                "the",
-                "environment",
-                "planet",
-                "trees"
+                "I", "like", "enjoy", "love", "reading",
+                "watching", "listening", "to", "music", "movies",
+                "books", "in", "my", "free", "time", "weekends"
               ],
               "correctAnswers": [
-                "We must recycle",
-                "We have to save water",
-                "We must protect the environment"
+                "I like reading books",
+                "I enjoy watching movies",
+                "I love listening to music"
               ],
-              "requiredWords": ["must", "have to"],
+              "requiredWords": ["like", "enjoy", "love"],
               "timeLimit": 110
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_eco_conversation",
-            "title": "Conversación sobre Ecología",
+            "id": "ex4_hobbies_conversation",
+            "title": "Conversación sobre Pasatiempos",
             "config": {
-              "scenario": "Discussing environmental protection with a friend",
+              "scenario": "Talking about hobbies with a new friend",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "What must we do to help the environment?",
-                  "options": [
-                    "We must recycle more",
-                    "We have to use less plastic"
-                  ]
+                  "text": "What do you like doing in your free time?",
+                  "options": ["I like reading and watching movies", "I enjoy playing sports"]
                 },
                 {
                   "character": "user",
-                  "text": "Why is it important to save water?",
-                  "options": [
-                    "Because water is limited",
-                    "To protect our planet"
-                  ]
+                  "text": "What kind of music do you enjoy?",
+                  "options": ["I love listening to pop music", "I enjoy different types of music"]
                 }
               ]
             }
@@ -309,327 +263,426 @@
         ]
       }
     },
-    "A2_shopping_prices": {
-      "id": "A2_shopping_prices",
-      "title": "Compras y Precios",
-      "xpReward": 165,
+    "A2_communication_skills": {
+      "id": "A2_communication_skills",
+      "title": "Habilidades de Comunicación",
+      "xpReward": 175,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_shopping",
-        "xpReward": 165,
-        "estimatedDuration": 52,
-        "tags": [
-          "modal_verbs",
-          "can",
-          "could",
-          "may",
-          "shopping",
-          "prices",
-          "stores"
-        ]
+        "unit": "unitA2_communication",
+        "xpReward": 175,
+        "estimatedDuration": 58,
+        "tags": ["modal_verbs", "can", "could", "communication", "language_skills"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_can_buy",
-            "word": "Can buy",
-            "translation": "Puedo comprar",
-            "examples": ["I can buy this shirt"],
-            "tags": ["can", "shopping"]
+            "id": "voc_can_speak",
+            "word": "Can speak",
+            "translation": "Puedo hablar",
+            "examples": ["I can speak English well"],
+            "tags": ["can", "abilities"]
           },
           {
-            "id": "voc_could_try",
-            "word": "Could try",
-            "translation": "Podría probar",
-            "examples": ["I could try a smaller size"],
-            "tags": ["could", "suggestions"]
+            "id": "voc_could_understand",
+            "word": "Could understand",
+            "translation": "Podría entender",
+            "examples": ["I could understand if you speak slowly"],
+            "tags": ["could", "possibility"]
           },
           {
-            "id": "voc_may_help",
-            "word": "May help",
-            "translation": "Puede ayudar",
-            "examples": ["May I help you?"],
-            "tags": ["may", "offers"]
+            "id": "voc_fluent",
+            "word": "Fluent",
+            "translation": "Fluido",
+            "examples": ["She is fluent in Spanish"]
           },
           {
-            "id": "voc_discount",
-            "word": "Discount",
-            "translation": "Descuento",
-            "examples": ["This shirt has a 20% discount"]
+            "id": "voc_pronunciation",
+            "word": "Pronunciation",
+            "translation": "Pronunciación",
+            "examples": ["My pronunciation is getting better"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "drag_drop",
+            "id": "ex1_communication_modals",
+            "title": "Modales de Comunicación",
+            "config": {
+              "question": "Completa las frases de comunicación",
+              "pairs": [
+                {
+                  "id": "comm1",
+                  "from": "I ___ speak three languages",
+                  "to": "can"
+                },
+                {
+                  "id": "comm2",
+                  "from": "___ you repeat that?",
+                  "to": "Could"
+                },
+                {
+                  "id": "comm3",
+                  "from": "She ___ understand English well",
+                  "to": "can"
+                }
+              ]
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex2_communication_vocabulary",
+            "title": "Memory: Vocabulario de Comunicación",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Fluent",
+                  "back": "Fluido"
+                },
+                {
+                  "front": "Pronunciation",
+                  "back": "Pronunciación"
+                },
+                {
+                  "front": "Vocabulary",
+                  "back": "Vocabulario"
+                },
+                {
+                  "front": "Grammar",
+                  "back": "Gramática"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_language_abilities",
+            "title": "Habilidades Lingüísticas",
+            "config": {
+              "wordBank": [
+                "I", "can", "could", "speak", "understand",
+                "read", "write", "English", "Spanish", "well",
+                "a", "little", "very", "not", "very", "well"
+              ],
+              "correctAnswers": [
+                "I can speak English well",
+                "I could understand Spanish",
+                "I can read and write"
+              ],
+              "requiredWords": ["can", "could"],
+              "timeLimit": 115
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_language_conversation",
+            "title": "Conversación sobre Idiomas",
+            "config": {
+              "scenario": "Talking about language skills with someone",
+              "dialogues": [
+                {
+                  "character": "person",
+                  "text": "What languages can you speak?",
+                  "options": ["I can speak English and Spanish", "I could speak French in school"]
+                },
+                {
+                  "character": "user",
+                  "text": "How well can you understand English?",
+                  "options": ["I can understand very well", "I could understand better with practice"]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_public_transportation": {
+      "id": "A2_public_transportation",
+      "title": "Transporte Público",
+      "xpReward": 180,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_public_transport",
+        "xpReward": 180,
+        "estimatedDuration": 62,
+        "tags": ["present_simple", "stative_verbs", "public_transport", "travel", "commute"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_bus_stop",
+            "word": "Bus stop",
+            "translation": "Parada de autobús",
+            "examples": ["The bus stop is near my house"],
+            "tags": ["transport", "locations"]
+          },
+          {
+            "id": "voc_train_station",
+            "word": "Train station",
+            "translation": "Estación de tren",
+            "examples": ["I need to go to the train station"],
+            "tags": ["transport", "locations"]
+          },
+          {
+            "id": "voc_ticket",
+            "word": "Ticket",
+            "translation": "Boleto",
+            "examples": ["I need to buy a ticket"]
+          },
+          {
+            "id": "voc_schedule",
+            "word": "Schedule",
+            "translation": "Horario",
+            "examples": ["Check the schedule for departure times"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_shopping_modals",
-            "title": "Modales en Compras: Can/Could/May",
+            "id": "ex1_transport_vocabulary",
+            "title": "Vocabulario de Transporte Público",
             "config": {
               "pairs": [
                 {
-                  "from": "Can I help you?",
-                  "to": "Ofrecimiento de ayuda"
+                  "from": "Bus stop",
+                  "to": "Parada de autobús"
                 },
                 {
-                  "from": "Could I try this?",
-                  "to": "Petición educada"
+                  "from": "Train station",
+                  "to": "Estación de tren"
                 },
                 {
-                  "from": "May I pay by card?",
-                  "to": "Pregunta formal"
+                  "from": "Subway",
+                  "to": "Metro"
+                },
+                {
+                  "from": "Ticket",
+                  "to": "Boleto"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex2_transport_sentences",
+            "title": "Frases sobre Transporte",
+            "config": {
+              "wordBank": [
+                "The", "bus", "train", "subway", "stop",
+                "station", "is", "near", "my", "house",
+                "work", "I", "take", "the", "to", "every", "day"
+              ],
+              "correctAnswers": [
+                "The bus stop is near my house",
+                "I take the train every day",
+                "The subway station is near work"
+              ],
+              "requiredWords": ["bus", "train", "subway"],
+              "timeLimit": 120
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex3_transport_conversation",
+            "title": "Preguntando sobre Transporte",
+            "config": {
+              "scenario": "Asking for public transport information",
+              "dialogues": [
+                {
+                  "character": "traveler",
+                  "text": "Where is the nearest bus stop?",
+                  "options": ["It's two blocks from here", "There's one around the corner"]
+                },
+                {
+                  "character": "user",
+                  "text": "How often do the trains come?",
+                  "options": ["Every 15 minutes", "Check the schedule for times"]
                 }
               ]
             }
           },
           {
             "type": "drag_drop",
-            "id": "ex2_shopping_phrases",
-            "title": "Completa Frases de Compras",
+            "id": "ex4_transport_directions",
+            "title": "Instrucciones de Transporte",
             "config": {
-              "question": "Arrastra el verbo modal correcto",
+              "question": "Completa las instrucciones",
               "pairs": [
                 {
-                  "id": "shop1",
-                  "from": "___ I help you?",
-                  "to": "May"
+                  "id": "trans1",
+                  "from": "Take the ___ to the city center",
+                  "to": "bus"
                 },
                 {
-                  "id": "shop2",
-                  "from": "I ___ buy this dress",
-                  "to": "can"
+                  "id": "trans2",
+                  "from": "The ___ station is downtown",
+                  "to": "train"
                 },
                 {
-                  "id": "shop3",
-                  "from": "___ I try it on?",
-                  "to": "Could"
+                  "id": "trans3",
+                  "from": "Buy a ___ before boarding",
+                  "to": "ticket"
                 }
               ]
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_store_conversation",
-            "title": "Simulación: Tienda de Ropa",
-            "config": {
-              "scenario": "Shopping for clothes in a store",
-              "dialogues": [
-                {
-                  "character": "assistant",
-                  "text": "May I help you?",
-                  "options": [
-                    "Yes, I'm looking for a dress",
-                    "No, I'm just looking"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "Could I try this in a smaller size?",
-                  "options": [
-                    "Of course, I'll get it for you",
-                    "Yes, the fitting room is there"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex4_shopping_requests",
-            "title": "Forma Peticiones de Compra",
-            "config": {
-              "wordBank": [
-                "Can",
-                "Could",
-                "May",
-                "I",
-                "you",
-                "help",
-                "buy",
-                "try",
-                "this",
-                "on",
-                "pay",
-                "by",
-                "card",
-                "cash",
-                "have",
-                "a",
-                "discount"
-              ],
-              "correctAnswers": [
-                "Can I try this on?",
-                "May I pay by card?",
-                "Could you help me?"
-              ],
-              "requiredWords": ["Can", "Could", "May"],
-              "timeLimit": 100
             }
           }
         ]
       }
     },
-    "A2_events_celebrations": {
-      "id": "A2_events_celebrations",
-      "title": "Eventos y Celebraciones",
-      "xpReward": 180,
+    "A2_housing_places": {
+      "id": "A2_housing_places",
+      "title": "Vivienda y Lugares",
+      "xpReward": 190,
       "metadata": {
         "level": "A2",
-        "module": "grammar",
-        "unit": "unitA2_events",
-        "xpReward": 180,
-        "estimatedDuration": 58,
-        "tags": [
-          "past_simple",
-          "past_continuous",
-          "events",
-          "celebrations",
-          "festivities"
-        ]
+        "module": "vocabulary",
+        "unit": "unitA2_housing",
+        "xpReward": 190,
+        "estimatedDuration": 65,
+        "tags": ["demonstrative_adjectives", "housing", "places", "descriptions", "locations"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_was_celebrating",
-            "word": "Was celebrating",
-            "translation": "Estaba celebrando",
-            "examples": ["I was celebrating my birthday when you called"],
-            "tags": ["past_continuous", "events"]
+            "id": "voc_this_apartment",
+            "word": "This apartment",
+            "translation": "Este apartamento",
+            "examples": ["This apartment is very spacious"],
+            "tags": ["demonstrative", "housing"]
           },
           {
-            "id": "voc_arrived",
-            "word": "Arrived",
-            "translation": "Llegó",
-            "examples": ["She arrived at the party at 8 PM"],
-            "tags": ["past_simple", "actions"]
+            "id": "voc_that_house",
+            "word": "That house",
+            "translation": "Esa casa",
+            "examples": ["That house has a big garden"],
+            "tags": ["demonstrative", "housing"]
           },
           {
-            "id": "voc_birthday_party",
-            "word": "Birthday party",
-            "translation": "Fiesta de cumpleaños",
-            "examples": ["We had a birthday party last weekend"]
+            "id": "voc_apartment",
+            "word": "Apartment",
+            "translation": "Apartamento",
+            "examples": ["I live in a small apartment"]
           },
           {
-            "id": "voc_wedding",
-            "word": "Wedding",
-            "translation": "Boda",
-            "examples": ["The wedding was beautiful"]
+            "id": "voc_neighborhood",
+            "word": "Neighborhood",
+            "translation": "Vecindario",
+            "examples": ["This is a quiet neighborhood"]
           }
         ],
         "exercises": [
           {
             "type": "memory_game",
-            "id": "ex1_events_vocabulary",
-            "title": "Memory: Eventos y Celebraciones",
+            "id": "ex1_housing_vocabulary",
+            "title": "Memory: Vivienda y Lugares",
             "config": {
               "pairs": [
                 {
-                  "front": "Birthday party",
-                  "back": "Fiesta de cumpleaños"
+                  "front": "Apartment",
+                  "back": "Apartamento"
                 },
                 {
-                  "front": "Wedding",
-                  "back": "Boda"
+                  "front": "House",
+                  "back": "Casa"
                 },
                 {
-                  "front": "Anniversary",
-                  "back": "Aniversario"
+                  "front": "Neighborhood",
+                  "back": "Vecindario"
                 },
                 {
-                  "front": "Graduation",
-                  "back": "Graduación"
+                  "front": "Building",
+                  "back": "Edificio"
                 }
               ]
             }
           },
           {
-            "type": "conjugation",
-            "id": "ex2_past_tenses",
-            "title": "Pasado Simple vs Pasado Continuo",
+            "type": "drag_drop",
+            "id": "ex2_demonstrative_adjectives",
+            "title": "Adjetivos Demostrativos",
             "config": {
-              "verb": "to celebrate",
-              "pronouns": ["I", "You", "He", "We"],
-              "tenses": ["Past Simple", "Past Continuous"],
-              "correct": {
-                "Past Simple": "celebrated",
-                "Past Continuous": "was celebrating"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
+              "question": "Completa con this/that/these/those",
+              "pairs": [
+                {
+                  "id": "demo1",
+                  "from": "___ apartment is mine",
+                  "to": "This"
+                },
+                {
+                  "id": "demo2",
+                  "from": "___ houses are very old",
+                  "to": "Those"
+                },
+                {
+                  "id": "demo3",
+                  "from": "___ building is new",
+                  "to": "That"
+                }
+              ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_event_stories",
-            "title": "Cuenta Historias de Eventos",
+            "id": "ex3_place_descriptions",
+            "title": "Describe Lugares",
             "config": {
               "wordBank": [
-                "I",
-                "was",
-                "were",
-                "celebrating",
-                "dancing",
-                "when",
-                "arrived",
-                "called",
-                "came",
-                "to",
-                "the",
-                "party",
-                "wedding",
-                "birthday",
-                "last",
-                "night",
-                "weekend"
+                "This", "That", "These", "Those", "apartment",
+                "house", "building", "neighborhood", "is", "are",
+                "very", "big", "small", "quiet", "modern", "old"
               ],
               "correctAnswers": [
-                "I was celebrating when you called",
-                "We were dancing at the party",
-                "She arrived at the wedding"
+                "This apartment is very modern",
+                "That house is big",
+                "This neighborhood is quiet"
               ],
-              "requiredWords": ["was", "were", "arrived"],
+              "requiredWords": ["This", "That", "These", "Those"],
               "timeLimit": 130
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_party_conversation",
-            "title": "Conversación sobre un Evento",
+            "id": "ex4_housing_conversation",
+            "title": "Conversación sobre Vivienda",
             "config": {
-              "scenario": "Talking about a recent celebration with a friend",
+              "scenario": "Talking about different places to live",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "What were you doing last night?",
-                  "options": [
-                    "I was celebrating my birthday",
-                    "We were at a wedding"
-                  ]
+                  "text": "What do you think of this apartment?",
+                  "options": ["This apartment is very nice", "That building looks better"]
                 },
                 {
                   "character": "user",
-                  "text": "When did the party start?",
-                  "options": ["It started at 7 PM", "People arrived around 8"]
+                  "text": "How is that neighborhood?",
+                  "options": ["That neighborhood is very quiet", "These houses are beautiful"]
                 }
               ]
             }
           },
           {
-            "type": "audio_matching",
-            "id": "ex5_events_audio",
-            "title": "Audio: Descripciones de Eventos",
+            "type": "image_selection",
+            "id": "ex5_place_identification",
+            "title": "Identifica el Lugar",
             "config": {
-              "mode": "audio_to_text",
-              "pairs": [
+              "question": "Select the correct description for each place",
+              "options": [
                 {
-                  "audio": "https://res.cloudinary.com/tu-usuario/video/upload/v.../birthday_party.mp3",
-                  "text": "I was celebrating my birthday yesterday"
+                  "image": "https://example.com/modern_apartment.jpg",
+                  "text": "This apartment is modern",
+                  "correct": true,
+                  "feedback": "Correct! This shows a modern apartment"
                 },
                 {
-                  "audio": "https://res.cloudinary.com/tu-usuario/video/upload/v.../wedding_arrival.mp3",
-                  "text": "We arrived at the wedding at 6 PM"
+                  "image": "https://example.com/old_house.jpg",
+                  "text": "That house is old",
+                  "correct": false,
+                  "feedback": "This shows an old house, not a modern apartment"
                 }
-              ]
+              ],
+              "multipleSelection": false
             }
           }
         ]
