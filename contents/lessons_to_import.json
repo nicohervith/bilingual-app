@@ -1,261 +1,182 @@
 {
   "lessons": {
-    "A2_education_studies": {
-      "id": "A2_education_studies",
-      "title": "Educación y Estudios",
+    "A2_fashion_style": {
+      "id": "A2_fashion_style",
+      "title": "Moda y Estilo",
       "xpReward": 185,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_education",
+        "unit": "unitA2_fashion",
         "xpReward": 185,
-        "estimatedDuration": 60,
-        "tags": ["modal_verbs", "should", "ought_to", "education", "studies", "subjects"]
+        "estimatedDuration": 62,
+        "tags": ["comparatives", "superlatives", "fashion", "style", "clothing"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_should_study",
-            "word": "Should study",
-            "translation": "Debería estudiar",
-            "examples": ["You should study for the exam"],
-            "tags": ["should", "advice"]
+            "id": "voc_prettier",
+            "word": "Prettier",
+            "translation": "Más bonito",
+            "examples": ["This dress is prettier than that one"],
+            "tags": ["comparative", "clothing"]
           },
           {
-            "id": "voc_ought_to_practice",
-            "word": "Ought to practice",
-            "translation": "Debería practicar",
-            "examples": ["We ought to practice more"],
-            "tags": ["ought_to", "recommendation"]
+            "id": "voc_most_fashionable",
+            "word": "Most fashionable",
+            "translation": "Más a la moda",
+            "examples": ["She wears the most fashionable clothes"],
+            "tags": ["superlative", "style"]
           },
           {
-            "id": "voc_homework",
-            "word": "Homework",
-            "translation": "Tarea",
-            "examples": ["I have a lot of homework tonight"]
+            "id": "voc_outfit",
+            "word": "Outfit",
+            "translation": "Conjunto",
+            "examples": ["I love your outfit today"]
           },
           {
-            "id": "voc_exam",
-            "word": "Exam",
-            "translation": "Examen",
-            "examples": ["The English exam is next week"]
+            "id": "voc_accessory",
+            "word": "Accessory",
+            "translation": "Accesorio",
+            "examples": ["That accessory completes the look"]
           }
         ],
         "exercises": [
           {
-            "type": "memory_game",
-            "id": "ex1_education_vocabulary",
-            "title": "Memory: Vocabulario Educativo",
+            "type": "vocabulary",
+            "id": "ex1_fashion_categories",
+            "title": "Categoría: Tipos de Ropa",
             "config": {
-              "pairs": [
+              "categories": [
                 {
-                  "front": "Homework",
-                  "back": "Tarea"
+                  "id": "clothing",
+                  "name": "Prendas de Vestir",
+                  "color": "#9C27B0"
                 },
                 {
-                  "front": "Exam",
-                  "back": "Examen"
+                  "id": "accessories",
+                  "name": "Accesorios",
+                  "color": "#FF5722"
                 },
                 {
-                  "front": "Subject",
-                  "back": "Materia"
+                  "id": "footwear",
+                  "name": "Calzado",
+                  "color": "#3F51B5"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item1",
+                  "text": "Dress",
+                  "category": "clothing"
                 },
                 {
-                  "front": "Teacher",
-                  "back": "Profesor"
+                  "id": "item2",
+                  "text": "Necklace",
+                  "category": "accessories"
+                },
+                {
+                  "id": "item3",
+                  "text": "Shoes",
+                  "category": "footwear"
+                },
+                {
+                  "id": "item4",
+                  "text": "Shirt",
+                  "category": "clothing"
+                },
+                {
+                  "id": "item5",
+                  "text": "Bracelet",
+                  "category": "accessories"
+                },
+                {
+                  "id": "item6",
+                  "text": "Boots",
+                  "category": "footwear"
                 }
               ]
             }
           },
           {
             "type": "drag_drop",
-            "id": "ex2_study_advice",
-            "title": "Consejos de Estudio: Should/Ought to",
+            "id": "ex2_fashion_comparisons",
+            "title": "Comparaciones de Moda",
             "config": {
-              "question": "Completa los consejos educativos",
+              "question": "Completa las comparaciones de moda",
               "pairs": [
                 {
-                  "id": "edu1",
-                  "from": "You ___ study every day",
-                  "to": "should"
+                  "id": "fash1",
+                  "from": "This dress is ___ than that one",
+                  "to": "prettier"
                 },
                 {
-                  "id": "edu2",
-                  "from": "We ___ practice speaking",
-                  "to": "ought to"
+                  "id": "fash2",
+                  "from": "She has the ___ shoes",
+                  "to": "most fashionable"
                 },
                 {
-                  "id": "edu3",
-                  "from": "They ___ do their homework",
-                  "to": "should"
+                  "id": "fash3",
+                  "from": "These pants are ___ comfortable",
+                  "to": "more"
                 }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_educational_advice",
-            "title": "Forma Consejos Educativos",
+            "id": "ex3_style_sentences",
+            "title": "Describe Estilos",
             "config": {
               "wordBank": [
-                "You", "should", "ought", "to", "study",
-                "practice", "do", "your", "homework", "for",
-                "the", "exam", "every", "day", "more"
+                "This",
+                "dress",
+                "is",
+                "prettier",
+                "than",
+                "that",
+                "one",
+                "more",
+                "fashionable",
+                "comfortable",
+                "the",
+                "most",
+                "beautiful",
+                "elegant",
+                "modern",
+                "outfit"
               ],
               "correctAnswers": [
-                "You should study every day",
-                "You ought to practice more",
-                "You should do your homework"
+                "This dress is prettier than that one",
+                "She has the most fashionable outfit",
+                "These shoes are more comfortable"
               ],
-              "requiredWords": ["should", "ought to"],
+              "requiredWords": ["prettier", "more", "most"],
               "timeLimit": 120
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_study_conversation",
-            "title": "Conversación sobre Estudios",
+            "id": "ex4_shopping_conversation",
+            "title": "Conversación sobre Moda",
             "config": {
-              "scenario": "Giving study advice to a classmate",
-              "dialogues": [
-                {
-                  "character": "classmate",
-                  "text": "I have an English exam next week. What should I do?",
-                  "options": ["You should study every day", "You ought to practice speaking"]
-                },
-                {
-                  "character": "user",
-                  "text": "How much time should I spend studying?",
-                  "options": ["You ought to study at least one hour daily", "You should focus on vocabulary"]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_free_time_hobbies": {
-      "id": "A2_free_time_hobbies",
-      "title": "Tiempo Libre y Pasatiempos",
-      "xpReward": 170,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_hobbies",
-        "xpReward": 170,
-        "estimatedDuration": 55,
-        "tags": ["present_simple", "stative_verbs", "hobbies", "free_time", "leisure"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_like_reading",
-            "word": "Like reading",
-            "translation": "Me gusta leer",
-            "examples": ["I like reading books in my free time"],
-            "tags": ["stative_verbs", "hobbies"]
-          },
-          {
-            "id": "voc_enjoy_watching",
-            "word": "Enjoy watching",
-            "translation": "Disfruto ver",
-            "examples": ["She enjoys watching movies"],
-            "tags": ["stative_verbs", "entertainment"]
-          },
-          {
-            "id": "voc_hobby",
-            "word": "Hobby",
-            "translation": "Pasatiempo",
-            "examples": ["My hobby is photography"]
-          },
-          {
-            "id": "voc_leisure",
-            "word": "Leisure",
-            "translation": "Ocio",
-            "examples": ["What do you do in your leisure time?"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_hobbies_matching",
-            "title": "Empareja Pasatiempos",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Reading books",
-                  "to": "Leer libros"
-                },
-                {
-                  "from": "Watching movies",
-                  "to": "Ver películas"
-                },
-                {
-                  "from": "Listening to music",
-                  "to": "Escuchar música"
-                },
-                {
-                  "from": "Playing sports",
-                  "to": "Practicar deportes"
-                }
-              ]
-            }
-          },
-          {
-            "type": "conjugation",
-            "id": "ex2_stative_verbs",
-            "title": "Verbos Estativos en Presente",
-            "config": {
-              "verb": "to like",
-              "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Present"],
-              "correct": {
-                "I": "like",
-                "You": "like",
-                "He": "likes",
-                "We": "like",
-                "They": "like"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_hobby_sentences",
-            "title": "Describe tus Pasatiempos",
-            "config": {
-              "wordBank": [
-                "I", "like", "enjoy", "love", "reading",
-                "watching", "listening", "to", "music", "movies",
-                "books", "in", "my", "free", "time", "weekends"
-              ],
-              "correctAnswers": [
-                "I like reading books",
-                "I enjoy watching movies",
-                "I love listening to music"
-              ],
-              "requiredWords": ["like", "enjoy", "love"],
-              "timeLimit": 110
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_hobbies_conversation",
-            "title": "Conversación sobre Pasatiempos",
-            "config": {
-              "scenario": "Talking about hobbies with a new friend",
+              "scenario": "Shopping for clothes with a friend",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "What do you like doing in your free time?",
-                  "options": ["I like reading and watching movies", "I enjoy playing sports"]
+                  "text": "Which dress do you like better?",
+                  "options": [
+                    "This one is prettier",
+                    "The red one is more elegant"
+                  ]
                 },
                 {
                   "character": "user",
-                  "text": "What kind of music do you enjoy?",
-                  "options": ["I love listening to pop music", "I enjoy different types of music"]
+                  "text": "Are these shoes the most comfortable?",
+                  "options": [
+                    "Yes, they're the most comfortable ones",
+                    "No, those are more comfortable"
+                  ]
                 }
               ]
             }
@@ -263,426 +184,194 @@
         ]
       }
     },
-    "A2_communication_skills": {
-      "id": "A2_communication_skills",
-      "title": "Habilidades de Comunicación",
-      "xpReward": 175,
+    "A2_problems_solutions": {
+      "id": "A2_problems_solutions",
+      "title": "Problemas y Soluciones",
+      "xpReward": 200,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_communication",
-        "xpReward": 175,
-        "estimatedDuration": 58,
-        "tags": ["modal_verbs", "can", "could", "communication", "language_skills"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_can_speak",
-            "word": "Can speak",
-            "translation": "Puedo hablar",
-            "examples": ["I can speak English well"],
-            "tags": ["can", "abilities"]
-          },
-          {
-            "id": "voc_could_understand",
-            "word": "Could understand",
-            "translation": "Podría entender",
-            "examples": ["I could understand if you speak slowly"],
-            "tags": ["could", "possibility"]
-          },
-          {
-            "id": "voc_fluent",
-            "word": "Fluent",
-            "translation": "Fluido",
-            "examples": ["She is fluent in Spanish"]
-          },
-          {
-            "id": "voc_pronunciation",
-            "word": "Pronunciation",
-            "translation": "Pronunciación",
-            "examples": ["My pronunciation is getting better"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "drag_drop",
-            "id": "ex1_communication_modals",
-            "title": "Modales de Comunicación",
-            "config": {
-              "question": "Completa las frases de comunicación",
-              "pairs": [
-                {
-                  "id": "comm1",
-                  "from": "I ___ speak three languages",
-                  "to": "can"
-                },
-                {
-                  "id": "comm2",
-                  "from": "___ you repeat that?",
-                  "to": "Could"
-                },
-                {
-                  "id": "comm3",
-                  "from": "She ___ understand English well",
-                  "to": "can"
-                }
-              ]
-            }
-          },
-          {
-            "type": "memory_game",
-            "id": "ex2_communication_vocabulary",
-            "title": "Memory: Vocabulario de Comunicación",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Fluent",
-                  "back": "Fluido"
-                },
-                {
-                  "front": "Pronunciation",
-                  "back": "Pronunciación"
-                },
-                {
-                  "front": "Vocabulary",
-                  "back": "Vocabulario"
-                },
-                {
-                  "front": "Grammar",
-                  "back": "Gramática"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_language_abilities",
-            "title": "Habilidades Lingüísticas",
-            "config": {
-              "wordBank": [
-                "I", "can", "could", "speak", "understand",
-                "read", "write", "English", "Spanish", "well",
-                "a", "little", "very", "not", "very", "well"
-              ],
-              "correctAnswers": [
-                "I can speak English well",
-                "I could understand Spanish",
-                "I can read and write"
-              ],
-              "requiredWords": ["can", "could"],
-              "timeLimit": 115
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_language_conversation",
-            "title": "Conversación sobre Idiomas",
-            "config": {
-              "scenario": "Talking about language skills with someone",
-              "dialogues": [
-                {
-                  "character": "person",
-                  "text": "What languages can you speak?",
-                  "options": ["I can speak English and Spanish", "I could speak French in school"]
-                },
-                {
-                  "character": "user",
-                  "text": "How well can you understand English?",
-                  "options": ["I can understand very well", "I could understand better with practice"]
-                }
-              ]
-            }
-          }
+        "unit": "unitA2_problems",
+        "xpReward": 200,
+        "estimatedDuration": 70,
+        "tags": [
+          "modal_verbs",
+          "must",
+          "have_to",
+          "problems",
+          "solutions",
+          "troubleshooting"
         ]
-      }
-    },
-    "A2_public_transportation": {
-      "id": "A2_public_transportation",
-      "title": "Transporte Público",
-      "xpReward": 180,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_public_transport",
-        "xpReward": 180,
-        "estimatedDuration": 62,
-        "tags": ["present_simple", "stative_verbs", "public_transport", "travel", "commute"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_bus_stop",
-            "word": "Bus stop",
-            "translation": "Parada de autobús",
-            "examples": ["The bus stop is near my house"],
-            "tags": ["transport", "locations"]
+            "id": "voc_must_solve",
+            "word": "Must solve",
+            "translation": "Debe resolver",
+            "examples": ["We must solve this problem quickly"],
+            "tags": ["must", "urgency"]
           },
           {
-            "id": "voc_train_station",
-            "word": "Train station",
-            "translation": "Estación de tren",
-            "examples": ["I need to go to the train station"],
-            "tags": ["transport", "locations"]
+            "id": "voc_have_to_fix",
+            "word": "Have to fix",
+            "translation": "Tengo que arreglar",
+            "examples": ["I have to fix my computer"],
+            "tags": ["have_to", "necessity"]
           },
           {
-            "id": "voc_ticket",
-            "word": "Ticket",
-            "translation": "Boleto",
-            "examples": ["I need to buy a ticket"]
+            "id": "voc_problem",
+            "word": "Problem",
+            "translation": "Problema",
+            "examples": ["We have a problem with the schedule"]
           },
           {
-            "id": "voc_schedule",
-            "word": "Schedule",
-            "translation": "Horario",
-            "examples": ["Check the schedule for departure times"]
+            "id": "voc_solution",
+            "word": "Solution",
+            "translation": "Solución",
+            "examples": ["I found a good solution to the issue"]
           }
         ],
         "exercises": [
           {
-            "type": "matching",
-            "id": "ex1_transport_vocabulary",
-            "title": "Vocabulario de Transporte Público",
+            "type": "vocabulary",
+            "id": "ex1_problem_categories",
+            "title": "Categoría: Tipos de Problemas",
             "config": {
-              "pairs": [
+              "categories": [
                 {
-                  "from": "Bus stop",
-                  "to": "Parada de autobús"
+                  "id": "technical",
+                  "name": "Problemas Técnicos",
+                  "color": "#FF5252"
                 },
                 {
-                  "from": "Train station",
-                  "to": "Estación de tren"
+                  "id": "personal",
+                  "name": "Problemas Personales",
+                  "color": "#4CAF50"
                 },
                 {
-                  "from": "Subway",
-                  "to": "Metro"
-                },
-                {
-                  "from": "Ticket",
-                  "to": "Boleto"
+                  "id": "work",
+                  "name": "Problemas Laborales",
+                  "color": "#2196F3"
                 }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_transport_sentences",
-            "title": "Frases sobre Transporte",
-            "config": {
-              "wordBank": [
-                "The", "bus", "train", "subway", "stop",
-                "station", "is", "near", "my", "house",
-                "work", "I", "take", "the", "to", "every", "day"
               ],
-              "correctAnswers": [
-                "The bus stop is near my house",
-                "I take the train every day",
-                "The subway station is near work"
-              ],
-              "requiredWords": ["bus", "train", "subway"],
-              "timeLimit": 120
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_transport_conversation",
-            "title": "Preguntando sobre Transporte",
-            "config": {
-              "scenario": "Asking for public transport information",
-              "dialogues": [
+              "items": [
                 {
-                  "character": "traveler",
-                  "text": "Where is the nearest bus stop?",
-                  "options": ["It's two blocks from here", "There's one around the corner"]
+                  "id": "item1",
+                  "text": "Computer not working",
+                  "category": "technical"
                 },
                 {
-                  "character": "user",
-                  "text": "How often do the trains come?",
-                  "options": ["Every 15 minutes", "Check the schedule for times"]
+                  "id": "item2",
+                  "text": "Missed appointment",
+                  "category": "personal"
+                },
+                {
+                  "id": "item3",
+                  "text": "Late for work",
+                  "category": "work"
+                },
+                {
+                  "id": "item4",
+                  "text": "Phone battery dead",
+                  "category": "technical"
+                },
+                {
+                  "id": "item5",
+                  "text": "Forgot keys",
+                  "category": "personal"
+                },
+                {
+                  "id": "item6",
+                  "text": "Meeting conflict",
+                  "category": "work"
                 }
               ]
             }
           },
           {
             "type": "drag_drop",
-            "id": "ex4_transport_directions",
-            "title": "Instrucciones de Transporte",
+            "id": "ex2_problem_solutions",
+            "title": "Soluciones con Must/Have to",
             "config": {
-              "question": "Completa las instrucciones",
+              "question": "Completa las soluciones a problemas",
               "pairs": [
                 {
-                  "id": "trans1",
-                  "from": "Take the ___ to the city center",
-                  "to": "bus"
+                  "id": "prob1",
+                  "from": "I ___ fix my computer",
+                  "to": "must"
                 },
                 {
-                  "id": "trans2",
-                  "from": "The ___ station is downtown",
-                  "to": "train"
+                  "id": "prob2",
+                  "from": "We ___ find a solution",
+                  "to": "have to"
                 },
                 {
-                  "id": "trans3",
-                  "from": "Buy a ___ before boarding",
-                  "to": "ticket"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_housing_places": {
-      "id": "A2_housing_places",
-      "title": "Vivienda y Lugares",
-      "xpReward": 190,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_housing",
-        "xpReward": 190,
-        "estimatedDuration": 65,
-        "tags": ["demonstrative_adjectives", "housing", "places", "descriptions", "locations"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_this_apartment",
-            "word": "This apartment",
-            "translation": "Este apartamento",
-            "examples": ["This apartment is very spacious"],
-            "tags": ["demonstrative", "housing"]
-          },
-          {
-            "id": "voc_that_house",
-            "word": "That house",
-            "translation": "Esa casa",
-            "examples": ["That house has a big garden"],
-            "tags": ["demonstrative", "housing"]
-          },
-          {
-            "id": "voc_apartment",
-            "word": "Apartment",
-            "translation": "Apartamento",
-            "examples": ["I live in a small apartment"]
-          },
-          {
-            "id": "voc_neighborhood",
-            "word": "Neighborhood",
-            "translation": "Vecindario",
-            "examples": ["This is a quiet neighborhood"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_housing_vocabulary",
-            "title": "Memory: Vivienda y Lugares",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Apartment",
-                  "back": "Apartamento"
-                },
-                {
-                  "front": "House",
-                  "back": "Casa"
-                },
-                {
-                  "front": "Neighborhood",
-                  "back": "Vecindario"
-                },
-                {
-                  "front": "Building",
-                  "back": "Edificio"
-                }
-              ]
-            }
-          },
-          {
-            "type": "drag_drop",
-            "id": "ex2_demonstrative_adjectives",
-            "title": "Adjetivos Demostrativos",
-            "config": {
-              "question": "Completa con this/that/these/those",
-              "pairs": [
-                {
-                  "id": "demo1",
-                  "from": "___ apartment is mine",
-                  "to": "This"
-                },
-                {
-                  "id": "demo2",
-                  "from": "___ houses are very old",
-                  "to": "Those"
-                },
-                {
-                  "id": "demo3",
-                  "from": "___ building is new",
-                  "to": "That"
+                  "id": "prob3",
+                  "from": "You ___ call the technician",
+                  "to": "must"
                 }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_place_descriptions",
-            "title": "Describe Lugares",
+            "id": "ex3_solution_sentences",
+            "title": "Formula Soluciones",
             "config": {
               "wordBank": [
-                "This", "That", "These", "Those", "apartment",
-                "house", "building", "neighborhood", "is", "are",
-                "very", "big", "small", "quiet", "modern", "old"
+                "We",
+                "must",
+                "have",
+                "to",
+                "solve",
+                "fix",
+                "find",
+                "a",
+                "solution",
+                "problem",
+                "call",
+                "the",
+                "technician",
+                "doctor",
+                "as",
+                "soon",
+                "as",
+                "possible"
               ],
               "correctAnswers": [
-                "This apartment is very modern",
-                "That house is big",
-                "This neighborhood is quiet"
+                "We must solve this problem",
+                "I have to fix my computer",
+                "You must call the technician"
               ],
-              "requiredWords": ["This", "That", "These", "Those"],
+              "requiredWords": ["must", "have to"],
               "timeLimit": 130
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_housing_conversation",
-            "title": "Conversación sobre Vivienda",
+            "id": "ex4_problem_solving",
+            "title": "Resolviendo Problemas",
             "config": {
-              "scenario": "Talking about different places to live",
+              "scenario": "Helping a friend solve a problem",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "What do you think of this apartment?",
-                  "options": ["This apartment is very nice", "That building looks better"]
+                  "text": "My car won't start. What must I do?",
+                  "options": [
+                    "You must call a mechanic",
+                    "You have to check the battery"
+                  ]
                 },
                 {
                   "character": "user",
-                  "text": "How is that neighborhood?",
-                  "options": ["That neighborhood is very quiet", "These houses are beautiful"]
+                  "text": "What should we do about this issue?",
+                  "options": [
+                    "We must find a solution quickly",
+                    "We have to discuss it with the team"
+                  ]
                 }
               ]
-            }
-          },
-          {
-            "type": "image_selection",
-            "id": "ex5_place_identification",
-            "title": "Identifica el Lugar",
-            "config": {
-              "question": "Select the correct description for each place",
-              "options": [
-                {
-                  "image": "https://example.com/modern_apartment.jpg",
-                  "text": "This apartment is modern",
-                  "correct": true,
-                  "feedback": "Correct! This shows a modern apartment"
-                },
-                {
-                  "image": "https://example.com/old_house.jpg",
-                  "text": "That house is old",
-                  "correct": false,
-                  "feedback": "This shows an old house, not a modern apartment"
-                }
-              ],
-              "multipleSelection": false
             }
           }
         ]

@@ -173,7 +173,6 @@ const LessonContent = ({
     exercise: Exercise;
     index: number;
   }) => {
-
     console.log(`Renderizando ejercicio ${index}:`, {
       type: exercise.type,
       id: exercise.id,
@@ -181,23 +180,12 @@ const LessonContent = ({
       config: exercise.config,
     });
 
-    
     const commonProps = {
       key: `ex-${exercise.id || index}`,
       onComplete: () => handleExerciseComplete(index),
     };
 
     switch (exercise.type) {
-      /*  case "audio_matching":
-        return exercise.config.mode === "audio_to_image" ? (
-          <AudioToImageMatching {...commonProps} config={exercise.config} />
-        ) : (
-          <AudioMatchingGame
-            {...commonProps}
-            config={exercise.config}
-            vocabulary={lesson.content.vocabulary}
-          />
-        ); */
       case "audio_matching":
         if (!exercise.config) {
           console.warn(
@@ -269,31 +257,6 @@ const LessonContent = ({
             imageBaseUrl={exercise.options?.imageBaseUrl || ""}
           />
         );
-
-      /* case "drag_drop":
-        return (
-          <DragDropExercise
-            {...commonProps}
-            dragItems={
-              exercise.items?.map((item: any) => ({
-                // Usar ?. opcional
-                id:
-                  item.id || `items-${Math.random().toString(36).substr(2, 9)}`,
-                content: item.from,
-              })) || []
-            } // Fallback a array vacío
-            dropZones={
-              exercise.pairs?.map((pair: any) => ({
-                // Usar ?. opcional
-                id:
-                  pair.id || `zone-${Math.random().toString(36).substr(2, 9)}`,
-                content: pair.to,
-                correctMatch: pair.id,
-              })) || []
-            } // Fallback a array vacío
-            instructions={exercise.question || "Arrastra cada elemento..."}
-          />
-        ); */
       case "drag_drop":
         return (
           <DragDropExercise
@@ -364,8 +327,11 @@ const LessonContent = ({
         return (
           <CategorizationGame
             {...commonProps}
-            categories={exercise.categories}
-            items={exercise.items}
+            categories={
+              exercise.categories || exercise.config?.categories || []
+            }
+            items={exercise.items || exercise.config?.items || []}
+            title={exercise.title} 
           />
         );
 

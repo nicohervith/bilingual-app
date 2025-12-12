@@ -1,21 +1,66 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 
-const CategorizationGame = ({ categories, items, onComplete }: any) => {
+interface Category {
+  id: string;
+  name: string;
+  color?: string;
+}
+
+interface Item {
+  id: string;
+  text?: string;
+  image?: string;
+  category: string;
+}
+
+interface CategorizationGameProps {
+  categories: Category[];
+  items: Item[];
+  title?: string;
+  onComplete: () => void;
+}
+
+const CategorizationGame = ({
+  categories = [],
+  items = [],
+  title,
+  onComplete,
+}: CategorizationGameProps) => {
+  // 1. VALIDACIÓN DE ROBUSTEZ (La fuente de tu error actual)
+  if (!Array.isArray(categories) || categories.length === 0) {
+    // Este mensaje solo se muestra si el array categories es [] o no es un array.
+    return (
+      <Text style={styles.errorContainer}>
+        Error: Configuración de categorías faltante o vacía.
+      </Text>
+    );
+  }
+  if (!Array.isArray(items) || items.length === 0) {
+    return (
+      <Text style={styles.errorContainer}>
+        Error: Configuración de ítems faltante o vacía.
+      </Text>
+    );
+  }
+
   const [currentSelections, setCurrentSelections] = useState<{
-    [key: string]: string;
+    [itemId: string]: string;
   }>({});
   const [gameCompleted, setGameCompleted] = useState(false);
+  const totalItems = items.length;
 
-  const handleCategorySelect = (itemImage: string, category: string) => {
+  const handleCategorySelect = (itemId: string, categoryId: string) => {
+    if (gameCompleted) return;
+
     const newSelections = {
       ...currentSelections,
-      [itemImage]: category,
+      [itemId]: categoryId,
     };
 
     setCurrentSelections(newSelections);
 
-    if (Object.keys(newSelections).length === items.length) {
+    if (Object.keys(newSelections).length === totalItems) {
       setGameCompleted(true);
       onComplete();
     }
@@ -23,33 +68,71 @@ const CategorizationGame = ({ categories, items, onComplete }: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Clasifica los alimentos</Text>
+      {/* Título Dinámico */}
+      <Text style={styles.title}>{title || "Clasifica los Elementos"}</Text>
 
       <View style={styles.itemsContainer}>
-        {items.map((item: any, index: number) => (
-          <View key={index} style={styles.item}>
-            <Image source={{ uri: item.image }} style={styles.itemImage} />
-            <View style={styles.categories}>
-              {categories.map((cat: string, i: number) => (
-                <TouchableOpacity
-                  key={i}
-                  style={[
-                    styles.categoryButton,
-                    currentSelections[item.image] === cat &&
-                      styles.selectedCategory,
-                  ]}
-                  onPress={() => handleCategorySelect(item.image, cat)}
-                >
-                  <Text>{cat}</Text>
-                </TouchableOpacity>
-              ))}
+        {items.map((item: Item, index: number) => {
+          const isSelected = !!currentSelections[item.id];
+          const selectedCategoryId = currentSelections[item.id];
+
+          const ItemContent = () => {
+            if (item.image) {
+              return (
+                <Image source={{ uri: item.image }} style={styles.itemImage} />
+              );
+            }
+            // Usa text si no hay imagen
+            return (
+              <Text style={styles.itemTextFallback}>
+                {item.text || `Ítem ${index + 1}`}
+              </Text>
+            );
+          };
+
+          return (
+            <View
+              key={item.id}
+              style={[styles.item, isSelected && styles.itemSelected]}
+            >
+              <ItemContent />
+
+              <View style={styles.categories}>
+                {categories.map((cat: Category) => {
+                  const isCategorySelected = selectedCategoryId === cat.id;
+
+                  return (
+                    <TouchableOpacity
+                      key={cat.id}
+                      style={[
+                        styles.categoryButton,
+                        // Acceso seguro a las propiedades del objeto 'cat'
+                        isCategorySelected && {
+                          backgroundColor: cat.color || "#3498db",
+                        },
+                      ]}
+                      onPress={() => handleCategorySelect(item.id, cat.id)}
+                      disabled={gameCompleted}
+                    >
+                      <Text
+                        style={[
+                          styles.categoryText,
+                          isCategorySelected && styles.categoryTextSelected,
+                        ]}
+                      >
+                        {cat.name} {/* <--- Accede a cat.name */}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
 
       {gameCompleted && (
-        <Text style={styles.completedText}>¡Juego completado!</Text>
+        <Text style={styles.completedText}>¡Clasificación completada!</Text>
       )}
     </View>
   );
@@ -105,6 +188,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
+  categoryText: {},
+  categoryTextSelected: {},
+  itemSelected: {},
+  itemTextFallback: {},
+  errorContainer:{},
 });
 
 export default CategorizationGame;
