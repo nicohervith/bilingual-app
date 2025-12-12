@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1,
     borderColor: "#e0e0e0",
+
   },
   completedLessonCard: {
     backgroundColor: "#E8F5E9", // Verde claro
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   lessonXp: {
-    color: "#FFC107",
+    color: "#FF9500",
     fontWeight: "bold",
   },
   completedBadge: {

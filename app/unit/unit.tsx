@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     color: "#FFC107",
     marginTop: 4,
   },
- /*  completedText: {
+  /*  completedText: {
     color: "#4CAF50",
     marginTop: 4,
     fontSize: 12,
@@ -208,7 +208,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   xpText: {
-    color: "#FFC107",
+    color: "#FF9500",
+    fontWeight: "600",
   },
   completedText: {
     color: "#4CAF50",
