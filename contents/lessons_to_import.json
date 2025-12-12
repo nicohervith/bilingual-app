@@ -1,182 +1,171 @@
 {
   "lessons": {
-    "A2_fashion_style": {
-      "id": "A2_fashion_style",
-      "title": "Moda y Estilo",
-      "xpReward": 185,
+    "A2_music_concerts": {
+      "id": "A2_music_concerts",
+      "title": "Música y Conciertos",
+      "xpReward": 195,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_fashion",
-        "xpReward": 185,
-        "estimatedDuration": 62,
-        "tags": ["comparatives", "superlatives", "fashion", "style", "clothing"]
+        "unit": "unitA2_music",
+        "xpReward": 195,
+        "estimatedDuration": 65,
+        "tags": [
+          "present_continuous",
+          "perception_verbs",
+          "music",
+          "concerts",
+          "genres"
+        ]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_prettier",
-            "word": "Prettier",
-            "translation": "Más bonito",
-            "examples": ["This dress is prettier than that one"],
-            "tags": ["comparative", "clothing"]
+            "id": "voc_hearing",
+            "word": "Hearing",
+            "translation": "Escuchando",
+            "examples": ["I am hearing beautiful music"],
+            "tags": ["present_continuous", "perception"]
           },
           {
-            "id": "voc_most_fashionable",
-            "word": "Most fashionable",
-            "translation": "Más a la moda",
-            "examples": ["She wears the most fashionable clothes"],
-            "tags": ["superlative", "style"]
+            "id": "voc_listening",
+            "word": "Listening",
+            "translation": "Escuchando",
+            "examples": ["We are listening to a concert"],
+            "tags": ["present_continuous", "music"]
           },
           {
-            "id": "voc_outfit",
-            "word": "Outfit",
-            "translation": "Conjunto",
-            "examples": ["I love your outfit today"]
+            "id": "voc_concert",
+            "word": "Concert",
+            "translation": "Concierto",
+            "examples": ["The concert starts at 8 PM"]
           },
           {
-            "id": "voc_accessory",
-            "word": "Accessory",
-            "translation": "Accesorio",
-            "examples": ["That accessory completes the look"]
+            "id": "voc_genre",
+            "word": "Genre",
+            "translation": "Género",
+            "examples": ["My favorite music genre is jazz"]
           }
         ],
         "exercises": [
           {
-            "type": "vocabulary",
-            "id": "ex1_fashion_categories",
-            "title": "Categoría: Tipos de Ropa",
+            "type": "matching",
+            "id": "ex1_music_vocabulary",
+            "title": "Vocabulario Musical",
             "config": {
-              "categories": [
+              "pairs": [
                 {
-                  "id": "clothing",
-                  "name": "Prendas de Vestir",
-                  "color": "#9C27B0"
+                  "from": "Concert",
+                  "to": "Concierto"
                 },
                 {
-                  "id": "accessories",
-                  "name": "Accesorios",
-                  "color": "#FF5722"
+                  "from": "Genre",
+                  "back": "Género"
                 },
                 {
-                  "id": "footwear",
-                  "name": "Calzado",
-                  "color": "#3F51B5"
-                }
-              ],
-              "items": [
-                {
-                  "id": "item1",
-                  "text": "Dress",
-                  "category": "clothing"
+                  "from": "Melody",
+                  "to": "Melodía"
                 },
                 {
-                  "id": "item2",
-                  "text": "Necklace",
-                  "category": "accessories"
-                },
-                {
-                  "id": "item3",
-                  "text": "Shoes",
-                  "category": "footwear"
-                },
-                {
-                  "id": "item4",
-                  "text": "Shirt",
-                  "category": "clothing"
-                },
-                {
-                  "id": "item5",
-                  "text": "Bracelet",
-                  "category": "accessories"
-                },
-                {
-                  "id": "item6",
-                  "text": "Boots",
-                  "category": "footwear"
+                  "from": "Rhythm",
+                  "to": "Ritmo"
                 }
               ]
             }
           },
           {
-            "type": "drag_drop",
-            "id": "ex2_fashion_comparisons",
-            "title": "Comparaciones de Moda",
+            "type": "conjugation",
+            "id": "ex2_perception_verbs",
+            "title": "Verbos de Percepción en Presente Continuo",
             "config": {
-              "question": "Completa las comparaciones de moda",
-              "pairs": [
-                {
-                  "id": "fash1",
-                  "from": "This dress is ___ than that one",
-                  "to": "prettier"
-                },
-                {
-                  "id": "fash2",
-                  "from": "She has the ___ shoes",
-                  "to": "most fashionable"
-                },
-                {
-                  "id": "fash3",
-                  "from": "These pants are ___ comfortable",
-                  "to": "more"
-                }
-              ]
+              "verb": "to hear",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": ["Present Continuous"],
+              "correct": {
+                "I": "am hearing",
+                "You": "are hearing",
+                "He": "is hearing",
+                "We": "are hearing",
+                "They": "are hearing"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_style_sentences",
-            "title": "Describe Estilos",
+            "id": "ex3_music_experiences",
+            "title": "Describe Experiencias Musicales",
             "config": {
               "wordBank": [
-                "This",
-                "dress",
-                "is",
-                "prettier",
-                "than",
-                "that",
-                "one",
-                "more",
-                "fashionable",
-                "comfortable",
-                "the",
-                "most",
-                "beautiful",
-                "elegant",
-                "modern",
-                "outfit"
+                "I",
+                "am",
+                "listening",
+                "hearing",
+                "watching",
+                "a",
+                "concert",
+                "music",
+                "song",
+                "right",
+                "now",
+                "this",
+                "band",
+                "plays",
+                "rock",
+                "jazz",
+                "pop"
               ],
               "correctAnswers": [
-                "This dress is prettier than that one",
-                "She has the most fashionable outfit",
-                "These shoes are more comfortable"
+                "I am listening to a concert",
+                "We are hearing beautiful music",
+                "They are watching the band play"
               ],
-              "requiredWords": ["prettier", "more", "most"],
+              "requiredWords": ["am", "are", "is"],
               "timeLimit": 120
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_shopping_conversation",
-            "title": "Conversación sobre Moda",
+            "id": "ex4_concert_conversation",
+            "title": "Conversación sobre Conciertos",
             "config": {
-              "scenario": "Shopping for clothes with a friend",
+              "scenario": "Talking about music concerts with a friend",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "Which dress do you like better?",
+                  "text": "What are you listening to right now?",
                   "options": [
-                    "This one is prettier",
-                    "The red one is more elegant"
+                    "I am listening to a jazz concert",
+                    "I'm hearing some new music"
                   ]
                 },
                 {
                   "character": "user",
-                  "text": "Are these shoes the most comfortable?",
+                  "text": "Which genre are you enjoying the most?",
                   "options": [
-                    "Yes, they're the most comfortable ones",
-                    "No, those are more comfortable"
+                    "I'm really enjoying rock music",
+                    "I am hearing some great jazz"
                   ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "audio_matching",
+            "id": "ex5_music_genres",
+            "title": "Audio: Identifica Géneros Musicales",
+            "config": {
+              "mode": "audio_to_text",
+              "pairs": [
+                {
+                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../rock_music.mp3",
+                  "text": "This is rock music"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../jazz_music.mp3",
+                  "text": "This is jazz music"
                 }
               ]
             }
@@ -184,192 +173,601 @@
         ]
       }
     },
-    "A2_problems_solutions": {
-      "id": "A2_problems_solutions",
-      "title": "Problemas y Soluciones",
-      "xpReward": 200,
+    "A2_advanced_technology": {
+      "id": "A2_advanced_technology",
+      "title": "Tecnología Avanzada",
+      "xpReward": 205,
       "metadata": {
         "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_problems",
-        "xpReward": 200,
+        "unit": "unitA2_advanced_tech",
+        "xpReward": 205,
         "estimatedDuration": 70,
-        "tags": [
-          "modal_verbs",
-          "must",
-          "have_to",
-          "problems",
-          "solutions",
-          "troubleshooting"
-        ]
+        "tags": ["past_perfect", "advanced_technology", "innovation", "digital"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_must_solve",
-            "word": "Must solve",
-            "translation": "Debe resolver",
-            "examples": ["We must solve this problem quickly"],
-            "tags": ["must", "urgency"]
+            "id": "voc_had_developed",
+            "word": "Had developed",
+            "translation": "Había desarrollado",
+            "examples": ["They had developed new software before the launch"],
+            "tags": ["past_perfect", "technology"]
           },
           {
-            "id": "voc_have_to_fix",
-            "word": "Have to fix",
-            "translation": "Tengo que arreglar",
-            "examples": ["I have to fix my computer"],
-            "tags": ["have_to", "necessity"]
+            "id": "voc_had_already_created",
+            "word": "Had already created",
+            "translation": "Ya había creado",
+            "examples": ["We had already created the prototype"],
+            "tags": ["past_perfect", "innovation"]
           },
           {
-            "id": "voc_problem",
-            "word": "Problem",
-            "translation": "Problema",
-            "examples": ["We have a problem with the schedule"]
+            "id": "voc_innovation",
+            "word": "Innovation",
+            "translation": "Innovación",
+            "examples": ["This innovation changed everything"]
           },
           {
-            "id": "voc_solution",
-            "word": "Solution",
-            "translation": "Solución",
-            "examples": ["I found a good solution to the issue"]
+            "id": "voc_algorithm",
+            "word": "Algorithm",
+            "translation": "Algoritmo",
+            "examples": ["The algorithm processes data quickly"]
           }
         ],
         "exercises": [
           {
-            "type": "vocabulary",
-            "id": "ex1_problem_categories",
-            "title": "Categoría: Tipos de Problemas",
+            "type": "memory_game",
+            "id": "ex1_tech_vocabulary",
+            "title": "Memory: Tecnología Avanzada",
             "config": {
-              "categories": [
+              "pairs": [
                 {
-                  "id": "technical",
-                  "name": "Problemas Técnicos",
-                  "color": "#FF5252"
+                  "front": "Innovation",
+                  "back": "Innovación"
                 },
                 {
-                  "id": "personal",
-                  "name": "Problemas Personales",
-                  "color": "#4CAF50"
+                  "front": "Algorithm",
+                  "back": "Algoritmo"
                 },
                 {
-                  "id": "work",
-                  "name": "Problemas Laborales",
-                  "color": "#2196F3"
-                }
-              ],
-              "items": [
-                {
-                  "id": "item1",
-                  "text": "Computer not working",
-                  "category": "technical"
+                  "front": "Artificial intelligence",
+                  "back": "Inteligencia artificial"
                 },
                 {
-                  "id": "item2",
-                  "text": "Missed appointment",
-                  "category": "personal"
-                },
-                {
-                  "id": "item3",
-                  "text": "Late for work",
-                  "category": "work"
-                },
-                {
-                  "id": "item4",
-                  "text": "Phone battery dead",
-                  "category": "technical"
-                },
-                {
-                  "id": "item5",
-                  "text": "Forgot keys",
-                  "category": "personal"
-                },
-                {
-                  "id": "item6",
-                  "text": "Meeting conflict",
-                  "category": "work"
+                  "front": "Virtual reality",
+                  "back": "Realidad virtual"
                 }
               ]
             }
           },
           {
-            "type": "drag_drop",
-            "id": "ex2_problem_solutions",
-            "title": "Soluciones con Must/Have to",
+            "type": "conjugation",
+            "id": "ex2_tech_past_perfect",
+            "title": "Pasado Perfecto en Tecnología",
             "config": {
-              "question": "Completa las soluciones a problemas",
+              "verb": "to develop",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": ["Past Perfect"],
+              "correct": {
+                "I": "had developed",
+                "You": "had developed",
+                "He": "had developed",
+                "We": "had developed",
+                "They": "had developed"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_tech_advancements",
+            "title": "Avances Tecnológicos",
+            "config": {
+              "wordBank": [
+                "They",
+                "had",
+                "developed",
+                "created",
+                "invented",
+                "new",
+                "technology",
+                "software",
+                "before",
+                "after",
+                "the",
+                "company",
+                "launched",
+                "released",
+                "product"
+              ],
+              "correctAnswers": [
+                "They had developed new software",
+                "We had created the algorithm",
+                "She had invented the technology"
+              ],
+              "requiredWords": ["had"],
+              "timeLimit": 135
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_tech_discussion",
+            "title": "Discusión sobre Tecnología",
+            "config": {
+              "scenario": "Discussing technological advancements with a colleague",
+              "dialogues": [
+                {
+                  "character": "colleague",
+                  "text": "What had they developed before the launch?",
+                  "options": [
+                    "They had developed advanced algorithms",
+                    "They had created new software"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "When had you finished the prototype?",
+                  "options": [
+                    "I had already finished it last month",
+                    "We had completed it before the meeting"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "vocabulary",
+            "id": "ex5_tech_categories",
+            "title": "Categoría: Tipos de Tecnología",
+            "config": {
+              "categories": [
+                {
+                  "id": "software",
+                  "name": "Software",
+                  "color": "#2196F3"
+                },
+                {
+                  "id": "hardware",
+                  "name": "Hardware",
+                  "color": "#FF9800"
+                },
+                {
+                  "id": "ai",
+                  "name": "Inteligencia Artificial",
+                  "color": "#4CAF50"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item1",
+                  "text": "Mobile app",
+                  "category": "software"
+                },
+                {
+                  "id": "item2",
+                  "text": "Computer processor",
+                  "category": "hardware"
+                },
+                {
+                  "id": "item3",
+                  "text": "Machine learning",
+                  "category": "ai"
+                },
+                {
+                  "id": "item4",
+                  "text": "Operating system",
+                  "category": "software"
+                },
+                {
+                  "id": "item5",
+                  "text": "Smartphone",
+                  "category": "hardware"
+                },
+                {
+                  "id": "item6",
+                  "text": "Neural network",
+                  "category": "ai"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_urban_rural_life": {
+      "id": "A2_urban_rural_life",
+      "title": "Vida Urbana y Rural",
+      "xpReward": 190,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_urban_rural",
+        "xpReward": 190,
+        "estimatedDuration": 62,
+        "tags": [
+          "modal_verbs",
+          "should",
+          "ought_to",
+          "urban",
+          "rural",
+          "lifestyle"
+        ]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_should_move",
+            "word": "Should move",
+            "translation": "Debería mudarse",
+            "examples": ["You should move to the city for work"],
+            "tags": ["should", "advice"]
+          },
+          {
+            "id": "voc_ought_to_live",
+            "word": "Ought to live",
+            "translation": "Debería vivir",
+            "examples": ["We ought to live in a quieter place"],
+            "tags": ["ought_to", "recommendation"]
+          },
+          {
+            "id": "voc_metropolis",
+            "word": "Metropolis",
+            "translation": "Metrópolis",
+            "examples": ["New York is a big metropolis"]
+          },
+          {
+            "id": "voc_countryside",
+            "word": "Countryside",
+            "translation": "Campo",
+            "examples": ["I love the peaceful countryside"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_lifestyle_vocabulary",
+            "title": "Vocabulario: Urbano vs Rural",
+            "config": {
               "pairs": [
                 {
-                  "id": "prob1",
-                  "from": "I ___ fix my computer",
-                  "to": "must"
+                  "from": "Metropolis",
+                  "to": "Metrópolis"
                 },
                 {
-                  "id": "prob2",
-                  "from": "We ___ find a solution",
-                  "to": "have to"
+                  "from": "Countryside",
+                  "to": "Campo"
                 },
                 {
-                  "id": "prob3",
-                  "from": "You ___ call the technician",
-                  "to": "must"
+                  "from": "Skyscraper",
+                  "to": "Rascacielos"
+                },
+                {
+                  "from": "Village",
+                  "to": "Pueblo"
                 }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_solution_sentences",
-            "title": "Formula Soluciones",
+            "id": "ex2_lifestyle_advice",
+            "title": "Consejos sobre Estilo de Vida",
             "config": {
               "wordBank": [
-                "We",
-                "must",
-                "have",
+                "You",
+                "should",
+                "ought",
                 "to",
-                "solve",
-                "fix",
-                "find",
-                "a",
-                "solution",
-                "problem",
-                "call",
+                "move",
+                "live",
+                "in",
                 "the",
-                "technician",
-                "doctor",
-                "as",
-                "soon",
-                "as",
-                "possible"
+                "city",
+                "countryside",
+                "for",
+                "work",
+                "peace",
+                "quiet",
+                "better",
+                "opportunities",
+                "life"
               ],
               "correctAnswers": [
-                "We must solve this problem",
-                "I have to fix my computer",
-                "You must call the technician"
+                "You should move to the city for work",
+                "You ought to live in the countryside",
+                "We should find a quieter place"
               ],
-              "requiredWords": ["must", "have to"],
-              "timeLimit": 130
+              "requiredWords": ["should", "ought to"],
+              "timeLimit": 125
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex3_lifestyle_modals",
+            "title": "Modales para Decisiones de Vida",
+            "config": {
+              "verb": "to live",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": ["Present"],
+              "correct": {
+                "I": "should live",
+                "You": "should live",
+                "He": "should live",
+                "We": "should live",
+                "They": "should live"
+              },
+              "hints": {
+                "showBaseForm": true,
+                "modal": "should"
+              }
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_problem_solving",
-            "title": "Resolviendo Problemas",
+            "id": "ex4_lifestyle_discussion",
+            "title": "Discusión sobre Estilo de Vida",
             "config": {
-              "scenario": "Helping a friend solve a problem",
+              "scenario": "Discussing where to live with a friend",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "My car won't start. What must I do?",
+                  "text": "Where should I live for better job opportunities?",
                   "options": [
-                    "You must call a mechanic",
-                    "You have to check the battery"
+                    "You should move to a big city",
+                    "You ought to consider a growing town"
                   ]
                 },
                 {
                   "character": "user",
-                  "text": "What should we do about this issue?",
+                  "text": "What are the benefits of rural life?",
                   "options": [
-                    "We must find a solution quickly",
-                    "We have to discuss it with the team"
+                    "You ought to enjoy the peace and quiet",
+                    "You should appreciate nature more"
                   ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "image_selection",
+            "id": "ex5_urban_rural_images",
+            "title": "Identifica: Urbano vs Rural",
+            "config": {
+              "question": "Select whether each image shows urban or rural life",
+              "options": [
+                {
+                  "image": "https://example.com/skyscrapers.jpg",
+                  "text": "Urban area with tall buildings",
+                  "correct": true,
+                  "feedback": "Correct! This shows urban life with skyscrapers"
+                },
+                {
+                  "image": "https://example.com/farm_fields.jpg",
+                  "text": "Rural countryside with farms",
+                  "correct": false,
+                  "feedback": "This shows rural life, not urban"
+                }
+              ],
+              "multipleSelection": false
+            }
+          }
+        ]
+      }
+    },
+    "A2_mental_health_wellbeing": {
+      "id": "A2_mental_health_wellbeing",
+      "title": "Salud Mental y Bienestar",
+      "xpReward": 210,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_mental_health",
+        "xpReward": 210,
+        "estimatedDuration": 75,
+        "tags": [
+          "modal_verbs",
+          "can",
+          "could",
+          "may",
+          "mental_health",
+          "wellbeing",
+          "self_care"
+        ]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_can_meditate",
+            "word": "Can meditate",
+            "translation": "Puedo meditar",
+            "examples": ["I can meditate to reduce stress"],
+            "tags": ["can", "self_care"]
+          },
+          {
+            "id": "voc_could_relax",
+            "word": "Could relax",
+            "translation": "Podría relajarme",
+            "examples": ["You could relax by taking deep breaths"],
+            "tags": ["could", "suggestion"]
+          },
+          {
+            "id": "voc_may_feel",
+            "word": "May feel",
+            "translation": "Podría sentir",
+            "examples": ["You may feel better after talking"],
+            "tags": ["may", "possibility"]
+          },
+          {
+            "id": "voc_wellbeing",
+            "word": "Wellbeing",
+            "translation": "Bienestar",
+            "examples": ["Mental wellbeing is very important"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_mental_health_vocabulary",
+            "title": "Memory: Salud Mental",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Wellbeing",
+                  "back": "Bienestar"
+                },
+                {
+                  "front": "Stress",
+                  "back": "Estrés"
+                },
+                {
+                  "front": "Relaxation",
+                  "back": "Relajación"
+                },
+                {
+                  "front": "Mindfulness",
+                  "back": "Atención plena"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex2_self_care_sentences",
+            "title": "Frases de Autocuidado",
+            "config": {
+              "wordBank": [
+                "I",
+                "can",
+                "could",
+                "may",
+                "meditate",
+                "relax",
+                "exercise",
+                "sleep",
+                "better",
+                "to",
+                "reduce",
+                "stress",
+                "improve",
+                "my",
+                "mental",
+                "health",
+                "wellbeing"
+              ],
+              "correctAnswers": [
+                "I can meditate to reduce stress",
+                "You could relax by exercising",
+                "You may feel better after sleeping"
+              ],
+              "requiredWords": ["can", "could", "may"],
+              "timeLimit": 140
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex3_mental_health_conversation",
+            "title": "Conversación sobre Bienestar",
+            "config": {
+              "scenario": "Talking about mental health with a supportive friend",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "What can I do to feel less stressed?",
+                  "options": [
+                    "You can try meditation",
+                    "You could practice deep breathing"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "How may I improve my mental wellbeing?",
+                  "options": [
+                    "You may want to exercise regularly",
+                    "You could try talking to someone"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "vocabulary",
+            "id": "ex4_self_care_categories",
+            "title": "Categoría: Estrategias de Autocuidado",
+            "config": {
+              "categories": [
+                {
+                  "id": "physical",
+                  "name": "Cuidado Físico",
+                  "color": "#FF6B6B"
+                },
+                {
+                  "id": "mental",
+                  "name": "Cuidado Mental",
+                  "color": "#4ECDC4"
+                },
+                {
+                  "id": "emotional",
+                  "name": "Cuidado Emocional",
+                  "color": "#45B7D1"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item1",
+                  "text": "Regular exercise",
+                  "category": "physical"
+                },
+                {
+                  "id": "item2",
+                  "text": "Meditation",
+                  "category": "mental"
+                },
+                {
+                  "id": "item3",
+                  "text": "Talking to friends",
+                  "category": "emotional"
+                },
+                {
+                  "id": "item4",
+                  "text": "Healthy eating",
+                  "category": "physical"
+                },
+                {
+                  "id": "item5",
+                  "text": "Reading books",
+                  "category": "mental"
+                },
+                {
+                  "id": "item6",
+                  "text": "Journaling feelings",
+                  "category": "emotional"
+                }
+              ]
+            }
+          },
+          {
+            "type": "matching",
+            "id": "ex5_wellbeing_strategies",
+            "title": "Estrategias de Bienestar",
+            "config": {
+              "pairs": [
+                {
+                  "from": "For physical health",
+                  "to": "Exercise regularly"
+                },
+                {
+                  "from": "For mental clarity",
+                  "to": "Practice meditation"
+                },
+                {
+                  "from": "For emotional balance",
+                  "to": "Talk to loved ones"
+                },
+                {
+                  "from": "For stress reduction",
+                  "to": "Take deep breaths"
                 }
               ]
             }
