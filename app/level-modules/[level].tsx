@@ -3,7 +3,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -15,6 +14,7 @@ import {
   View,
 } from "react-native";
 import * as Progress from "react-native-progress";
+import "../../assets/css/globalStyles.css";
 
 // Define tipos para tus datos
 type Unit = {
@@ -142,6 +142,30 @@ export default function LevelModulesScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text
+        style={[
+          styles.abstractPattern,
+          { top: -50, left: -20, transform: [{ rotate: "-15deg" }] },
+        ]}
+      >
+        A
+      </Text>
+      <Text
+        style={[
+          styles.abstractPattern,
+          { bottom: 100, right: -40, transform: [{ rotate: "25deg" }] },
+        ]}
+      >
+        B
+      </Text>
+      <Text
+        style={[
+          styles.abstractPattern,
+          { top: 200, right: 10, transform: [{ rotate: "5deg" }] },
+        ]}
+      >
+        C
+      </Text>
       <Text style={styles.title}>Level {level} Modules</Text>
       {modules.map((module) => {
         const isModuleComplete = moduleCompletion[module.id];
@@ -282,35 +306,49 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#333",
+    color: "#D82989",
+    fontFamily: "Poppins",
   },
   moduleCard: {
-    backgroundColor: "#9365ff",
-    borderRadius: 10,
+    backgroundColor: "#9365ff", 
+    borderRadius: 12,
     padding: 16,
     marginBottom: 20,
+
+    // Mantener una buena sombra (la que mejor se veía en el Dashboard)
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.1, // Sombra sutil
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 4,
   },
+
+  // 3. ENCABEZADO DEL MÓDULO (Ej. 'Inglés Cotidiano')
   moduleTitle: {
     fontSize: 20,
-    fontWeight: "600",
-    /* marginBottom: 8, */
-    marginLeft: 5,
+    fontWeight: "700",
+    fontFamily: "Poppins",
+    marginLeft: 8,
+    // Este color oscuro se ve bien sobre el fondo lavanda
+    color: "#1E1B4B",
   },
   moduleDescription: {
     color: "#666",
     marginBottom: 12,
   },
   unitCard: {
-    backgroundColor: "#f8f9fa",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
+    // CAMBIO CLAVE: Darle un fondo blanco y elevarla ligeramente sobre la moduleCard
+    backgroundColor: "#FFFFFF", // Fondo blanco para alto contraste de lectura
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 10,
     position: "relative",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08, // Sombra muy sutil
+    shadowRadius: 2,
+    elevation: 2,
+    borderWidth: 0, 
   },
   unitInsignia: {
     position: "absolute",
@@ -331,8 +369,13 @@ const styles = StyleSheet.create({
     color: "#6c757d",
     fontSize: 14,
   },
-  xpReward: {
+  /* xpReward: {
     color: "#28a745",
+    fontSize: 14,
+    marginTop: 4,
+  }, */
+  xpReward: {
+    color: "#4CAF50", // Color de éxito para "Progreso"
     fontSize: 14,
     marginTop: 4,
   },
@@ -341,5 +384,16 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 12,
     color: "#666",
+  },
+  abstractPattern: {
+    position: "absolute", // Clave para que flote sobre el fondo
+    fontSize: 250, // Letras grandes
+    fontWeight: "bold",
+    // Simulación del "borroso" usando opacidad muy baja (0.08)
+    color: "rgba(255, 255, 255, 0.08)",
+    // Asegurarse de que esté detrás del contenido (pero el zIndex por defecto ya lo hace si el contenido no tiene zIndex)
+    zIndex: -1,
+    // Nota: El efecto de blur real en RN a menudo requiere usar <Image> o librerías específicas.
+    // Usar la opacidad baja es la alternativa más simple y ligera para un patrón de fondo.
   },
 });

@@ -1,3 +1,4 @@
+import { ArrowBackIcon } from "@/components/SvgIcons";
 import { auth } from "@/lib/firebaseConfig";
 import { checkUserProgress } from "@/services/userProgress";
 import * as AuthSession from "expo-auth-session";
@@ -21,7 +22,6 @@ import {
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../lib/firebaseConfig";
-import { ArrowBackIcon } from "@/components/SvgIcons";
 
 export default function Login() {
   const { user, loading: authLoading } = useAuth();
@@ -31,11 +31,12 @@ export default function Login() {
     path: "auth/google",
   });
 
+  const WEB_CLIENT_ID = process.env.EXPO_PUBLIC_WEB_CLIENT_ID;
+  const ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID;
+
   const [request, response, promptAsync] = Google.useAuthRequest({
-    webClientId:
-      "871050529166-eed5potpoiq1rubl6b2rp2af83hb8qeo.apps.googleusercontent.com",
-    androidClientId:
-      "984553559330-ltb8morobffr7o0utemf4kpbss1nhatp.apps.googleusercontent.com",
+    webClientId: WEB_CLIENT_ID,
+    androidClientId: ANDROID_CLIENT_ID,
     redirectUri: redirectUri,
     scopes: ["openid", "profile", "email"],
     responseType: "id_token",
@@ -46,9 +47,6 @@ export default function Login() {
       if (response?.type !== "success" || !response.params) {
         throw new Error("Respuesta de autenticación inválida");
       }
-      /*  if (response?.type !== "success" || !response.params) {
-        throw new Error("Invalid authentication response");
-      } */
 
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
@@ -88,16 +86,24 @@ export default function Login() {
         });
       }
       const additionalInfo = getAdditionalUserInfo(userCredential);
+     if (additionalInfo?.isNewUser) {
+       await createNewUserProgress(userCredential.user.uid);
+     } else {
+       await loadAndSetInitialProgress(userCredential.user.uid);
+     }
+     router.replace("/");
 
-      if (additionalInfo?.isNewUser) {
-        await createNewUserProgress(userCredential.user.uid);
-      } else {
-        await checkUserProgress(userCredential.user.uid);
-      }
-
-      router.replace("/");
     } catch (error) {
       console.error("Error en autenticación:", error);
+    }
+  };
+
+  const loadAndSetInitialProgress = async (userId: string) => {
+    const progressRef = doc(db, "userProgress", userId);
+    const progressSnap = await getDoc(progressRef);
+
+    if (progressSnap.exists()) {
+      const userProgress = progressSnap.data();
     }
   };
 

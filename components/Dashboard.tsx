@@ -25,6 +25,7 @@ import {
   View,
 } from "react-native";
 import * as Progress from "react-native-progress";
+import "../assets/css/globalStyles.css";
 import { useAuth } from "../contexts/AuthContext";
 
 /* import { usePayment } from "@/hooks/usePayment"; */
@@ -86,9 +87,8 @@ const LEVEL_PRICES: Record<LevelId, number> = {
 
 const BASE_XP_PER_LESSON = 50;
 
-const stripePromise = loadStripe(
-  "pk_test_51S3hjvFHOc1l5YQO8l0CMWxS6uw0DveEVfznaJez5nL8jiG6RPdcP8ZSVH4YaLwpKUvPe0LvZiugKeesKC6GNSMB00Ed7Lc3HA"
-);
+const STRIPE_PUBLIC_KEY = process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY;
+const stripePromise = loadStripe(STRIPE_PUBLIC_KEY? STRIPE_PUBLIC_KEY : "" );
 
 export default function Dashboard() {
   const router = useRouter();
@@ -158,25 +158,6 @@ export default function Dashboard() {
     }
   };
 
-  const checkPurchaseStatus = async (levelId: LevelId) => {
-    if (!user) return false;
-
-    try {
-      const response = await fetch(
-        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/${levelId}`
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        return data.hasAccess;
-      }
-      return false;
-    } catch (error) {
-      console.error("Error checking purchase status:", error);
-      return false;
-    }
-  };
-
   useEffect(() => {
     if (user) {
       syncUnlockedLevels();
@@ -191,6 +172,19 @@ export default function Dashboard() {
       const lessonsXP = (unit.lessons?.length || 0) * BASE_XP_PER_LESSON;
       return total + lessonsXP + (unit.rewardXP || 0);
     }, 0);
+  };
+
+  const capitalizeName = (name:any) => {
+    if (!name) return "";
+
+    return name
+      .toLowerCase()
+      .split(" ")
+      .map((word:any) => {
+        if (word.length === 0) return word;
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
   };
 
   const getDynamicLevelRequirements = (modules: any[]) => {
@@ -406,12 +400,11 @@ export default function Dashboard() {
         );
       });
 
-      // ✅ TODOS los niveles bloqueados inicialmente
       await setDoc(doc(db, "userProgress", userId), {
         xp: 0,
-        level: "A1", // Nivel actual, pero no significa que esté desbloqueado
-        unlockedLevels: [], // ✅ Vacío - todos bloqueados
-        purchasedLevels: {}, // ✅ Vacío - ninguno comprado inicialmente
+        level: "A1",
+        unlockedLevels: [],
+        purchasedLevels: {},
         completedLessons: {},
         levels: {
           A1: { completed: 0, total: totalLessons.A1 },
@@ -485,9 +478,6 @@ export default function Dashboard() {
     }
   }, [user, progress.xp, dynamicRequirements]);
 
-  /*   const handleBuyLevel = (levelId: LevelId) => {
-    setSelectedLevel(levelId);
-  }; */
   const handleBuyLevel = (levelId: LevelId) => {
     setSelectedLevel(levelId);
     setPaymentModalVisible(true);
@@ -615,6 +605,30 @@ export default function Dashboard() {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>
+        <Text
+          style={[
+            styles.abstractPattern,
+            { top: -50, left: -20, transform: [{ rotate: "-15deg" }] },
+          ]}
+        >
+          A
+        </Text>
+        <Text
+          style={[
+            styles.abstractPattern,
+            { bottom: 100, right: -40, transform: [{ rotate: "25deg" }] },
+          ]}
+        >
+          B
+        </Text>
+        <Text
+          style={[
+            styles.abstractPattern,
+            { top: 200, right: 10, transform: [{ rotate: "5deg" }] },
+          ]}
+        >
+          C
+        </Text>
         {/* Sección del usuario */}
         <View style={styles.userSection}>
           {user ? (
@@ -636,7 +650,7 @@ export default function Dashboard() {
 
               <View style={styles.userInfo}>
                 <Text style={styles.userName}>
-                  {user.displayName || "Usuario"}
+                  {capitalizeName(user.displayName) || "Usuario"}
                 </Text>
                 <Text style={styles.userEmail}>{user.email}</Text>
 
@@ -833,9 +847,26 @@ export default function Dashboard() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#9365FF",
+    // Reemplaza el color sólido por un gradiente (asumiremos que se implementa con un componente LinearGradient)
+    // Usaremos este color para el fondo si no usamos el componente de gradiente:
+    backgroundColor: "#9365FF", // Color base
     padding: 20,
     paddingBottom: 60,
+    position: "relative", // Necesario para posicionar el patrón abstracto
+    overflow: "hidden", // Asegura que el patrón no se salga del contenedor
+  },
+
+  /* NUEVO: ESTILO PARA EL PATRÓN ABSTRACTO (Implementación conceptual vía pseudo-elementos o View) */
+  abstractPattern: {
+    position: "absolute", // Clave para que flote sobre el fondo
+    fontSize: 250, // Letras grandes
+    fontWeight: "bold",
+    // Simulación del "borroso" usando opacidad muy baja (0.08)
+    color: "rgba(255, 255, 255, 0.08)",
+    // Asegurarse de que esté detrás del contenido (pero el zIndex por defecto ya lo hace si el contenido no tiene zIndex)
+    zIndex: -1,
+    // Nota: El efecto de blur real en RN a menudo requiere usar <Image> o librerías específicas.
+    // Usar la opacidad baja es la alternativa más simple y ligera para un patrón de fondo.
   },
   guestInfo: {
     alignItems: "center",
@@ -844,6 +875,8 @@ const styles = StyleSheet.create({
   guestText: {
     marginBottom: 10,
     color: "#FFFFFF",
+    // Sugerencia de tipografía:
+    fontFamily: "Poppins-Regular", // Usar una fuente moderna (debe ser cargada)
   },
   userHeader: {
     flexDirection: "row",
@@ -856,9 +889,6 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 15,
-  },
-  avatarContainer: {
-    marginBottom: 15,
   },
   userAvatar: {
     width: 100,
@@ -877,31 +907,42 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 24,
     fontWeight: "bold",
+    fontFamily: "Poppins", // Tipografía destacada
   },
   userInfo: {
     alignItems: "center",
+  },
+  avatarContainer: {
+    marginBottom: 15,
   },
   userName: {
     fontSize: 22,
     fontWeight: "bold",
     color: "#FFFFFF",
     marginBottom: 5,
+    fontFamily: "Poppins",
   },
   userEmail: {
     fontSize: 14,
     color: "#E0E0E0",
     marginBottom: 5,
+    fontFamily: "Poppins",
   },
   userLevel: {
     fontSize: 16,
     fontWeight: "600",
     color: "#FFFFFF",
     marginBottom: 3,
+    fontFamily: "Poppins",
   },
   userXP: {
     fontSize: 16,
     color: "#FFD700",
     fontWeight: "bold",
+    fontFamily: "Poppins",
+    textShadowColor: "rgba(0, 0, 0, 0.4)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
   streakContainer: {
     flexDirection: "row",
@@ -911,16 +952,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   streakText: {
     marginLeft: 5,
     fontWeight: "bold",
     color: "#E65100",
+    fontFamily: "Poppins",
   },
   longestStreak: {
     marginLeft: 5,
     color: "#666",
     fontSize: 12,
+    fontFamily: "Poppins",
   },
   badgesSection: {
     marginBottom: 20,
@@ -938,6 +987,12 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "rgba(255, 255, 255, 0.15)",
     borderRadius: 10,
+    // Sombra sutil para "flotar" ligeramente sobre el fondo
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3, // Para Android
   },
   badgeImage: {
     width: 50,
@@ -949,52 +1004,68 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#FFFFFF",
     textAlign: "center",
+    fontFamily: "Poppins",
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#D82989",
-    /* marginTop: 20, */
+    color: "#4C1D95", // Magenta vibrante
     marginBottom: 10,
+    fontFamily: "Poppins",
   },
 
   title: {
     fontSize: 20,
     fontWeight: "700",
     color: "#4C1D95",
+    fontFamily: "Poppins",
   },
   email: {
     fontSize: 14,
     color: "#ffffff",
+    fontFamily: "Poppins",
   },
 
   globalXpBar: {
     alignItems: "center",
     marginBottom: 30,
-    backgroundColor: "#F3F4F6",
+    // Fondo más limpio
+    backgroundColor: "#FFFFFF",
     padding: 15,
     borderRadius: 12,
+    // Sombra sutil para que flote
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   xpText: {
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 8,
     color: "#1E1B4B",
+    fontFamily: "Poppins",
   },
   levelText: {
     marginTop: 8,
     fontSize: 14,
     color: "#6B7280",
+    fontFamily: "Poppins",
   },
+
+  /* MEJORA EN TARJETAS DE NIVELES */
   levelCard: {
-    backgroundColor: "#EDE9FE",
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: "#FFFFFF", // Fondo blanco más limpio
+    borderRadius: 16, // Bordes más redondeados
+    padding: 18, // Ligeramente más padding
     marginBottom: 20,
+    // Sombra más pronunciada y profesional
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 6 }, // Desplazamiento vertical para efecto "elevado"
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 8,
   },
   levelHeader: {
     flexDirection: "row",
@@ -1003,34 +1074,42 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   levelTitle: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 18, // Ligeramente más grande
+    fontWeight: "700",
     color: "#4C1D95",
+    fontFamily: "Poppins",
   },
   locked: {
-    color: "#D97706",
+    color: "#FF9500",
     fontSize: 13,
   },
   progressContainer: {
     marginBottom: 10,
   },
   progressBar: {
-    backgroundColor: "#DDD6FE",
+   /*  backgroundColor: "#DDD6FE", */
     height: 10,
     borderRadius: 5,
     overflow: "hidden",
     marginVertical: 6,
+
+    backgroundColor: "#E0E0E0",
   },
   progressFill: {
     height: 10,
-    backgroundColor: "#4C1D95",
+    backgroundColor: "#4CAF50",
   },
   levelButton: {
     backgroundColor: "#D82989",
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
   },
   disabledButton: {
     backgroundColor: "#D1D5DB",
@@ -1159,7 +1238,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#6c757d",
   },
   purchasedBadge: {
-    color: "green",
+    color: "#4CAF50",
     fontWeight: "bold",
     fontSize: 12,
     backgroundColor: "#E8F5E9",
