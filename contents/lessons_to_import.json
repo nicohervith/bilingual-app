@@ -1,92 +1,89 @@
 {
   "lessons": {
-    "A2_music_concerts": {
-      "id": "A2_music_concerts",
-      "title": "Música y Conciertos",
-      "xpReward": 195,
+    "A2_changes_transformations": {
+      "id": "A2_changes_transformations",
+      "title": "Cambios y Transformaciones",
+      "xpReward": 200,
       "metadata": {
         "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_music",
-        "xpReward": 195,
-        "estimatedDuration": 65,
+        "module": "grammar",
+        "unit": "unitA2_changes",
+        "xpReward": 200,
+        "estimatedDuration": 68,
         "tags": [
+          "present_simple",
           "present_continuous",
-          "perception_verbs",
-          "music",
-          "concerts",
-          "genres"
+          "changes",
+          "transformations",
+          "progress"
         ]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_hearing",
-            "word": "Hearing",
-            "translation": "Escuchando",
-            "examples": ["I am hearing beautiful music"],
-            "tags": ["present_continuous", "perception"]
+            "id": "voc_change",
+            "word": "Change",
+            "translation": "Cambio",
+            "examples": ["I see a positive change in your work"],
+            "tags": ["change", "transformation"]
           },
           {
-            "id": "voc_listening",
-            "word": "Listening",
-            "translation": "Escuchando",
-            "examples": ["We are listening to a concert"],
-            "tags": ["present_continuous", "music"]
+            "id": "voc_improve",
+            "word": "Improve",
+            "translation": "Mejorar",
+            "examples": ["My English is improving every day"],
+            "tags": ["progress", "development"]
           },
           {
-            "id": "voc_concert",
-            "word": "Concert",
-            "translation": "Concierto",
-            "examples": ["The concert starts at 8 PM"]
+            "id": "voc_evolve",
+            "word": "Evolve",
+            "translation": "Evolucionar",
+            "examples": ["Technology evolves rapidly"]
           },
           {
-            "id": "voc_genre",
-            "word": "Genre",
-            "translation": "Género",
-            "examples": ["My favorite music genre is jazz"]
+            "id": "voc_transform",
+            "word": "Transform",
+            "translation": "Transformar",
+            "examples": ["The city is transforming with new buildings"]
           }
         ],
         "exercises": [
           {
-            "type": "matching",
-            "id": "ex1_music_vocabulary",
-            "title": "Vocabulario Musical",
+            "type": "memory_game",
+            "id": "ex1_changes_vocabulary",
+            "title": "Memory: Cambios y Transformaciones",
             "config": {
               "pairs": [
                 {
-                  "from": "Concert",
-                  "to": "Concierto"
+                  "front": "Change",
+                  "back": "Cambio"
                 },
                 {
-                  "from": "Genre",
-                  "back": "Género"
+                  "front": "Improvement",
+                  "back": "Mejora"
                 },
                 {
-                  "from": "Melody",
-                  "to": "Melodía"
+                  "front": "Transformation",
+                  "back": "Transformación"
                 },
                 {
-                  "from": "Rhythm",
-                  "to": "Ritmo"
+                  "front": "Evolution",
+                  "back": "Evolución"
                 }
               ]
             }
           },
           {
             "type": "conjugation",
-            "id": "ex2_perception_verbs",
-            "title": "Verbos de Percepción en Presente Continuo",
+            "id": "ex2_change_verbs",
+            "title": "Presente Simple vs Continuo - Cambios",
             "config": {
-              "verb": "to hear",
+              "verb": "to improve",
               "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Present Continuous"],
+              "tenses": ["Present Simple", "Present Continuous"],
               "correct": {
-                "I": "am hearing",
-                "You": "are hearing",
-                "He": "is hearing",
-                "We": "are hearing",
-                "They": "are hearing"
+                "Present Simple": "improve",
+                "Present Continuous": "am improving"
               },
               "hints": {
                 "showBaseForm": true
@@ -95,223 +92,56 @@
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_music_experiences",
-            "title": "Describe Experiencias Musicales",
+            "id": "ex3_change_sentences",
+            "title": "Describe Cambios",
             "config": {
               "wordBank": [
                 "I",
                 "am",
-                "listening",
-                "hearing",
-                "watching",
-                "a",
-                "concert",
-                "music",
-                "song",
+                "improving",
+                "changing",
+                "evolving",
+                "my",
+                "English",
+                "skills",
+                "every",
+                "day",
                 "right",
                 "now",
-                "this",
-                "band",
-                "plays",
-                "rock",
-                "jazz",
-                "pop"
+                "usually",
+                "always",
+                "often"
               ],
               "correctAnswers": [
-                "I am listening to a concert",
-                "We are hearing beautiful music",
-                "They are watching the band play"
+                "I am improving my English every day",
+                "My skills are changing right now",
+                "I usually evolve with practice"
               ],
-              "requiredWords": ["am", "are", "is"],
-              "timeLimit": 120
+              "requiredWords": ["am", "are", "evolve"],
+              "timeLimit": 130
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_concert_conversation",
-            "title": "Conversación sobre Conciertos",
+            "id": "ex4_change_conversation",
+            "title": "Conversación sobre Cambios",
             "config": {
-              "scenario": "Talking about music concerts with a friend",
+              "scenario": "Discussing personal changes and growth with a friend",
               "dialogues": [
                 {
                   "character": "friend",
-                  "text": "What are you listening to right now?",
+                  "text": "How is your English improving?",
                   "options": [
-                    "I am listening to a jazz concert",
-                    "I'm hearing some new music"
+                    "It's improving every day",
+                    "I'm changing my study methods"
                   ]
                 },
                 {
                   "character": "user",
-                  "text": "Which genre are you enjoying the most?",
+                  "text": "What changes are you making in your life?",
                   "options": [
-                    "I'm really enjoying rock music",
-                    "I am hearing some great jazz"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "audio_matching",
-            "id": "ex5_music_genres",
-            "title": "Audio: Identifica Géneros Musicales",
-            "config": {
-              "mode": "audio_to_text",
-              "pairs": [
-                {
-                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../rock_music.mp3",
-                  "text": "This is rock music"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../jazz_music.mp3",
-                  "text": "This is jazz music"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_advanced_technology": {
-      "id": "A2_advanced_technology",
-      "title": "Tecnología Avanzada",
-      "xpReward": 205,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_advanced_tech",
-        "xpReward": 205,
-        "estimatedDuration": 70,
-        "tags": ["past_perfect", "advanced_technology", "innovation", "digital"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_had_developed",
-            "word": "Had developed",
-            "translation": "Había desarrollado",
-            "examples": ["They had developed new software before the launch"],
-            "tags": ["past_perfect", "technology"]
-          },
-          {
-            "id": "voc_had_already_created",
-            "word": "Had already created",
-            "translation": "Ya había creado",
-            "examples": ["We had already created the prototype"],
-            "tags": ["past_perfect", "innovation"]
-          },
-          {
-            "id": "voc_innovation",
-            "word": "Innovation",
-            "translation": "Innovación",
-            "examples": ["This innovation changed everything"]
-          },
-          {
-            "id": "voc_algorithm",
-            "word": "Algorithm",
-            "translation": "Algoritmo",
-            "examples": ["The algorithm processes data quickly"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_tech_vocabulary",
-            "title": "Memory: Tecnología Avanzada",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Innovation",
-                  "back": "Innovación"
-                },
-                {
-                  "front": "Algorithm",
-                  "back": "Algoritmo"
-                },
-                {
-                  "front": "Artificial intelligence",
-                  "back": "Inteligencia artificial"
-                },
-                {
-                  "front": "Virtual reality",
-                  "back": "Realidad virtual"
-                }
-              ]
-            }
-          },
-          {
-            "type": "conjugation",
-            "id": "ex2_tech_past_perfect",
-            "title": "Pasado Perfecto en Tecnología",
-            "config": {
-              "verb": "to develop",
-              "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Past Perfect"],
-              "correct": {
-                "I": "had developed",
-                "You": "had developed",
-                "He": "had developed",
-                "We": "had developed",
-                "They": "had developed"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_tech_advancements",
-            "title": "Avances Tecnológicos",
-            "config": {
-              "wordBank": [
-                "They",
-                "had",
-                "developed",
-                "created",
-                "invented",
-                "new",
-                "technology",
-                "software",
-                "before",
-                "after",
-                "the",
-                "company",
-                "launched",
-                "released",
-                "product"
-              ],
-              "correctAnswers": [
-                "They had developed new software",
-                "We had created the algorithm",
-                "She had invented the technology"
-              ],
-              "requiredWords": ["had"],
-              "timeLimit": 135
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_tech_discussion",
-            "title": "Discusión sobre Tecnología",
-            "config": {
-              "scenario": "Discussing technological advancements with a colleague",
-              "dialogues": [
-                {
-                  "character": "colleague",
-                  "text": "What had they developed before the launch?",
-                  "options": [
-                    "They had developed advanced algorithms",
-                    "They had created new software"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "When had you finished the prototype?",
-                  "options": [
-                    "I had already finished it last month",
-                    "We had completed it before the meeting"
+                    "I'm evolving my daily routine",
+                    "I'm transforming my habits"
                   ]
                 }
               ]
@@ -319,455 +149,504 @@
           },
           {
             "type": "vocabulary",
-            "id": "ex5_tech_categories",
-            "title": "Categoría: Tipos de Tecnología",
+            "id": "ex5_types_of_changes",
+            "title": "Categoría: Tipos de Cambios",
             "config": {
               "categories": [
                 {
-                  "id": "software",
-                  "name": "Software",
-                  "color": "#2196F3"
-                },
-                {
-                  "id": "hardware",
-                  "name": "Hardware",
-                  "color": "#FF9800"
-                },
-                {
-                  "id": "ai",
-                  "name": "Inteligencia Artificial",
-                  "color": "#4CAF50"
-                }
-              ],
-              "items": [
-                {
-                  "id": "item1",
-                  "text": "Mobile app",
-                  "category": "software"
-                },
-                {
-                  "id": "item2",
-                  "text": "Computer processor",
-                  "category": "hardware"
-                },
-                {
-                  "id": "item3",
-                  "text": "Machine learning",
-                  "category": "ai"
-                },
-                {
-                  "id": "item4",
-                  "text": "Operating system",
-                  "category": "software"
-                },
-                {
-                  "id": "item5",
-                  "text": "Smartphone",
-                  "category": "hardware"
-                },
-                {
-                  "id": "item6",
-                  "text": "Neural network",
-                  "category": "ai"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_urban_rural_life": {
-      "id": "A2_urban_rural_life",
-      "title": "Vida Urbana y Rural",
-      "xpReward": 190,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_urban_rural",
-        "xpReward": 190,
-        "estimatedDuration": 62,
-        "tags": [
-          "modal_verbs",
-          "should",
-          "ought_to",
-          "urban",
-          "rural",
-          "lifestyle"
-        ]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_should_move",
-            "word": "Should move",
-            "translation": "Debería mudarse",
-            "examples": ["You should move to the city for work"],
-            "tags": ["should", "advice"]
-          },
-          {
-            "id": "voc_ought_to_live",
-            "word": "Ought to live",
-            "translation": "Debería vivir",
-            "examples": ["We ought to live in a quieter place"],
-            "tags": ["ought_to", "recommendation"]
-          },
-          {
-            "id": "voc_metropolis",
-            "word": "Metropolis",
-            "translation": "Metrópolis",
-            "examples": ["New York is a big metropolis"]
-          },
-          {
-            "id": "voc_countryside",
-            "word": "Countryside",
-            "translation": "Campo",
-            "examples": ["I love the peaceful countryside"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_lifestyle_vocabulary",
-            "title": "Vocabulario: Urbano vs Rural",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Metropolis",
-                  "to": "Metrópolis"
-                },
-                {
-                  "from": "Countryside",
-                  "to": "Campo"
-                },
-                {
-                  "from": "Skyscraper",
-                  "to": "Rascacielos"
-                },
-                {
-                  "from": "Village",
-                  "to": "Pueblo"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_lifestyle_advice",
-            "title": "Consejos sobre Estilo de Vida",
-            "config": {
-              "wordBank": [
-                "You",
-                "should",
-                "ought",
-                "to",
-                "move",
-                "live",
-                "in",
-                "the",
-                "city",
-                "countryside",
-                "for",
-                "work",
-                "peace",
-                "quiet",
-                "better",
-                "opportunities",
-                "life"
-              ],
-              "correctAnswers": [
-                "You should move to the city for work",
-                "You ought to live in the countryside",
-                "We should find a quieter place"
-              ],
-              "requiredWords": ["should", "ought to"],
-              "timeLimit": 125
-            }
-          },
-          {
-            "type": "conjugation",
-            "id": "ex3_lifestyle_modals",
-            "title": "Modales para Decisiones de Vida",
-            "config": {
-              "verb": "to live",
-              "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Present"],
-              "correct": {
-                "I": "should live",
-                "You": "should live",
-                "He": "should live",
-                "We": "should live",
-                "They": "should live"
-              },
-              "hints": {
-                "showBaseForm": true,
-                "modal": "should"
-              }
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_lifestyle_discussion",
-            "title": "Discusión sobre Estilo de Vida",
-            "config": {
-              "scenario": "Discussing where to live with a friend",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "Where should I live for better job opportunities?",
-                  "options": [
-                    "You should move to a big city",
-                    "You ought to consider a growing town"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "What are the benefits of rural life?",
-                  "options": [
-                    "You ought to enjoy the peace and quiet",
-                    "You should appreciate nature more"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "image_selection",
-            "id": "ex5_urban_rural_images",
-            "title": "Identifica: Urbano vs Rural",
-            "config": {
-              "question": "Select whether each image shows urban or rural life",
-              "options": [
-                {
-                  "image": "https://example.com/skyscrapers.jpg",
-                  "text": "Urban area with tall buildings",
-                  "correct": true,
-                  "feedback": "Correct! This shows urban life with skyscrapers"
-                },
-                {
-                  "image": "https://example.com/farm_fields.jpg",
-                  "text": "Rural countryside with farms",
-                  "correct": false,
-                  "feedback": "This shows rural life, not urban"
-                }
-              ],
-              "multipleSelection": false
-            }
-          }
-        ]
-      }
-    },
-    "A2_mental_health_wellbeing": {
-      "id": "A2_mental_health_wellbeing",
-      "title": "Salud Mental y Bienestar",
-      "xpReward": 210,
-      "metadata": {
-        "level": "A2",
-        "module": "vocabulary",
-        "unit": "unitA2_mental_health",
-        "xpReward": 210,
-        "estimatedDuration": 75,
-        "tags": [
-          "modal_verbs",
-          "can",
-          "could",
-          "may",
-          "mental_health",
-          "wellbeing",
-          "self_care"
-        ]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_can_meditate",
-            "word": "Can meditate",
-            "translation": "Puedo meditar",
-            "examples": ["I can meditate to reduce stress"],
-            "tags": ["can", "self_care"]
-          },
-          {
-            "id": "voc_could_relax",
-            "word": "Could relax",
-            "translation": "Podría relajarme",
-            "examples": ["You could relax by taking deep breaths"],
-            "tags": ["could", "suggestion"]
-          },
-          {
-            "id": "voc_may_feel",
-            "word": "May feel",
-            "translation": "Podría sentir",
-            "examples": ["You may feel better after talking"],
-            "tags": ["may", "possibility"]
-          },
-          {
-            "id": "voc_wellbeing",
-            "word": "Wellbeing",
-            "translation": "Bienestar",
-            "examples": ["Mental wellbeing is very important"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_mental_health_vocabulary",
-            "title": "Memory: Salud Mental",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Wellbeing",
-                  "back": "Bienestar"
-                },
-                {
-                  "front": "Stress",
-                  "back": "Estrés"
-                },
-                {
-                  "front": "Relaxation",
-                  "back": "Relajación"
-                },
-                {
-                  "front": "Mindfulness",
-                  "back": "Atención plena"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex2_self_care_sentences",
-            "title": "Frases de Autocuidado",
-            "config": {
-              "wordBank": [
-                "I",
-                "can",
-                "could",
-                "may",
-                "meditate",
-                "relax",
-                "exercise",
-                "sleep",
-                "better",
-                "to",
-                "reduce",
-                "stress",
-                "improve",
-                "my",
-                "mental",
-                "health",
-                "wellbeing"
-              ],
-              "correctAnswers": [
-                "I can meditate to reduce stress",
-                "You could relax by exercising",
-                "You may feel better after sleeping"
-              ],
-              "requiredWords": ["can", "could", "may"],
-              "timeLimit": 140
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_mental_health_conversation",
-            "title": "Conversación sobre Bienestar",
-            "config": {
-              "scenario": "Talking about mental health with a supportive friend",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "What can I do to feel less stressed?",
-                  "options": [
-                    "You can try meditation",
-                    "You could practice deep breathing"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "How may I improve my mental wellbeing?",
-                  "options": [
-                    "You may want to exercise regularly",
-                    "You could try talking to someone"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "vocabulary",
-            "id": "ex4_self_care_categories",
-            "title": "Categoría: Estrategias de Autocuidado",
-            "config": {
-              "categories": [
-                {
-                  "id": "physical",
-                  "name": "Cuidado Físico",
+                  "id": "personal",
+                  "name": "Cambios Personales",
                   "color": "#FF6B6B"
                 },
                 {
-                  "id": "mental",
-                  "name": "Cuidado Mental",
+                  "id": "professional",
+                  "name": "Cambios Profesionales",
                   "color": "#4ECDC4"
                 },
                 {
-                  "id": "emotional",
-                  "name": "Cuidado Emocional",
+                  "id": "technological",
+                  "name": "Cambios Tecnológicos",
                   "color": "#45B7D1"
                 }
               ],
               "items": [
                 {
                   "id": "item1",
-                  "text": "Regular exercise",
-                  "category": "physical"
+                  "text": "Learning a new language",
+                  "category": "personal"
                 },
                 {
                   "id": "item2",
-                  "text": "Meditation",
-                  "category": "mental"
+                  "text": "Getting a promotion",
+                  "category": "professional"
                 },
                 {
                   "id": "item3",
-                  "text": "Talking to friends",
-                  "category": "emotional"
+                  "text": "New smartphone release",
+                  "category": "technological"
                 },
                 {
                   "id": "item4",
-                  "text": "Healthy eating",
-                  "category": "physical"
+                  "text": "Developing new habits",
+                  "category": "personal"
                 },
                 {
                   "id": "item5",
-                  "text": "Reading books",
-                  "category": "mental"
+                  "text": "Company reorganization",
+                  "category": "professional"
                 },
                 {
                   "id": "item6",
-                  "text": "Journaling feelings",
-                  "category": "emotional"
+                  "text": "Software update",
+                  "category": "technological"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_art_creativity": {
+      "id": "A2_art_creativity",
+      "title": "Arte y Creatividad",
+      "xpReward": 210,
+      "metadata": {
+        "level": "A2",
+        "module": "vocabulary",
+        "unit": "unitA2_art",
+        "xpReward": 210,
+        "estimatedDuration": 72,
+        "tags": [
+          "past_simple",
+          "irregular_verbs",
+          "art",
+          "creativity",
+          "techniques"
+        ]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_drew",
+            "word": "Drew",
+            "translation": "Dibujé",
+            "examples": ["I drew a beautiful picture yesterday"],
+            "tags": ["irregular_verb", "art"]
+          },
+          {
+            "id": "voc_painted",
+            "word": "Painted",
+            "translation": "Pinté",
+            "examples": ["She painted a landscape last week"],
+            "tags": ["regular_verb", "art"]
+          },
+          {
+            "id": "voc_creativity",
+            "word": "Creativity",
+            "translation": "Creatividad",
+            "examples": ["Creativity is important in art"]
+          },
+          {
+            "id": "voc_masterpiece",
+            "word": "Masterpiece",
+            "translation": "Obra maestra",
+            "examples": ["That painting is a true masterpiece"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_art_vocabulary",
+            "title": "Vocabulario Artístico",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Creativity",
+                  "to": "Creatividad"
+                },
+                {
+                  "from": "Masterpiece",
+                  "to": "Obra maestra"
+                },
+                {
+                  "from": "Canvas",
+                  "to": "Lienzo"
+                },
+                {
+                  "from": "Sculpture",
+                  "to": "Escultura"
+                }
+              ]
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex2_art_verbs",
+            "title": "Verbos Irregulares del Arte",
+            "config": {
+              "verb": "to draw",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": ["Past Simple"],
+              "correct": {
+                "I": "drew",
+                "You": "drew",
+                "He": "drew",
+                "We": "drew",
+                "They": "drew"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_art_sentences",
+            "title": "Describe Obras de Arte",
+            "config": {
+              "wordBank": [
+                "I",
+                "drew",
+                "painted",
+                "created",
+                "a",
+                "beautiful",
+                "picture",
+                "last",
+                "week",
+                "yesterday",
+                "she",
+                "he",
+                "they",
+                "made",
+                "art",
+                "masterpiece"
+              ],
+              "correctAnswers": [
+                "I drew a beautiful picture yesterday",
+                "She painted a masterpiece last week",
+                "They created amazing art"
+              ],
+              "requiredWords": ["drew", "painted", "created"],
+              "timeLimit": 140
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_art_conversation",
+            "title": "Conversación sobre Arte",
+            "config": {
+              "scenario": "Discussing art and creativity with an artist friend",
+              "dialogues": [
+                {
+                  "character": "artist",
+                  "text": "What did you create recently?",
+                  "options": [
+                    "I drew a landscape last week",
+                    "I painted a portrait yesterday"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "How did you learn to draw so well?",
+                  "options": [
+                    "I practiced every day",
+                    "I studied art techniques"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex5_irregular_verbs_art",
+            "title": "Memory: Verbos Irregulares del Arte",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Draw → Past",
+                  "back": "Drew"
+                },
+                {
+                  "front": "Paint → Past",
+                  "back": "Painted"
+                },
+                {
+                  "front": "Create → Past",
+                  "back": "Created"
+                },
+                {
+                  "front": "Make → Past",
+                  "back": "Made"
+                }
+              ]
+            }
+          },
+          {
+            "type": "audio_matching",
+            "id": "ex6_art_descriptions",
+            "title": "Audio: Descripciones de Arte",
+            "config": {
+              "mode": "audio_to_text",
+              "pairs": [
+                {
+                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../drew_picture.mp3",
+                  "text": "I drew this picture last month"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../painted_landscape.mp3",
+                  "text": "She painted a beautiful landscape"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A2_general_review": {
+      "id": "A2_general_review",
+      "title": "Repaso General A2",
+      "xpReward": 250,
+      "metadata": {
+        "level": "A2",
+        "module": "review",
+        "unit": "unitA2_review",
+        "xpReward": 250,
+        "estimatedDuration": 90,
+        "tags": [
+          "review",
+          "practice",
+          "conversation",
+          "comprehensive",
+          "final_exam"
+        ]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_review",
+            "word": "Review",
+            "translation": "Repaso",
+            "examples": ["Let's review everything we learned"],
+            "tags": ["review", "practice"]
+          },
+          {
+            "id": "voc_practice",
+            "word": "Practice",
+            "translation": "Práctica",
+            "examples": ["Practice makes perfect"],
+            "tags": ["practice", "improvement"]
+          },
+          {
+            "id": "voc_communication",
+            "word": "Communication",
+            "translation": "Comunicación",
+            "examples": ["Good communication is essential"]
+          },
+          {
+            "id": "voc_progress",
+            "word": "Progress",
+            "translation": "Progreso",
+            "examples": ["I can see your progress in English"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "vocabulary",
+            "id": "ex1_comprehensive_categories",
+            "title": "Repaso: Categorías de Vocabulario",
+            "config": {
+              "categories": [
+                {
+                  "id": "daily_life",
+                  "name": "Vida Diaria",
+                  "color": "#9C27B0"
+                },
+                {
+                  "id": "work_study",
+                  "name": "Trabajo y Estudio",
+                  "color": "#2196F3"
+                },
+                {
+                  "id": "hobbies",
+                  "name": "Pasatiempos",
+                  "color": "#4CAF50"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item1",
+                  "text": "Shopping at the supermarket",
+                  "category": "daily_life"
+                },
+                {
+                  "id": "item2",
+                  "text": "Attending a business meeting",
+                  "category": "work_study"
+                },
+                {
+                  "id": "item3",
+                  "text": "Playing musical instruments",
+                  "category": "hobbies"
+                },
+                {
+                  "id": "item4",
+                  "text": "Cooking dinner",
+                  "category": "daily_life"
+                },
+                {
+                  "id": "item5",
+                  "text": "Studying for an exam",
+                  "category": "work_study"
+                },
+                {
+                  "id": "item6",
+                  "text": "Reading books",
+                  "category": "hobbies"
                 }
               ]
             }
           },
           {
             "type": "matching",
-            "id": "ex5_wellbeing_strategies",
-            "title": "Estrategias de Bienestar",
+            "id": "ex2_tense_review",
+            "title": "Repaso: Tiempos Verbales",
             "config": {
               "pairs": [
                 {
-                  "from": "For physical health",
-                  "to": "Exercise regularly"
+                  "from": "Present Simple",
+                  "to": "He works every day"
                 },
                 {
-                  "from": "For mental clarity",
-                  "to": "Practice meditation"
+                  "from": "Present Continuous",
+                  "to": "She is working now"
                 },
                 {
-                  "from": "For emotional balance",
-                  "to": "Talk to loved ones"
+                  "from": "Past Simple",
+                  "to": "I worked yesterday"
                 },
                 {
-                  "from": "For stress reduction",
-                  "to": "Take deep breaths"
+                  "from": "Past Continuous",
+                  "to": "They were working"
+                }
+              ]
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex3_comprehensive_conversation",
+            "title": "Conversación Integral",
+            "config": {
+              "scenario": "A comprehensive conversation using all A2 topics",
+              "dialogues": [
+                {
+                  "character": "interviewer",
+                  "text": "Tell me about your daily routine and recent experiences",
+                  "options": [
+                    "I usually work in the morning and recently traveled to Mexico",
+                    "I'm currently studying English and last week visited a museum"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "What are your plans for the future?",
+                  "options": [
+                    "I'm going to continue improving my English",
+                    "I will travel more and maybe study abroad"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex4_comprehensive_sentences",
+            "title": "Forma Oraciones Complejas",
+            "config": {
+              "wordBank": [
+                "Yesterday",
+                "I",
+                "visited",
+                "a",
+                "museum",
+                "and",
+                "saw",
+                "beautiful",
+                "art",
+                "tomorrow",
+                "I",
+                "will",
+                "study",
+                "for",
+                "my",
+                "exam",
+                "right",
+                "now",
+                "I",
+                "am",
+                "practicing",
+                "English",
+                "every",
+                "day",
+                "I",
+                "improve",
+                "my",
+                "skills"
+              ],
+              "correctAnswers": [
+                "Yesterday I visited a museum and saw beautiful art",
+                "Tomorrow I will study for my exam",
+                "Right now I am practicing English"
+              ],
+              "requiredWords": ["Yesterday", "Tomorrow", "Right now"],
+              "timeLimit": 180
+            }
+          },
+          {
+            "type": "conjugation",
+            "id": "ex5_comprehensive_verbs",
+            "title": "Repaso de Conjugación",
+            "config": {
+              "verb": "to learn",
+              "pronouns": ["I", "You", "He", "We", "They"],
+              "tenses": [
+                "Present Simple",
+                "Present Continuous",
+                "Past Simple",
+                "Future"
+              ],
+              "correct": {
+                "Present Simple": "learn",
+                "Present Continuous": "am learning",
+                "Past Simple": "learned",
+                "Future": "will learn"
+              },
+              "hints": {
+                "showBaseForm": true
+              }
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex6_key_vocabulary_review",
+            "title": "Repaso: Vocabulario Clave A2",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Communication",
+                  "back": "Comunicación"
+                },
+                {
+                  "front": "Experience",
+                  "back": "Experiencia"
+                },
+                {
+                  "front": "Opportunity",
+                  "back": "Oportunidad"
+                },
+                {
+                  "front": "Challenge",
+                  "back": "Desafío"
                 }
               ]
             }

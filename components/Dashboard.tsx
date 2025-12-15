@@ -1,4 +1,3 @@
-import { getCachedData } from "@/contexts/cache";
 import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
 /* import { useStripe } from "@stripe/stripe-react-native"; */
 import { useRouter } from "expo-router";
@@ -88,7 +87,7 @@ const LEVEL_PRICES: Record<LevelId, number> = {
 const BASE_XP_PER_LESSON = 50;
 
 const STRIPE_PUBLIC_KEY = process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY;
-const stripePromise = loadStripe(STRIPE_PUBLIC_KEY? STRIPE_PUBLIC_KEY : "" );
+const stripePromise = loadStripe(STRIPE_PUBLIC_KEY ? STRIPE_PUBLIC_KEY : "");
 
 export default function Dashboard() {
   const router = useRouter();
@@ -152,9 +151,11 @@ export default function Dashboard() {
 
           console.log("Niveles sincronizados:", data.unlockedLevels);
         }
+      } else if (response.status === 404) {
+        console.log("El usuario no tiene registros de niveles comprados aún.");
       }
     } catch (error) {
-      console.error("Error syncing unlocked levels:", error);
+      console.warn("Backend dormido o inaccesible, usando datos locales.");
     }
   };
 
@@ -174,13 +175,13 @@ export default function Dashboard() {
     }, 0);
   };
 
-  const capitalizeName = (name:any) => {
+  const capitalizeName = (name: any) => {
     if (!name) return "";
 
     return name
       .toLowerCase()
       .split(" ")
-      .map((word:any) => {
+      .map((word: any) => {
         if (word.length === 0) return word;
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
@@ -262,7 +263,7 @@ export default function Dashboard() {
     };
   };
 
-  const loadProgress = async () => {
+  /*   const loadProgress = async () => {
     if (!user) return;
 
     try {
@@ -302,6 +303,33 @@ export default function Dashboard() {
       loadHeavyData(userProgress);
     } catch (error) {
       console.error("Error loading progress:", error);
+    }
+  }; */
+  const loadProgress = async () => {
+    if (!user) return;
+
+    try {
+      const progressRef = doc(db, "userProgress", user.uid);
+      let progressSnap = await getDoc(progressRef);
+
+      // Si no existe, esperamos 1 segundo y reintentamos UNA VEZ
+      // por si el Login aún está escribiendo
+      if (!progressSnap.exists()) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        progressSnap = await getDoc(progressRef);
+      }
+
+      if (progressSnap.exists()) {
+        const userProgress = progressSnap.data();
+        await loadHeavyData(userProgress);
+      } else {
+        // Solo si después del reintento no existe, lo creamos aquí
+        const newUserProgress = await createNewUserProgress(user.uid);
+        await loadHeavyData(newUserProgress);
+      }
+    } catch (error) {
+      console.error("Error loading progress:", error);
+      setLoading(false);
     }
   };
 
@@ -390,20 +418,22 @@ export default function Dashboard() {
       modulesSnapshot.forEach((doc) => {
         Object.entries(doc.data().units || {}).forEach(
           ([unitId, unit]: [string, any]) => {
-            if (unitId.startsWith("unitA1_"))
+            // Usamos startsWith para detectar el nivel en el ID de la unidad
+            if (unitId.includes("A1_"))
               totalLessons.A1 += unit.lessons?.length || 0;
-            else if (unitId.startsWith("unitA2_"))
+            else if (unitId.includes("A2_"))
               totalLessons.A2 += unit.lessons?.length || 0;
-            else if (unitId.startsWith("unitB1_"))
+            else if (unitId.includes("B1_"))
               totalLessons.B1 += unit.lessons?.length || 0;
           }
         );
       });
 
-      await setDoc(doc(db, "userProgress", userId), {
+      // Definimos el objeto de datos exacto que queremos guardar y retornar
+      const newProgressData = {
         xp: 0,
         level: "A1",
-        unlockedLevels: [],
+        unlockedLevels: ["A1"], // Importante: empezar con A1 desbloqueado
         purchasedLevels: {},
         completedLessons: {},
         levels: {
@@ -416,11 +446,19 @@ export default function Dashboard() {
           lastLogin: new Date(),
           longestStreak: 1,
         },
-      });
+      };
+
+      // 1. Guardamos en Firestore
+      await setDoc(doc(db, "userProgress", userId), newProgressData);
+
+      // 2. RETORNAMOS los datos para que loadProgress pueda continuar
+      return newProgressData;
     } catch (error) {
       console.error("Error creating user progress:", error);
+      throw error; // Lanzamos el error para que el catch de loadProgress lo maneje
     }
   };
+
   const getCurrentLevel = (): string => {
     if (!progress || !progress.xp) return "A1";
     if (progress.xp >= dynamicRequirements.B1) return "B1";
@@ -460,23 +498,44 @@ export default function Dashboard() {
   const xpProgress = calculateXPProgress();
 
   useEffect(() => {
-    if (user && progress.xp !== undefined) {
+    const syncLevels = async () => {
+      // 1. Validaciones previas
+      if (!user || progress.xp === undefined || loading) return;
+
       const newUnlockedLevels = ["A1"];
       if (progress.xp >= dynamicRequirements.A2) newUnlockedLevels.push("A2");
       if (progress.xp >= dynamicRequirements.B1) newUnlockedLevels.push("B1");
 
-      setUnlockedLevels(newUnlockedLevels);
-
-      if (
+      // 2. Solo actuar si hay cambios reales
+      const levelsChanged =
         JSON.stringify(newUnlockedLevels) !==
-        JSON.stringify(progress.unlockedLevels)
-      ) {
-        updateDoc(doc(db, "userProgress", user.uid), {
-          unlockedLevels: newUnlockedLevels,
-        });
+        JSON.stringify(progress.unlockedLevels);
+
+      if (levelsChanged) {
+        try {
+          const userRef = doc(db, "userProgress", user.uid);
+
+          // 3. USAR setDoc con { merge: true } en lugar de updateDoc
+          // setDoc con merge crea el documento si no existe o lo actualiza si existe.
+          // Esto evita el error "No document to update"
+          await setDoc(
+            userRef,
+            {
+              unlockedLevels: newUnlockedLevels,
+            },
+            { merge: true }
+          );
+
+          setUnlockedLevels(newUnlockedLevels);
+          console.log("Niveles actualizados con éxito");
+        } catch (error) {
+          console.error("Error al sincronizar niveles:", error);
+        }
       }
-    }
-  }, [user, progress.xp, dynamicRequirements]);
+    };
+
+    syncLevels();
+  }, [user, progress.xp, dynamicRequirements, loading]); // Añadimos loading a las dependencias
 
   const handleBuyLevel = (levelId: LevelId) => {
     setSelectedLevel(levelId);
@@ -687,7 +746,7 @@ export default function Dashboard() {
                 Inicia sesión para acceder a todo el contenido
               </Text>
               <Button
-                title="Iniciar sesión con Google"
+                title="Iniciar sesión"
                 onPress={() => router.push("/login")}
               />
             </View>
@@ -1087,7 +1146,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   progressBar: {
-   /*  backgroundColor: "#DDD6FE", */
+    /*  backgroundColor: "#DDD6FE", */
     height: 10,
     borderRadius: 5,
     overflow: "hidden",
