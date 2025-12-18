@@ -7,6 +7,7 @@ import CalendarPlanner from "@/components/games/CalendarPlanner";
 import DialogueSimulation from "@/components/games/DialogueSimulation";
 import MapInteractive from "@/components/games/MapInteractive";
 import ImageSelectionExercise from "@/components/ImageSelectionExercise";
+import ListeningExercise from "@/components/ListeningExercise";
 import MatchingExercise from "@/components/MatchingExercise";
 import MemoryGame from "@/components/MemoryGame";
 import NumbersGame from "@/components/NumbersGame";
@@ -49,6 +50,7 @@ const LessonContent = ({
   const router = useRouter();
   const navigation = useNavigation();
   const [completedExercises, setCompletedExercises] = useState<boolean[]>([]);
+  const [exerciseData, setExerciseData] = useState<Record<number, any>>({}); // Para guardar datos de ejercicios completados
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
@@ -164,6 +166,13 @@ const LessonContent = ({
     });
   };
 
+  const handleExerciseData = (exerciseIndex: number, data: any) => {
+    setExerciseData((prev) => ({
+      ...prev,
+      [exerciseIndex]: data,
+    }));
+  };
+
   const xpReward = lesson.metadata?.xpReward ?? lesson.xpReward ?? 0;
 
   const ExerciseComponent = ({
@@ -183,6 +192,7 @@ const LessonContent = ({
     const commonProps = {
       key: `ex-${exercise.id || index}`,
       onComplete: () => handleExerciseComplete(index),
+      isCompleted: completedExercises[index],
     };
 
     switch (exercise.type) {
@@ -245,6 +255,8 @@ const LessonContent = ({
             {...commonProps}
             config={sentenceProps}
             title={exercise.title}
+            completedWords={exerciseData[index]?.selectedWords || []}
+            onExerciseData={(data) => handleExerciseData(index, data)}
           />
         );
 
@@ -323,6 +335,9 @@ const LessonContent = ({
           />
         );
 
+      case "listening_transcription":
+        return <ListeningExercise {...commonProps} config={exercise.config} />;
+
       case "vocabulary":
         return (
           <CategorizationGame
@@ -331,7 +346,7 @@ const LessonContent = ({
               exercise.categories || exercise.config?.categories || []
             }
             items={exercise.items || exercise.config?.items || []}
-            title={exercise.title} 
+            title={exercise.title}
           />
         );
 
@@ -487,23 +502,6 @@ const LessonContent = ({
             : "Completa todos los ejercicios"}
         </Text>
       </TouchableOpacity>
-
-      {/* Animación XP - Fuera del ScrollView */}
-      {/* {showXpReward && (
-        <View style={styles.animationContainer}>
-          <Lottie
-            source={require("@/assets/animations/xp-reward.json")}
-            autoPlay
-            loop={false}
-            style={styles.lottieAnimation}
-            onAnimationFinish={() => {
-              setShowXpReward(false);
-              onComplete?.(lesson.xpReward);
-            }}
-          />
-          <Text style={styles.xpText}>+{lesson.xpReward} XP</Text>
-        </View>
-      )} */}
       {showXpReward && (
         <View style={styles.animationContainer}>
           <Lottie
@@ -511,7 +509,7 @@ const LessonContent = ({
             autoPlay
             loop={false}
             style={styles.lottieAnimation}
-            speed={1.5} // Aumentar la velocidad
+            speed={1.5}
             onAnimationFinish={() => {
               setShowXpReward(false);
               setIsAnimating(false);

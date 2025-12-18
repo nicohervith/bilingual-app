@@ -263,48 +263,6 @@ export default function Dashboard() {
     };
   };
 
-  /*   const loadProgress = async () => {
-    if (!user) return;
-
-    try {
-      const progressRef = doc(db, "userProgress", user.uid);
-      const progressSnap = await getDoc(progressRef);
-
-      if (!progressSnap.exists()) {
-        await createNewUserProgress(user.uid);
-        return;
-      }
-
-      const userProgress = progressSnap.data();
-
-      // Datos pesados con caché
-      const [modulesSnapshot] = await Promise.all([
-        getCachedData(`modules-${user.uid}`, () =>
-          getDocs(collection(db, "modules"))
-        ),
-        updateStreak(userProgress),
-      ]);
-
-      console.log("userProgress:", userProgress);
-
-      setProgress((prev) => ({
-        ...prev,
-        xp: userProgress.xp || 0,
-        level: userProgress.level || "A1",
-        unlockedLevels: userProgress.unlockedLevels || [],
-        purchasedLevels: userProgress.purchasedLevels || {},
-        stats: {
-          daysStreak: userProgress.stats?.daysStreak || 1,
-          lastLogin: userProgress.stats?.lastLogin || new Date(),
-          longestStreak: userProgress.stats?.longestStreak || 1,
-        },
-      }));
-
-      loadHeavyData(userProgress);
-    } catch (error) {
-      console.error("Error loading progress:", error);
-    }
-  }; */
   const loadProgress = async () => {
     if (!user) return;
 
@@ -312,8 +270,6 @@ export default function Dashboard() {
       const progressRef = doc(db, "userProgress", user.uid);
       let progressSnap = await getDoc(progressRef);
 
-      // Si no existe, esperamos 1 segundo y reintentamos UNA VEZ
-      // por si el Login aún está escribiendo
       if (!progressSnap.exists()) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         progressSnap = await getDoc(progressRef);
@@ -323,7 +279,6 @@ export default function Dashboard() {
         const userProgress = progressSnap.data();
         await loadHeavyData(userProgress);
       } else {
-        // Solo si después del reintento no existe, lo creamos aquí
         const newUserProgress = await createNewUserProgress(user.uid);
         await loadHeavyData(newUserProgress);
       }
@@ -337,7 +292,7 @@ export default function Dashboard() {
     try {
       const [modulesSnapshot] = await Promise.all([
         getDocs(collection(db, "modules")),
-        updateStreak(userProgress), // Ejecuta en paralelo
+        updateStreak(userProgress), 
       ]);
 
       const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
@@ -428,12 +383,10 @@ export default function Dashboard() {
           }
         );
       });
-
-      // Definimos el objeto de datos exacto que queremos guardar y retornar
       const newProgressData = {
         xp: 0,
         level: "A1",
-        unlockedLevels: ["A1"], // Importante: empezar con A1 desbloqueado
+        unlockedLevels: ["A1"], 
         purchasedLevels: {},
         completedLessons: {},
         levels: {

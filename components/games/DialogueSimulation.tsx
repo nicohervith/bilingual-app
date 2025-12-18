@@ -1,6 +1,12 @@
 // components/Games/DialogueSimulation.tsx
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface DialogueSimulationProps {
   config: {
@@ -17,31 +23,48 @@ interface DialogueSimulationProps {
     };
   };
   onComplete: (success: boolean) => void;
+  isCompleted?: boolean;
 }
 
 const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
   config,
   onComplete,
+  isCompleted = false,
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
   const [dialogueHistory, setDialogueHistory] = useState<
     Array<{ speaker: string; text: string }>
   >([]);
 
-  // Determinar qué estructura de datos usar
+  useEffect(() => {
+    if (isCompleted) {
+      setIsExerciseCompleted(true);
+
+      if (config.dialogues) {
+        const fullHistory = config.dialogues.map((d) => ({
+          speaker: d.character === "user" ? "Tú" : d.character,
+          text: d.text,
+        }));
+        setDialogueHistory(fullHistory);
+        setCurrentStep(config.dialogues.length);
+      }
+    }
+  }, [isCompleted, config.dialogues]);
+
   const useDialoguesStructure = !!config.dialogues;
 
-  // Si estamos usando la estructura dialogues (nueva)
   if (useDialoguesStructure) {
     const currentDialogue = config.dialogues?.[currentStep];
     const userOptions = currentDialogue?.options || [];
 
     const handleOptionSelect = (option: string) => {
-      // Agregar la opción seleccionada por el usuario al historial
+      // 2. Bloqueo de seguridad
+      if (isExerciseCompleted) return;
+
       const userEntry = { speaker: "Tú", text: option };
       const newHistory = [...dialogueHistory, userEntry];
 
-      // Verificar si hay siguiente diálogo
       if (currentStep < (config.dialogues?.length || 0) - 1) {
         const nextDialogue = config.dialogues?.[currentStep + 1];
         if (nextDialogue) {
@@ -56,8 +79,8 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
 
       setDialogueHistory(newHistory);
 
-      // Avanzar al siguiente paso o completar
       if (currentStep >= (config.dialogues?.length || 0) - 1) {
+        setIsExerciseCompleted(true);
         onComplete(true);
       } else {
         setCurrentStep(currentStep + 1);
@@ -68,7 +91,10 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
       <View style={styles.container}>
         <Text style={styles.scenarioText}>Situación: {config.scenario}</Text>
 
-        <View style={styles.dialogueBox}>
+        <ScrollView
+          style={styles.dialogueBox}
+          ref={(ref) => ref?.scrollToEnd({ animated: true })} // Auto-scroll al final
+        >
           {dialogueHistory.map((item, index) => (
             <View
               key={index}
@@ -82,18 +108,21 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
             </View>
           ))}
 
-          {/* Mostrar el diálogo actual del NPC si existe */}
-          {currentDialogue && currentDialogue.character !== "user" && (
-            <View style={[styles.bubble, styles.npcBubble]}>
-              <Text style={styles.speakerText}>
-                {currentDialogue.character}:
-              </Text>
-              <Text style={styles.bubbleText}>{currentDialogue.text}</Text>
-            </View>
-          )}
-        </View>
+          {/* Solo mostramos el diálogo pendiente si NO hemos terminado */}
+          {!isExerciseCompleted &&
+            currentDialogue &&
+            currentDialogue.character !== "user" && (
+              <View style={[styles.bubble, styles.npcBubble]}>
+                <Text style={styles.speakerText}>
+                  {currentDialogue.character}:
+                </Text>
+                <Text style={styles.bubbleText}>{currentDialogue.text}</Text>
+              </View>
+            )}
+        </ScrollView>
 
-        {userOptions.length > 0 && (
+        {/* 3. Ocultar opciones si ya está completado */}
+        {!isExerciseCompleted && userOptions.length > 0 && (
           <View style={styles.optionsContainer}>
             <Text style={styles.optionsTitle}>Elige tu respuesta:</Text>
             {userOptions.map((option, index) => (
@@ -108,20 +137,33 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
           </View>
         )}
 
-        {currentStep >= (config.dialogues?.length || 0) - 1 &&
+        {/* Botón de estado final */}
+        {isExerciseCompleted && (
+          <View style={styles.completedBanner}>
+            <Text style={styles.completedBannerText}>
+              ✓ Simulación finalizada
+            </Text>
+          </View>
+        )}
+
+        {/* Botón Continuar (solo si no hay opciones y no se ha completado) */}
+        {!isExerciseCompleted &&
+          currentStep >= (config.dialogues?.length || 0) - 1 &&
           userOptions.length === 0 && (
             <TouchableOpacity
               style={styles.completeButton}
-              onPress={() => onComplete(true)}
+              onPress={() => {
+                setIsExerciseCompleted(true);
+                onComplete(true);
+              }}
             >
-              <Text style={styles.completeButtonText}>Continuar</Text>
+              <Text style={styles.completeButtonText}>Finalizar</Text>
             </TouchableOpacity>
           )}
       </View>
     );
   }
 
-  // Estructura antigua (phrases) - para mantener compatibilidad
   const [currentSpeaker, setCurrentSpeaker] = useState("Waiter");
 
   const handleOptionSelectOld = (option: string) => {
@@ -249,12 +291,20 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 16,
   },
+  completedButtonStyle: {
+    backgroundColor: "#4CAF50",
+  },
+  disabledButton: {
+    opacity: 0.6,
+  },
   completeButtonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
   },
+  completedBanner: {},
+  completedBannerText: {},
 });
 
 export default DialogueSimulation;
