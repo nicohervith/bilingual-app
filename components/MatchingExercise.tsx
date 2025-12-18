@@ -26,13 +26,19 @@ interface MatchingExerciseProps {
   onComplete: () => void;
   vocabulary?: any[];
   title?: string;
+  isCompleted?: boolean;
 }
+
+const shuffleArray = <T,>(array: T[]): T[] => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
 const MatchingExercise: React.FC<MatchingExerciseProps> = ({
   pairs = [],
   onComplete,
   vocabulary = [],
   title = "Empareja los elementos correspondientes",
+  isCompleted = false,
 }) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
@@ -40,38 +46,33 @@ const MatchingExercise: React.FC<MatchingExerciseProps> = ({
   const [rightItems, setRightItems] = useState<MatchingPair[]>([]);
   const [normalizedPairs, setNormalizedPairs] = useState<MatchingPair[]>([]);
 
-  // Normalizar los pares a una estructura común
+  // 1. Normalización y Separación de Columnas
   useEffect(() => {
-    if (!pairs || pairs.length === 0) {
-      setNormalizedPairs([]);
-      return;
-    }
+    if (!pairs || pairs.length === 0) return;
 
-    const normalized = pairs.map((pair, index) => {
-      // Caso 1: Formato {from, to}
+    const normalized: MatchingPair[] = pairs.map((pair, index) => {
+      // Mantenemos tu lógica de normalización intacta para compatibilidad
       if ("from" in pair && "to" in pair) {
         return {
-          id: `pair-${index}`,
+          id: `p${index}`,
           left: pair.from,
           right: pair.to,
           leftType: "text",
           rightType: "text",
         };
       }
-      // Caso 2: Formato {image, word}
-      else if ("image" in pair && "word" in pair) {
+      if ("image" in pair && "word" in pair) {
         return {
-          id: `pair-${index}`,
+          id: `p${index}`,
           left: pair.image,
           right: pair.word,
           leftType: "image",
           rightType: "text",
         };
       }
-      // Caso 3: Formato {left, right} (con tipos opcionales)
-      else if ("left" in pair && "right" in pair) {
+      if ("left" in pair && "right" in pair) {
         return {
-          id: pair.id || `pair-${index}`,
+          id: pair.id || `p${index}`,
           left: pair.left,
           right: pair.right,
           leftType:
@@ -79,67 +80,64 @@ const MatchingExercise: React.FC<MatchingExerciseProps> = ({
           rightType: pair.rightType || "text",
         };
       }
-      // Caso 4: Formato {person, relation, image?}
-      else if ("person" in pair && "relation" in pair) {
-        const translation =
-          vocabulary?.find(
-            (v) => v.word.toLowerCase() === pair.person.toLowerCase()
-          )?.translation || pair.person;
-
-        return {
-          id: `pair-${index}`,
-          left: pair.image || translation,
-          right: pair.relation,
-          leftType: pair.image ? "image" : "text",
-          rightType: "text",
-        };
-      }
-      // Caso por defecto (no debería ocurrir)
+      // Caso person/relation
+      const translation =
+        vocabulary?.find(
+          (v) => v.word.toLowerCase() === (pair as any).person?.toLowerCase()
+        )?.translation || (pair as any).person;
       return {
-        id: `pair-${index}`,
-        left: JSON.stringify(pair),
-        right: "No definido",
-        leftType: "text",
+        id: `p${index}`,
+        left: (pair as any).image || translation,
+        right: (pair as any).relation,
+        leftType: (pair as any).image ? "image" : "text",
         rightType: "text",
       };
     });
 
     setNormalizedPairs(normalized);
+
+    // IMPORTANTE: Aquí poblamos y barajamos las columnas
+    // Añadimos prefijos 'left-' y 'right-' para que handleSelect funcione correctamente
+    const leftColumn = normalized.map((p) => ({ ...p, id: `left-${p.id}` }));
+    const rightColumn = normalized.map((p) => ({ ...p, id: `right-${p.id}` }));
+
+    setLeftItems(shuffleArray(leftColumn));
+    setRightItems(shuffleArray(rightColumn));
   }, [pairs, vocabulary]);
 
-  // Mezclar y preparar los items para mostrar
+  // 2. Persistencia: Si ya está completado, marcar todo como matched
   useEffect(() => {
-    if (normalizedPairs.length === 0) return;
-
-    const shuffled = [...normalizedPairs].sort(() => Math.random() - 0.5);
-    setLeftItems(shuffled.map((pair) => ({ ...pair, id: `left-${pair.id}` })));
-    setRightItems(
-      shuffled.map((pair) => ({ ...pair, id: `right-${pair.id}` }))
-    );
-
-    setSelected(null);
-    setMatchedPairs([]);
-  }, [normalizedPairs]);
+    if (isCompleted && leftItems.length > 0) {
+      const allIds = [
+        ...leftItems.map((i) => i.id),
+        ...rightItems.map((i) => i.id),
+      ];
+      setMatchedPairs(allIds);
+    }
+  }, [isCompleted, leftItems, rightItems]);
 
   const handleSelect = (id: string, type: "left" | "right") => {
+    if (isCompleted) return;
+
     if (!selected) {
       setSelected(id);
     } else {
-      const [selectedType, selectedId] = selected.split("-");
+      const [selectedType, selectedBaseId] = selected.split("-");
+      const [currentType, currentBaseId] = id.split("-");
 
-      // Verificar si es un par válido
-      const isValidPair = normalizedPairs.some((pair) => {
-        const baseId = id.replace(`${type}-`, "");
-        const selectedBaseId = selected.replace(`${selectedType}-`, "");
-        return baseId === selectedBaseId;
-      });
+      // Evitar seleccionar dos del mismo lado
+      if (selectedType === currentType) {
+        setSelected(id); // Cambiamos la selección al nuevo elemento del mismo lado
+        return;
+      }
 
-      if (isValidPair) {
+      // Verificar si el ID base (p0, p1, etc) coincide
+      if (selectedBaseId === currentBaseId) {
         setMatchedPairs((prev) => [...prev, id, selected]);
 
-        // Verificar si todos los pares están completos
+        // Verificar victoria (multiplicamos por 2 porque hay dos IDs por par)
         if (matchedPairs.length + 2 === normalizedPairs.length * 2) {
-          setTimeout(onComplete, 500); // Pequeño delay para feedback visual
+          onComplete();
         }
       }
       setSelected(null);

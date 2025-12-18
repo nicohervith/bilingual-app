@@ -19,7 +19,6 @@ import {
   View,
 } from "react-native";
 import { auth, db } from "../lib/firebaseConfig";
-/* import * as Facebook from "expo-auth-session/providers/facebook"; // Agregar Facebook */
 import { useRouter } from "expo-router";
 
 export default function Login() {
@@ -31,39 +30,20 @@ export default function Login() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // --- CONFIGURACIÓN SOCIAL AUTH ---
   const [gRequest, gResponse, gPrompt] = Google.useAuthRequest({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
     androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
   });
 
-  /*   const [fRequest, fResponse, fPrompt] = Facebook.useAuthRequest({
-    clientId: process.env.EXPO_PUBLIC_FACEBOOK_APP_ID,
-  }); */
-
-  /*   const handleAuthSuccess = async (userCredential: any) => {
-    const userId = userCredential.user.uid;
-    const additionalInfo = getAdditionalUserInfo(userCredential);
-
-    if (additionalInfo?.isNewUser) {
-      await createNewUserProgress(userId);
-    } else {
-      await updateStreak(userId);
-    }
-    router.replace("/");
-  }; */
   const handleAuthSuccess = async (userCredential: any) => {
     const userId = userCredential.user.uid;
     const additionalInfo = getAdditionalUserInfo(userCredential);
 
     if (additionalInfo?.isNewUser) {
-      // ESPERA a que se cree el documento antes de navegar
       await createNewUserProgress(userId);
     } else {
       await updateStreak(userId);
     }
-
-    // Pequeño delay de cortesía para que Firebase sincronice el estado local
     setTimeout(() => {
       router.replace("/");
     }, 500);
@@ -75,7 +55,7 @@ export default function Login() {
       return;
     }
 
-    setErrorMessage(null); // Limpiar errores previos
+    setErrorMessage(null);
     setLoading(true);
 
     try {
@@ -120,7 +100,6 @@ export default function Login() {
     }
   };
 
-  // --- EFECTOS PARA SOCIAL AUTH ---
   useEffect(() => {
     if (gResponse?.type === "success") {
       const { id_token } = gResponse.params;
@@ -129,15 +108,6 @@ export default function Login() {
     }
   }, [gResponse]);
 
-  /*   useEffect(() => {
-    if (fResponse?.type === "success") {
-      const { access_token } = fResponse.params;
-      const credential = FacebookAuthProvider.credential(access_token);
-      signInWithCredential(auth, credential).then(handleAuthSuccess);
-    }
-  }, [fResponse]); */
-
-  // --- FUNCIONES DE BASE DE DATOS (Mantenidas de tu código) ---
   const createNewUserProgress = async (userId: string) => {
     const userRef = doc(db, "userProgress", userId);
     await setDoc(userRef, {
@@ -186,11 +156,6 @@ export default function Login() {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.container}>
-        {/* <Image
-          source={require("../assets/images/logo.png")}
-          style={styles.logo}
-        /> */}
-
         <Text style={styles.title}>
           {isRegistering ? "Crear Cuenta" : "Bienvenido"}
         </Text>
@@ -203,11 +168,11 @@ export default function Login() {
 
         <TextInput
           placeholder="Email"
-          style={[styles.input, errorMessage && styles.inputError]} // Opcional: borde rojo
+          style={[styles.input, errorMessage && styles.inputError]} 
           value={email}
           onChangeText={(text) => {
             setEmail(text);
-            if (errorMessage) setErrorMessage(null); // Limpiar error al escribir
+            if (errorMessage) setErrorMessage(null); 
           }}
           autoCapitalize="none"
         />

@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import ExerciseFeedback from "./ExerciseFeedback";
 
 interface SentenceBuilderProps {
   config: {
@@ -18,6 +17,9 @@ interface SentenceBuilderProps {
     showStartButton?: boolean;
   };
   onComplete: () => void;
+  isCompleted?: boolean;
+  completedWords?: string[];
+  onExerciseData?: (data: any) => void;
 }
 
 const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
@@ -28,6 +30,9 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     title: "Forma una oración",
   },
   onComplete,
+  isCompleted = false,
+  completedWords = [],
+  onExerciseData,
 }) => {
   // Valores por defecto para config
   const safeConfig = {
@@ -46,6 +51,8 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
   const [hasStarted, setHasStarted] = useState(!safeConfig.showStartButton);
   const [shakeAnim] = useState(new Animated.Value(0));
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
+  const [completedSentence, setCompletedSentence] = useState<string>("");
 
   // Inicializar palabras
   useEffect(() => {
@@ -53,9 +60,27 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     setRemainingWords(shuffled);
   }, [safeConfig.wordBank]);
 
+  // Sincronizar estado completado
+  useEffect(() => {
+    setIsExerciseCompleted(isCompleted);
+    if (isCompleted) {
+      setShowSuccess(true);
+      setHasStarted(true);
+      // Si tenemos palabras completadas desde props, restaurarlas
+      if (completedWords.length > 0) {
+        setSelectedWords(completedWords);
+        const remaining = safeConfig.wordBank.filter(
+          (word) => !completedWords.includes(word)
+        );
+        setRemainingWords(remaining);
+      }
+      // Si no hay completedWords pero hay selectedWords locales, mantenerlas
+    }
+  }, [isCompleted, completedWords, safeConfig.wordBank]);
+
   // Temporizador
   useEffect(() => {
-    if (!hasStarted || safeConfig.timeLimit <= 0) return;
+    if (!hasStarted || safeConfig.timeLimit <= 0 || isExerciseCompleted) return;
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -69,20 +94,23 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [hasStarted, safeConfig.timeLimit]);
+  }, [hasStarted, safeConfig.timeLimit, isExerciseCompleted]);
 
   const handleStart = () => {
     setHasStarted(true);
   };
 
   const handleSelectWord = (word: string, index: number) => {
+    if (isExerciseCompleted) return;
     const newRemaining = [...remainingWords];
     newRemaining.splice(index, 1);
     setRemainingWords(newRemaining);
-    setSelectedWords([...selectedWords, word]);
+    const newSelected = [...selectedWords, word];
+    setSelectedWords(newSelected);
   };
 
   const handleDeselectWord = (word: string, index: number) => {
+    if (isExerciseCompleted) return;
     const newSelected = [...selectedWords];
     newSelected.splice(index, 1);
     setSelectedWords(newSelected);
@@ -95,13 +123,17 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       (correct) => correct.toLowerCase() === userSentence.toLowerCase()
     );
 
-    // Verificar palabras requeridas si existen
-    const hasRequiredWords =
-      safeConfig.requiredWords.length === 0 ||
-      safeConfig.requiredWords.every((word) => selectedWords.includes(word));
-
-    if (isCorrect && hasRequiredWords) {
+    if (isCorrect) {
       setShowSuccess(true);
+      setIsExerciseCompleted(true);
+      setCompletedSentence(userSentence);
+      // Guardar las palabras seleccionadas en ejerciseData antes de completar
+      if (onExerciseData) {
+        onExerciseData({
+          selectedWords: selectedWords,
+          completedSentence: userSentence,
+        });
+      }
       setTimeout(() => {
         onComplete();
       }, 1500);
@@ -131,6 +163,14 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       ]).start();
     }
   };
+
+  // Guardar las palabras seleccionadas cuando se completa
+  useEffect(() => {
+    if (isExerciseCompleted && selectedWords.length > 0) {
+      // Este efecto solo ejecuta cuando isExerciseCompleted cambia a true
+      // Mantiene las palabras en el estado local
+    }
+  }, [isExerciseCompleted]);
 
   return (
     <View style={styles.container}>
@@ -165,8 +205,14 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
                 {selectedWords.map((word, index) => (
                   <TouchableOpacity
                     key={`selected-${index}`}
-                    style={styles.wordChip}
-                    onPress={() => handleDeselectWord(word, index)}
+                    style={[
+                      styles.wordChip,
+                      isExerciseCompleted && styles.wordChipCompleted,
+                    ]}
+                    onPress={() =>
+                      !isExerciseCompleted && handleDeselectWord(word, index)
+                    }
+                    disabled={isExerciseCompleted}
                   >
                     <Text style={styles.wordText}>{word}</Text>
                   </TouchableOpacity>
@@ -185,9 +231,12 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
               {remainingWords.map((word, index) => (
                 <TouchableOpacity
                   key={`bank-${index}`}
-                  style={styles.wordButton}
+                  style={[
+                    styles.wordButton,
+                    isExerciseCompleted && styles.disabledButton,
+                  ]}
                   onPress={() => handleSelectWord(word, index)}
-                  disabled={isTimeUp || !hasStarted}
+                  disabled={isTimeUp || !hasStarted || isExerciseCompleted}
                 >
                   <Text style={styles.wordText}>{word}</Text>
                 </TouchableOpacity>
@@ -195,18 +244,25 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
             </View>
           </View>
 
-          <TouchableOpacity
-            style={[
-              styles.submitButton,
-              selectedWords.length === 0 && styles.disabledButton,
-            ]}
-            onPress={checkSentence}
-            disabled={selectedWords.length === 0 || isTimeUp || !hasStarted}
-          >
-            <Text style={styles.buttonText}>
-              {isTimeUp ? "Tiempo terminado" : "Verificar"}
-            </Text>
-          </TouchableOpacity>
+          {/* Solo renderizamos el botón si NO está completado */}
+          {!isExerciseCompleted && (
+            <TouchableOpacity
+              style={[
+                styles.submitButton,
+                selectedWords.length === 0 && styles.disabledButton,
+                // Ya no necesitamos styles.completedButton porque el botón desaparece
+              ]}
+              onPress={checkSentence}
+              disabled={
+                selectedWords.length === 0 || isTimeUp || !hasStarted
+                // Quitamos isExerciseCompleted del disabled porque la condición superior ya lo maneja
+              }
+            >
+              <Text style={styles.buttonText}>
+                {isTimeUp ? "Tiempo terminado" : "Verificar"}
+              </Text>
+            </TouchableOpacity>
+          )}
 
           {isTimeUp && (
             <View style={styles.solution}>
@@ -218,14 +274,14 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
               ))}
             </View>
           )}
+
+          {isExerciseCompleted && (
+            <View style={styles.completionBanner}>
+              <Text style={styles.completionText}>✓ ¡Oración correcta!</Text>
+            </View>
+          )}
         </>
       )}
-
-      <ExerciseFeedback
-        visible={showSuccess}
-        message="¡Oración correcta! Ejercicio completado"
-        type="success"
-      />
     </View>
   );
 };
@@ -280,6 +336,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#bbdefb",
     borderRadius: 20,
   },
+  wordChipCompleted: {
+    backgroundColor: "#4CAF50",
+    opacity: 0.8,
+  },
   wordText: {
     fontSize: 16,
   },
@@ -288,6 +348,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#2196F3",
     borderRadius: 8,
     alignItems: "center",
+  },
+  completedButton: {
+    backgroundColor: "#4CAF50",
   },
   buttonText: {
     color: "white",
@@ -304,28 +367,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontStyle: "italic",
   },
-  /*  container: {
-    flex: 1,
-    padding: 16,
-  }, */
-  /*  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 16,
-    textAlign: "center",
-    color: "#2c3e50",
-  }, */
+
   instructions: {
     marginBottom: 16,
     paddingHorizontal: 8,
   },
-  /*   sentenceArea: {
-    minHeight: 80,
-    backgroundColor: "#f8f9fa",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-  }, */
   sentenceWords: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -342,6 +388,18 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: "#e0e0e0",
+  },
+  completionBanner: {
+    backgroundColor: "#4CAF50",
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 15,
+    alignItems: "center",
+  },
+  completionText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

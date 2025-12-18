@@ -24,6 +24,7 @@ type MemoryGameProps = {
     maxAttempts?: number;
   };
   onComplete: () => void;
+  isCompleted?: boolean;
 };
 
 const getPairType = (pair: any): string => {
@@ -51,6 +52,7 @@ export default function MemoryGame({
   pairs: oldFormatPairs,
   config,
   onComplete,
+  isCompleted = false,
 }: MemoryGameProps) {
   const [cards, setCards] = useState<CardType[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
@@ -60,10 +62,7 @@ export default function MemoryGame({
   const effectivePairs = config?.pairs || oldFormatPairs || [];
 
   useEffect(() => {
-    if (effectivePairs.length === 0) {
-      console.error("No pairs provided to MemoryGame");
-      return;
-    }
+    if (effectivePairs.length === 0) return;
 
     const initialCards: CardType[] = [];
 
@@ -71,113 +70,78 @@ export default function MemoryGame({
       const pairType = getPairType(pair);
       const pairId = (pair as any).id || `pair-${index}`;
 
+      // Función auxiliar para crear la base de la carta
+      // Aquí usamos isCompleted para definir el estado inicial
+      const createCardBase = (
+        id: string,
+        content: string,
+        type: "text" | "image",
+        image?: string
+      ): CardType => ({
+        id,
+        content,
+        image,
+        type,
+        pairId,
+        isFlipped: isCompleted, // Si ya está completado, se muestra
+        isMatched: isCompleted, // Si ya está completado, no se puede clickear
+      });
+
       switch (pairType) {
-        case "imageText": // Formato: {front: "text", back: "url", id: "id"}
-          const imageTextPair = pair as {
-            front: string;
-            back: string;
-            id?: string;
-          };
-
-          // Carta de texto (front)
-          initialCards.push({
-            id: `text-${pairId}`,
-            content: imageTextPair.front,
-            isFlipped: false,
-            isMatched: false,
-            pairId: pairId,
-            type: "text",
-          });
-
-          // Carta de imagen (back)
-          initialCards.push({
-            id: `image-${pairId}`,
-            content: imageTextPair.front, // El contenido es el mismo texto para matching
-            image: imageTextPair.back, // Pero también tiene la imagen
-            isFlipped: false,
-            isMatched: false,
-            pairId: pairId,
-            type: "image",
-          });
+        case "imageText":
+          const it = pair as { front: string; back: string };
+          initialCards.push(createCardBase(`text-${pairId}`, it.front, "text"));
+          initialCards.push(
+            createCardBase(`image-${pairId}`, it.front, "image", it.back)
+          );
           break;
 
-        case "textText": // Formato: {front: "text1", back: "text2", id: "id"}
-          const textTextPair = pair as {
-            front: string;
-            back: string;
-            id?: string;
-          };
-          initialCards.push({
-            id: `front-${pairId}`,
-            content: textTextPair.front,
-            isFlipped: false,
-            isMatched: false,
-            pairId: pairId,
-            type: "text",
-          });
-          initialCards.push({
-            id: `back-${pairId}`,
-            content: textTextPair.back,
-            isFlipped: false,
-            isMatched: false,
-            pairId: pairId,
-            type: "text",
-          });
+        case "textText":
+          const tt = pair as { front: string; back: string };
+          initialCards.push(
+            createCardBase(`front-${pairId}`, tt.front, "text")
+          );
+          initialCards.push(createCardBase(`back-${pairId}`, tt.back, "text"));
           break;
 
-        case "imageWord": // Formato: {image: "url", word: "text", id: "id", matchId: "matchId"}
-          const imageWordPair = pair as {
+        case "imageWord":
+          const iw = pair as {
             image: string;
             word: string;
-            id?: string;
             matchId?: string;
+            id?: string;
           };
-          const matchId = imageWordPair.matchId || pairId;
+          const mId = iw.matchId || pairId;
+          initialCards.push(
+            createCardBase(iw.id || `img-${index}`, iw.word, "image", iw.image)
+          );
 
-          initialCards.push({
-            id: imageWordPair.id || `img-${index}`,
-            content: imageWordPair.word,
-            image: imageWordPair.image,
-            isFlipped: false,
-            isMatched: false,
-            pairId: matchId,
-            type: "image",
-          });
-
-          // Buscar el par correspondiente
           const matchingPair = effectivePairs.find(
-            (p) => (p as any).id === imageWordPair.matchId
-          ) as { image: string; word: string; id?: string };
-
+            (p) => (p as any).id === iw.matchId
+          ) as any;
           if (matchingPair) {
-            initialCards.push({
-              id: matchingPair.id || `word-${index}`,
-              content: matchingPair.word,
-              image: matchingPair.image,
-              isFlipped: false,
-              isMatched: false,
-              pairId: matchId,
-              type: "text",
-            });
+            initialCards.push(
+              createCardBase(
+                matchingPair.id || `word-${index}`,
+                matchingPair.word,
+                "text",
+                matchingPair.image
+              )
+            );
           }
-          break;
-
-        default:
-          console.warn("Unknown pair format:", pair);
           break;
       }
     });
 
-    // Eliminar duplicados y barajar
     const uniqueCards = initialCards.filter(
       (card, index, array) => index === array.findIndex((c) => c.id === card.id)
     );
 
-    setCards(shuffleArray(uniqueCards));
+    // Solo barajamos si NO está completado
+    setCards(isCompleted ? uniqueCards : shuffleArray(uniqueCards));
     setFlippedCards([]);
-    setMoves(0);
-    setGameCompleted(false);
-  }, [effectivePairs]);
+    setGameCompleted(isCompleted);
+  }, [effectivePairs, isCompleted]);
 
   const shuffleArray = <T,>(array: T[]): T[] => {
     const newArray = [...array];
@@ -190,6 +154,8 @@ export default function MemoryGame({
 
   const handleCardPress = (index: number) => {
     if (
+      isCompleted || // Bloqueo por prop
+      gameCompleted || // Bloqueo por estado local
       cards[index].isFlipped ||
       cards[index].isMatched ||
       flippedCards.length >= 2
@@ -217,22 +183,26 @@ export default function MemoryGame({
         newCards[firstIndex].isMatched = true;
         newCards[secondIndex].isMatched = true;
         setCards(newCards);
+        setFlippedCards([]);
 
         if (newCards.every((card) => card.isMatched)) {
           setGameCompleted(true);
           setTimeout(() => onComplete(), 1500);
         }
-      }
+      } else {
+        // Si no coinciden, esperar antes de voltear hacia atrás
+        const timeoutId = setTimeout(() => {
+          setCards((prevCards) => {
+            const newCards = [...prevCards];
+            newCards[firstIndex].isFlipped = false;
+            newCards[secondIndex].isFlipped = false;
+            return newCards;
+          });
+          setFlippedCards([]);
+        }, 1000);
 
-      setTimeout(() => {
-        const newCards = [...cards];
-        if (!isMatch) {
-          newCards[firstIndex].isFlipped = false;
-          newCards[secondIndex].isFlipped = false;
-        }
-        setCards(newCards);
-        setFlippedCards([]);
-      }, 1000);
+        return () => clearTimeout(timeoutId);
+      }
     }
   }, [flippedCards, cards, onComplete]);
 
@@ -266,7 +236,7 @@ export default function MemoryGame({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Juego de Memoria</Text>
-      <Text style={styles.moves}>Movimientos: {moves}</Text>
+      {!isCompleted && <Text style={styles.moves}>Movimientos: {moves}</Text>}
 
       <View style={styles.board}>
         {cards.map((card, index) => (
@@ -279,8 +249,10 @@ export default function MemoryGame({
                 ? styles.cardFlipped
                 : styles.cardBack,
               card.isMatched && styles.cardMatched,
+              // Opcional: Estilo visual para cartas ya completadas
+              isCompleted && { borderColor: "#4CAF50", borderWidth: 2 },
             ]}
-            disabled={card.isMatched}
+            disabled={card.isMatched || isCompleted}
           >
             {card.isFlipped || card.isMatched ? (
               renderCardContent(card)
@@ -291,10 +263,9 @@ export default function MemoryGame({
         ))}
       </View>
 
-      {gameCompleted && (
+      {(gameCompleted || isCompleted) && (
         <View style={styles.completionMessage}>
-          <Text style={styles.completionText}>¡Juego completado!</Text>
-          <Text style={styles.movesText}>Movimientos totales: {moves}</Text>
+          <Text style={styles.completionText}>¡Completado!</Text>
         </View>
       )}
     </View>

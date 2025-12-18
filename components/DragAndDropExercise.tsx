@@ -1,12 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Alert,
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Dimensions, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
@@ -30,11 +23,12 @@ interface DropZone {
 }
 
 interface DragDropExerciseProps {
-   dragItems?: DragItem[];  // Hacer opcional
+  dragItems?: DragItem[]; // Hacer opcional
   dropZones?: DropZone[];
   instructions?: string;
   question?: string;
   onComplete: () => void;
+  isCompleted?: boolean;
 }
 
 interface DropZoneLayout {
@@ -51,11 +45,15 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
   instructions = "Arrastra cada elemento a su posición correcta",
   question = "Relaciona los elementos",
   onComplete,
+  isCompleted = false,
 }) => {
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [activeDrag, setActiveDrag] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [highlightedZone, setHighlightedZone] = useState<string | null>(null);
+  const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
+  const [shuffledDropZones, setShuffledDropZones] = useState<DropZone[]>([]);
+  const hasInitialized = useRef(false);
   const dropZoneLayouts = useRef<Record<string, DropZoneLayout>>({}).current;
   const dragItemLayouts = useRef<Record<string, { x: number; y: number }>>(
     {}
@@ -70,9 +68,26 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
 
   useEffect(() => {
     dragItems.forEach((item, index) => {
-      positions.value[item.id] = { x: 0, y: index * 70 };
+      // Solo inicializar posiciones si el item no está ya colocado
+      if (!matches[item.id]) {
+        positions.value[item.id] = { x: 0, y: index * 70 };
+      }
     });
-  }, [dragItems]);
+  }, [dragItems, matches]);
+
+  // Sincronizar estado completado
+  useEffect(() => {
+    setIsExerciseCompleted(isCompleted);
+  }, [isCompleted]);
+
+  // Mezclar dropZones para evitar alineación (solo una vez)
+  useEffect(() => {
+    if (!hasInitialized.current && dropZones.length > 0) {
+      const shuffled = [...dropZones].sort(() => Math.random() - 0.5);
+      setShuffledDropZones(shuffled);
+      hasInitialized.current = true;
+    }
+  }, [dropZones.length]);
 
   const resetPosition = (dragItemId: string) => {
     const originalY =
@@ -114,6 +129,7 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
       );
       console.log("allCorrect", allCorrect);
       if (allCorrect) {
+        runOnJS(setIsExerciseCompleted)(true);
         runOnJS(onComplete)();
       }
     } else {
@@ -162,7 +178,7 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx: { startX: number; startY: number }) => {
-      if (!activeDrag) return;
+      if (!activeDrag || isExerciseCompleted) return;
       const currentPosition = positions.value[activeDrag];
       if (!currentPosition) return;
       ctx.startX = currentPosition.x;
@@ -170,7 +186,7 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
       runOnJS(setHighlightedZone)(null);
     },
     onActive: (event, ctx) => {
-      if (!activeDrag) return;
+      if (!activeDrag || isExerciseCompleted) return;
 
       positions.value = {
         ...positions.value,
@@ -199,7 +215,7 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
       runOnJS(setHighlightedZone)(hoveredZone);
     },
     onEnd: (event) => {
-      if (!activeDrag) return;
+      if (!activeDrag || isExerciseCompleted) return;
       const activeItem = positions.value[activeDrag];
 
       let matchedZoneId: string | null = null;
@@ -250,7 +266,9 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
                   onGestureEvent={gestureHandler}
                   onHandlerStateChange={gestureHandler}
                   onBegan={() => {
-                    runOnJS(setActiveDrag)(item.id);
+                    if (!isExerciseCompleted) {
+                      runOnJS(setActiveDrag)(item.id);
+                    }
                   }}
                 >
                   <Animated.View
@@ -274,7 +292,7 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
 
         {/* Columna de zonas de destino */}
         <View style={styles.dropColumn}>
-          {dropZones.map((zone) => (
+          {shuffledDropZones.map((zone) => (
             <View
               key={`zone-${zone.id}`}
               style={[

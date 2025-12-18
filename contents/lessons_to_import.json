@@ -1,652 +1,237 @@
 {
   "lessons": {
-    "A2_changes_transformations": {
-      "id": "A2_changes_transformations",
-      "title": "Cambios y Transformaciones",
+    "A2_professional_presentations": {
+      "id": "A2_professional_presentations",
+      "title": "Presentaciones Profesionales",
       "xpReward": 200,
       "metadata": {
         "level": "A2",
-        "module": "grammar",
-        "unit": "unitA2_changes",
-        "xpReward": 200,
-        "estimatedDuration": 68,
-        "tags": [
-          "present_simple",
-          "present_continuous",
-          "changes",
-          "transformations",
-          "progress"
-        ]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_change",
-            "word": "Change",
-            "translation": "Cambio",
-            "examples": ["I see a positive change in your work"],
-            "tags": ["change", "transformation"]
-          },
-          {
-            "id": "voc_improve",
-            "word": "Improve",
-            "translation": "Mejorar",
-            "examples": ["My English is improving every day"],
-            "tags": ["progress", "development"]
-          },
-          {
-            "id": "voc_evolve",
-            "word": "Evolve",
-            "translation": "Evolucionar",
-            "examples": ["Technology evolves rapidly"]
-          },
-          {
-            "id": "voc_transform",
-            "word": "Transform",
-            "translation": "Transformar",
-            "examples": ["The city is transforming with new buildings"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_changes_vocabulary",
-            "title": "Memory: Cambios y Transformaciones",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Change",
-                  "back": "Cambio"
-                },
-                {
-                  "front": "Improvement",
-                  "back": "Mejora"
-                },
-                {
-                  "front": "Transformation",
-                  "back": "Transformación"
-                },
-                {
-                  "front": "Evolution",
-                  "back": "Evolución"
-                }
-              ]
-            }
-          },
-          {
-            "type": "conjugation",
-            "id": "ex2_change_verbs",
-            "title": "Presente Simple vs Continuo - Cambios",
-            "config": {
-              "verb": "to improve",
-              "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Present Simple", "Present Continuous"],
-              "correct": {
-                "Present Simple": "improve",
-                "Present Continuous": "am improving"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_change_sentences",
-            "title": "Describe Cambios",
-            "config": {
-              "wordBank": [
-                "I",
-                "am",
-                "improving",
-                "changing",
-                "evolving",
-                "my",
-                "English",
-                "skills",
-                "every",
-                "day",
-                "right",
-                "now",
-                "usually",
-                "always",
-                "often"
-              ],
-              "correctAnswers": [
-                "I am improving my English every day",
-                "My skills are changing right now",
-                "I usually evolve with practice"
-              ],
-              "requiredWords": ["am", "are", "evolve"],
-              "timeLimit": 130
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_change_conversation",
-            "title": "Conversación sobre Cambios",
-            "config": {
-              "scenario": "Discussing personal changes and growth with a friend",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "How is your English improving?",
-                  "options": [
-                    "It's improving every day",
-                    "I'm changing my study methods"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "What changes are you making in your life?",
-                  "options": [
-                    "I'm evolving my daily routine",
-                    "I'm transforming my habits"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "vocabulary",
-            "id": "ex5_types_of_changes",
-            "title": "Categoría: Tipos de Cambios",
-            "config": {
-              "categories": [
-                {
-                  "id": "personal",
-                  "name": "Cambios Personales",
-                  "color": "#FF6B6B"
-                },
-                {
-                  "id": "professional",
-                  "name": "Cambios Profesionales",
-                  "color": "#4ECDC4"
-                },
-                {
-                  "id": "technological",
-                  "name": "Cambios Tecnológicos",
-                  "color": "#45B7D1"
-                }
-              ],
-              "items": [
-                {
-                  "id": "item1",
-                  "text": "Learning a new language",
-                  "category": "personal"
-                },
-                {
-                  "id": "item2",
-                  "text": "Getting a promotion",
-                  "category": "professional"
-                },
-                {
-                  "id": "item3",
-                  "text": "New smartphone release",
-                  "category": "technological"
-                },
-                {
-                  "id": "item4",
-                  "text": "Developing new habits",
-                  "category": "personal"
-                },
-                {
-                  "id": "item5",
-                  "text": "Company reorganization",
-                  "category": "professional"
-                },
-                {
-                  "id": "item6",
-                  "text": "Software update",
-                  "category": "technological"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_art_creativity": {
-      "id": "A2_art_creativity",
-      "title": "Arte y Creatividad",
-      "xpReward": 210,
-      "metadata": {
-        "level": "A2",
         "module": "vocabulary",
-        "unit": "unitA2_art",
-        "xpReward": 210,
-        "estimatedDuration": 72,
+        "unit": "unitA2_prof_presentations",
+        "xpReward": 200,
+        "estimatedDuration": 70,
         "tags": [
-          "past_simple",
-          "irregular_verbs",
-          "art",
-          "creativity",
-          "techniques"
+          "professional_presentations",
+          "public_speaking",
+          "slides",
+          "audience"
         ]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_drew",
-            "word": "Drew",
-            "translation": "Dibujé",
-            "examples": ["I drew a beautiful picture yesterday"],
-            "tags": ["irregular_verb", "art"]
+            "id": "voc_preparing_presentation",
+            "word": "Preparing a presentation",
+            "translation": "Preparando una presentación",
+            "examples": ["I am preparing a presentation for the conference"],
+            "tags": ["present_continuous", "preparation"]
           },
           {
-            "id": "voc_painted",
-            "word": "Painted",
-            "translation": "Pinté",
-            "examples": ["She painted a landscape last week"],
-            "tags": ["regular_verb", "art"]
+            "id": "voc_delivering_speech",
+            "word": "Delivering a speech",
+            "translation": "Dando un discurso",
+            "examples": ["She is delivering a speech to the board"],
+            "tags": ["present_continuous", "delivery"]
           },
           {
-            "id": "voc_creativity",
-            "word": "Creativity",
-            "translation": "Creatividad",
-            "examples": ["Creativity is important in art"]
+            "id": "voc_presentation",
+            "word": "Presentation",
+            "translation": "Presentación",
+            "examples": ["The presentation starts in ten minutes"]
           },
           {
-            "id": "voc_masterpiece",
-            "word": "Masterpiece",
-            "translation": "Obra maestra",
-            "examples": ["That painting is a true masterpiece"]
+            "id": "voc_audience",
+            "word": "Audience",
+            "translation": "Audiencia",
+            "examples": ["The audience is very interested in the topic"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_art_vocabulary",
-            "title": "Vocabulario Artístico",
+            "id": "ex1_presentation_vocabulary",
+            "title": "Vocabulario de Presentaciones",
             "config": {
               "pairs": [
                 {
-                  "from": "Creativity",
-                  "to": "Creatividad"
+                  "from": "Presentation",
+                  "to": "Presentación"
                 },
                 {
-                  "from": "Masterpiece",
-                  "to": "Obra maestra"
+                  "from": "Audience",
+                  "to": "Audiencia"
                 },
                 {
-                  "from": "Canvas",
-                  "to": "Lienzo"
+                  "from": "Slides",
+                  "to": "Diapositivas"
                 },
                 {
-                  "from": "Sculpture",
-                  "to": "Escultura"
+                  "from": "Speaker",
+                  "to": "Orador"
                 }
               ]
             }
           },
           {
-            "type": "conjugation",
-            "id": "ex2_art_verbs",
-            "title": "Verbos Irregulares del Arte",
+            "type": "listening_transcription",
+            "id": "ex2_preparation_audio",
+            "title": "Escucha: Preparando una Presentación",
             "config": {
-              "verb": "to draw",
-              "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": ["Past Simple"],
-              "correct": {
-                "I": "drew",
-                "You": "drew",
-                "He": "drew",
-                "We": "drew",
-                "They": "drew"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
+              "audioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089777/I_am_preparing_an_important_presentation_now_zjaonx.mp3",
+              "correctSentence": "I am preparing an important presentation now",
+              "wordBank": [
+                "I",
+                "am",
+                "preparing",
+                "an",
+                "important",
+                "presentation",
+                "now",
+                "tomorrow",
+                "yesterday",
+                "meeting",
+                "speech"
+              ],
+              "slowAudioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089834/I_am_preparing_an_important_presentation_now_slow_yq1ogf.mp3"
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_art_sentences",
-            "title": "Describe Obras de Arte",
+            "id": "ex3_presentation_sentences",
+            "title": "Forma Oraciones para Presentaciones",
             "config": {
               "wordBank": [
-                "I",
-                "drew",
-                "painted",
-                "created",
+                "She",
+                "is",
+                "delivering",
                 "a",
-                "beautiful",
-                "picture",
-                "last",
-                "week",
-                "yesterday",
-                "she",
-                "he",
-                "they",
-                "made",
-                "art",
-                "masterpiece"
+                "speech",
+                "to",
+                "the",
+                "audience",
+                "right",
+                "now",
+                "using",
+                "visual",
+                "aids",
+                "and",
+                "clear",
+                "slides",
+                "for",
+                "better",
+                "understanding"
               ],
               "correctAnswers": [
-                "I drew a beautiful picture yesterday",
-                "She painted a masterpiece last week",
-                "They created amazing art"
+                "She is delivering a speech to the audience",
+                "I am using visual aids for the presentation",
+                "We are preparing clear slides now"
               ],
-              "requiredWords": ["drew", "painted", "created"],
-              "timeLimit": 140
+              "requiredWords": ["is", "am", "are"],
+              "timeLimit": 135
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_art_conversation",
-            "title": "Conversación sobre Arte",
+            "id": "ex4_presentation_prep",
+            "title": "Simulación: Preparación de Presentación",
             "config": {
-              "scenario": "Discussing art and creativity with an artist friend",
+              "scenario": "Preparing for an important professional presentation",
               "dialogues": [
                 {
-                  "character": "artist",
-                  "text": "What did you create recently?",
+                  "character": "colleague",
+                  "text": "What presentation are you preparing for tomorrow?",
                   "options": [
-                    "I drew a landscape last week",
-                    "I painted a portrait yesterday"
+                    "I'm preparing the quarterly business review",
+                    "I'm working on a presentation for new clients"
                   ]
                 },
                 {
                   "character": "user",
-                  "text": "How did you learn to draw so well?",
+                  "text": "How should I deliver the speech to this audience?",
                   "options": [
-                    "I practiced every day",
-                    "I studied art techniques"
+                    "Speak clearly and use visual aids",
+                    "Practice your delivery and engage the audience"
                   ]
                 }
               ]
             }
           },
           {
-            "type": "memory_game",
-            "id": "ex5_irregular_verbs_art",
-            "title": "Memory: Verbos Irregulares del Arte",
+            "type": "listening_transcription",
+            "id": "ex5_delivery_audio",
+            "title": "Escucha: Entrega de Presentación",
             "config": {
-              "pairs": [
-                {
-                  "front": "Draw → Past",
-                  "back": "Drew"
-                },
-                {
-                  "front": "Paint → Past",
-                  "back": "Painted"
-                },
-                {
-                  "front": "Create → Past",
-                  "back": "Created"
-                },
-                {
-                  "front": "Make → Past",
-                  "back": "Made"
-                }
-              ]
+              "audioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089944/The_speaker_is_delivering_the_keynote_address_now_fvxzcs.mp3",
+              "correctSentence": "The speaker is delivering the keynote address now",
+              "wordBank": [
+                "The",
+                "speaker",
+                "is",
+                "delivering",
+                "the",
+                "keynote",
+                "address",
+                "now",
+                "audience",
+                "listening",
+                "presentation",
+                "tomorrow"
+              ],
+              "slowAudioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089947/The_speaker_is_delivering_the_keynote_address_now_slow_bkr0sm.mp3"
             }
           },
-          {
-            "type": "audio_matching",
-            "id": "ex6_art_descriptions",
-            "title": "Audio: Descripciones de Arte",
-            "config": {
-              "mode": "audio_to_text",
-              "pairs": [
-                {
-                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../drew_picture.mp3",
-                  "text": "I drew this picture last month"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/tu-usuario/audio/upload/v.../painted_landscape.mp3",
-                  "text": "She painted a beautiful landscape"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A2_general_review": {
-      "id": "A2_general_review",
-      "title": "Repaso General A2",
-      "xpReward": 250,
-      "metadata": {
-        "level": "A2",
-        "module": "review",
-        "unit": "unitA2_review",
-        "xpReward": 250,
-        "estimatedDuration": 90,
-        "tags": [
-          "review",
-          "practice",
-          "conversation",
-          "comprehensive",
-          "final_exam"
-        ]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_review",
-            "word": "Review",
-            "translation": "Repaso",
-            "examples": ["Let's review everything we learned"],
-            "tags": ["review", "practice"]
-          },
-          {
-            "id": "voc_practice",
-            "word": "Practice",
-            "translation": "Práctica",
-            "examples": ["Practice makes perfect"],
-            "tags": ["practice", "improvement"]
-          },
-          {
-            "id": "voc_communication",
-            "word": "Communication",
-            "translation": "Comunicación",
-            "examples": ["Good communication is essential"]
-          },
-          {
-            "id": "voc_progress",
-            "word": "Progress",
-            "translation": "Progreso",
-            "examples": ["I can see your progress in English"]
-          }
-        ],
-        "exercises": [
           {
             "type": "vocabulary",
-            "id": "ex1_comprehensive_categories",
-            "title": "Repaso: Categorías de Vocabulario",
+            "id": "ex6_presentation_elements",
+            "title": "Categoría: Elementos de Presentación",
             "config": {
               "categories": [
                 {
-                  "id": "daily_life",
-                  "name": "Vida Diaria",
-                  "color": "#9C27B0"
-                },
-                {
-                  "id": "work_study",
-                  "name": "Trabajo y Estudio",
+                  "id": "content",
+                  "name": "Contenido",
                   "color": "#2196F3"
                 },
                 {
-                  "id": "hobbies",
-                  "name": "Pasatiempos",
+                  "id": "delivery",
+                  "name": "Entrega",
                   "color": "#4CAF50"
+                },
+                {
+                  "id": "visuals",
+                  "name": "Visuales",
+                  "color": "#FF9800"
                 }
               ],
               "items": [
                 {
                   "id": "item1",
-                  "text": "Shopping at the supermarket",
-                  "category": "daily_life"
+                  "text": "Introduction and conclusion",
+                  "category": "content"
                 },
                 {
                   "id": "item2",
-                  "text": "Attending a business meeting",
-                  "category": "work_study"
+                  "text": "Speaking clearly",
+                  "category": "delivery"
                 },
                 {
                   "id": "item3",
-                  "text": "Playing musical instruments",
-                  "category": "hobbies"
+                  "text": "PowerPoint slides",
+                  "category": "visuals"
                 },
                 {
                   "id": "item4",
-                  "text": "Cooking dinner",
-                  "category": "daily_life"
+                  "text": "Key messages",
+                  "category": "content"
                 },
                 {
                   "id": "item5",
-                  "text": "Studying for an exam",
-                  "category": "work_study"
+                  "text": "Eye contact",
+                  "category": "delivery"
                 },
                 {
                   "id": "item6",
-                  "text": "Reading books",
-                  "category": "hobbies"
-                }
-              ]
-            }
-          },
-          {
-            "type": "matching",
-            "id": "ex2_tense_review",
-            "title": "Repaso: Tiempos Verbales",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Present Simple",
-                  "to": "He works every day"
-                },
-                {
-                  "from": "Present Continuous",
-                  "to": "She is working now"
-                },
-                {
-                  "from": "Past Simple",
-                  "to": "I worked yesterday"
-                },
-                {
-                  "from": "Past Continuous",
-                  "to": "They were working"
-                }
-              ]
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex3_comprehensive_conversation",
-            "title": "Conversación Integral",
-            "config": {
-              "scenario": "A comprehensive conversation using all A2 topics",
-              "dialogues": [
-                {
-                  "character": "interviewer",
-                  "text": "Tell me about your daily routine and recent experiences",
-                  "options": [
-                    "I usually work in the morning and recently traveled to Mexico",
-                    "I'm currently studying English and last week visited a museum"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "What are your plans for the future?",
-                  "options": [
-                    "I'm going to continue improving my English",
-                    "I will travel more and maybe study abroad"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex4_comprehensive_sentences",
-            "title": "Forma Oraciones Complejas",
-            "config": {
-              "wordBank": [
-                "Yesterday",
-                "I",
-                "visited",
-                "a",
-                "museum",
-                "and",
-                "saw",
-                "beautiful",
-                "art",
-                "tomorrow",
-                "I",
-                "will",
-                "study",
-                "for",
-                "my",
-                "exam",
-                "right",
-                "now",
-                "I",
-                "am",
-                "practicing",
-                "English",
-                "every",
-                "day",
-                "I",
-                "improve",
-                "my",
-                "skills"
-              ],
-              "correctAnswers": [
-                "Yesterday I visited a museum and saw beautiful art",
-                "Tomorrow I will study for my exam",
-                "Right now I am practicing English"
-              ],
-              "requiredWords": ["Yesterday", "Tomorrow", "Right now"],
-              "timeLimit": 180
-            }
-          },
-          {
-            "type": "conjugation",
-            "id": "ex5_comprehensive_verbs",
-            "title": "Repaso de Conjugación",
-            "config": {
-              "verb": "to learn",
-              "pronouns": ["I", "You", "He", "We", "They"],
-              "tenses": [
-                "Present Simple",
-                "Present Continuous",
-                "Past Simple",
-                "Future"
-              ],
-              "correct": {
-                "Present Simple": "learn",
-                "Present Continuous": "am learning",
-                "Past Simple": "learned",
-                "Future": "will learn"
-              },
-              "hints": {
-                "showBaseForm": true
-              }
-            }
-          },
-          {
-            "type": "memory_game",
-            "id": "ex6_key_vocabulary_review",
-            "title": "Repaso: Vocabulario Clave A2",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Communication",
-                  "back": "Comunicación"
-                },
-                {
-                  "front": "Experience",
-                  "back": "Experiencia"
-                },
-                {
-                  "front": "Opportunity",
-                  "back": "Oportunidad"
-                },
-                {
-                  "front": "Challenge",
-                  "back": "Desafío"
+                  "text": "Charts and graphs",
+                  "category": "visuals"
                 }
               ]
             }

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  Image,
+  ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  Image,
-  StyleSheet,
-  ScrollView,
+  View,
 } from "react-native";
 
 interface MapInteractiveProps {
@@ -13,22 +13,38 @@ interface MapInteractiveProps {
     mapImage: string;
     scenarios: Array<{
       start: string;
+      startCoords: { x: number; y: number }; // Agregado
       destination: string;
+      destCoords: { x: number; y: number }; // Agregado
       correctPath: string[];
     }>;
   };
   onComplete: () => void;
+  isCompleted?: boolean; // Agregado para persistencia
 }
 
 const MapInteractive: React.FC<MapInteractiveProps> = ({
   config,
   onComplete,
+  isCompleted = false,
 }) => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [userPath, setUserPath] = useState<string[]>([]);
   const [feedback, setFeedback] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (isCompleted) {
+      setShowSuccess(true);
+      setFeedback("¡Lección completada anteriormente!");
+      // Opcional: mostrar el camino completo
+      const lastScenario = config.scenarios[config.scenarios.length - 1];
+      setUserPath(lastScenario.correctPath);
+      setCurrentStep(lastScenario.correctPath.length);
+    }
+  }, [isCompleted]);
 
   const currentScenario = config.scenarios[currentScenarioIndex];
   const currentCorrectPath = currentScenario.correctPath;
@@ -44,47 +60,33 @@ const MapInteractive: React.FC<MapInteractiveProps> = ({
   };
 
   const handleDirectionPress = (direction: string) => {
+    if (isCompleted || showSuccess) return; // Bloquear si ya terminó
+
     const newPath = [...userPath, direction];
     setUserPath(newPath);
 
-    // Verificar si la dirección es correcta para el paso actual
     if (direction === currentCorrectPath[currentStep]) {
-      // Verificar si es el último paso
       if (currentStep === currentCorrectPath.length - 1) {
-        // ¡Camino completado correctamente!
         setFeedback("¡Correcto! 🎉 Llegaste al destino.");
         setShowSuccess(true);
 
         setTimeout(() => {
-          // Verificar si hay más escenarios
           if (currentScenarioIndex < config.scenarios.length - 1) {
-            // Pasar al siguiente escenario
             setCurrentScenarioIndex((prev) => prev + 1);
             setCurrentStep(0);
             setUserPath([]);
             setFeedback("");
             setShowSuccess(false);
           } else {
-            // Todos los escenarios completados
             onComplete();
           }
         }, 2000);
       } else {
-        // Paso correcto, continuar
         setCurrentStep((prev) => prev + 1);
-        setFeedback(
-          `¡Bien! Paso ${currentStep + 1} correcto. ¿Siguiente dirección?`
-        );
+        setFeedback(`¡Bien! Paso ${currentStep + 1} correcto.`);
       }
     } else {
-      // Dirección incorrecta
-      setFeedback(
-        `✗ Incorrecto. Intenta nuevamente. \nLa dirección correcta era: ${getDirectionLabel(
-          currentCorrectPath[currentStep]
-        )}`
-      );
-
-      // Reiniciar después de un breve delay
+      setFeedback(`✗ Incorrecto. Intenta nuevamente.`);
       setTimeout(() => {
         setUserPath([]);
         setCurrentStep(0);
@@ -122,14 +124,53 @@ const MapInteractive: React.FC<MapInteractiveProps> = ({
         </Text>
       </View>
 
-      <Image
-        source={{ uri: config.mapImage }}
-        style={styles.mapImage}
-        resizeMode="contain"
-        onError={(e) =>
-          console.log("Error loading map image:", e.nativeEvent.error)
-        }
-      />
+      <View style={styles.mapWrapper}>
+        <Image
+          source={{ uri: config.mapImage }}
+          style={styles.mapImage}
+          resizeMode="contain"
+          onLayout={(e) => {
+            const { width, height } = e.nativeEvent.layout;
+            setMapDimensions({ width, height });
+          }}
+        />
+        {mapDimensions.width > 0 && (
+          <>
+            {/* INDICADOR DE INICIO (Donde está el usuario) */}
+            <View
+              style={[
+                styles.marker,
+                {
+                  left:
+                    (currentScenario.startCoords.x / 100) * mapDimensions.width,
+                  top:
+                    (currentScenario.startCoords.y / 100) *
+                    mapDimensions.height,
+                  backgroundColor: "blue",
+                },
+              ]}
+            >
+              <Text style={styles.markerLabel}>Tú (You)</Text>
+            </View>
+
+            {/* INDICADOR DE DESTINO */}
+            <View
+              style={[
+                styles.marker,
+                {
+                  left:
+                    (currentScenario.destCoords.x / 100) * mapDimensions.width,
+                  top:
+                    (currentScenario.destCoords.y / 100) * mapDimensions.height,
+                  backgroundColor: "red",
+                },
+              ]}
+            >
+              <Text style={styles.markerLabel}>Meta (Goal)</Text>
+            </View>
+          </>
+        )}
+      </View>
 
       <Text style={styles.instructionText}>{getCurrentInstruction()}</Text>
 
@@ -228,10 +269,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#2c3e50",
   },
+  mapWrapper: {
+    position: "relative",
+    width: "100%",
+    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   mapImage: {
     width: "100%",
     height: 300,
-    marginBottom: 20,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: "#bdc3c7",
@@ -332,6 +380,25 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+
+  marker: {
+    position: "absolute",
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    transform: [{ translateX: -10 }, { translateY: -10 }], // Centrar el punto
+  },
+  markerLabel: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "white",
+    position: "absolute",
+    top: -15,
+    width: 60,
     textAlign: "center",
   },
 });
