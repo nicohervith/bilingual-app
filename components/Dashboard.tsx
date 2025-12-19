@@ -292,7 +292,7 @@ export default function Dashboard() {
     try {
       const [modulesSnapshot] = await Promise.all([
         getDocs(collection(db, "modules")),
-        updateStreak(userProgress), 
+        updateStreak(userProgress),
       ]);
 
       const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
@@ -315,6 +315,7 @@ export default function Dashboard() {
 
       setProgress((prev) => ({
         ...prev,
+        xp: userProgress.xp || 0,
         completedLessons: userProgress.completedLessons || {},
         purchasedLevels: userProgress.purchasedLevels || {},
         earnedBadges: userProgress.earnedBadges || {},
@@ -386,7 +387,7 @@ export default function Dashboard() {
       const newProgressData = {
         xp: 0,
         level: "A1",
-        unlockedLevels: ["A1"], 
+        unlockedLevels: ["A1"],
         purchasedLevels: {},
         completedLessons: {},
         levels: {
