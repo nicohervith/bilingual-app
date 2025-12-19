@@ -39,7 +39,6 @@
       }
     },
     "plugins": [
-
       "expo-router",
       [
         "expo-splash-screen",
@@ -48,6 +47,13 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Permítenos escuchar tu pronunciación para ayudarte a mejorar.",
+          "speechRecognitionPermission": "Usamos el reconocimiento de voz para validar tus respuestas."
         }
       ],
       "expo-web-browser"

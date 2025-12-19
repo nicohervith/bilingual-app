@@ -1,24 +1,30 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Category {
   id: string;
+
   name: string;
+
   color?: string;
 }
 
 interface Item {
   id: string;
+
   text?: string;
+
   image?: string;
+
   category: string;
 }
-
 interface CategorizationGameProps {
   categories: Category[];
   items: Item[];
   title?: string;
   onComplete: () => void;
+  isCompleted: boolean; // <-- Nueva Prop
 }
 
 const CategorizationGame = ({
@@ -26,32 +32,26 @@ const CategorizationGame = ({
   items = [],
   title,
   onComplete,
+  isCompleted, // <-- Desestructuración
 }: CategorizationGameProps) => {
-  // 1. VALIDACIÓN DE ROBUSTEZ (La fuente de tu error actual)
-  if (!Array.isArray(categories) || categories.length === 0) {
-    // Este mensaje solo se muestra si el array categories es [] o no es un array.
-    return (
-      <Text style={styles.errorContainer}>
-        Error: Configuración de categorías faltante o vacía.
-      </Text>
-    );
-  }
-  if (!Array.isArray(items) || items.length === 0) {
-    return (
-      <Text style={styles.errorContainer}>
-        Error: Configuración de ítems faltante o vacía.
-      </Text>
-    );
-  }
-
+  // Sincronizamos el estado local con la prop inicial
   const [currentSelections, setCurrentSelections] = useState<{
     [itemId: string]: string;
   }>({});
-  const [gameCompleted, setGameCompleted] = useState(false);
+
+  // Usamos la prop isCompleted para inicializar o bloquear
+  const [gameCompleted, setGameCompleted] = useState(isCompleted);
+
+  // Si la prop cambia externamente (ej: reseteo de lección), actualizamos el estado
+  useEffect(() => {
+    setGameCompleted(isCompleted);
+  }, [isCompleted]);
+
   const totalItems = items.length;
 
   const handleCategorySelect = (itemId: string, categoryId: string) => {
-    if (gameCompleted) return;
+    // Si ya está completado o la prop isCompleted es true, ignoramos clics
+    if (gameCompleted || isCompleted) return;
 
     const newSelections = {
       ...currentSelections,
@@ -68,34 +68,28 @@ const CategorizationGame = ({
 
   return (
     <View style={styles.container}>
-      {/* Título Dinámico */}
       <Text style={styles.title}>{title || "Clasifica los Elementos"}</Text>
 
       <View style={styles.itemsContainer}>
         {items.map((item: Item, index: number) => {
-          const isSelected = !!currentSelections[item.id];
           const selectedCategoryId = currentSelections[item.id];
-
-          const ItemContent = () => {
-            if (item.image) {
-              return (
-                <Image source={{ uri: item.image }} style={styles.itemImage} />
-              );
-            }
-            // Usa text si no hay imagen
-            return (
-              <Text style={styles.itemTextFallback}>
-                {item.text || `Ítem ${index + 1}`}
-              </Text>
-            );
-          };
+          const isSelected = !!selectedCategoryId;
 
           return (
             <View
               key={item.id}
-              style={[styles.item, isSelected && styles.itemSelected]}
+              style={[
+                styles.item,
+                (isSelected || isCompleted) && styles.itemSelected,
+              ]}
             >
-              <ItemContent />
+              {item.image ? (
+                <Image source={{ uri: item.image }} style={styles.itemImage} />
+              ) : (
+                <Text style={styles.itemTextFallback}>
+                  {item.text || `Ítem ${index + 1}`}
+                </Text>
+              )}
 
               <View style={styles.categories}>
                 {categories.map((cat: Category) => {
@@ -106,13 +100,17 @@ const CategorizationGame = ({
                       key={cat.id}
                       style={[
                         styles.categoryButton,
-                        // Acceso seguro a las propiedades del objeto 'cat'
                         isCategorySelected && {
                           backgroundColor: cat.color || "#3498db",
                         },
+                        // Estilo visual si ya está completado (opcional)
+                        isCompleted &&
+                          isCategorySelected &&
+                          styles.completedButton,
                       ]}
                       onPress={() => handleCategorySelect(item.id, cat.id)}
-                      disabled={gameCompleted}
+                      // Deshabilitar botón si ya se completó
+                      disabled={gameCompleted || isCompleted}
                     >
                       <Text
                         style={[
@@ -120,7 +118,7 @@ const CategorizationGame = ({
                           isCategorySelected && styles.categoryTextSelected,
                         ]}
                       >
-                        {cat.name} {/* <--- Accede a cat.name */}
+                        {cat.name}
                       </Text>
                     </TouchableOpacity>
                   );
@@ -131,8 +129,11 @@ const CategorizationGame = ({
         })}
       </View>
 
-      {gameCompleted && (
-        <Text style={styles.completedText}>¡Clasificación completada!</Text>
+      {(gameCompleted || isCompleted) && (
+        <View style={styles.successBadge}>
+          <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+          <Text style={styles.completedText}>¡Clasificación completada!</Text>
+        </View>
       )}
     </View>
   );
@@ -140,59 +141,110 @@ const CategorizationGame = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
-    padding: 15,
-    backgroundColor: "#f5f5f5",
-    borderRadius: 10,
+    marginVertical: 10,
+    padding: 16,
+    backgroundColor: "#F8F9FA",
+    borderRadius: 16,
+    width: "100%",
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 15,
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 20,
     textAlign: "center",
+    color: "#2D3436",
   },
   itemsContainer: {
-    marginBottom: 15,
+    width: "100%",
   },
   item: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
-    padding: 10,
+    marginBottom: 12,
+    padding: 12,
     backgroundColor: "white",
-    borderRadius: 8,
+    borderRadius: 12,
+    // Sombra para iOS
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    // Sombra para Android
+    elevation: 2,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  itemSelected: {
+    borderColor: "#E1E8ED",
+    backgroundColor: "#F1F3F5",
   },
   itemImage: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     marginRight: 15,
-    resizeMode: "contain",
+    borderRadius: 8,
+    backgroundColor: "#F8F9FA",
+  },
+  itemTextFallback: {
+    width: 70,
+    marginRight: 15,
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#636E72",
+    textAlign: "center",
   },
   categories: {
     flexDirection: "row",
     flexWrap: "wrap",
     flex: 1,
+    justifyContent: "flex-start",
   },
   categoryButton: {
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     margin: 4,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
+    backgroundColor: "#EDF2F7",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#CBD5E0",
   },
-  selectedCategory: {
-    backgroundColor: "#a5d6a7",
+  categoryText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#4A5568",
+  },
+  categoryTextSelected: {
+    color: "white",
+  },
+  completedButton: {
+    opacity: 0.8,
+    transform: [{ scale: 0.95 }],
+  },
+  successBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    padding: 12,
+    backgroundColor: "#EBFBEE",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#D3F9D8",
   },
   completedText: {
-    marginTop: 10,
-    color: "green",
+    marginLeft: 8,
+    color: "#2B8A3E",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  errorContainer: {
+    padding: 20,
+    color: "#E03131",
     textAlign: "center",
+    backgroundColor: "#FFF5F5",
+    borderRadius: 10,
     fontWeight: "bold",
   },
-  categoryText: {},
-  categoryTextSelected: {},
-  itemSelected: {},
-  itemTextFallback: {},
-  errorContainer:{},
 });
 
 export default CategorizationGame;

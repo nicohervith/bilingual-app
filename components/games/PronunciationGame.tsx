@@ -1,179 +1,245 @@
-/* import * as Speech from "expo-speech"; */
-import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import * as Speech from "expo-speech";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
-interface PronunciationProps {
-  config: {
-    phrase: string;
-    translation?: string;
-    audioUrl?: string;
-  };
+interface PronunciationGameProps {
+  config: { phrase: string };
   onComplete: () => void;
   isCompleted: boolean;
 }
 
-export const PronunciationGame: React.FC<PronunciationProps> = ({
+// Importación condicional
+const Voice =
+  Platform.OS !== "web" ? require("@react-native-voice/voice").default : null;
+
+export const PronunciationGame = ({
   config,
   onComplete,
   isCompleted,
-}) => {
-  const [isRecording, setIsRecording] = useState(false);
-  const [recognizedText, setRecognizedText] = useState("");
-  const [feedback, setFeedback] = useState<{
-    type: "success" | "error" | null;
-    msg: string;
-  }>({ type: null, msg: "" });
+}: PronunciationGameProps) => {
+  const [isListening, setIsListening] = useState(false);
+  const [results, setResults] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(isCompleted);
 
-  // 1. Función para Escuchar la pronunciación correcta (TTS)
-  const listenCorrectPronunciation = () => {
-    Speech.speak(config.phrase, {
-      language: "en-US", // O el idioma de tu lección
-      pitch: 1.0,
-      rate: 0.9,
-    });
-  };
+  useEffect(() => {
+    if (Platform.OS === "web" || !Voice) return;
 
-  // 2. Simulación de grabación y validación
-  // En una implementación real, aquí usas Voice.onSpeechResults
-  const startRecording = async () => {
+    Voice.onSpeechStart = () => setIsListening(true);
+    Voice.onSpeechEnd = () => setIsListening(false);
+    Voice.onSpeechResults = (e: any) => {
+      if (e.value) {
+        setResults(e.value);
+        checkPronunciation(e.value[0]);
+      }
+    };
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, []);
+
+  const startRecognizing = async () => {
     if (isCompleted) return;
-    setIsRecording(true);
-    setFeedback({ type: null, msg: "" });
+    setShowSuccess(false);
+    setError(null);
+    setResults([]);
 
-    // SIMULACIÓN: En producción aquí activas el micrófono
-    setTimeout(() => stopRecording(), 3000);
-  };
-
-  const stopRecording = () => {
-    setIsRecording(false);
-    // Lógica de comparación
-    validatePronunciation("hello world"); // Aquí iría el texto reconocido
-  };
-
-  const validatePronunciation = (transcript: string) => {
-    const cleanOriginal = config.phrase
-      .toLowerCase()
-      .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
-      .trim();
-    const cleanUser = transcript.toLowerCase().trim();
-
-    if (cleanUser === cleanOriginal) {
-      setFeedback({ type: "success", msg: "¡Excelente pronunciación!" });
-      onComplete();
+    if (Platform.OS === "web") {
+      const SpeechRecognition =
+        (window as any).SpeechRecognition ||
+        (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        setError("Navegador no soportado.");
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.onstart = () => setIsListening(true);
+      recognition.onresult = (event: any) => {
+        const text = event.results[0][0].transcript;
+        setResults([text]);
+        checkPronunciation(text);
+      };
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+      recognition.start();
     } else {
-      setFeedback({
-        type: "error",
-        msg: `Dijiste: "${transcript}". Intenta de nuevo.`,
-      });
+      try {
+        await Voice?.start("en-US");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const stopRecognizing = async () => {
+    if (Platform.OS === "web" || !Voice) {
+      setIsListening(false);
+      return;
+    }
+    try {
+      await Voice.stop();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const checkPronunciation = (transcript: string) => {
+    // 1. Definimos una función para limpiar y normalizar
+    const normalize = (text: string) => {
+      return (
+        text
+          .toLowerCase()
+          // Eliminar puntuación
+          .replace(/[?.,!]/g, "")
+          // Expandir contracciones comunes
+          .replace(/\bshe's\b/g, "she is")
+          .replace(/\bhe's\b/g, "he is")
+          .replace(/\bi'm\b/g, "i am")
+          .replace(/\bit's\b/g, "it is")
+          .replace(/\byou're\b/g, "you are")
+          .replace(/\bthey're\b/g, "they are")
+          // Convertir números básicos de dígitos a palabras (opcional pero recomendado)
+          .replace(/\b25\b/g, "twenty-five")
+          .replace(/\b20\b/g, "twenty")
+          // Eliminar espacios múltiples
+          .trim()
+          .replace(/\s+/g, " ")
+      );
+    };
+
+    const target = normalize(config.phrase);
+    const spoken = normalize(transcript);
+
+    console.log("DEBUG - Target:", target);
+    console.log("DEBUG - Spoken:", spoken);
+
+    if (
+      spoken === target ||
+      spoken.includes(target) ||
+      target.includes(spoken)
+    ) {
+      setShowSuccess(true);
+      Speech.speak("Great job!", { language: "en-US" });
+      setTimeout(() => onComplete(), 1500);
+    } else {
+      setError(`Casi... dijiste "${transcript}"`);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.instructions}>Escucha y repite la frase:</Text>
-
       <View style={styles.phraseCard}>
-        <Text style={styles.phraseText}>{config.phrase}</Text>
-        {config.translation && (
-          <Text style={styles.translationText}>{config.translation}</Text>
-        )}
-
         <TouchableOpacity
-          style={styles.listenButton}
-          onPress={listenCorrectPronunciation}
+          style={styles.listenIconButton}
+          onPress={() => Speech.speak(config.phrase, { language: "en-US" })}
         >
-          <Ionicons name="volume-medium" size={30} color="#4A90E2" />
-          <Text style={styles.listenLabel}>Escuchar</Text>
+          <Ionicons name="volume-high" size={32} color="#4A90E2" />
+          <Text style={styles.listenText}>Escuchar ejemplo</Text>
         </TouchableOpacity>
+
+        <Text style={styles.phraseText}>{config.phrase}</Text>
       </View>
 
-      <View style={styles.actionContainer}>
+      <View style={styles.micSection}>
         <TouchableOpacity
+          onLongPress={startRecognizing}
+          onPressOut={stopRecognizing}
           style={[
             styles.micButton,
-            isRecording && styles.micRecording,
-            isCompleted && styles.micCompleted,
+            isListening && styles.micActive,
+            (isCompleted || showSuccess) && styles.micSuccess,
           ]}
-          onPressIn={startRecording}
           disabled={isCompleted}
         >
-          {isRecording ? (
-            <ActivityIndicator color="white" />
+          {isListening ? (
+            <ActivityIndicator color="white" size="large" />
           ) : (
             <Ionicons
-              name={isCompleted ? "checkmark" : "mic"}
-              size={40}
+              name={isCompleted || showSuccess ? "checkmark" : "mic"}
+              size={45}
               color="white"
             />
           )}
         </TouchableOpacity>
-        <Text style={styles.micHint}>
-          {isRecording
+
+        <Text style={[styles.status, showSuccess && styles.successText]}>
+          {isListening
             ? "Escuchando..."
-            : isCompleted
-            ? "Completado"
-            : "Mantén para hablar"}
+            : showSuccess
+            ? "¡Perfecto!"
+            : "Mantén presionado para hablar"}
         </Text>
       </View>
 
-      {feedback.msg !== "" && (
-        <View
-          style={[
-            styles.feedbackBox,
-            feedback.type === "error" ? styles.errorBox : styles.successBox,
-          ]}
-        >
-          <Text style={styles.feedbackText}>{feedback.msg}</Text>
+      {results.length > 0 && !showSuccess && (
+        <View style={styles.feedbackBox}>
+          <Text style={styles.transcript}>Entendí: "{results[0]}"</Text>
         </View>
       )}
+
+      {error && !showSuccess && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 20, alignItems: "center", justifyContent: "center" },
-  instructions: { fontSize: 18, marginBottom: 20, color: "#555" },
+  container: {
+    flex: 1,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   phraseCard: {
-    backgroundColor: "white",
+    backgroundColor: "#F8F9FA",
     width: "100%",
-    padding: 30,
+    padding: 25,
     borderRadius: 20,
     alignItems: "center",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    borderWidth: 2,
+    borderColor: "#E9ECEF",
   },
   phraseText: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     textAlign: "center",
     color: "#333",
+    marginTop: 15,
   },
-  translationText: { fontSize: 16, color: "#888", marginTop: 10 },
-  listenButton: { flexDirection: "row", alignItems: "center", marginTop: 20 },
-  listenLabel: { marginLeft: 8, color: "#4A90E2", fontWeight: "600" },
-  actionContainer: { marginTop: 40, alignItems: "center" },
+  listenIconButton: { flexDirection: "row", alignItems: "center" },
+  listenText: { marginLeft: 8, color: "#4A90E2", fontWeight: "600" },
+  micSection: { marginTop: 40, alignItems: "center" },
   micButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: "#4A90E2",
     justifyContent: "center",
     alignItems: "center",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
-  micRecording: { backgroundColor: "#FF4444", transform: [{ scale: 1.1 }] },
-  micCompleted: { backgroundColor: "#4CAF50" },
-  micHint: { marginTop: 10, color: "#666", fontWeight: "500" },
-  feedbackBox: { marginTop: 20, padding: 15, borderRadius: 10, width: "100%" },
-  successBox: { backgroundColor: "#E8F5E9" },
-  errorBox: { backgroundColor: "#FFEBEE" },
-  feedbackText: { textAlign: "center", fontWeight: "600" },
+  micActive: { backgroundColor: "#EF4444", transform: [{ scale: 1.1 }] },
+  micSuccess: { backgroundColor: "#4CAF50" },
+  status: { marginTop: 15, fontSize: 16, color: "#6C757D", fontWeight: "600" },
+  successText: { color: "#4CAF50" },
+  feedbackBox: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "#E9ECEF",
+    borderRadius: 10,
+  },
+  transcript: { color: "#495057", fontStyle: "italic" },
+  errorText: { marginTop: 15, color: "#DC3545", fontWeight: "500" },
 });

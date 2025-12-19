@@ -1,174 +1,295 @@
 {
   "lessons": {
-    "A1_food_basics": {
-      "id": "A1_food_basics",
-      "title": "Comida Básica",
-      "xpReward": 55,
+    "A1_future_plans_will": {
+      "id": "A1_future_plans_will",
+      "title": "Planes Futuros con Will",
+      "xpReward": 58,
       "metadata": {
         "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_food_basics",
-        "xpReward": 55,
-        "estimatedDuration": 28,
-        "tags": ["food", "countable_nouns", "basic_food", "vocabulary"]
+        "module": "grammar",
+        "unit": "unitA1_future_will",
+        "xpReward": 58,
+        "estimatedDuration": 29,
+        "tags": ["future", "will", "plans", "intentions"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_apple",
-            "word": "Apple",
-            "translation": "Manzana",
-            "examples": ["I eat one apple every day"],
-            "tags": ["countable", "fruit"]
+            "id": "voc_will_travel",
+            "word": "Will travel",
+            "translation": "Viajaré",
+            "examples": ["I will travel next year"],
+            "tags": ["future", "will"]
           },
           {
-            "id": "voc_bread",
-            "word": "Bread",
-            "translation": "Pan",
-            "examples": ["I want some bread"],
-            "tags": ["uncountable", "food"]
+            "id": "voc_will_study",
+            "word": "Will study",
+            "translation": "Estudiaré",
+            "examples": ["She will study English"],
+            "tags": ["future", "will"]
           },
           {
-            "id": "voc_water",
-            "word": "Water",
-            "translation": "Agua",
-            "examples": ["Can I have some water?"]
+            "id": "voc_tomorrow",
+            "word": "Tomorrow",
+            "translation": "Mañana",
+            "examples": ["I will see you tomorrow"]
           },
           {
-            "id": "voc_egg",
-            "word": "Egg",
-            "translation": "Huevo",
-            "examples": ["Two eggs for breakfast"]
+            "id": "voc_next_week",
+            "word": "Next week",
+            "translation": "La próxima semana",
+            "examples": ["We will meet next week"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_food_items",
-            "title": "Empareja la Comida",
+            "id": "ex1_future_expressions",
+            "title": "Empareja Expresiones Futuras",
             "config": {
               "pairs": [
                 {
-                  "from": "Apple",
-                  "to": "Manzana"
+                  "from": "Tomorrow",
+                  "to": "Mañana"
                 },
                 {
-                  "from": "Bread",
-                  "to": "Pan"
+                  "from": "Next week",
+                  "to": "La próxima semana"
                 },
                 {
-                  "from": "Water",
-                  "to": "Agua"
+                  "from": "Will travel",
+                  "to": "Viajaré"
                 },
                 {
-                  "from": "Egg",
-                  "to": "Huevo"
+                  "from": "Will study",
+                  "to": "Estudiaré"
                 }
               ]
             }
           },
           {
+            "type": "pronunciation",
+            "id": "ex2_future_pronunciation",
+            "title": "Pronunciación: Planes Futuros",
+            "config": {
+              "phrase": "I will travel to Spain next year",
+              "translation": "Viajaré a España el próximo año",
+              "language": "en-US"
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_future_sentences",
+            "title": "Forma Frases Futuras",
+            "config": {
+              "wordBank": [
+                "I",
+                "will",
+                "travel",
+                "study",
+                "work",
+                "tomorrow",
+                "next",
+                "week",
+                "year",
+                "to",
+                "Spain",
+                "English",
+                "new",
+                "job"
+              ],
+              "correctAnswers": [
+                "I will travel to Spain",
+                "She will study English",
+                "We will work tomorrow"
+              ],
+              "requiredWords": ["will"],
+              "timeLimit": 70
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_future_plans",
+            "title": "Simulación: Planes Futuros",
+            "config": {
+              "scenario": "Talking about future plans with a friend",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "What will you do next year?",
+                  "options": [
+                    "I will travel to Europe",
+                    "I will study at university"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "Will you work next month?",
+                  "options": [
+                    "Yes, I will start a new job",
+                    "No, I will travel first"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A1_intentions_decisions": {
+      "id": "A1_intentions_decisions",
+      "title": "Intenciones y Decisiones",
+      "xpReward": 60,
+      "metadata": {
+        "level": "A1",
+        "module": "grammar",
+        "unit": "unitA1_intentions",
+        "xpReward": 60,
+        "estimatedDuration": 30,
+        "tags": ["intentions", "will", "decisions", "future_actions"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_will_help",
+            "word": "Will help",
+            "translation": "Ayudaré",
+            "examples": ["I will help you tomorrow"],
+            "tags": ["future", "will"]
+          },
+          {
+            "id": "voc_will_call",
+            "word": "Will call",
+            "translation": "Llamaré",
+            "examples": ["He will call you later"],
+            "tags": ["future", "will"]
+          },
+          {
+            "id": "voc_decision",
+            "word": "Decision",
+            "translation": "Decisión",
+            "examples": ["That is a good decision"]
+          },
+          {
+            "id": "voc_intention",
+            "word": "Intention",
+            "translation": "Intención",
+            "examples": ["My intention is to help"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_intention_verbs",
+            "title": "Memory: Verbos de Intención",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Will help",
+                  "back": "Ayudaré"
+                },
+                {
+                  "front": "Will call",
+                  "back": "Llamaré"
+                },
+                {
+                  "front": "Will visit",
+                  "back": "Visitaré"
+                },
+                {
+                  "front": "Will buy",
+                  "back": "Compraré"
+                }
+              ]
+            }
+          },
+          {
+            "type": "pronunciation",
+            "id": "ex2_intention_pronunciation",
+            "title": "Pronunciación: Intenciones",
+            "config": {
+              "phrase": "I will help you with your homework",
+              "translation": "Te ayudaré con tu tarea",
+              "language": "en-US"
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_intention_sentences",
+            "title": "Forma Frases de Intención",
+            "config": {
+              "wordBank": [
+                "I",
+                "will",
+                "help",
+                "you",
+                "call",
+                "later",
+                "tomorrow",
+                "visit",
+                "my",
+                "family",
+                "buy",
+                "a",
+                "new",
+                "car"
+              ],
+              "correctAnswers": [
+                "I will help you",
+                "She will call later",
+                "We will visit family"
+              ],
+              "requiredWords": ["will"],
+              "timeLimit": 72
+            }
+          },
+          {
             "type": "vocabulary",
-            "id": "ex2_food_categories",
-            "title": "Categoría: Contable vs Incontable",
+            "id": "ex4_future_actions",
+            "title": "Categoría: Acciones Futuras",
             "config": {
               "categories": [
                 {
-                  "id": "countable",
-                  "name": "Contable",
+                  "id": "immediate",
+                  "name": "Próximamente",
                   "color": "#4CAF50"
                 },
                 {
-                  "id": "uncountable",
-                  "name": "Incontable",
+                  "id": "later",
+                  "name": "Más Adelante",
                   "color": "#2196F3"
                 }
               ],
               "items": [
                 {
                   "id": "item1",
-                  "text": "Apple",
-                  "category": "countable"
+                  "text": "Call you tomorrow",
+                  "category": "immediate"
                 },
                 {
                   "id": "item2",
-                  "text": "Bread",
-                  "category": "uncountable"
+                  "text": "Travel next year",
+                  "category": "later"
                 },
                 {
                   "id": "item3",
-                  "text": "Egg",
-                  "category": "countable"
+                  "text": "Visit next week",
+                  "category": "immediate"
                 },
                 {
                   "id": "item4",
-                  "text": "Water",
-                  "category": "uncountable"
+                  "text": "Study next month",
+                  "category": "later"
                 },
                 {
                   "id": "item5",
-                  "text": "Banana",
-                  "category": "countable"
+                  "text": "Help today",
+                  "category": "immediate"
                 },
                 {
                   "id": "item6",
-                  "text": "Milk",
-                  "category": "uncountable"
-                }
-              ]
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_food_sentences",
-            "title": "Forma Frases sobre Comida",
-            "config": {
-              "wordBank": [
-                "I",
-                "want",
-                "an",
-                "apple",
-                "some",
-                "bread",
-                "water",
-                "please",
-                "two",
-                "eggs",
-                "for",
-                "breakfast",
-                "lunch",
-                "dinner"
-              ],
-              "correctAnswers": [
-                "I want an apple",
-                "Can I have some bread?",
-                "Two eggs for breakfast"
-              ],
-              "requiredWords": ["I", "want", "some"],
-              "timeLimit": 70
-            }
-          },
-          {
-            "type": "memory_game",
-            "id": "ex4_food_memory",
-            "title": "Memory: Comida Básica",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Apple",
-                  "back": "Manzana"
-                },
-                {
-                  "front": "Bread",
-                  "back": "Pan"
-                },
-                {
-                  "front": "Egg",
-                  "back": "Huevo"
-                },
-                {
-                  "front": "Water",
-                  "back": "Agua"
+                  "text": "Work next summer",
+                  "category": "later"
                 }
               ]
             }
@@ -176,347 +297,449 @@
         ]
       }
     },
-    "A1_restaurant_phrases": {
-      "id": "A1_restaurant_phrases",
-      "title": "Frases en Restaurantes",
-      "xpReward": 60,
+    "A1_health_symptoms": {
+      "id": "A1_health_symptoms",
+      "title": "Salud y Síntomas",
+      "xpReward": 55,
       "metadata": {
         "level": "A1",
         "module": "vocabulary",
-        "unit": "unitA1_restaurant",
-        "xpReward": 60,
-        "estimatedDuration": 30,
-        "tags": ["restaurant", "phrases", "ordering", "restaurant_vocabulary"]
+        "unit": "unitA1_health",
+        "xpReward": 55,
+        "estimatedDuration": 28,
+        "tags": ["health", "symptoms", "present_simple", "medical"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_menu",
-            "word": "Menu",
-            "translation": "Menú",
-            "examples": ["Can I see the menu?"],
-            "tags": ["restaurant"]
+            "id": "voc_headache",
+            "word": "Headache",
+            "translation": "Dolor de cabeza",
+            "examples": ["I have a headache"],
+            "tags": ["symptoms", "health"]
           },
           {
-            "id": "voc_order",
-            "word": "Order",
-            "translation": "Pedido",
-            "examples": ["I want to order pasta"],
-            "tags": ["restaurant"]
+            "id": "voc_fever",
+            "word": "Fever",
+            "translation": "Fiebre",
+            "examples": ["She has a fever"],
+            "tags": ["symptoms", "health"]
           },
           {
-            "id": "voc_bill",
-            "word": "Bill",
-            "translation": "Cuenta",
-            "examples": ["Can I have the bill?"]
+            "id": "voc_doctor",
+            "word": "Doctor",
+            "translation": "Doctor",
+            "examples": ["I need to see a doctor"]
           },
           {
-            "id": "voc_table",
-            "word": "Table",
-            "translation": "Mesa",
-            "examples": ["A table for two, please"]
+            "id": "voc_medicine",
+            "word": "Medicine",
+            "translation": "Medicina",
+            "examples": ["Take this medicine"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_restaurant_vocabulary",
-            "title": "Vocabulario de Restaurante",
+            "id": "ex1_symptoms_vocabulary",
+            "title": "Empareja Síntomas",
             "config": {
               "pairs": [
                 {
-                  "from": "Menu",
-                  "to": "Menú"
+                  "from": "Headache",
+                  "to": "Dolor de cabeza"
                 },
                 {
-                  "from": "Bill",
-                  "to": "Cuenta"
+                  "from": "Fever",
+                  "to": "Fiebre"
                 },
                 {
-                  "from": "Table",
-                  "to": "Mesa"
+                  "from": "Cough",
+                  "to": "Tos"
                 },
                 {
-                  "from": "Waiter",
-                  "to": "Camarero"
+                  "from": "Cold",
+                  "to": "Resfriado"
                 }
               ]
+            }
+          },
+          {
+            "type": "pronunciation",
+            "id": "ex2_health_pronunciation",
+            "title": "Pronunciación: Síntomas",
+            "config": {
+              "phrase": "I have a headache and fever",
+              "translation": "Tengo dolor de cabeza y fiebre",
+              "language": "en-US"
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex2_restaurant_sentences",
-            "title": "Forma Frases para Restaurantes",
+            "id": "ex3_health_sentences",
+            "title": "Forma Frases sobre Salud",
             "config": {
               "wordBank": [
-                "Can",
                 "I",
                 "have",
-                "the",
-                "menu",
-                "bill",
-                "please",
                 "a",
-                "table",
-                "for",
-                "two",
-                "want",
+                "headache",
+                "fever",
+                "cough",
+                "cold",
+                "need",
                 "to",
-                "order",
-                "pizza"
+                "see",
+                "doctor",
+                "take",
+                "medicine",
+                "rest"
               ],
               "correctAnswers": [
-                "Can I have the menu?",
-                "A table for two, please",
-                "I want to order pizza"
+                "I have a headache",
+                "She has a fever",
+                "I need to see a doctor"
               ],
-              "requiredWords": ["Can", "I", "please"],
-              "timeLimit": 75
+              "requiredWords": ["have", "has", "need"],
+              "timeLimit": 70
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex3_restaurant_conversation",
-            "title": "Simulación: Pedir en Restaurante",
+            "id": "ex4_doctor_visit",
+            "title": "Simulación: Visita al Médico",
             "config": {
-              "scenario": "Ordering food at a restaurant",
+              "scenario": "Talking to a doctor about symptoms",
               "dialogues": [
                 {
-                  "character": "waiter",
-                  "text": "Are you ready to order?",
+                  "character": "doctor",
+                  "text": "What symptoms do you have?",
                   "options": [
-                    "Yes, I want pizza please",
-                    "Can I see the menu again?"
+                    "I have a headache and fever",
+                    "I have a cough and cold"
                   ]
                 },
                 {
                   "character": "user",
-                  "text": "Can I have the bill?",
-                  "options": [
-                    "Of course, here is your bill",
-                    "Yes, I will bring it"
-                  ]
+                  "text": "Do you need medicine?",
+                  "options": ["Yes, I need medicine", "No, I just need rest"]
                 }
               ]
-            }
-          },
-          {
-            "type": "listening_transcription",
-            "id": "ex4_ordering_audio",
-            "title": "Escucha: Pedir Comida",
-            "config": {
-              "audioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../restaurant_order.mp3",
-              "correctSentence": "I want pizza and water please",
-              "wordBank": [
-                "I",
-                "want",
-                "pizza",
-                "and",
-                "water",
-                "please",
-                "menu",
-                "table",
-                "bill",
-                "thank"
-              ],
-              "slowAudioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../restaurant_order_slow.mp3"
             }
           }
         ]
       }
     },
-    "A1_drinks_beverages": {
-      "id": "A1_drinks_beverages",
-      "title": "Bebidas",
+    "A1_medical_vocabulary": {
+      "id": "A1_medical_vocabulary",
+      "title": "Vocabulario Médico",
       "xpReward": 58,
       "metadata": {
         "level": "A1",
         "module": "vocabulary",
-        "unit": "unitA1_drinks",
+        "unit": "unitA1_medical",
         "xpReward": 58,
         "estimatedDuration": 29,
-        "tags": ["drinks", "beverages", "uncountable_nouns", "ordering_drinks"]
+        "tags": ["medical", "vocabulary", "health", "treatment"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_coffee",
-            "word": "Coffee",
-            "translation": "Café",
-            "examples": ["I drink coffee every morning"],
-            "tags": ["uncountable", "drink"]
+            "id": "voc_hospital",
+            "word": "Hospital",
+            "translation": "Hospital",
+            "examples": ["Go to the hospital"],
+            "tags": ["medical", "places"]
           },
           {
-            "id": "voc_tea",
-            "word": "Tea",
-            "translation": "Té",
-            "examples": ["Would you like some tea?"],
-            "tags": ["uncountable", "drink"]
+            "id": "voc_pain",
+            "word": "Pain",
+            "translation": "Dolor",
+            "examples": ["I have pain in my arm"],
+            "tags": ["symptoms", "health"]
           },
           {
-            "id": "voc_juice",
-            "word": "Juice",
-            "translation": "Jugo",
-            "examples": ["Orange juice is my favorite"]
+            "id": "voc_rest",
+            "word": "Rest",
+            "translation": "Descanso",
+            "examples": ["You need to rest"]
           },
           {
-            "id": "voc_soda",
-            "word": "Soda",
-            "translation": "Refresco",
-            "examples": ["One soda, please"]
+            "id": "voc_better",
+            "word": "Better",
+            "translation": "Mejor",
+            "examples": ["I feel better today"]
           }
         ],
         "exercises": [
           {
             "type": "memory_game",
-            "id": "ex1_drinks_memory",
-            "title": "Memory: Bebidas",
+            "id": "ex1_medical_terms",
+            "title": "Memory: Términos Médicos",
             "config": {
               "pairs": [
                 {
-                  "front": "Coffee",
-                  "back": "Café"
+                  "front": "Hospital",
+                  "back": "Hospital"
                 },
                 {
-                  "front": "Tea",
-                  "back": "Té"
+                  "front": "Medicine",
+                  "back": "Medicina"
                 },
                 {
-                  "front": "Juice",
-                  "back": "Jugo"
+                  "front": "Pain",
+                  "back": "Dolor"
                 },
                 {
-                  "front": "Soda",
-                  "back": "Refresco"
+                  "front": "Rest",
+                  "back": "Descanso"
                 }
               ]
             }
           },
           {
+            "type": "pronunciation",
+            "id": "ex2_medical_pronunciation",
+            "title": "Pronunciación: Vocabulario Médico",
+            "config": {
+              "phrase": "I need to go to the hospital",
+              "translation": "Necesito ir al hospital",
+              "language": "en-US"
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_medical_sentences",
+            "title": "Forma Frases Médicas",
+            "config": {
+              "wordBank": [
+                "I",
+                "need",
+                "to",
+                "go",
+                "hospital",
+                "have",
+                "pain",
+                "in",
+                "my",
+                "arm",
+                "leg",
+                "need",
+                "rest",
+                "medicine",
+                "doctor"
+              ],
+              "correctAnswers": [
+                "I need to go to the hospital",
+                "I have pain in my arm",
+                "You need rest and medicine"
+              ],
+              "requiredWords": ["need", "have", "go"],
+              "timeLimit": 72
+            }
+          },
+          {
             "type": "vocabulary",
-            "id": "ex2_drinks_categories",
-            "title": "Categoría: Bebidas Calientes y Frías",
+            "id": "ex4_health_categories",
+            "title": "Categoría: Salud",
             "config": {
               "categories": [
                 {
-                  "id": "hot_drinks",
-                  "name": "Bebidas Calientes",
+                  "id": "symptoms",
+                  "name": "Síntomas",
                   "color": "#FF6B6B"
                 },
                 {
-                  "id": "cold_drinks",
-                  "name": "Bebidas Frías",
+                  "id": "treatment",
+                  "name": "Tratamiento",
                   "color": "#4ECDC4"
                 }
               ],
               "items": [
                 {
                   "id": "item1",
-                  "text": "Coffee",
-                  "category": "hot_drinks"
+                  "text": "Headache",
+                  "category": "symptoms"
                 },
                 {
                   "id": "item2",
-                  "text": "Orange juice",
-                  "category": "cold_drinks"
+                  "text": "Medicine",
+                  "category": "treatment"
                 },
                 {
                   "id": "item3",
-                  "text": "Tea",
-                  "category": "hot_drinks"
+                  "text": "Fever",
+                  "category": "symptoms"
                 },
                 {
                   "id": "item4",
-                  "text": "Soda",
-                  "category": "cold_drinks"
+                  "text": "Rest",
+                  "category": "treatment"
                 },
                 {
                   "id": "item5",
-                  "text": "Hot chocolate",
-                  "category": "hot_drinks"
+                  "text": "Cough",
+                  "category": "symptoms"
                 },
                 {
                   "id": "item6",
-                  "text": "Water",
-                  "category": "cold_drinks"
+                  "text": "Hospital",
+                  "category": "treatment"
                 }
               ]
+            }
+          }
+        ]
+      }
+    },
+    "A1_feeling_sick": {
+      "id": "A1_feeling_sick",
+      "title": "Sentirse Enfermo",
+      "xpReward": 60,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_feeling_sick",
+        "xpReward": 60,
+        "estimatedDuration": 30,
+        "tags": ["feeling_sick", "symptoms", "health", "wellbeing"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_feel_sick",
+            "word": "Feel sick",
+            "translation": "Sentirse enfermo",
+            "examples": ["I feel sick today"],
+            "tags": ["health", "symptoms"]
+          },
+          {
+            "id": "voc_tired",
+            "word": "Tired",
+            "translation": "Cansado",
+            "examples": ["She is very tired"],
+            "tags": ["symptoms", "health"]
+          },
+          {
+            "id": "voc_sick",
+            "word": "Sick",
+            "translation": "Enfermo",
+            "examples": ["He is sick today"]
+          },
+          {
+            "id": "voc_better",
+            "word": "Better",
+            "translation": "Mejor",
+            "examples": ["I am better now"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_feeling_vocabulary",
+            "title": "Empareja Sensaciones",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Feel sick",
+                  "to": "Sentirse enfermo"
+                },
+                {
+                  "from": "Tired",
+                  "to": "Cansado"
+                },
+                {
+                  "from": "Better",
+                  "to": "Mejor"
+                },
+                {
+                  "from": "Sick",
+                  "to": "Enfermo"
+                }
+              ]
+            }
+          },
+          {
+            "type": "pronunciation",
+            "id": "ex2_feeling_pronunciation",
+            "title": "Pronunciación: Sentirse Enfermo",
+            "config": {
+              "phrase": "I feel sick and very tired",
+              "translation": "Me siento enfermo y muy cansado",
+              "language": "en-US"
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_drinks_sentences",
-            "title": "Forma Frases sobre Bebidas",
+            "id": "ex3_feeling_sentences",
+            "title": "Forma Frases sobre Sensaciones",
             "config": {
               "wordBank": [
                 "I",
-                "want",
-                "some",
-                "coffee",
-                "tea",
-                "juice",
-                "please",
-                "with",
-                "sugar",
-                "milk",
-                "cold",
-                "hot",
-                "for",
-                "breakfast"
+                "feel",
+                "sick",
+                "tired",
+                "very",
+                "today",
+                "am",
+                "better",
+                "now",
+                "need",
+                "to",
+                "rest",
+                "sleep",
+                "medicine"
               ],
               "correctAnswers": [
-                "I want some coffee",
-                "Tea with sugar, please",
-                "Orange juice for breakfast"
+                "I feel sick today",
+                "She is very tired",
+                "I am better now"
               ],
-              "requiredWords": ["I", "want", "please"],
-              "timeLimit": 72
+              "requiredWords": ["feel", "am", "is"],
+              "timeLimit": 75
             }
           },
           {
             "type": "dialogue_simulation",
-            "id": "ex4_cafe_conversation",
-            "title": "Simulación: Pedir en una Cafetería",
+            "id": "ex4_health_conversation",
+            "title": "Simulación: Conversación de Salud",
             "config": {
-              "scenario": "Ordering drinks at a café",
+              "scenario": "Talking about how you feel",
               "dialogues": [
                 {
-                  "character": "barista",
-                  "text": "What would you like to drink?",
-                  "options": ["Coffee, please", "Tea with milk, please"]
+                  "character": "friend",
+                  "text": "How do you feel today?",
+                  "options": ["I feel sick and tired", "I am better today"]
                 },
                 {
                   "character": "user",
-                  "text": "Do you have orange juice?",
-                  "options": [
-                    "Yes, we have fresh orange juice",
-                    "Sorry, we only have apple juice"
-                  ]
+                  "text": "Do you need to see a doctor?",
+                  "options": ["Yes, I feel very sick", "No, I just need rest"]
                 }
               ]
             }
           },
           {
-            "type": "image_selection",
-            "id": "ex5_drinks_identification",
-            "title": "Identifica las Bebidas",
+            "type": "listening_transcription",
+            "id": "ex5_health_audio",
+            "title": "Escucha: Síntomas",
             "config": {
-              "question": "Select the correct drink for each image",
-              "options": [
-                {
-                  "image": "https://example.com/coffee_cup.jpg",
-                  "text": "This is coffee",
-                  "correct": true,
-                  "feedback": "Correct! This is a cup of coffee"
-                },
-                {
-                  "image": "https://example.com/tea_cup.jpg",
-                  "text": "This is tea",
-                  "correct": false,
-                  "feedback": "This is tea, not coffee"
-                }
+              "audioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../feeling_sick.mp3",
+              "correctSentence": "I feel sick and have a headache",
+              "wordBank": [
+                "I",
+                "feel",
+                "sick",
+                "and",
+                "have",
+                "a",
+                "headache",
+                "fever",
+                "tired",
+                "better",
+                "doctor"
               ],
-              "multipleSelection": false
+              "slowAudioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../feeling_sick_slow.mp3"
             }
           }
         ]
