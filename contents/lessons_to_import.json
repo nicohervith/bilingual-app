@@ -1,239 +1,522 @@
 {
   "lessons": {
-    "A2_professional_presentations": {
-      "id": "A2_professional_presentations",
-      "title": "Presentaciones Profesionales",
-      "xpReward": 200,
+    "A1_food_basics": {
+      "id": "A1_food_basics",
+      "title": "Comida Básica",
+      "xpReward": 55,
       "metadata": {
-        "level": "A2",
+        "level": "A1",
         "module": "vocabulary",
-        "unit": "unitA2_prof_presentations",
-        "xpReward": 200,
-        "estimatedDuration": 70,
-        "tags": [
-          "professional_presentations",
-          "public_speaking",
-          "slides",
-          "audience"
-        ]
+        "unit": "unitA1_food_basics",
+        "xpReward": 55,
+        "estimatedDuration": 28,
+        "tags": ["food", "countable_nouns", "basic_food", "vocabulary"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_preparing_presentation",
-            "word": "Preparing a presentation",
-            "translation": "Preparando una presentación",
-            "examples": ["I am preparing a presentation for the conference"],
-            "tags": ["present_continuous", "preparation"]
+            "id": "voc_apple",
+            "word": "Apple",
+            "translation": "Manzana",
+            "examples": ["I eat one apple every day"],
+            "tags": ["countable", "fruit"]
           },
           {
-            "id": "voc_delivering_speech",
-            "word": "Delivering a speech",
-            "translation": "Dando un discurso",
-            "examples": ["She is delivering a speech to the board"],
-            "tags": ["present_continuous", "delivery"]
+            "id": "voc_bread",
+            "word": "Bread",
+            "translation": "Pan",
+            "examples": ["I want some bread"],
+            "tags": ["uncountable", "food"]
           },
           {
-            "id": "voc_presentation",
-            "word": "Presentation",
-            "translation": "Presentación",
-            "examples": ["The presentation starts in ten minutes"]
+            "id": "voc_water",
+            "word": "Water",
+            "translation": "Agua",
+            "examples": ["Can I have some water?"]
           },
           {
-            "id": "voc_audience",
-            "word": "Audience",
-            "translation": "Audiencia",
-            "examples": ["The audience is very interested in the topic"]
+            "id": "voc_egg",
+            "word": "Egg",
+            "translation": "Huevo",
+            "examples": ["Two eggs for breakfast"]
           }
         ],
         "exercises": [
           {
             "type": "matching",
-            "id": "ex1_presentation_vocabulary",
-            "title": "Vocabulario de Presentaciones",
+            "id": "ex1_food_items",
+            "title": "Empareja la Comida",
             "config": {
               "pairs": [
                 {
-                  "from": "Presentation",
-                  "to": "Presentación"
+                  "from": "Apple",
+                  "to": "Manzana"
                 },
                 {
-                  "from": "Audience",
-                  "to": "Audiencia"
+                  "from": "Bread",
+                  "to": "Pan"
                 },
                 {
-                  "from": "Slides",
-                  "to": "Diapositivas"
+                  "from": "Water",
+                  "to": "Agua"
                 },
                 {
-                  "from": "Speaker",
-                  "to": "Orador"
+                  "from": "Egg",
+                  "to": "Huevo"
                 }
               ]
-            }
-          },
-          {
-            "type": "listening_transcription",
-            "id": "ex2_preparation_audio",
-            "title": "Escucha: Preparando una Presentación",
-            "config": {
-              "audioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089777/I_am_preparing_an_important_presentation_now_zjaonx.mp3",
-              "correctSentence": "I am preparing an important presentation now",
-              "wordBank": [
-                "I",
-                "am",
-                "preparing",
-                "an",
-                "important",
-                "presentation",
-                "now",
-                "tomorrow",
-                "yesterday",
-                "meeting",
-                "speech"
-              ],
-              "slowAudioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089834/I_am_preparing_an_important_presentation_now_slow_yq1ogf.mp3"
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_presentation_sentences",
-            "title": "Forma Oraciones para Presentaciones",
-            "config": {
-              "wordBank": [
-                "She",
-                "is",
-                "delivering",
-                "a",
-                "speech",
-                "to",
-                "the",
-                "audience",
-                "right",
-                "now",
-                "using",
-                "visual",
-                "aids",
-                "and",
-                "clear",
-                "slides",
-                "for",
-                "better",
-                "understanding"
-              ],
-              "correctAnswers": [
-                "She is delivering a speech to the audience",
-                "I am using visual aids for the presentation",
-                "We are preparing clear slides now"
-              ],
-              "requiredWords": ["is", "am", "are"],
-              "timeLimit": 135
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_presentation_prep",
-            "title": "Simulación: Preparación de Presentación",
-            "config": {
-              "scenario": "Preparing for an important professional presentation",
-              "dialogues": [
-                {
-                  "character": "colleague",
-                  "text": "What presentation are you preparing for tomorrow?",
-                  "options": [
-                    "I'm preparing the quarterly business review",
-                    "I'm working on a presentation for new clients"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "How should I deliver the speech to this audience?",
-                  "options": [
-                    "Speak clearly and use visual aids",
-                    "Practice your delivery and engage the audience"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "type": "listening_transcription",
-            "id": "ex5_delivery_audio",
-            "title": "Escucha: Entrega de Presentación",
-            "config": {
-              "audioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089944/The_speaker_is_delivering_the_keynote_address_now_fvxzcs.mp3",
-              "correctSentence": "The speaker is delivering the keynote address now",
-              "wordBank": [
-                "The",
-                "speaker",
-                "is",
-                "delivering",
-                "the",
-                "keynote",
-                "address",
-                "now",
-                "audience",
-                "listening",
-                "presentation",
-                "tomorrow"
-              ],
-              "slowAudioUrl": "https://res.cloudinary.com/dltwwat1r/video/upload/v1766089947/The_speaker_is_delivering_the_keynote_address_now_slow_bkr0sm.mp3"
             }
           },
           {
             "type": "vocabulary",
-            "id": "ex6_presentation_elements",
-            "title": "Categoría: Elementos de Presentación",
+            "id": "ex2_food_categories",
+            "title": "Categoría: Contable vs Incontable",
             "config": {
               "categories": [
                 {
-                  "id": "content",
-                  "name": "Contenido",
-                  "color": "#2196F3"
-                },
-                {
-                  "id": "delivery",
-                  "name": "Entrega",
+                  "id": "countable",
+                  "name": "Contable",
                   "color": "#4CAF50"
                 },
                 {
-                  "id": "visuals",
-                  "name": "Visuales",
-                  "color": "#FF9800"
+                  "id": "uncountable",
+                  "name": "Incontable",
+                  "color": "#2196F3"
                 }
               ],
               "items": [
                 {
                   "id": "item1",
-                  "text": "Introduction and conclusion",
-                  "category": "content"
+                  "text": "Apple",
+                  "category": "countable"
                 },
                 {
                   "id": "item2",
-                  "text": "Speaking clearly",
-                  "category": "delivery"
+                  "text": "Bread",
+                  "category": "uncountable"
                 },
                 {
                   "id": "item3",
-                  "text": "PowerPoint slides",
-                  "category": "visuals"
+                  "text": "Egg",
+                  "category": "countable"
                 },
                 {
                   "id": "item4",
-                  "text": "Key messages",
-                  "category": "content"
+                  "text": "Water",
+                  "category": "uncountable"
                 },
                 {
                   "id": "item5",
-                  "text": "Eye contact",
-                  "category": "delivery"
+                  "text": "Banana",
+                  "category": "countable"
                 },
                 {
                   "id": "item6",
-                  "text": "Charts and graphs",
-                  "category": "visuals"
+                  "text": "Milk",
+                  "category": "uncountable"
                 }
               ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_food_sentences",
+            "title": "Forma Frases sobre Comida",
+            "config": {
+              "wordBank": [
+                "I",
+                "want",
+                "an",
+                "apple",
+                "some",
+                "bread",
+                "water",
+                "please",
+                "two",
+                "eggs",
+                "for",
+                "breakfast",
+                "lunch",
+                "dinner"
+              ],
+              "correctAnswers": [
+                "I want an apple",
+                "Can I have some bread?",
+                "Two eggs for breakfast"
+              ],
+              "requiredWords": ["I", "want", "some"],
+              "timeLimit": 70
+            }
+          },
+          {
+            "type": "memory_game",
+            "id": "ex4_food_memory",
+            "title": "Memory: Comida Básica",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Apple",
+                  "back": "Manzana"
+                },
+                {
+                  "front": "Bread",
+                  "back": "Pan"
+                },
+                {
+                  "front": "Egg",
+                  "back": "Huevo"
+                },
+                {
+                  "front": "Water",
+                  "back": "Agua"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "A1_restaurant_phrases": {
+      "id": "A1_restaurant_phrases",
+      "title": "Frases en Restaurantes",
+      "xpReward": 60,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_restaurant",
+        "xpReward": 60,
+        "estimatedDuration": 30,
+        "tags": ["restaurant", "phrases", "ordering", "restaurant_vocabulary"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_menu",
+            "word": "Menu",
+            "translation": "Menú",
+            "examples": ["Can I see the menu?"],
+            "tags": ["restaurant"]
+          },
+          {
+            "id": "voc_order",
+            "word": "Order",
+            "translation": "Pedido",
+            "examples": ["I want to order pasta"],
+            "tags": ["restaurant"]
+          },
+          {
+            "id": "voc_bill",
+            "word": "Bill",
+            "translation": "Cuenta",
+            "examples": ["Can I have the bill?"]
+          },
+          {
+            "id": "voc_table",
+            "word": "Table",
+            "translation": "Mesa",
+            "examples": ["A table for two, please"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "id": "ex1_restaurant_vocabulary",
+            "title": "Vocabulario de Restaurante",
+            "config": {
+              "pairs": [
+                {
+                  "from": "Menu",
+                  "to": "Menú"
+                },
+                {
+                  "from": "Bill",
+                  "to": "Cuenta"
+                },
+                {
+                  "from": "Table",
+                  "to": "Mesa"
+                },
+                {
+                  "from": "Waiter",
+                  "to": "Camarero"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex2_restaurant_sentences",
+            "title": "Forma Frases para Restaurantes",
+            "config": {
+              "wordBank": [
+                "Can",
+                "I",
+                "have",
+                "the",
+                "menu",
+                "bill",
+                "please",
+                "a",
+                "table",
+                "for",
+                "two",
+                "want",
+                "to",
+                "order",
+                "pizza"
+              ],
+              "correctAnswers": [
+                "Can I have the menu?",
+                "A table for two, please",
+                "I want to order pizza"
+              ],
+              "requiredWords": ["Can", "I", "please"],
+              "timeLimit": 75
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex3_restaurant_conversation",
+            "title": "Simulación: Pedir en Restaurante",
+            "config": {
+              "scenario": "Ordering food at a restaurant",
+              "dialogues": [
+                {
+                  "character": "waiter",
+                  "text": "Are you ready to order?",
+                  "options": [
+                    "Yes, I want pizza please",
+                    "Can I see the menu again?"
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "Can I have the bill?",
+                  "options": [
+                    "Of course, here is your bill",
+                    "Yes, I will bring it"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "listening_transcription",
+            "id": "ex4_ordering_audio",
+            "title": "Escucha: Pedir Comida",
+            "config": {
+              "audioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../restaurant_order.mp3",
+              "correctSentence": "I want pizza and water please",
+              "wordBank": [
+                "I",
+                "want",
+                "pizza",
+                "and",
+                "water",
+                "please",
+                "menu",
+                "table",
+                "bill",
+                "thank"
+              ],
+              "slowAudioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../restaurant_order_slow.mp3"
+            }
+          }
+        ]
+      }
+    },
+    "A1_drinks_beverages": {
+      "id": "A1_drinks_beverages",
+      "title": "Bebidas",
+      "xpReward": 58,
+      "metadata": {
+        "level": "A1",
+        "module": "vocabulary",
+        "unit": "unitA1_drinks",
+        "xpReward": 58,
+        "estimatedDuration": 29,
+        "tags": ["drinks", "beverages", "uncountable_nouns", "ordering_drinks"]
+      },
+      "content": {
+        "vocabulary": [
+          {
+            "id": "voc_coffee",
+            "word": "Coffee",
+            "translation": "Café",
+            "examples": ["I drink coffee every morning"],
+            "tags": ["uncountable", "drink"]
+          },
+          {
+            "id": "voc_tea",
+            "word": "Tea",
+            "translation": "Té",
+            "examples": ["Would you like some tea?"],
+            "tags": ["uncountable", "drink"]
+          },
+          {
+            "id": "voc_juice",
+            "word": "Juice",
+            "translation": "Jugo",
+            "examples": ["Orange juice is my favorite"]
+          },
+          {
+            "id": "voc_soda",
+            "word": "Soda",
+            "translation": "Refresco",
+            "examples": ["One soda, please"]
+          }
+        ],
+        "exercises": [
+          {
+            "type": "memory_game",
+            "id": "ex1_drinks_memory",
+            "title": "Memory: Bebidas",
+            "config": {
+              "pairs": [
+                {
+                  "front": "Coffee",
+                  "back": "Café"
+                },
+                {
+                  "front": "Tea",
+                  "back": "Té"
+                },
+                {
+                  "front": "Juice",
+                  "back": "Jugo"
+                },
+                {
+                  "front": "Soda",
+                  "back": "Refresco"
+                }
+              ]
+            }
+          },
+          {
+            "type": "vocabulary",
+            "id": "ex2_drinks_categories",
+            "title": "Categoría: Bebidas Calientes y Frías",
+            "config": {
+              "categories": [
+                {
+                  "id": "hot_drinks",
+                  "name": "Bebidas Calientes",
+                  "color": "#FF6B6B"
+                },
+                {
+                  "id": "cold_drinks",
+                  "name": "Bebidas Frías",
+                  "color": "#4ECDC4"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item1",
+                  "text": "Coffee",
+                  "category": "hot_drinks"
+                },
+                {
+                  "id": "item2",
+                  "text": "Orange juice",
+                  "category": "cold_drinks"
+                },
+                {
+                  "id": "item3",
+                  "text": "Tea",
+                  "category": "hot_drinks"
+                },
+                {
+                  "id": "item4",
+                  "text": "Soda",
+                  "category": "cold_drinks"
+                },
+                {
+                  "id": "item5",
+                  "text": "Hot chocolate",
+                  "category": "hot_drinks"
+                },
+                {
+                  "id": "item6",
+                  "text": "Water",
+                  "category": "cold_drinks"
+                }
+              ]
+            }
+          },
+          {
+            "type": "sentence_formation",
+            "id": "ex3_drinks_sentences",
+            "title": "Forma Frases sobre Bebidas",
+            "config": {
+              "wordBank": [
+                "I",
+                "want",
+                "some",
+                "coffee",
+                "tea",
+                "juice",
+                "please",
+                "with",
+                "sugar",
+                "milk",
+                "cold",
+                "hot",
+                "for",
+                "breakfast"
+              ],
+              "correctAnswers": [
+                "I want some coffee",
+                "Tea with sugar, please",
+                "Orange juice for breakfast"
+              ],
+              "requiredWords": ["I", "want", "please"],
+              "timeLimit": 72
+            }
+          },
+          {
+            "type": "dialogue_simulation",
+            "id": "ex4_cafe_conversation",
+            "title": "Simulación: Pedir en una Cafetería",
+            "config": {
+              "scenario": "Ordering drinks at a café",
+              "dialogues": [
+                {
+                  "character": "barista",
+                  "text": "What would you like to drink?",
+                  "options": ["Coffee, please", "Tea with milk, please"]
+                },
+                {
+                  "character": "user",
+                  "text": "Do you have orange juice?",
+                  "options": [
+                    "Yes, we have fresh orange juice",
+                    "Sorry, we only have apple juice"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "image_selection",
+            "id": "ex5_drinks_identification",
+            "title": "Identifica las Bebidas",
+            "config": {
+              "question": "Select the correct drink for each image",
+              "options": [
+                {
+                  "image": "https://example.com/coffee_cup.jpg",
+                  "text": "This is coffee",
+                  "correct": true,
+                  "feedback": "Correct! This is a cup of coffee"
+                },
+                {
+                  "image": "https://example.com/tea_cup.jpg",
+                  "text": "This is tea",
+                  "correct": false,
+                  "feedback": "This is tea, not coffee"
+                }
+              ],
+              "multipleSelection": false
             }
           }
         ]

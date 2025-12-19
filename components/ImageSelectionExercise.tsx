@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type Option = {
   image: string;
@@ -14,6 +14,7 @@ type ImageSelectionExerciseProps = {
     multipleSelection?: boolean;
   };
   onComplete: () => void;
+  isCompleted?: boolean;
 };
 
 export default function ImageSelectionExercise({
@@ -23,9 +24,15 @@ export default function ImageSelectionExercise({
     multipleSelection: false,
   },
   onComplete,
+  isCompleted = false,
 }: ImageSelectionExerciseProps) {
   const [selected, setSelected] = useState<number | null>(null);
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(isCompleted);
+
+  // Sincronizar el estado local con la prop isCompleted
+  useEffect(() => {
+    setCompleted(isCompleted);
+  }, [isCompleted]);
 
   // Asegurarnos de que siempre tenemos un array válido
   const safeOptions = config?.options || [];

@@ -6,6 +6,7 @@ import DragDropExercise from "@/components/DragAndDropExercise";
 import CalendarPlanner from "@/components/games/CalendarPlanner";
 import DialogueSimulation from "@/components/games/DialogueSimulation";
 import MapInteractive from "@/components/games/MapInteractive";
+import { PronunciationGame } from "@/components/games/PronunciationGame";
 import ImageSelectionExercise from "@/components/ImageSelectionExercise";
 import ListeningExercise from "@/components/ListeningExercise";
 import MatchingExercise from "@/components/MatchingExercise";
@@ -221,20 +222,44 @@ const LessonContent = ({
           />
         );
 
+      case "pronunciation":
+        return (
+          <PronunciationGame
+            {...commonProps}
+            config={{
+              phrase: exercise.phrase || exercise.config?.phrase,
+              translation: exercise.translation || exercise.config?.translation,
+              audioUrl: exercise.audioUrl || exercise.config?.audioUrl, 
+            }}
+          />
+        );
+
       case "conjugation":
-        const conjugationConfig = exercise.config
-          ? {
-              ...exercise.config,
-              exerciseType: exercise.config.verb ? "verb" : "reflexive",
-              tenses: exercise.config.tenses || ["Presente"],
-            }
-          : {
-              pronouns: exercise.pronouns || [],
-              correct: exercise.correct || {},
-              exerciseType: "reflexive",
-              tenses: ["Presente"],
-              title: exercise.title,
-            };
+        const rawConfig = exercise.config || {};
+        const tenses = rawConfig.tenses || ["Present"]; // Usar el del JSON o "Present" por defecto
+
+        // Normalizar el objeto 'correct'
+        let normalizedCorrect = rawConfig.correct || {};
+
+        // Si el primer nivel de 'correct' son los pronombres (formato plano),
+        // lo envolvemos en el primer tiempo verbal
+        const firstTense = tenses[0];
+        const isFlatStructure =
+          rawConfig.correct && !rawConfig.correct[firstTense];
+
+        if (isFlatStructure) {
+          normalizedCorrect = {
+            [firstTense]: rawConfig.correct,
+          };
+        }
+
+        const conjugationConfig = {
+          ...rawConfig,
+          correct: normalizedCorrect,
+          pronouns: rawConfig.pronouns || [],
+          exerciseType: rawConfig.verb ? "verb" : "reflexive",
+          tenses: tenses,
+        };
 
         return (
           <ConjugationExercise {...commonProps} config={conjugationConfig} />
