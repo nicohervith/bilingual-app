@@ -1,8 +1,10 @@
 import * as Google from "expo-auth-session/providers/google";
+import * as AuthSession from "expo-auth-session";
+import { useRouter } from "expo-router";
 import {
   createUserWithEmailAndPassword,
   getAdditionalUserInfo,
-  GoogleAuthProvider, // Importar Facebook
+  GoogleAuthProvider,
   signInWithCredential,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -19,7 +21,6 @@ import {
   View,
 } from "react-native";
 import { auth, db } from "../lib/firebaseConfig";
-import { useRouter } from "expo-router";
 
 export default function Login() {
   const router = useRouter();
@@ -30,9 +31,16 @@ export default function Login() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const redirectUri = AuthSession.makeRedirectUri({
+    scheme: "bilingualapp",
+    path: "auth/google",
+  });
+
   const [gRequest, gResponse, gPrompt] = Google.useAuthRequest({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
     androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    redirectUri: redirectUri,
+    responseType: "id_token",
   });
 
   const handleAuthSuccess = async (userCredential: any) => {
@@ -122,33 +130,48 @@ export default function Login() {
     });
   };
 
+  // En Login.tsx
   const updateStreak = async (userId: string) => {
     const userProgressRef = doc(db, "userProgress", userId);
     const userProgressSnap = await getDoc(userProgressRef);
 
     if (userProgressSnap.exists()) {
       const userData = userProgressSnap.data();
-      const lastLogin = userData.stats?.lastLogin?.toDate() || new Date();
+
+      // VALIDACIÓN DE SEGURIDAD: Si no hay stats, creamos el objeto base
+      const stats = userData.stats || {
+        daysStreak: 0,
+        lastLogin: new Date(),
+        longestStreak: 0,
+      };
+
+      // Convertir Timestamp de Firebase a Date de JS
+      const lastLogin = stats.lastLogin?.toDate
+        ? stats.lastLogin.toDate()
+        : new Date(stats.lastLogin);
       const today = new Date();
 
       lastLogin.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
 
-      const diffDays = Math.floor(
-        (today.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      let newStreak = userData.stats.daysStreak || 1;
+      const diffTime = today.getTime() - lastLogin.getTime();
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); // Usar round es más seguro
 
-      if (diffDays === 1) newStreak += 1;
-      else if (diffDays > 1) newStreak = 1;
+      let newStreak = stats.daysStreak || 1;
+
+      if (diffDays === 1) {
+        // Entró al día siguiente: SUMA racha
+        newStreak += 1;
+      } else if (diffDays > 1) {
+        // Pasó más de un día: RESETEA racha
+        newStreak = 1;
+      }
+      // Si diffDays === 0 (entró el mismo día), newStreak se queda igual.
 
       await updateDoc(userProgressRef, {
         "stats.daysStreak": newStreak,
-        "stats.lastLogin": new Date(),
-        "stats.longestStreak": Math.max(
-          newStreak,
-          userData.stats.longestStreak || 1
-        ),
+        "stats.lastLogin": new Date(), // Actualizamos siempre la última conexión
+        "stats.longestStreak": Math.max(newStreak, stats.longestStreak || 1),
       });
     }
   };
@@ -168,11 +191,11 @@ export default function Login() {
 
         <TextInput
           placeholder="Email"
-          style={[styles.input, errorMessage && styles.inputError]} 
+          style={[styles.input, errorMessage && styles.inputError]}
           value={email}
           onChangeText={(text) => {
             setEmail(text);
-            if (errorMessage) setErrorMessage(null); 
+            if (errorMessage) setErrorMessage(null);
           }}
           autoCapitalize="none"
         />
