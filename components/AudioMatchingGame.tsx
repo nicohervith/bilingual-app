@@ -46,11 +46,10 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  // Determinar qué estructura de datos usar
+
   const usePairsStructure = !!config.pairs;
   const currentItems = usePairsStructure ? config.pairs : config.items;
 
-  // Validación para evitar errores
   if (!currentItems || currentItems.length === 0) {
     return (
       <View style={styles.container}>
@@ -86,7 +85,6 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
     let isCorrect = false;
 
     if (usePairsStructure) {
-      // Para estructura pairs: comparar con el texto del audio actual
       const currentPair = currentItems[currentItem] as {
         audio: string;
         text: string;
@@ -94,7 +92,6 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
       };
       isCorrect = selectedId === currentPair.text;
     } else {
-      // Para estructura items: comparar con correctMatch
       const currentItemData = currentItems[currentItem] as {
         audio: string;
         correctMatch: string;

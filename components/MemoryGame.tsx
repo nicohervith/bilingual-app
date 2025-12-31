@@ -1,3 +1,4 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -58,6 +59,7 @@ export default function MemoryGame({
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   const effectivePairs = config?.pairs || oldFormatPairs || [];
 
@@ -187,6 +189,7 @@ export default function MemoryGame({
 
         if (newCards.every((card) => card.isMatched)) {
           setGameCompleted(true);
+          setShowCompletion(true);
           setTimeout(() => onComplete(), 1500);
         }
       } else {
@@ -263,11 +266,12 @@ export default function MemoryGame({
         ))}
       </View>
 
-      {(gameCompleted || isCompleted) && (
-        <View style={styles.completionMessage}>
-          <Text style={styles.completionText}>¡Completado!</Text>
-        </View>
-      )}
+      <CompletionMessage
+        visible={showCompletion}
+        type="success"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 }

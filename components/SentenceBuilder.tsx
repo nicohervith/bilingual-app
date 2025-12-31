@@ -1,3 +1,4 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import React, { useEffect, useState } from "react";
 import {
   Animated,
@@ -51,6 +52,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
   const [hasStarted, setHasStarted] = useState(!safeConfig.showStartButton);
   const [shakeAnim] = useState(new Animated.Value(0));
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
   const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
   const [completedSentence, setCompletedSentence] = useState<string>("");
 
@@ -127,6 +129,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       setShowSuccess(true);
       setIsExerciseCompleted(true);
       setCompletedSentence(userSentence);
+      setShowCompletion(true);
       // Guardar las palabras seleccionadas en ejerciseData antes de completar
       if (onExerciseData) {
         onExerciseData({
@@ -274,14 +277,15 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
               ))}
             </View>
           )}
-
-          {isExerciseCompleted && (
-            <View style={styles.completionBanner}>
-              <Text style={styles.completionText}>✓ ¡Oración correcta!</Text>
-            </View>
-          )}
         </>
       )}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="success"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 };
