@@ -1,3 +1,4 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import React, { useEffect, useState } from "react";
 import {
   Modal,
@@ -50,6 +51,7 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
   const [activePronoun, setActivePronoun] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [showFeedback, setShowFeedback] = useState(isCompleted); // Si está completo, mostrar feedback
+  const [showCompletion, setShowCompletion] = useState(false);
   const [isCorrect, setIsCorrect] = useState(isCompleted);
 
   // 2. Efecto para inicializar o resetear según isCompleted
@@ -113,7 +115,8 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
     setIsCorrect(allCorrect);
 
     if (allCorrect) {
-      setTimeout(() => onComplete(), 1000);
+      setShowCompletion(true);
+      setTimeout(() => onComplete(), 1500);
     }
   };
 
@@ -237,6 +240,13 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
           </Text>
         </View>
       )}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="success"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 };

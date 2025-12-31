@@ -1,9 +1,11 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
+import { API_ENDPOINTS } from "@/constants/api";
 import { Ionicons } from "@expo/vector-icons";
+import { Audio } from "expo-av";
 import * as Speech from "expo-speech";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,112 +18,102 @@ interface PronunciationGameProps {
   isCompleted: boolean;
 }
 
-// Importación condicional
-const Voice =
-  Platform.OS !== "web" ? require("@react-native-voice/voice").default : null;
-
 export const PronunciationGame = ({
   config,
   onComplete,
   isCompleted,
 }: PronunciationGameProps) => {
-  const [isListening, setIsListening] = useState(false);
-  const [results, setResults] = useState<string[]>([]);
+  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [lastTranscript, setLastTranscript] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(isCompleted);
+  const [showCompletion, setShowCompletion] = useState(false);
 
-  useEffect(() => {
-    if (Platform.OS === "web" || !Voice) return;
-
-    Voice.onSpeechStart = () => setIsListening(true);
-    Voice.onSpeechEnd = () => setIsListening(false);
-    Voice.onSpeechResults = (e: any) => {
-      if (e.value) {
-        setResults(e.value);
-        checkPronunciation(e.value[0]);
-      }
-    };
-
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
-
-  const startRecognizing = async () => {
-    if (isCompleted) return;
-    setShowSuccess(false);
-    setError(null);
-    setResults([]);
-
-    if (Platform.OS === "web") {
-      const SpeechRecognition =
-        (window as any).SpeechRecognition ||
-        (window as any).webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        setError("Navegador no soportado.");
-        return;
-      }
-      const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.onstart = () => setIsListening(true);
-      recognition.onresult = (event: any) => {
-        const text = event.results[0][0].transcript;
-        setResults([text]);
-        checkPronunciation(text);
-      };
-      recognition.onerror = () => setIsListening(false);
-      recognition.onend = () => setIsListening(false);
-      recognition.start();
-    } else {
-      try {
-        await Voice?.start("en-US");
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  };
-
-  const stopRecognizing = async () => {
-    if (Platform.OS === "web" || !Voice) {
-      setIsListening(false);
-      return;
-    }
+  // --- LÓGICA DE GRABACIÓN ---
+  async function startRecording() {
     try {
-      await Voice.stop();
-    } catch (e) {
-      console.error(e);
-    }
-  };
+      if (isCompleted) return;
+      setError(null);
+      setLastTranscript("");
+      setShowSuccess(false);
 
-  const checkPronunciation = (transcript: string) => {
-    // 1. Definimos una función para limpiar y normalizar
-    const normalize = (text: string) => {
-      return (
-        text
-          .toLowerCase()
-          // Eliminar puntuación
-          .replace(/[?.,!]/g, "")
-          // Expandir contracciones comunes
-          .replace(/\bshe's\b/g, "she is")
-          .replace(/\bhe's\b/g, "he is")
-          .replace(/\bi'm\b/g, "i am")
-          .replace(/\bit's\b/g, "it is")
-          .replace(/\byou're\b/g, "you are")
-          .replace(/\bthey're\b/g, "they are")
-          // Convertir números básicos de dígitos a palabras (opcional pero recomendado)
-          .replace(/\b25\b/g, "twenty-five")
-          .replace(/\b20\b/g, "twenty")
-          // Eliminar espacios múltiples
-          .trim()
-          .replace(/\s+/g, " ")
+      const permission = await Audio.requestPermissionsAsync();
+      if (permission.status !== "granted") return;
+
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      const { recording } = await Audio.Recording.createAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
+      setRecording(recording);
+    } catch (err) {
+      console.error("Failed to start recording", err);
+    }
+  }
+
+  async function stopRecordingAndSend() {
+    if (!recording) return;
+
+    try {
+      setIsProcessing(true);
+      await recording.stopAndUnloadAsync();
+      const uri = recording.getURI();
+      setRecording(null);
+
+      if (uri) {
+        // CONVERSIÓN A BLOB (Compatible con Web y Mobile)
+        const responseAudio = await fetch(uri);
+        const audioBlob = await responseAudio.blob();
+        const fileToUpload = new Blob([audioBlob], { type: "audio/m4a" });
+
+        const formData = new FormData();
+        formData.append("audio", fileToUpload, "pronunciation.m4a");
+
+        // LLAMADA A TU BACKEND
+        const response = await fetch(API_ENDPOINTS.TRANSCRIBE, {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setLastTranscript(data.text);
+          checkPronunciation(data.text);
+        } else {
+          throw new Error(data.details || "Error del servidor");
+        }
+      }
+    } catch (err) {
+      setError("No se pudo procesar el audio.");
+      console.error(err);
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+
+  // --- LÓGICA DE COMPROBACIÓN (Tu normalización original) ---
+  const checkPronunciation = (transcript: string) => {
+    const normalize = (text: string) => {
+      return text
+        .toLowerCase()
+        .replace(/[?.,!]/g, "")
+        .replace(/\bshe's\b/g, "she is")
+        .replace(/\bhe's\b/g, "he is")
+        .replace(/\bi'm\b/g, "i am")
+        .replace(/\bit's\b/g, "it is")
+        .replace(/\byou're\b/g, "you are")
+        .replace(/\bthey're\b/g, "they are")
+        .trim()
+        .replace(/\s+/g, " ");
     };
 
     const target = normalize(config.phrase);
     const spoken = normalize(transcript);
-
-    console.log("DEBUG - Target:", target);
-    console.log("DEBUG - Spoken:", spoken);
 
     if (
       spoken === target ||
@@ -129,10 +121,11 @@ export const PronunciationGame = ({
       target.includes(spoken)
     ) {
       setShowSuccess(true);
+      setShowCompletion(true);
       Speech.speak("Great job!", { language: "en-US" });
       setTimeout(() => onComplete(), 1500);
     } else {
-      setError(`Casi... dijiste "${transcript}"`);
+      setError(`Dijiste "${transcript}". Intenta de nuevo.`);
     }
   };
 
@@ -152,20 +145,26 @@ export const PronunciationGame = ({
 
       <View style={styles.micSection}>
         <TouchableOpacity
-          onLongPress={startRecognizing}
-          onPressOut={stopRecognizing}
+          onPressIn={startRecording}
+          onPressOut={stopRecordingAndSend}
           style={[
             styles.micButton,
-            isListening && styles.micActive,
+            recording && styles.micActive,
             (isCompleted || showSuccess) && styles.micSuccess,
           ]}
-          disabled={isCompleted}
+          disabled={isCompleted || isProcessing}
         >
-          {isListening ? (
+          {isProcessing ? (
             <ActivityIndicator color="white" size="large" />
           ) : (
             <Ionicons
-              name={isCompleted || showSuccess ? "checkmark" : "mic"}
+              name={
+                isCompleted || showSuccess
+                  ? "checkmark"
+                  : recording
+                  ? "mic"
+                  : "mic-outline"
+              }
               size={45}
               color="white"
             />
@@ -173,7 +172,9 @@ export const PronunciationGame = ({
         </TouchableOpacity>
 
         <Text style={[styles.status, showSuccess && styles.successText]}>
-          {isListening
+          {isProcessing
+            ? "Analizando..."
+            : recording
             ? "Escuchando..."
             : showSuccess
             ? "¡Perfecto!"
@@ -181,13 +182,20 @@ export const PronunciationGame = ({
         </Text>
       </View>
 
-      {results.length > 0 && !showSuccess && (
+      {lastTranscript !== "" && !showSuccess && (
         <View style={styles.feedbackBox}>
-          <Text style={styles.transcript}>Entendí: "{results[0]}"</Text>
+          <Text style={styles.transcript}>Entendí: "{lastTranscript}"</Text>
         </View>
       )}
 
       {error && !showSuccess && <Text style={styles.errorText}>{error}</Text>}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="perfect"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 };

@@ -199,47 +199,60 @@ export default function LevelModulesScreen() {
               </View>
             </View>
 
-            {Object.values(module.units).map((unit: any) => {
-              const isUnitComplete = unitProgress[unit.id] === 1;
+            {Object.values(module.units)
+              .sort((a: any, b: any) => {
+                // Las pruebas finales siempre van al final
+                const aIsFinalTest = a.id?.includes("final_test");
+                const bIsFinalTest = b.id?.includes("final_test");
 
-              return (
-                <TouchableOpacity
-                  key={unit.id}
-                  onPress={() => router.push(`/unit/${unit.id}`)}
-                  style={styles.unitCard}
-                >
-                  {/* Insignia de la unidad */}
-                  {unit.insignia && (
-                    <Image
-                      source={{ uri: unit.insignia }}
-                      style={[
-                        styles.unitInsignia,
-                        { opacity: isUnitComplete ? 1 : 0.3 },
-                      ]}
+                if (aIsFinalTest && !bIsFinalTest) return 1;
+                if (!aIsFinalTest && bIsFinalTest) return -1;
+
+                // Para el resto, mantener orden alfabético
+                return (a.id || "").localeCompare(b.id || "");
+              })
+              .map((unit: any) => {
+                const isUnitComplete = unitProgress[unit.id] === 1;
+
+                return (
+                  <TouchableOpacity
+                    key={unit.id}
+                    onPress={() => router.push(`/unit/${unit.id}`)}
+                    style={styles.unitCard}
+                  >
+                    {/* Insignia de la unidad */}
+                    {unit.insignia && (
+                      <Image
+                        source={{ uri: unit.insignia }}
+                        style={[
+                          styles.unitInsignia,
+                          { opacity: isUnitComplete ? 1 : 0.3 },
+                        ]}
+                      />
+                    )}
+
+                    <View style={styles.unitHeader}>
+                      <Text style={styles.unitTitle}>{unit.title}</Text>
+                      <Text style={styles.xpReward}>Progreso</Text>
+                    </View>
+
+                    <Text style={styles.lessonCount}>
+                      {unit.lessons.length} lecciones
+                    </Text>
+
+                    <Progress.Bar
+                      progress={unitProgress[unit.id] || 0}
+                      width={200}
+                      color="#4CAF50"
                     />
-                  )}
 
-                  <View style={styles.unitHeader}>
-                    <Text style={styles.unitTitle}>{unit.title}</Text>
-                    <Text style={styles.xpReward}>Progreso</Text>
-                  </View>
-
-                  <Text style={styles.lessonCount}>
-                    {unit.lessons.length} lecciones
-                  </Text>
-
-                  <Progress.Bar
-                    progress={unitProgress[unit.id] || 0}
-                    width={200}
-                    color="#4CAF50"
-                  />
-
-                  <Text style={styles.progressText}>
-                    {Math.round((unitProgress[unit.id] || 0) * 100)}% completado
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+                    <Text style={styles.progressText}>
+                      {Math.round((unitProgress[unit.id] || 0) * 100)}%
+                      completado
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
           </View>
         );
       })}
@@ -310,7 +323,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins",
   },
   moduleCard: {
-    backgroundColor: "#9365ff", 
+    backgroundColor: "#9365ff",
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
@@ -348,7 +361,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08, // Sombra muy sutil
     shadowRadius: 2,
     elevation: 2,
-    borderWidth: 0, 
+    borderWidth: 0,
   },
   unitInsignia: {
     position: "absolute",

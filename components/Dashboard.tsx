@@ -1,5 +1,6 @@
 import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
 /* import { useStripe } from "@stripe/stripe-react-native"; */
+import { API_ENDPOINTS } from "@/constants/api";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
 import {
@@ -93,25 +94,14 @@ export default function Dashboard() {
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [isLoadingData, setLoadingData] = useState(true);
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [unlockedLevels, setUnlockedLevels] = useState<string[]>(
-    user ? ["A1"] : []
-  );
   const [selectedLevel, setSelectedLevel] = useState<LevelId | null>(null);
 
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
-  const [dynamicRequirements, setDynamicRequirements] =
-    useState<LevelRequirements>({
-      A1: 0,
-      A2: 1000,
-      B1: 2000,
-    });
 
   const [progress, setProgress] = useState<ProgressData>({
     xp: 0,
     level: "A1",
-    unlockedLevels: user ? ["A1"] : [],
+    unlockedLevels: ["A1"],
     purchasedLevels: {},
     completedLessons: {},
     levels: {
@@ -126,13 +116,18 @@ export default function Dashboard() {
     },
   });
 
+  const [dynamicRequirements, setDynamicRequirements] =
+    useState<LevelRequirements>({
+      A1: 0,
+      A2: 1000,
+      B1: 2000,
+    });
+
   const syncUnlockedLevels = async () => {
     if (!user) return;
 
     try {
-      const response = await fetch(
-        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}`
-      );
+      const response = await fetch(API_ENDPOINTS.CHECK_LEVEL_ACCESS(user.uid));
 
       if (response.ok) {
         const data = await response.json();
@@ -364,7 +359,7 @@ export default function Dashboard() {
     };
 
     initializeDashboard();
-  }, [user, refreshKey]);
+  }, [user]);
 
   const createNewUserProgress = async (userId: string) => {
     try {
@@ -414,14 +409,17 @@ export default function Dashboard() {
   };
 
   const getCurrentLevel = (): string => {
-    if (!progress || !progress.xp) return "A1";
-    if (progress.xp >= dynamicRequirements.B1) return "B1";
-    if (progress.xp >= dynamicRequirements.A2) return "A2";
+    const totalXP =
+      Object.keys(progress.completedLessons || {}).length * BASE_XP_PER_LESSON;
+    if (!totalXP) return "A1";
+    if (totalXP >= dynamicRequirements.B1) return "B1";
+    if (totalXP >= dynamicRequirements.A2) return "A2";
     return "A1";
   };
 
   const calculateXPProgress = (): { progress: number; nextLevel: string } => {
-    const currentXP = progress.xp || 0;
+    const currentXP =
+      Object.keys(progress.completedLessons || {}).length * BASE_XP_PER_LESSON;
 
     if (Object.keys(dynamicRequirements).length === 0) {
       return { progress: 0, nextLevel: "A2" };
@@ -451,45 +449,8 @@ export default function Dashboard() {
 
   const xpProgress = calculateXPProgress();
 
-  useEffect(() => {
-    const syncLevels = async () => {
-      // 1. Validaciones previas
-      if (!user || progress.xp === undefined || loading) return;
-
-      const newUnlockedLevels = ["A1"];
-      if (progress.xp >= dynamicRequirements.A2) newUnlockedLevels.push("A2");
-      if (progress.xp >= dynamicRequirements.B1) newUnlockedLevels.push("B1");
-
-      // 2. Solo actuar si hay cambios reales
-      const levelsChanged =
-        JSON.stringify(newUnlockedLevels) !==
-        JSON.stringify(progress.unlockedLevels);
-
-      if (levelsChanged) {
-        try {
-          const userRef = doc(db, "userProgress", user.uid);
-
-          // 3. USAR setDoc con { merge: true } en lugar de updateDoc
-          // setDoc con merge crea el documento si no existe o lo actualiza si existe.
-          // Esto evita el error "No document to update"
-          await setDoc(
-            userRef,
-            {
-              unlockedLevels: newUnlockedLevels,
-            },
-            { merge: true }
-          );
-
-          setUnlockedLevels(newUnlockedLevels);
-          console.log("Niveles actualizados con éxito");
-        } catch (error) {
-          console.error("Error al sincronizar niveles:", error);
-        }
-      }
-    };
-
-    syncLevels();
-  }, [user, progress.xp, dynamicRequirements, loading]); // Añadimos loading a las dependencias
+  // NOTA: Los niveles ahora se compran, no se desbloquean automáticamente por XP
+  // El useEffect anterior que sincronizaba niveles ha sido removido
 
   const handleBuyLevel = (levelId: LevelId) => {
     setSelectedLevel(levelId);
@@ -502,13 +463,10 @@ export default function Dashboard() {
   const wakeUpBackend = async () => {
     try {
       console.log("⏰ Waking up backend...");
-      const response = await fetch(
-        "https://billingual-app-back.onrender.com/wake-up",
-        {
-          method: "GET",
-          signal: AbortSignal.timeout(5000),
-        }
-      );
+      const response = await fetch(API_ENDPOINTS.WAKE_UP, {
+        method: "GET",
+        signal: AbortSignal.timeout(5000),
+      });
 
       if (response.ok) {
         console.log("✅ Backend is awake and ready");
@@ -525,7 +483,7 @@ export default function Dashboard() {
   useEffect(() => {
     const keepBackendAlive = async () => {
       try {
-        await fetch("https://billingual-app-back.onrender.com/wake-up", {
+        await fetch(API_ENDPOINTS.WAKE_UP, {
           signal: AbortSignal.timeout(3000),
         });
       } catch (error) {
@@ -562,7 +520,7 @@ export default function Dashboard() {
 
       // Si no tiene acceso local, verificar en el backend
       const response = await fetch(
-        `https://billingual-app-back.onrender.com/check-level-access/${user.uid}/${levelId}`
+        API_ENDPOINTS.CHECK_LEVEL_ACCESS_SPECIFIC(user.uid, levelId)
       );
 
       if (response.ok) {
@@ -690,7 +648,11 @@ export default function Dashboard() {
                 </View>
 
                 <Text style={styles.userLevel}>Nivel: {getCurrentLevel()}</Text>
-                <Text style={styles.userXP}>{progress.xp || 0} XP</Text>
+                <Text style={styles.userXP}>
+                  {Object.keys(progress.completedLessons || {}).length *
+                    BASE_XP_PER_LESSON || 0}{" "}
+                  XP
+                </Text>
               </View>
             </>
           ) : (
@@ -735,7 +697,11 @@ export default function Dashboard() {
 
         {/* Barra de progreso global */}
         <View style={styles.globalXpBar}>
-          <Text style={styles.xpText}>{progress.xp || 0} XP</Text>
+          <Text style={styles.xpText}>
+            {Object.keys(progress.completedLessons || {}).length *
+              BASE_XP_PER_LESSON || 0}{" "}
+            XP
+          </Text>
           <Progress.Bar
             progress={calculateXPProgress().progress}
             width={200}
@@ -860,26 +826,18 @@ export default function Dashboard() {
 
 const styles = StyleSheet.create({
   container: {
-    // Reemplaza el color sólido por un gradiente (asumiremos que se implementa con un componente LinearGradient)
-    // Usaremos este color para el fondo si no usamos el componente de gradiente:
-    backgroundColor: "#9365FF", // Color base
+    backgroundColor: "#9365FF",
     padding: 20,
     paddingBottom: 60,
-    position: "relative", // Necesario para posicionar el patrón abstracto
-    overflow: "hidden", // Asegura que el patrón no se salga del contenedor
+    position: "relative",
+    overflow: "hidden",
   },
-
-  /* NUEVO: ESTILO PARA EL PATRÓN ABSTRACTO (Implementación conceptual vía pseudo-elementos o View) */
   abstractPattern: {
-    position: "absolute", // Clave para que flote sobre el fondo
-    fontSize: 250, // Letras grandes
+    position: "absolute",
+    fontSize: 250,
     fontWeight: "bold",
-    // Simulación del "borroso" usando opacidad muy baja (0.08)
     color: "rgba(255, 255, 255, 0.08)",
-    // Asegurarse de que esté detrás del contenido (pero el zIndex por defecto ya lo hace si el contenido no tiene zIndex)
     zIndex: -1,
-    // Nota: El efecto de blur real en RN a menudo requiere usar <Image> o librerías específicas.
-    // Usar la opacidad baja es la alternativa más simple y ligera para un patrón de fondo.
   },
   guestInfo: {
     alignItems: "center",
@@ -888,8 +846,7 @@ const styles = StyleSheet.create({
   guestText: {
     marginBottom: 10,
     color: "#FFFFFF",
-    // Sugerencia de tipografía:
-    fontFamily: "Poppins-Regular", // Usar una fuente moderna (debe ser cargada)
+    fontFamily: "Poppins",
   },
   userHeader: {
     flexDirection: "row",

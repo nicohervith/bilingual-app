@@ -1,12 +1,20 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function ListeningExercise({ config, onComplete }: { config: any; onComplete: () => void }) {
+export default function ListeningExercise({
+  config,
+  onComplete,
+}: {
+  config: any;
+  onComplete: () => void;
+}) {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [shuffledBank, setShuffledBank] = useState<string[]>([]);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => {
     setShuffledBank([...config.wordBank].sort(() => Math.random() - 0.5));
@@ -39,7 +47,10 @@ export default function ListeningExercise({ config, onComplete }: { config: any;
 
   const checkAnswer = () => {
     if (selectedWords.join(" ") === config.correctSentence) {
-      onComplete();
+      setShowCompletion(true);
+      setTimeout(() => {
+        onComplete();
+      }, 1500);
     } else {
       alert("Inténtalo de nuevo");
     }
@@ -103,6 +114,13 @@ export default function ListeningExercise({ config, onComplete }: { config: any;
       >
         <Text style={styles.checkBtnText}>COMPROBAR</Text>
       </TouchableOpacity>
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="success"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 }

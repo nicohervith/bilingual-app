@@ -1,4 +1,5 @@
 // components/Games/DialogueSimulation.tsx
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import React, { useEffect, useState } from "react";
 import {
   ScrollView,
@@ -33,6 +34,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
+  const [showCompletion, setShowCompletion] = useState(false);
   const [dialogueHistory, setDialogueHistory] = useState<
     Array<{ speaker: string; text: string }>
   >([]);
@@ -81,6 +83,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
 
       if (currentStep >= (config.dialogues?.length || 0) - 1) {
         setIsExerciseCompleted(true);
+        setShowCompletion(true);
         onComplete(true);
       } else {
         setCurrentStep(currentStep + 1);
@@ -154,12 +157,20 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
               style={styles.completeButton}
               onPress={() => {
                 setIsExerciseCompleted(true);
+                setShowCompletion(true);
                 onComplete(true);
               }}
             >
               <Text style={styles.completeButtonText}>Finalizar</Text>
             </TouchableOpacity>
           )}
+
+        <CompletionMessage
+          visible={showCompletion}
+          type="success"
+          duration={1200}
+          onHide={() => setShowCompletion(false)}
+        />
       </View>
     );
   }

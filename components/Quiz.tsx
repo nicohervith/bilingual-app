@@ -1,6 +1,7 @@
 // components/Quiz.tsx
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { useState } from "react";
-import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Quiz({
   quiz,
@@ -11,6 +12,7 @@ export default function Quiz({
 }) {
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   const handleSelect = (questionIndex: number, optionIndex: number) => {
     if (!submitted) {
@@ -37,31 +39,18 @@ export default function Quiz({
 
     const success = correctCount >= quiz.questions.length * 0.7; // 70% correcto
 
-    if (Platform.OS === "web") {
-      if (success) {
-        console.log("✅ Completado");
+    if (success) {
+      setShowCompletion(true);
+      setTimeout(() => {
         onComplete();
-      } else {
-        alert(`Fallaste. Correctas: ${correctCount}/${quiz.questions.length}`);
-      }
+      }, 1500);
     } else {
       Alert.alert(
         "Resultado",
-        `Respuestas correctas: ${correctCount}/${quiz.questions.length}`,
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              if (success) {
-                console.log("✅ Completado");
-                onComplete();
-              }
-            },
-          },
-        ]
+        `Respuestas correctas: ${correctCount}/${quiz.questions.length}`
       );
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -100,6 +89,13 @@ export default function Quiz({
           <Text style={styles.submitText}>Enviar respuestas</Text>
         </TouchableOpacity>
       )}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="success"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 }
