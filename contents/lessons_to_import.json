@@ -1,746 +1,163 @@
 {
   "lessons": {
-    "A1_future_plans_will": {
-      "id": "A1_future_plans_will",
-      "title": "Planes Futuros con Will",
-      "xpReward": 58,
+    "A1_food": {
+      "id": "A1_food",
+      "title": "Healthy Eating & Classification",
+      "xpReward": 100,
       "metadata": {
         "level": "A1",
-        "module": "grammar",
-        "unit": "unitA1_future_will",
-        "xpReward": 58,
-        "estimatedDuration": 29,
-        "tags": ["future", "will", "plans", "intentions"]
+        "module": "basics",
+        "unit": "unitA1_vocabulary",
+        "xpReward": 100,
+        "estimatedDuration": 25,
+        "tags": ["food", "vocabulary", "classification", "speaking"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_will_travel",
-            "word": "Will travel",
-            "translation": "Viajaré",
-            "examples": ["I will travel next year"],
-            "tags": ["future", "will"]
+            "id": "voc_apple",
+            "word": "Apple",
+            "translation": "Manzana",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1766164522/Manzana_v1fisl.png",
+            "examples": ["I eat a red apple every day"],
+            "tags": ["fruit", "healthy"]
           },
           {
-            "id": "voc_will_study",
-            "word": "Will study",
-            "translation": "Estudiaré",
-            "examples": ["She will study English"],
-            "tags": ["future", "will"]
+            "id": "voc_bread",
+            "word": "Bread",
+            "translation": "Pan",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1766164525/Pan_jgpxei.png",
+            "examples": ["Fresh bread is delicious"],
+            "tags": ["carbohydrate", "basic"]
           },
           {
-            "id": "voc_tomorrow",
-            "word": "Tomorrow",
-            "translation": "Mañana",
-            "examples": ["I will see you tomorrow"]
+            "id": "voc_chicken",
+            "word": "Chicken",
+            "translation": "Pollo",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1766164602/Chicken_lzfpke.png",
+            "examples": ["Chicken is a good source of protein"],
+            "tags": ["meat", "protein"]
           },
           {
-            "id": "voc_next_week",
-            "word": "Next week",
-            "translation": "La próxima semana",
-            "examples": ["We will meet next week"]
+            "id": "voc_milk",
+            "word": "Milk",
+            "translation": "Leche",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/milk_placeholder.png",
+            "examples": ["I drink a glass of milk"],
+            "tags": ["dairy", "drink"]
+          },
+          {
+            "id": "voc_egg",
+            "word": "Egg",
+            "translation": "Huevo",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/egg_placeholder.png",
+            "examples": ["I have an egg for breakfast"],
+            "tags": ["protein", "breakfast"]
+          },
+          {
+            "id": "voc_banana",
+            "word": "Banana",
+            "translation": "Plátano",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/banana_placeholder.png",
+            "examples": ["The banana is sweet and yellow"],
+            "tags": ["fruit", "snack"]
+          },
+          {
+            "id": "voc_water",
+            "word": "Water",
+            "translation": "Agua",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/water_placeholder.png",
+            "examples": ["Drink water to stay hydrated"],
+            "tags": ["drink", "healthy"]
+          },
+          {
+            "id": "voc_carrot",
+            "word": "Carrot",
+            "translation": "Zanahoria",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/carrot_placeholder.png",
+            "examples": ["The rabbit eats a carrot"],
+            "tags": ["vegetable", "healthy"]
+          },
+          {
+            "id": "voc_fish",
+            "word": "Fish",
+            "translation": "Pescado",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/fish_placeholder.png",
+            "examples": ["I eat fish on Fridays"],
+            "tags": ["protein", "meat"]
+          },
+          {
+            "id": "voc_cheese",
+            "word": "Cheese",
+            "translation": "Queso",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/cheese_placeholder.png",
+            "examples": ["I love cheese on my sandwich"],
+            "tags": ["dairy", "snack"]
           }
         ],
         "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_future_expressions",
-            "title": "Empareja Expresiones Futuras",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Tomorrow",
-                  "to": "Mañana"
-                },
-                {
-                  "from": "Next week",
-                  "to": "La próxima semana"
-                },
-                {
-                  "from": "Will travel",
-                  "to": "Viajaré"
-                },
-                {
-                  "from": "Will study",
-                  "to": "Estudiaré"
-                }
-              ]
-            }
-          },
-          {
-            "type": "pronunciation",
-            "id": "ex2_future_pronunciation",
-            "title": "Pronunciación: Planes Futuros",
-            "config": {
-              "phrase": "I will travel to Spain next year",
-              "translation": "Viajaré a España el próximo año",
-              "language": "en-US"
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_future_sentences",
-            "title": "Forma Frases Futuras",
-            "config": {
-              "wordBank": [
-                "I",
-                "will",
-                "travel",
-                "study",
-                "work",
-                "tomorrow",
-                "next",
-                "week",
-                "year",
-                "to",
-                "Spain",
-                "English",
-                "new",
-                "job"
-              ],
-              "correctAnswers": [
-                "I will travel to Spain",
-                "She will study English",
-                "We will work tomorrow"
-              ],
-              "requiredWords": ["will"],
-              "timeLimit": 70
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_future_plans",
-            "title": "Simulación: Planes Futuros",
-            "config": {
-              "scenario": "Talking about future plans with a friend",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "What will you do next year?",
-                  "options": [
-                    "I will travel to Europe",
-                    "I will study at university"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "Will you work next month?",
-                  "options": [
-                    "Yes, I will start a new job",
-                    "No, I will travel first"
-                  ]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A1_intentions_decisions": {
-      "id": "A1_intentions_decisions",
-      "title": "Intenciones y Decisiones",
-      "xpReward": 60,
-      "metadata": {
-        "level": "A1",
-        "module": "grammar",
-        "unit": "unitA1_intentions",
-        "xpReward": 60,
-        "estimatedDuration": 30,
-        "tags": ["intentions", "will", "decisions", "future_actions"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_will_help",
-            "word": "Will help",
-            "translation": "Ayudaré",
-            "examples": ["I will help you tomorrow"],
-            "tags": ["future", "will"]
-          },
-          {
-            "id": "voc_will_call",
-            "word": "Will call",
-            "translation": "Llamaré",
-            "examples": ["He will call you later"],
-            "tags": ["future", "will"]
-          },
-          {
-            "id": "voc_decision",
-            "word": "Decision",
-            "translation": "Decisión",
-            "examples": ["That is a good decision"]
-          },
-          {
-            "id": "voc_intention",
-            "word": "Intention",
-            "translation": "Intención",
-            "examples": ["My intention is to help"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_intention_verbs",
-            "title": "Memory: Verbos de Intención",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Will help",
-                  "back": "Ayudaré"
-                },
-                {
-                  "front": "Will call",
-                  "back": "Llamaré"
-                },
-                {
-                  "front": "Will visit",
-                  "back": "Visitaré"
-                },
-                {
-                  "front": "Will buy",
-                  "back": "Compraré"
-                }
-              ]
-            }
-          },
-          {
-            "type": "pronunciation",
-            "id": "ex2_intention_pronunciation",
-            "title": "Pronunciación: Intenciones",
-            "config": {
-              "phrase": "I will help you with your homework",
-              "translation": "Te ayudaré con tu tarea",
-              "language": "en-US"
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_intention_sentences",
-            "title": "Forma Frases de Intención",
-            "config": {
-              "wordBank": [
-                "I",
-                "will",
-                "help",
-                "you",
-                "call",
-                "later",
-                "tomorrow",
-                "visit",
-                "my",
-                "family",
-                "buy",
-                "a",
-                "new",
-                "car"
-              ],
-              "correctAnswers": [
-                "I will help you",
-                "She will call later",
-                "We will visit family"
-              ],
-              "requiredWords": ["will"],
-              "timeLimit": 72
-            }
-          },
           {
             "type": "vocabulary",
-            "id": "ex4_future_actions",
-            "title": "Categoría: Acciones Futuras",
+            "id": "ex1_food_classification",
+            "title": "Clasifica los alimentos",
             "config": {
               "categories": [
-                {
-                  "id": "immediate",
-                  "name": "Próximamente",
-                  "color": "#4CAF50"
-                },
-                {
-                  "id": "later",
-                  "name": "Más Adelante",
-                  "color": "#2196F3"
-                }
+                { "id": "healthy", "name": "Healthy", "color": "#4CAF50" },
+                { "id": "protein", "name": "Protein", "color": "#FF9800" }
               ],
               "items": [
-                {
-                  "id": "item1",
-                  "text": "Call you tomorrow",
-                  "category": "immediate"
-                },
-                {
-                  "id": "item2",
-                  "text": "Travel next year",
-                  "category": "later"
-                },
-                {
-                  "id": "item3",
-                  "text": "Visit next week",
-                  "category": "immediate"
-                },
-                {
-                  "id": "item4",
-                  "text": "Study next month",
-                  "category": "later"
-                },
-                {
-                  "id": "item5",
-                  "text": "Help today",
-                  "category": "immediate"
-                },
-                {
-                  "id": "item6",
-                  "text": "Work next summer",
-                  "category": "later"
-                }
+                { "text": "Apple", "category": "healthy" },
+                { "text": "Chicken", "category": "protein" },
+                { "text": "Carrot", "category": "healthy" },
+                { "text": "Fish", "category": "protein" },
+                { "text": "Water", "category": "healthy" },
+                { "text": "Egg", "category": "protein" }
               ]
             }
-          }
-        ]
-      }
-    },
-    "A1_health_symptoms": {
-      "id": "A1_health_symptoms",
-      "title": "Salud y Síntomas",
-      "xpReward": 55,
-      "metadata": {
-        "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_health",
-        "xpReward": 55,
-        "estimatedDuration": 28,
-        "tags": ["health", "symptoms", "present_simple", "medical"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_headache",
-            "word": "Headache",
-            "translation": "Dolor de cabeza",
-            "examples": ["I have a headache"],
-            "tags": ["symptoms", "health"]
           },
-          {
-            "id": "voc_fever",
-            "word": "Fever",
-            "translation": "Fiebre",
-            "examples": ["She has a fever"],
-            "tags": ["symptoms", "health"]
-          },
-          {
-            "id": "voc_doctor",
-            "word": "Doctor",
-            "translation": "Doctor",
-            "examples": ["I need to see a doctor"]
-          },
-          {
-            "id": "voc_medicine",
-            "word": "Medicine",
-            "translation": "Medicina",
-            "examples": ["Take this medicine"]
-          }
-        ],
-        "exercises": [
           {
             "type": "matching",
-            "id": "ex1_symptoms_vocabulary",
-            "title": "Empareja Síntomas",
+            "id": "ex2_food_items",
+            "title": "Practica tu pedido",
             "config": {
               "pairs": [
-                {
-                  "from": "Headache",
-                  "to": "Dolor de cabeza"
-                },
-                {
-                  "from": "Fever",
-                  "to": "Fiebre"
-                },
-                {
-                  "from": "Cough",
-                  "to": "Tos"
-                },
-                {
-                  "from": "Cold",
-                  "to": "Resfriado"
-                }
+                { "from": "Milk", "to": "Leche" },
+                { "from": "Bread", "to": "Pan" },
+                { "from": "Cheese", "to": "Queso" },
+                { "from": "Banana", "to": "Plátano" }
               ]
-            }
-          },
-          {
-            "type": "pronunciation",
-            "id": "ex2_health_pronunciation",
-            "title": "Pronunciación: Síntomas",
-            "config": {
-              "phrase": "I have a headache and fever",
-              "translation": "Tengo dolor de cabeza y fiebre",
-              "language": "en-US"
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_health_sentences",
-            "title": "Forma Frases sobre Salud",
+            "id": "ex3_food_sentences",
+            "title": "Forma la oración",
             "config": {
               "wordBank": [
                 "I",
-                "have",
-                "a",
-                "headache",
-                "fever",
-                "cough",
-                "cold",
-                "need",
-                "to",
-                "see",
-                "doctor",
-                "take",
-                "medicine",
-                "rest"
-              ],
-              "correctAnswers": [
-                "I have a headache",
-                "She has a fever",
-                "I need to see a doctor"
-              ],
-              "requiredWords": ["have", "has", "need"],
-              "timeLimit": 70
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_doctor_visit",
-            "title": "Simulación: Visita al Médico",
-            "config": {
-              "scenario": "Talking to a doctor about symptoms",
-              "dialogues": [
-                {
-                  "character": "doctor",
-                  "text": "What symptoms do you have?",
-                  "options": [
-                    "I have a headache and fever",
-                    "I have a cough and cold"
-                  ]
-                },
-                {
-                  "character": "user",
-                  "text": "Do you need medicine?",
-                  "options": ["Yes, I need medicine", "No, I just need rest"]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A1_medical_vocabulary": {
-      "id": "A1_medical_vocabulary",
-      "title": "Vocabulario Médico",
-      "xpReward": 58,
-      "metadata": {
-        "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_medical",
-        "xpReward": 58,
-        "estimatedDuration": 29,
-        "tags": ["medical", "vocabulary", "health", "treatment"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_hospital",
-            "word": "Hospital",
-            "translation": "Hospital",
-            "examples": ["Go to the hospital"],
-            "tags": ["medical", "places"]
-          },
-          {
-            "id": "voc_pain",
-            "word": "Pain",
-            "translation": "Dolor",
-            "examples": ["I have pain in my arm"],
-            "tags": ["symptoms", "health"]
-          },
-          {
-            "id": "voc_rest",
-            "word": "Rest",
-            "translation": "Descanso",
-            "examples": ["You need to rest"]
-          },
-          {
-            "id": "voc_better",
-            "word": "Better",
-            "translation": "Mejor",
-            "examples": ["I feel better today"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "memory_game",
-            "id": "ex1_medical_terms",
-            "title": "Memory: Términos Médicos",
-            "config": {
-              "pairs": [
-                {
-                  "front": "Hospital",
-                  "back": "Hospital"
-                },
-                {
-                  "front": "Medicine",
-                  "back": "Medicina"
-                },
-                {
-                  "front": "Pain",
-                  "back": "Dolor"
-                },
-                {
-                  "front": "Rest",
-                  "back": "Descanso"
-                }
-              ]
-            }
-          },
-          {
-            "type": "pronunciation",
-            "id": "ex2_medical_pronunciation",
-            "title": "Pronunciación: Vocabulario Médico",
-            "config": {
-              "phrase": "I need to go to the hospital",
-              "translation": "Necesito ir al hospital",
-              "language": "en-US"
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_medical_sentences",
-            "title": "Forma Frases Médicas",
-            "config": {
-              "wordBank": [
-                "I",
-                "need",
-                "to",
-                "go",
-                "hospital",
-                "have",
-                "pain",
-                "in",
-                "my",
-                "arm",
-                "leg",
-                "need",
-                "rest",
-                "medicine",
-                "doctor"
-              ],
-              "correctAnswers": [
-                "I need to go to the hospital",
-                "I have pain in my arm",
-                "You need rest and medicine"
-              ],
-              "requiredWords": ["need", "have", "go"],
-              "timeLimit": 72
-            }
-          },
-          {
-            "type": "vocabulary",
-            "id": "ex4_health_categories",
-            "title": "Categoría: Salud",
-            "config": {
-              "categories": [
-                {
-                  "id": "symptoms",
-                  "name": "Síntomas",
-                  "color": "#FF6B6B"
-                },
-                {
-                  "id": "treatment",
-                  "name": "Tratamiento",
-                  "color": "#4ECDC4"
-                }
-              ],
-              "items": [
-                {
-                  "id": "item1",
-                  "text": "Headache",
-                  "category": "symptoms"
-                },
-                {
-                  "id": "item2",
-                  "text": "Medicine",
-                  "category": "treatment"
-                },
-                {
-                  "id": "item3",
-                  "text": "Fever",
-                  "category": "symptoms"
-                },
-                {
-                  "id": "item4",
-                  "text": "Rest",
-                  "category": "treatment"
-                },
-                {
-                  "id": "item5",
-                  "text": "Cough",
-                  "category": "symptoms"
-                },
-                {
-                  "id": "item6",
-                  "text": "Hospital",
-                  "category": "treatment"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "A1_feeling_sick": {
-      "id": "A1_feeling_sick",
-      "title": "Sentirse Enfermo",
-      "xpReward": 60,
-      "metadata": {
-        "level": "A1",
-        "module": "vocabulary",
-        "unit": "unitA1_feeling_sick",
-        "xpReward": 60,
-        "estimatedDuration": 30,
-        "tags": ["feeling_sick", "symptoms", "health", "wellbeing"]
-      },
-      "content": {
-        "vocabulary": [
-          {
-            "id": "voc_feel_sick",
-            "word": "Feel sick",
-            "translation": "Sentirse enfermo",
-            "examples": ["I feel sick today"],
-            "tags": ["health", "symptoms"]
-          },
-          {
-            "id": "voc_tired",
-            "word": "Tired",
-            "translation": "Cansado",
-            "examples": ["She is very tired"],
-            "tags": ["symptoms", "health"]
-          },
-          {
-            "id": "voc_sick",
-            "word": "Sick",
-            "translation": "Enfermo",
-            "examples": ["He is sick today"]
-          },
-          {
-            "id": "voc_better",
-            "word": "Better",
-            "translation": "Mejor",
-            "examples": ["I am better now"]
-          }
-        ],
-        "exercises": [
-          {
-            "type": "matching",
-            "id": "ex1_feeling_vocabulary",
-            "title": "Empareja Sensaciones",
-            "config": {
-              "pairs": [
-                {
-                  "from": "Feel sick",
-                  "to": "Sentirse enfermo"
-                },
-                {
-                  "from": "Tired",
-                  "to": "Cansado"
-                },
-                {
-                  "from": "Better",
-                  "to": "Mejor"
-                },
-                {
-                  "from": "Sick",
-                  "to": "Enfermo"
-                }
-              ]
-            }
-          },
-          {
-            "type": "pronunciation",
-            "id": "ex2_feeling_pronunciation",
-            "title": "Pronunciación: Sentirse Enfermo",
-            "config": {
-              "phrase": "I feel sick and very tired",
-              "translation": "Me siento enfermo y muy cansado",
-              "language": "en-US"
-            }
-          },
-          {
-            "type": "sentence_formation",
-            "id": "ex3_feeling_sentences",
-            "title": "Forma Frases sobre Sensaciones",
-            "config": {
-              "wordBank": [
-                "I",
-                "feel",
-                "sick",
-                "tired",
-                "very",
-                "today",
-                "am",
-                "better",
-                "now",
-                "need",
-                "to",
-                "rest",
-                "sleep",
-                "medicine"
-              ],
-              "correctAnswers": [
-                "I feel sick today",
-                "She is very tired",
-                "I am better now"
-              ],
-              "requiredWords": ["feel", "am", "is"],
-              "timeLimit": 75
-            }
-          },
-          {
-            "type": "dialogue_simulation",
-            "id": "ex4_health_conversation",
-            "title": "Simulación: Conversación de Salud",
-            "config": {
-              "scenario": "Talking about how you feel",
-              "dialogues": [
-                {
-                  "character": "friend",
-                  "text": "How do you feel today?",
-                  "options": ["I feel sick and tired", "I am better today"]
-                },
-                {
-                  "character": "user",
-                  "text": "Do you need to see a doctor?",
-                  "options": ["Yes, I feel very sick", "No, I just need rest"]
-                }
-              ]
-            }
-          },
-          {
-            "type": "listening_transcription",
-            "id": "ex5_health_audio",
-            "title": "Escucha: Síntomas",
-            "config": {
-              "audioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../feeling_sick.mp3",
-              "correctSentence": "I feel sick and have a headache",
-              "wordBank": [
-                "I",
-                "feel",
-                "sick",
+                "want",
+                "some",
+                "bread",
                 "and",
-                "have",
-                "a",
-                "headache",
-                "fever",
-                "tired",
-                "better",
-                "doctor"
+                "water",
+                "apple",
+                "fish"
               ],
-              "slowAudioUrl": "https://res.cloudinary.com/tu-usuario/video/upload/v.../feeling_sick_slow.mp3"
+              "correctAnswers": ["I want some bread and water"],
+              "requiredWords": ["bread", "water"],
+              "timeLimit": 60
             }
+          },
+          {
+            "type": "pronunciation",
+            "id": "ex4_food_pronunciation",
+            "title": "Pronunciación",
+            "config": {
+              "phrase": "I eat a healthy apple for breakfast",
+              "translation": "Como una manzana saludable para el desayuno",
+              "language": "en-US"
+            },
+            "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1768252627/Fruits_and_vegetables_are_healthy_bvpueu.mp3"
           }
         ]
       }

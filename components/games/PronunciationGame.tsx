@@ -2,7 +2,6 @@ import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { API_ENDPOINTS } from "@/constants/api";
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import * as Speech from "expo-speech";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -13,7 +12,11 @@ import {
 } from "react-native";
 
 interface PronunciationGameProps {
-  config: { phrase: string };
+  config: {
+    phrase: string;
+    audioUrl?: string;
+    translation?: string;
+  };
   onComplete: () => void;
   isCompleted: boolean;
 }
@@ -29,6 +32,51 @@ export const PronunciationGame = ({
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(isCompleted);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  // --- LÓGICA DE REPRODUCCIÓN DE AUDIO ---
+  const playAudio = async () => {
+    if (!config.audioUrl) {
+      setError("No hay audio disponible para este ejercicio");
+      return;
+    }
+
+    try {
+      setIsPlayingAudio(true);
+      setError(null);
+
+      if (sound) {
+        await sound.unloadAsync();
+      }
+
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        { uri: config.audioUrl },
+        { shouldPlay: true }
+      );
+
+      setSound(newSound);
+
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          setIsPlayingAudio(false);
+        }
+      });
+    } catch (err) {
+      setError("No se pudo reproducir el audio");
+      console.error("Error playing audio:", err);
+      setIsPlayingAudio(false);
+    }
+  };
+
+  // --- LIMPIAR AUDIO AL DESMONTAR ---
+  React.useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
 
   // --- LÓGICA DE GRABACIÓN ---
   async function startRecording() {
@@ -122,7 +170,6 @@ export const PronunciationGame = ({
     ) {
       setShowSuccess(true);
       setShowCompletion(true);
-      Speech.speak("Great job!", { language: "en-US" });
       setTimeout(() => onComplete(), 1500);
     } else {
       setError(`Dijiste "${transcript}". Intenta de nuevo.`);
@@ -134,13 +181,23 @@ export const PronunciationGame = ({
       <View style={styles.phraseCard}>
         <TouchableOpacity
           style={styles.listenIconButton}
-          onPress={() => Speech.speak(config.phrase, { language: "en-US" })}
+          onPress={playAudio}
+          disabled={isPlayingAudio}
         >
-          <Ionicons name="volume-high" size={32} color="#4A90E2" />
-          <Text style={styles.listenText}>Escuchar ejemplo</Text>
+          <Ionicons
+            name={isPlayingAudio ? "pause" : "volume-high"}
+            size={32}
+            color={isPlayingAudio ? "#FF9500" : "#4A90E2"}
+          />
+          <Text style={styles.listenText}>
+            {isPlayingAudio ? "Reproduciendo..." : "Escuchar ejemplo"}
+          </Text>
         </TouchableOpacity>
 
         <Text style={styles.phraseText}>{config.phrase}</Text>
+        {config.translation && (
+          <Text style={styles.translationText}>{config.translation}</Text>
+        )}
       </View>
 
       <View style={styles.micSection}>
@@ -223,7 +280,13 @@ const styles = StyleSheet.create({
     color: "#333",
     marginTop: 15,
   },
-  listenIconButton: { flexDirection: "row", alignItems: "center" },
+  translationText: {
+    fontSize: 14,
+    textAlign: "center",
+    color: "#6C757D",
+    marginTop: 8,
+    fontStyle: "italic",
+  },
   listenText: { marginLeft: 8, color: "#4A90E2", fontWeight: "600" },
   micSection: { marginTop: 40, alignItems: "center" },
   micButton: {
@@ -248,6 +311,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E9ECEF",
     borderRadius: 10,
   },
+  listenIconButton: { flexDirection: "row", alignItems: "center" },
   transcript: { color: "#495057", fontStyle: "italic" },
   errorText: { marginTop: 15, color: "#DC3545", fontWeight: "500" },
 });

@@ -48,7 +48,7 @@ async function importLessons() {
                 translation: item.translation,
                 examples: item.examples || [],
                 conjugations: item.conjugations || null,
-                media: item.media || null,
+                image: item.image || null,
                 tags: item.tags || [],
               })) || [],
             exercises:

@@ -1,3 +1,4 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { Audio } from "expo-av";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -30,12 +31,14 @@ type AudioMatchingGameProps = {
     };
   }>;
   onComplete: () => void;
+  isCompleted?: boolean;
 };
 
 const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   config,
   vocabulary,
   onComplete,
+  isCompleted = false,
 }) => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [currentItem, setCurrentItem] = useState(0);
@@ -45,7 +48,19 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   const [hasPlayedFirstAudio, setHasPlayedFirstAudio] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
+  const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
+  const [completedAnswers, setCompletedAnswers] = useState<{
+    [key: number]: string;
+  }>({});
 
+  // Sincronizar cuando isCompleted cambia desde props
+  React.useEffect(() => {
+    if (isCompleted) {
+      setIsExerciseCompleted(true);
+      setShowCompletion(true);
+    }
+  }, [isCompleted]);
 
   const usePairsStructure = !!config.pairs;
   const currentItems = usePairsStructure ? config.pairs : config.items;
@@ -79,6 +94,9 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   };
 
   const handleSelect = (selectedId: string) => {
+    // Bloquear si ya está completado
+    if (isExerciseCompleted) return;
+
     setSelectedOption(selectedId);
     setAttempts((prev) => prev + 1);
 
@@ -102,6 +120,11 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
     if (isCorrect) {
       setShowSuccess(true);
       setShowError(false);
+      // Guardar la respuesta correcta
+      setCompletedAnswers((prev) => ({
+        ...prev,
+        [currentItem]: selectedId,
+      }));
 
       if (currentItem < currentItems.length - 1) {
         setTimeout(() => {
@@ -112,6 +135,8 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
           setShowSuccess(false);
         }, 1000);
       } else {
+        setIsExerciseCompleted(true);
+        setShowCompletion(true);
         setTimeout(() => {
           onComplete();
         }, 1500);
@@ -327,6 +352,13 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
           type="success"
         />
       )}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="perfect"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 };

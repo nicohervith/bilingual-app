@@ -35,24 +35,54 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isExerciseCompleted, setIsExerciseCompleted] = useState(isCompleted);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [completedDialogueHistory, setCompletedDialogueHistory] = useState<
+    Array<{ speaker: string; text: string }>
+  >([]);
   const [dialogueHistory, setDialogueHistory] = useState<
     Array<{ speaker: string; text: string }>
   >([]);
 
+  // Sincronizar cuando isCompleted cambia a true
   useEffect(() => {
     if (isCompleted) {
       setIsExerciseCompleted(true);
-
-      if (config.dialogues) {
-        const fullHistory = config.dialogues.map((d) => ({
-          speaker: d.character === "user" ? "Tú" : d.character,
-          text: d.text,
-        }));
-        setDialogueHistory(fullHistory);
-        setCurrentStep(config.dialogues.length);
+      // Si completedDialogueHistory tiene contenido, restaurar el historial
+      if (completedDialogueHistory.length > 0) {
+        setDialogueHistory(completedDialogueHistory);
       }
     }
-  }, [isCompleted, config.dialogues]);
+  }, [isCompleted]);
+
+  // Mostrar CompletionMessage cuando se completa (solo una vez)
+  useEffect(() => {
+    if (
+      isExerciseCompleted &&
+      !showCompletion &&
+      completedDialogueHistory.length > 0
+    ) {
+      setShowCompletion(true);
+    }
+  }, [isExerciseCompleted, completedDialogueHistory]);
+
+  // Inicializar el primer diálogo del NPC cuando carga el componente
+  // Solo si NO está completado y el historial está vacío
+  useEffect(() => {
+    if (
+      config.dialogues &&
+      dialogueHistory.length === 0 &&
+      !isExerciseCompleted
+    ) {
+      const firstDialogue = config.dialogues[0];
+      if (firstDialogue && firstDialogue.character !== "user") {
+        setDialogueHistory([
+          {
+            speaker: firstDialogue.character,
+            text: firstDialogue.text,
+          },
+        ]);
+      }
+    }
+  }, [config.dialogues, isExerciseCompleted]);
 
   const useDialoguesStructure = !!config.dialogues;
 
@@ -61,7 +91,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
     const userOptions = currentDialogue?.options || [];
 
     const handleOptionSelect = (option: string) => {
-      // 2. Bloqueo de seguridad
+      // Bloqueo de seguridad
       if (isExerciseCompleted) return;
 
       const userEntry = { speaker: "Tú", text: option };
@@ -79,13 +109,16 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
         }
       }
 
-      setDialogueHistory(newHistory);
-
       if (currentStep >= (config.dialogues?.length || 0) - 1) {
+        // Guardar el historial completo antes de marcar como completado
+        const finalHistory = newHistory;
+        setDialogueHistory(finalHistory);
+        setCompletedDialogueHistory(finalHistory);
         setIsExerciseCompleted(true);
         setShowCompletion(true);
         onComplete(true);
       } else {
+        setDialogueHistory(newHistory);
         setCurrentStep(currentStep + 1);
       }
     };
@@ -106,15 +139,34 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
                 item.speaker === "Tú" ? styles.userBubble : styles.npcBubble,
               ]}
             >
-              <Text style={styles.speakerText}>{item.speaker}:</Text>
-              <Text style={styles.bubbleText}>{item.text}</Text>
+              <Text
+                style={[
+                  styles.speakerText,
+                  item.speaker === "Tú" && styles.userText,
+                ]}
+              >
+                {item.speaker}:
+              </Text>
+              <Text
+                style={[
+                  styles.bubbleText,
+                  item.speaker === "Tú" && styles.userText,
+                ]}
+              >
+                {item.text}
+              </Text>
             </View>
           ))}
 
-          {/* Solo mostramos el diálogo pendiente si NO hemos terminado */}
+          {/* Solo mostramos el diálogo pendiente si NO hemos terminado y existe */}
           {!isExerciseCompleted &&
             currentDialogue &&
-            currentDialogue.character !== "user" && (
+            currentDialogue.character !== "user" &&
+            !dialogueHistory.some(
+              (item) =>
+                item.text === currentDialogue.text &&
+                item.speaker === currentDialogue.character
+            ) && (
               <View style={[styles.bubble, styles.npcBubble]}>
                 <Text style={styles.speakerText}>
                   {currentDialogue.character}:
@@ -157,6 +209,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
               style={styles.completeButton}
               onPress={() => {
                 setIsExerciseCompleted(true);
+                setCompletedDialogueHistory(dialogueHistory);
                 setShowCompletion(true);
                 onComplete(true);
               }}
@@ -273,6 +326,9 @@ const styles = StyleSheet.create({
   bubbleText: {
     fontSize: 16,
   },
+  userText: {
+    color: "white",
+  },
   optionsContainer: {
     borderTopWidth: 1,
     borderTopColor: "#E5E5EA",
@@ -314,8 +370,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  completedBanner: {},
-  completedBannerText: {},
+  completedBanner: {
+    backgroundColor: "#EBFBEE",
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: "#D3F9D8",
+    alignItems: "center",
+  },
+  completedBannerText: {
+    color: "#2B8A3E",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default DialogueSimulation;

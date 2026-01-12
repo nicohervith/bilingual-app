@@ -1,3 +1,4 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -41,13 +42,22 @@ const CategorizationGame = ({
 
   // Usamos la prop isCompleted para inicializar o bloquear
   const [gameCompleted, setGameCompleted] = useState(isCompleted);
+  const [showCompletion, setShowCompletion] = useState(false);
+  const [completedSelections, setCompletedSelections] = useState<{
+    [itemId: string]: string;
+  }>({});
 
   // Si la prop cambia externamente (ej: reseteo de lección), actualizamos el estado
   useEffect(() => {
     setGameCompleted(isCompleted);
-  }, [isCompleted]);
+    // Si se marca como completado y tenemos selecciones guardadas, las restauramos
+    if (isCompleted && Object.keys(completedSelections).length > 0) {
+      setCurrentSelections(completedSelections);
+    }
+  }, [isCompleted, completedSelections]);
 
   const totalItems = items.length;
+  const completedCount = Object.keys(currentSelections).length;
 
   const handleCategorySelect = (itemId: string, categoryId: string) => {
     // Si ya está completado o la prop isCompleted es true, ignoramos clics
@@ -62,13 +72,31 @@ const CategorizationGame = ({
 
     if (Object.keys(newSelections).length === totalItems) {
       setGameCompleted(true);
+      setCompletedSelections(newSelections);
+      setShowCompletion(true);
       onComplete();
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title || "Clasifica los Elementos"}</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>{title || "Clasifica los Elementos"}</Text>
+        <Text style={styles.instructions}>
+          Selecciona la categoría correcta para cada elemento
+        </Text>
+        <View style={styles.progressBar}>
+          <View
+            style={[
+              styles.progressFill,
+              { width: `${(completedCount / totalItems) * 100}%` },
+            ]}
+          />
+        </View>
+        <Text style={styles.progressText}>
+          {completedCount} de {totalItems} completados
+        </Text>
+      </View>
 
       <View style={styles.itemsContainer}>
         {items.map((item: Item, index: number) => {
@@ -102,6 +130,7 @@ const CategorizationGame = ({
                         styles.categoryButton,
                         isCategorySelected && {
                           backgroundColor: cat.color || "#3498db",
+                          borderColor: cat.color || "#3498db",
                         },
                         // Estilo visual si ya está completado (opcional)
                         isCompleted &&
@@ -135,6 +164,13 @@ const CategorizationGame = ({
           <Text style={styles.completedText}>¡Clasificación completada!</Text>
         </View>
       )}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type="success"
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 };
@@ -147,12 +183,42 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     width: "100%",
   },
+  headerContainer: {
+    marginBottom: 20,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E1E8ED",
+  },
   title: {
     fontSize: 20,
     fontWeight: "700",
-    marginBottom: 20,
+    marginBottom: 8,
     textAlign: "center",
     color: "#2D3436",
+  },
+  instructions: {
+    fontSize: 14,
+    color: "#636E72",
+    textAlign: "center",
+    marginBottom: 12,
+    fontStyle: "italic",
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: "#E1E8ED",
+    borderRadius: 4,
+    overflow: "hidden",
+    marginBottom: 8,
+  },
+  progressFill: {
+    height: "100%",
+    backgroundColor: "#4CAF50",
+  },
+  progressText: {
+    fontSize: 12,
+    color: "#636E72",
+    textAlign: "center",
+    fontWeight: "600",
   },
   itemsContainer: {
     width: "100%",
@@ -205,7 +271,7 @@ const styles = StyleSheet.create({
     margin: 4,
     backgroundColor: "#EDF2F7",
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#CBD5E0",
   },
   categoryText: {

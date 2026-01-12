@@ -1,3 +1,4 @@
+import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -15,6 +16,7 @@ type ImageSelectionExerciseProps = {
   };
   onComplete: () => void;
   isCompleted?: boolean;
+  completedIndex?: number | null;
 };
 
 export default function ImageSelectionExercise({
@@ -25,14 +27,22 @@ export default function ImageSelectionExercise({
   },
   onComplete,
   isCompleted = false,
+  completedIndex = null,
 }: ImageSelectionExerciseProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const [completed, setCompleted] = useState(isCompleted);
+  const [showCompletion, setShowCompletion] = useState(false);
 
-  // Sincronizar el estado local con la prop isCompleted
+  // Sincronizar el estado local con la prop isCompleted / completedIndex
   useEffect(() => {
     setCompleted(isCompleted);
-  }, [isCompleted]);
+    if (isCompleted) {
+      setShowCompletion(true);
+      if (typeof completedIndex === "number") {
+        setSelected(completedIndex);
+      }
+    }
+  }, [isCompleted, completedIndex]);
 
   // Asegurarnos de que siempre tenemos un array válido
   const safeOptions = config?.options || [];
@@ -44,7 +54,11 @@ export default function ImageSelectionExercise({
 
     if (safeOptions[index]?.correct) {
       setCompleted(true);
-      setTimeout(onComplete, 1000);
+      setShowCompletion(true);
+      // Mantener la selección y notificar al padre después de la animación
+      setTimeout(() => {
+        onComplete();
+      }, 1200);
     }
   };
 
@@ -81,7 +95,19 @@ export default function ImageSelectionExercise({
         <Text style={styles.errorText}>No hay opciones disponibles</Text>
       )}
 
-      {completed && <Text style={styles.successText}>¡Correcto!</Text>}
+      {/* Mostrar feedback específico y CompletionMessage cuando se complete */}
+      {completed && selected !== null && (
+        <Text style={styles.successText}>
+          {safeOptions[selected]?.feedback || "¡Correcto!"}
+        </Text>
+      )}
+
+      <CompletionMessage
+        visible={showCompletion}
+        type={safeOptions[selected ?? 0]?.correct ? "perfect" : "success"}
+        duration={1200}
+        onHide={() => setShowCompletion(false)}
+      />
     </View>
   );
 }

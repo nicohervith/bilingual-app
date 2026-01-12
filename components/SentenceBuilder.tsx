@@ -130,16 +130,16 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       setIsExerciseCompleted(true);
       setCompletedSentence(userSentence);
       setShowCompletion(true);
-      // Guardar las palabras seleccionadas en ejerciseData antes de completar
+      // Guardar las palabras seleccionadas en ejerciseData
       if (onExerciseData) {
         onExerciseData({
           selectedWords: selectedWords,
           completedSentence: userSentence,
         });
       }
-      setTimeout(() => {
-        onComplete();
-      }, 1500);
+      // Llamar a onComplete para que el padre actualice su estado
+      // Esto es importante para mantener el estado completado cuando el componente se re-renderiza
+      onComplete();
     } else {
       // Animación de error
       Animated.sequence([
@@ -187,84 +187,94 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
         </View>
       )}
 
-      {!hasStarted && safeConfig.showStartButton ? (
+      <View style={styles.instructions}>
+        <Text>Arma una oración usando estas palabras:</Text>
+      </View>
+
+      <Animated.View
+        style={[
+          styles.sentenceArea,
+          { transform: [{ translateX: shakeAnim }] },
+          !hasStarted && styles.disabledArea,
+        ]}
+      >
+        {selectedWords.length > 0 ? (
+          <View style={styles.sentenceWords}>
+            {selectedWords.map((word, index) => (
+              <TouchableOpacity
+                key={`selected-${index}`}
+                style={[
+                  styles.wordChip,
+                  isExerciseCompleted && styles.wordChipCompleted,
+                ]}
+                onPress={() =>
+                  !isExerciseCompleted &&
+                  !isTimeUp &&
+                  handleDeselectWord(word, index)
+                }
+                disabled={isExerciseCompleted || isTimeUp}
+              >
+                <Text style={styles.wordText}>{word}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ) : (
+          <Text style={styles.placeholder}>
+            {!hasStarted
+              ? "Presiona 'Comenzar' para empezar"
+              : "Toca las palabras para comenzar"}
+          </Text>
+        )}
+      </Animated.View>
+
+      <View style={styles.wordBankContainer}>
+        <Text style={styles.wordBankTitle}>Palabras disponibles:</Text>
+        <View style={[styles.wordBank, !hasStarted && styles.disabledArea]}>
+          {remainingWords.map((word, index) => (
+            <TouchableOpacity
+              key={`bank-${index}`}
+              style={[
+                styles.wordButton,
+                (isExerciseCompleted || isTimeUp || !hasStarted) &&
+                  styles.disabledButton,
+              ]}
+              onPress={() => handleSelectWord(word, index)}
+              disabled={isTimeUp || !hasStarted || isExerciseCompleted}
+            >
+              <Text style={styles.wordText}>{word}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      {safeConfig.showStartButton && !hasStarted ? (
         <TouchableOpacity style={styles.startButton} onPress={handleStart}>
           <Text style={styles.buttonText}>Comenzar Ejercicio</Text>
         </TouchableOpacity>
       ) : (
         <>
-          <View style={styles.instructions}>
-            <Text>Arma una oración usando estas palabras:</Text>
-          </View>
-
-          <Animated.View
-            style={[
-              styles.sentenceArea,
-              { transform: [{ translateX: shakeAnim }] },
-            ]}
-          >
-            {selectedWords.length > 0 ? (
-              <View style={styles.sentenceWords}>
-                {selectedWords.map((word, index) => (
-                  <TouchableOpacity
-                    key={`selected-${index}`}
-                    style={[
-                      styles.wordChip,
-                      isExerciseCompleted && styles.wordChipCompleted,
-                    ]}
-                    onPress={() =>
-                      !isExerciseCompleted && handleDeselectWord(word, index)
-                    }
-                    disabled={isExerciseCompleted}
-                  >
-                    <Text style={styles.wordText}>{word}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            ) : (
-              <Text style={styles.placeholder}>
-                Toca las palabras para comenzar
-              </Text>
-            )}
-          </Animated.View>
-
-          <View style={styles.wordBankContainer}>
-            <Text style={styles.wordBankTitle}>Palabras disponibles:</Text>
-            <View style={styles.wordBank}>
-              {remainingWords.map((word, index) => (
-                <TouchableOpacity
-                  key={`bank-${index}`}
-                  style={[
-                    styles.wordButton,
-                    isExerciseCompleted && styles.disabledButton,
-                  ]}
-                  onPress={() => handleSelectWord(word, index)}
-                  disabled={isTimeUp || !hasStarted || isExerciseCompleted}
-                >
-                  <Text style={styles.wordText}>{word}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-
           {/* Solo renderizamos el botón si NO está completado */}
           {!isExerciseCompleted && (
             <TouchableOpacity
               style={[
                 styles.submitButton,
                 selectedWords.length === 0 && styles.disabledButton,
-                // Ya no necesitamos styles.completedButton porque el botón desaparece
               ]}
               onPress={checkSentence}
-              disabled={
-                selectedWords.length === 0 || isTimeUp || !hasStarted
-                // Quitamos isExerciseCompleted del disabled porque la condición superior ya lo maneja
-              }
+              disabled={selectedWords.length === 0 || isTimeUp || !hasStarted}
             >
               <Text style={styles.buttonText}>
                 {isTimeUp ? "Tiempo terminado" : "Verificar"}
               </Text>
             </TouchableOpacity>
+          )}
+
+          {isExerciseCompleted && (
+            <View style={styles.completionBanner}>
+              <Text style={styles.completionText}>
+                ✓ ¡Completado correctamente!
+              </Text>
+            </View>
           )}
 
           {isTimeUp && (
@@ -392,6 +402,9 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: "#e0e0e0",
+  },
+  disabledArea: {
+    opacity: 0.6,
   },
   completionBanner: {
     backgroundColor: "#4CAF50",
