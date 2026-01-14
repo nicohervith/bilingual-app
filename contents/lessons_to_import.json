@@ -1,8 +1,8 @@
 {
   "lessons": {
-    "A1_food": {
-      "id": "A1_food",
-      "title": "Healthy Eating & Classification",
+    "A1_family": {
+      "id": "A1_family",
+      "title": "Family Members",
       "xpReward": 100,
       "metadata": {
         "level": "A1",
@@ -10,154 +10,140 @@
         "unit": "unitA1_vocabulary",
         "xpReward": 100,
         "estimatedDuration": 25,
-        "tags": ["food", "vocabulary", "classification", "speaking"]
+        "tags": ["family", "relationships", "people"]
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_apple",
-            "word": "Apple",
-            "translation": "Manzana",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1766164522/Manzana_v1fisl.png",
-            "examples": ["I eat a red apple every day"],
-            "tags": ["fruit", "healthy"]
+            "id": "fam_mother",
+            "word": "Mother",
+            "translation": "Madre",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1752158763/ChatGPT_Image_10_jul_2025_11_45_42_a.m._wbqvli.png",
+            "examples": ["My mother is a doctor"],
+            "tags": ["immediate", "female"]
           },
           {
-            "id": "voc_bread",
-            "word": "Bread",
-            "translation": "Pan",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1766164525/Pan_jgpxei.png",
-            "examples": ["Fresh bread is delicious"],
-            "tags": ["carbohydrate", "basic"]
+            "id": "fam_father",
+            "word": "Father",
+            "translation": "Padre",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1752159001/ChatGPT_Image_10_jul_2025_11_49_51_a.m._yalaen.png",
+            "examples": ["My father is tall"],
+            "tags": ["immediate", "male"]
           },
           {
-            "id": "voc_chicken",
-            "word": "Chicken",
-            "translation": "Pollo",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1766164602/Chicken_lzfpke.png",
-            "examples": ["Chicken is a good source of protein"],
-            "tags": ["meat", "protein"]
+            "id": "fam_brother",
+            "word": "Brother",
+            "translation": "Hermano",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/brother_placeholder.png",
+            "examples": ["I play with my brother"],
+            "tags": ["immediate", "male"]
           },
           {
-            "id": "voc_milk",
-            "word": "Milk",
-            "translation": "Leche",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/milk_placeholder.png",
-            "examples": ["I drink a glass of milk"],
-            "tags": ["dairy", "drink"]
+            "id": "fam_sister",
+            "word": "Sister",
+            "translation": "Hermana",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/sister_placeholder.png",
+            "examples": ["My sister is smart"],
+            "tags": ["immediate", "female"]
           },
           {
-            "id": "voc_egg",
-            "word": "Egg",
-            "translation": "Huevo",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/egg_placeholder.png",
-            "examples": ["I have an egg for breakfast"],
-            "tags": ["protein", "breakfast"]
+            "id": "fam_grandfather",
+            "word": "Grandfather",
+            "translation": "Abuelo",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/grandfather_placeholder.png",
+            "examples": ["My grandfather tells stories"],
+            "tags": ["extended", "male"]
           },
           {
-            "id": "voc_banana",
-            "word": "Banana",
-            "translation": "Plátano",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/banana_placeholder.png",
-            "examples": ["The banana is sweet and yellow"],
-            "tags": ["fruit", "snack"]
+            "id": "fam_grandmother",
+            "word": "Grandmother",
+            "translation": "Abuela",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/grandmother_placeholder.png",
+            "examples": ["My grandmother cooks well"],
+            "tags": ["extended", "female"]
           },
           {
-            "id": "voc_water",
-            "word": "Water",
-            "translation": "Agua",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/water_placeholder.png",
-            "examples": ["Drink water to stay hydrated"],
-            "tags": ["drink", "healthy"]
+            "id": "fam_uncle",
+            "word": "Uncle",
+            "translation": "Tío",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/uncle_placeholder.png",
+            "examples": ["My uncle lives in London"],
+            "tags": ["extended", "male"]
           },
           {
-            "id": "voc_carrot",
-            "word": "Carrot",
-            "translation": "Zanahoria",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/carrot_placeholder.png",
-            "examples": ["The rabbit eats a carrot"],
-            "tags": ["vegetable", "healthy"]
-          },
-          {
-            "id": "voc_fish",
-            "word": "Fish",
-            "translation": "Pescado",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/fish_placeholder.png",
-            "examples": ["I eat fish on Fridays"],
-            "tags": ["protein", "meat"]
-          },
-          {
-            "id": "voc_cheese",
-            "word": "Cheese",
-            "translation": "Queso",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/cheese_placeholder.png",
-            "examples": ["I love cheese on my sandwich"],
-            "tags": ["dairy", "snack"]
+            "id": "fam_aunt",
+            "word": "Aunt",
+            "translation": "Tía",
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/aunt_placeholder.png",
+            "examples": ["My aunt is very kind"],
+            "tags": ["extended", "female"]
           }
         ],
         "exercises": [
           {
-            "type": "vocabulary",
-            "id": "ex1_food_classification",
-            "title": "Clasifica los alimentos",
+            "type": "matching",
+            "id": "ex1_family_match",
+            "title": "Match the Relations",
             "config": {
-              "categories": [
-                { "id": "healthy", "name": "Healthy", "color": "#4CAF50" },
-                { "id": "protein", "name": "Protein", "color": "#FF9800" }
-              ],
-              "items": [
-                { "text": "Apple", "category": "healthy" },
-                { "text": "Chicken", "category": "protein" },
-                { "text": "Carrot", "category": "healthy" },
-                { "text": "Fish", "category": "protein" },
-                { "text": "Water", "category": "healthy" },
-                { "text": "Egg", "category": "protein" }
+              "pairs": [
+                { "from": "Mother", "to": "Madre" },
+                { "from": "Father", "to": "Padre" },
+                { "from": "Brother", "to": "Hermano" },
+                { "from": "Grandmother", "to": "Abuela" }
               ]
             }
           },
           {
-            "type": "matching",
-            "id": "ex2_food_items",
-            "title": "Practica tu pedido",
+            "type": "vocabulary_classification",
+            "id": "ex2_family_gender",
+            "title": "Classify by Gender",
             "config": {
-              "pairs": [
-                { "from": "Milk", "to": "Leche" },
-                { "from": "Bread", "to": "Pan" },
-                { "from": "Cheese", "to": "Queso" },
-                { "from": "Banana", "to": "Plátano" }
+              "categories": [
+                { "id": "male", "name": "Male", "color": "#2196F3" },
+                { "id": "female", "name": "Female", "color": "#E91E63" }
+              ],
+              "items": [
+                { "text": "Father", "category": "male" },
+                { "text": "Mother", "category": "female" },
+                { "text": "Brother", "category": "male" },
+                { "text": "Sister", "category": "female" },
+                { "text": "Uncle", "category": "male" },
+                { "text": "Aunt", "category": "female" }
               ]
             }
           },
           {
             "type": "sentence_formation",
-            "id": "ex3_food_sentences",
-            "title": "Forma la oración",
+            "id": "ex3_family_sentences",
+            "title": "Form the Sentence",
             "config": {
               "wordBank": [
-                "I",
-                "want",
-                "some",
-                "bread",
-                "and",
-                "water",
-                "apple",
-                "fish"
+                "This",
+                "is",
+                "my",
+                "mother",
+                "father",
+                "sister",
+                "grandfather"
               ],
-              "correctAnswers": ["I want some bread and water"],
-              "requiredWords": ["bread", "water"],
+              "correctAnswers": [
+                "This is my mother",
+                "This is my father",
+                "This is my sister"
+              ],
+              "requiredWords": ["This", "my"],
               "timeLimit": 60
             }
           },
           {
             "type": "pronunciation",
-            "id": "ex4_food_pronunciation",
-            "title": "Pronunciación",
+            "id": "ex4_family_pronunciation",
+            "title": "Speak the names",
             "config": {
-              "phrase": "I eat a healthy apple for breakfast",
-              "translation": "Como una manzana saludable para el desayuno",
+              "phrase": "My grandfather and grandmother",
+              "translation": "Mi abuelo y mi abuela",
               "language": "en-US"
-            },
-            "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1768252627/Fruits_and_vegetables_are_healthy_bvpueu.mp3"
+            }
           }
         ]
       }

@@ -4,6 +4,7 @@ import * as Google from "expo-auth-session/providers/google";
 import { useRouter } from "expo-router";
 import {
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   getAdditionalUserInfo,
   GoogleAuthProvider,
   signInWithCredential,
@@ -30,6 +31,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showLinkingOptions, setShowLinkingOptions] = useState(false);
+  const [linkedGoogleCredential, setLinkedGoogleCredential] =
+    useState<any>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -69,31 +73,69 @@ export default function Login() {
     setLoading(true);
 
     try {
-      let userCredential;
       if (isRegistering) {
-        userCredential = await createUserWithEmailAndPassword(
+        // Si está registrando, verificar si el email ya existe
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+        if (signInMethods.length > 0) {
+          // El email ya existe en otra forma de autenticación
+          setErrorMessage(
+            `Este correo ya está registrado. Utiliza el método: ${signInMethods.join(
+              ", "
+            )}`
+          );
+          setLoading(false);
+          return;
+        }
+
+        // Si no existe, crear nueva cuenta
+        const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,
           password
         );
+        await handleAuthSuccess(userCredential);
       } else {
-        userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        // Si está ingresando, intentar login normal
+        try {
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          await handleAuthSuccess(userCredential);
+        } catch (error: any) {
+          // Si falla, verificar si el email existe en otra forma de autenticación
+          if (
+            error.code === "auth/user-not-found" ||
+            error.code === "auth/invalid-credential"
+          ) {
+            const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+            if (signInMethods.length > 0) {
+              // El email existe pero con otro método de autenticación
+              setErrorMessage(
+                `Este correo está registrado con: ${signInMethods.join(
+                  ", "
+                )}. Por favor, usa ese método para iniciar sesión.`
+              );
+            } else {
+              setErrorMessage(
+                "Credenciales incorrectas. Verifica tu email y contraseña."
+              );
+            }
+          } else {
+            throw error;
+          }
+          setLoading(false);
+          return;
+        }
       }
-      await handleAuthSuccess(userCredential);
     } catch (error: any) {
       // Traducir errores comunes de Firebase
       switch (error.code) {
         case "auth/invalid-email":
           setErrorMessage("El formato del correo no es válido.");
-          break;
-        case "auth/user-not-found":
-        case "auth/wrong-password":
-        case "auth/invalid-credential":
-          setErrorMessage("Credenciales incorrectas. Inténtalo de nuevo.");
           break;
         case "auth/email-already-in-use":
           setErrorMessage("Este correo ya está registrado.");
@@ -101,11 +143,15 @@ export default function Login() {
         case "auth/weak-password":
           setErrorMessage("La contraseña debe tener al menos 6 caracteres.");
           break;
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
+          setErrorMessage("Credenciales incorrectas. Inténtalo de nuevo.");
+          break;
         default:
           setErrorMessage("Credenciales incorrectas. Inténtalo de nuevo.");
       }
       console.error("Error auth:", error.code);
-    } finally {
       setLoading(false);
     }
   };
@@ -114,7 +160,25 @@ export default function Login() {
     if (gResponse?.type === "success") {
       const { id_token } = gResponse.params;
       const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential).then(handleAuthSuccess);
+      signInWithCredential(auth, credential)
+        .then(async (userCredential) => {
+          // Verificar si el usuario existe (nuevo o existente)
+          const additionalInfo = getAdditionalUserInfo(userCredential);
+
+          if (additionalInfo?.isNewUser) {
+            await createNewUserProgress(userCredential.user.uid);
+          } else {
+            await updateStreak(userCredential.user.uid);
+          }
+
+          setTimeout(() => {
+            router.replace("/");
+          }, 500);
+        })
+        .catch((error) => {
+          console.error("Error Google Auth:", error);
+          setErrorMessage("Error en autenticación con Google");
+        });
     }
   }, [gResponse]);
 
