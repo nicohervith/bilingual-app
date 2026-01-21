@@ -1,152 +1,464 @@
 {
   "lessons": {
-    "A1_family": {
-      "id": "A1_family",
-      "title": "Family Members",
-      "xpReward": 100,
+    "A1_time_expressions": {
+      "id": "A1_time_expressions",
+      "title": "Time and Daily Routines",
+      "xpReward": 45,
       "metadata": {
+        "estimatedDuration": 15,
         "level": "A1",
         "module": "basics",
-        "unit": "unitA1_vocabulary",
-        "xpReward": 100,
-        "estimatedDuration": 25,
-        "tags": ["family", "relationships", "people"]
+        "unit": "unitA1_basics",
+        "tags": ["time", "verbs", "present_simple"],
+        "xpReward": 45
       },
+      "objectives": [
+        "Tell time in English",
+        "Use time expressions in sentences",
+        "Conjugate irregular verbs"
+      ],
+
       "content": {
         "vocabulary": [
           {
-            "id": "fam_mother",
-            "word": "Mother",
-            "translation": "Madre",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1752158763/ChatGPT_Image_10_jul_2025_11_45_42_a.m._wbqvli.png",
-            "examples": ["My mother is a doctor"],
-            "tags": ["immediate", "female"]
+            "id": "time_morning",
+            "word": "Morning",
+            "translation": "Mañana",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1753820118/ElevenLabs_Text_to_Speech_audio_2_kn7xij.mp3",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1753816580/ChatGPT_Image_29_jul_2025_04_15_45_p.m._ofdirq.png"
+            },
+            "examples": ["I wake up at 7 in the morning", "Good morning!"],
+            "conjugations": null
           },
           {
-            "id": "fam_father",
-            "word": "Father",
-            "translation": "Padre",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1752159001/ChatGPT_Image_10_jul_2025_11_49_51_a.m._yalaen.png",
-            "examples": ["My father is tall"],
-            "tags": ["immediate", "male"]
+            "id": "time_noon",
+            "word": "Noon",
+            "translation": "Mediodía",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1753820104/ElevenLabs_Text_to_Speech_audio_1_dk4kre.mp3",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/noon_placeholder.png"
+            },
+            "examples": ["Lunch is at noon", "The sun is high at noon"],
+            "conjugations": null
           },
           {
-            "id": "fam_brother",
-            "word": "Brother",
-            "translation": "Hermano",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/brother_placeholder.png",
-            "examples": ["I play with my brother"],
-            "tags": ["immediate", "male"]
+            "id": "time_afternoon",
+            "word": "Afternoon",
+            "translation": "Tarde",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_AFTERNOON",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/afternoon_placeholder.png"
+            },
+            "examples": ["Good afternoon!", "I work in the afternoon"],
+            "conjugations": null
           },
           {
-            "id": "fam_sister",
-            "word": "Sister",
-            "translation": "Hermana",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/sister_placeholder.png",
-            "examples": ["My sister is smart"],
-            "tags": ["immediate", "female"]
+            "id": "time_evening",
+            "word": "Evening",
+            "translation": "Tarde/Noche",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1753820104/ElevenLabs_Text_to_Speech_audio_1_dk4kre.mp3",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1753816679/ChatGPT_Image_29_jul_2025_04_17_49_p.m._oh3hes.png"
+            },
+            "examples": ["I have dinner in the evening", "Good evening!"],
+            "conjugations": null
           },
           {
-            "id": "fam_grandfather",
-            "word": "Grandfather",
-            "translation": "Abuelo",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/grandfather_placeholder.png",
-            "examples": ["My grandfather tells stories"],
-            "tags": ["extended", "male"]
+            "id": "time_night",
+            "word": "Night",
+            "translation": "Noche",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_NIGHT",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/night_placeholder.png"
+            },
+            "examples": ["Good night", "The stars shine at night"],
+            "conjugations": null
           },
           {
-            "id": "fam_grandmother",
-            "word": "Grandmother",
-            "translation": "Abuela",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/grandmother_placeholder.png",
-            "examples": ["My grandmother cooks well"],
-            "tags": ["extended", "female"]
+            "id": "time_midnight",
+            "word": "Midnight",
+            "translation": "Medianoche",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_MIDNIGHT",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/midnight_placeholder.png"
+            },
+            "examples": ["It is midnight", "I sleep at midnight"],
+            "conjugations": null
           },
           {
-            "id": "fam_uncle",
-            "word": "Uncle",
-            "translation": "Tío",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/uncle_placeholder.png",
-            "examples": ["My uncle lives in London"],
-            "tags": ["extended", "male"]
+            "id": "time_sunrise",
+            "word": "Sunrise",
+            "translation": "Amanecer",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_SUNRISE",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/sunrise_placeholder.png"
+            },
+            "examples": ["The sunrise is beautiful", "Birds sing at sunrise"],
+            "conjugations": null
           },
           {
-            "id": "fam_aunt",
-            "word": "Aunt",
-            "translation": "Tía",
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1768250925/aunt_placeholder.png",
-            "examples": ["My aunt is very kind"],
-            "tags": ["extended", "female"]
+            "id": "time_sunset",
+            "word": "Sunset",
+            "translation": "Atardecer",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_SUNSET",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/sunset_placeholder.png"
+            },
+            "examples": ["We watch the sunset", "The sky is red at sunset"],
+            "conjugations": null
+          },
+          {
+            "id": "time_early",
+            "word": "Early",
+            "translation": "Temprano",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_EARLY",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/early_placeholder.png"
+            },
+            "examples": ["I wake up early", "He is early for class"],
+            "conjugations": null
+          },
+          {
+            "id": "time_late",
+            "word": "Late",
+            "translation": "Tarde",
+            "tags": ["time_expression"],
+            "media": {
+              "audio": "URL_AUDIO_LATE",
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/late_placeholder.png"
+            },
+            "examples": ["Don't be late", "It is very late"],
+            "conjugations": null
+          },
+          {
+            "id": "verb_go",
+            "word": "Go",
+            "translation": "Ir",
+            "tags": ["irregular_verb"],
+            "media": {
+              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/gotowork_fooag9.png"
+            },
+            "examples": ["I go to work at 8", "She goes to school"],
+            "conjugations": {
+              "present": {
+                "I": "go",
+                "you": "go",
+                "he_she_it": "goes",
+                "we": "go",
+                "they": "go"
+              }
+            }
           }
         ],
         "exercises": [
           {
-            "type": "matching",
-            "id": "ex1_family_match",
-            "title": "Match the Relations",
+            "id": "ex1_audio_time",
+            "type": "audio_matching",
+            "title": "Daily Time Expressions",
+            "instructions": "Listen and select the correct time of day",
+            "question": "Escucha y selecciona el momento del día",
             "config": {
-              "pairs": [
-                { "from": "Mother", "to": "Madre" },
-                { "from": "Father", "to": "Padre" },
-                { "from": "Brother", "to": "Hermano" },
-                { "from": "Grandmother", "to": "Abuela" }
-              ]
-            }
-          },
-          {
-            "type": "vocabulary_classification",
-            "id": "ex2_family_gender",
-            "title": "Classify by Gender",
-            "config": {
-              "categories": [
-                { "id": "male", "name": "Male", "color": "#2196F3" },
-                { "id": "female", "name": "Female", "color": "#E91E63" }
-              ],
+              "mode": "image_selection",
+              "options": {
+                "imageSource": "vocabulary",
+                "attemptsBeforeHint": 2
+              },
               "items": [
-                { "text": "Father", "category": "male" },
-                { "text": "Mother", "category": "female" },
-                { "text": "Brother", "category": "male" },
-                { "text": "Sister", "category": "female" },
-                { "text": "Uncle", "category": "male" },
-                { "text": "Aunt", "category": "female" }
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017711/Morning_kslteb.mp3",
+                  "correctMatch": "time_morning"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017752/Noon_g7subg.mp3",
+                  "correctMatch": "time_noon"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017775/Afternoon_zmtten.mp3",
+                  "correctMatch": "time_afternoon"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017803/Evening_w5ni12.mp3",
+                  "correctMatch": "time_evening"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017829/night_xlwupo.mp3",
+                  "correctMatch": "time_night"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017848/MIDNIGHT_zuki7b.mp3",
+                  "correctMatch": "time_midnight"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017882/Sunrise_hye62z.mp3",
+                  "correctMatch": "time_sunrise"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017910/Sunset_z9ljl8.mp3",
+                  "correctMatch": "time_sunset"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017924/Early_mey0ox.mp3",
+                  "correctMatch": "time_early"
+                },
+                {
+                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017950/Late_vbytu5.mp3",
+                  "correctMatch": "time_late"
+                }
               ]
             }
           },
           {
-            "type": "sentence_formation",
-            "id": "ex3_family_sentences",
-            "title": "Form the Sentence",
+            "id": "ex2_irregular_verbs",
+            "type": "conjugation",
+            "title": "Irregular Verbs Mastery",
             "config": {
+              "verbs": [
+                {
+                  "verb": "be",
+                  "pronouns": ["I", "You", "He/She/It", "We/They"],
+                  "correct": ["am", "are", "is", "are"]
+                },
+                {
+                  "verb": "have",
+                  "pronouns": ["I", "You", "He/She", "We"],
+                  "correct": ["have", "have", "has", "have"]
+                },
+                {
+                  "verb": "go",
+                  "pronouns": ["I", "You", "He/She", "They"],
+                  "correct": ["go", "go", "goes", "go"]
+                },
+                {
+                  "verb": "do",
+                  "pronouns": ["I", "You", "He/She", "We"],
+                  "correct": ["do", "do", "does", "do"]
+                },
+                {
+                  "verb": "say",
+                  "pronouns": ["I", "You", "He/She", "They"],
+                  "correct": ["say", "say", "says", "say"]
+                },
+                {
+                  "verb": "get",
+                  "pronouns": ["I", "You", "He/She", "We"],
+                  "correct": ["get", "get", "gets", "get"]
+                },
+                {
+                  "verb": "make",
+                  "pronouns": ["I", "You", "He/She", "They"],
+                  "correct": ["make", "make", "makes", "make"]
+                },
+                {
+                  "verb": "know",
+                  "pronouns": ["I", "You", "He/She", "We"],
+                  "correct": ["know", "know", "knows", "know"]
+                },
+                {
+                  "verb": "take",
+                  "pronouns": ["I", "You", "He/She", "They"],
+                  "correct": ["take", "take", "takes", "take"]
+                },
+                {
+                  "verb": "see",
+                  "pronouns": ["I", "You", "He/She", "We"],
+                  "correct": ["see", "see", "sees", "see"]
+                }
+              ]
+            }
+          },
+          {
+            "id": "ex3_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Yo me despierto temprano en la mañana",
+            "config": {
+              "title": "Build your routine",
               "wordBank": [
-                "This",
+                "I",
+                "wake",
+                "up",
+                "early",
+                "in",
+                "the",
+                "morning",
+                "at",
+                "night"
+              ],
+              "correctAnswers": ["I wake up early in the morning"]
+            }
+          },
+          {
+            "id": "ex4_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Ella va a trabajar al mediodía",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "She",
+                "goes",
+                "to",
+                "work",
+                "at",
+                "noon",
+                "evening",
+                "the"
+              ],
+              "correctAnswers": ["She goes to work at noon"]
+            }
+          },
+          {
+            "id": "ex5_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Nosotros cenamos al atardecer",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "We",
+                "have",
+                "dinner",
+                "at",
+                "sunset",
+                "sunrise",
+                "lunch"
+              ],
+              "correctAnswers": ["We have dinner at sunset"]
+            }
+          },
+          {
+            "id": "ex6_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Ellos ven la televisión por la noche",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "They",
+                "watch",
+                "TV",
+                "at",
+                "night",
+                "morning",
+                "go"
+              ],
+              "correctAnswers": ["They watch TV at night"]
+            }
+          },
+          {
+            "id": "ex7_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Yo sé la respuesta ahora",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": ["I", "know", "the", "answer", "now", "late", "noon"],
+              "correctAnswers": ["I know the answer now"]
+            }
+          },
+          {
+            "id": "ex8_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Él hace el desayuno al amanecer",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "He",
+                "makes",
+                "breakfast",
+                "at",
+                "sunrise",
+                "sunset",
+                "gets"
+              ],
+              "correctAnswers": ["He makes breakfast at sunrise"]
+            }
+          },
+          {
+            "id": "ex9_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Es medianoche en Londres",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "It",
                 "is",
-                "my",
-                "mother",
-                "father",
-                "sister",
-                "grandfather"
+                "midnight",
+                "in",
+                "London",
+                "noon",
+                "at"
+              ],
+              "correctAnswers": ["It is midnight in London"]
+            }
+          },
+          {
+            "id": "ex10_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Tú llegas tarde hoy",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": ["You", "are", "late", "today", "early", "at", "the"],
+              "correctAnswers": ["You are late today"]
+            }
+          },
+          {
+            "id": "ex11_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Nosotros vamos al parque por la tarde",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "We",
+                "go",
+                "to",
+                "the",
+                "park",
+                "in",
+                "the",
+                "afternoon",
+                "night"
+              ],
+              "correctAnswers": ["We go to the park in the afternoon"]
+            }
+          },
+          {
+            "id": "ex12_routine_sentences",
+            "type": "sentence_formation",
+            "question": "Yo tomo café por la mañana",
+            "config": {
+              "title": "Build your routine",
+              "wordBank": [
+                "I",
+                "take",
+                "coffee",
+                "in",
+                "the",
+                "morning",
+                "at",
+                "night"
               ],
               "correctAnswers": [
-                "This is my mother",
-                "This is my father",
-                "This is my sister"
-              ],
-              "requiredWords": ["This", "my"],
-              "timeLimit": 60
-            }
-          },
-          {
-            "type": "pronunciation",
-            "id": "ex4_family_pronunciation",
-            "title": "Speak the names",
-            "config": {
-              "phrase": "My grandfather and grandmother",
-              "translation": "Mi abuelo y mi abuela",
-              "language": "en-US"
+                "I take coffee in the morning",
+                "I drink coffee in the morning"
+              ]
             }
           }
         ]
       }
+    },
+    "settings": {
+      "retryLimit": 3,
+      "accessibility": {
+        "audioSubtitles": true,
+        "visualAids": true
+      },
+      "unlockCondition": "completed:A1_numbers"
     }
   }
 }

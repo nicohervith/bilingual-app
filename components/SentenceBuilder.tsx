@@ -21,21 +21,18 @@ interface SentenceBuilderProps {
   isCompleted?: boolean;
   completedWords?: string[];
   onExerciseData?: (data: any) => void;
+  question?: string; // Prop opcional a nivel de ejercicio
 }
 
 const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
-  config = {
-    wordBank: [],
-    correctAnswers: [],
-    timeLimit: 0,
-    title: "Forma una oración",
-  },
+  config,
   onComplete,
   isCompleted = false,
   completedWords = [],
   onExerciseData,
+  question, // <--- Debemos extraerlo de las props aquí
 }) => {
-  // Valores por defecto para config
+  // Valores por defecto seguros
   const safeConfig = {
     wordBank: config?.wordBank || [],
     correctAnswers: config?.correctAnswers || [],
@@ -43,6 +40,8 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     timeLimit: config?.timeLimit || 0,
     title: config?.title || "Forma una oración",
     showStartButton: config?.showStartButton ?? true,
+    // Prioriza la prop directa 'question', luego busca en config, si no, vacío
+    question: question || (config as any)?.question || "",
   };
 
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
@@ -72,7 +71,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       if (completedWords.length > 0) {
         setSelectedWords(completedWords);
         const remaining = safeConfig.wordBank.filter(
-          (word) => !completedWords.includes(word)
+          (word) => !completedWords.includes(word),
         );
         setRemainingWords(remaining);
       }
@@ -122,7 +121,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
   const checkSentence = () => {
     const userSentence = selectedWords.join(" ");
     const isCorrect = safeConfig.correctAnswers.some(
-      (correct) => correct.toLowerCase() === userSentence.toLowerCase()
+      (correct) => correct.toLowerCase() === userSentence.toLowerCase(),
     );
 
     if (isCorrect) {
@@ -175,6 +174,20 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     }
   }, [isExerciseCompleted]);
 
+  // Renderizado de la pregunta (Solo si existe)
+  const renderQuestionHint = () => {
+    if (!safeConfig.question) return null;
+
+    return (
+      <View style={styles.goalContainer}>
+        <View style={styles.goalBubble}>
+          <Text style={styles.goalText}>{safeConfig.question}</Text>
+        </View>
+        <View style={styles.bubbleTriangle} />
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{safeConfig.title}</Text>
@@ -187,8 +200,13 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
         </View>
       )}
 
+      {/* Renderizamos la pista visual si existe */}
+      {renderQuestionHint()}
+
       <View style={styles.instructions}>
-        <Text>Arma una oración usando estas palabras:</Text>
+        <Text style={styles.instructionText}>
+          Ordena las palabras correctamente:
+        </Text>
       </View>
 
       <Animated.View
@@ -298,7 +316,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       />
     </View>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   container: {
@@ -418,6 +436,41 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  goalContainer: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  goalBubble: {
+    backgroundColor: "#F0F0F0",
+    padding: 15,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#E0E0E0",
+    maxWidth: "90%",
+  },
+  goalText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#4B4B4B",
+    textAlign: "center",
+    fontStyle: "italic",
+  },
+  bubbleTriangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderStyle: "solid",
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderBottomWidth: 15,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#E0E0E0",
+    transform: [{ rotate: "180deg" }], // Apunta hacia abajo a las palabras
+    marginBottom: -2,
+    zIndex: 1,
+  },
+  instructionText:{},
 });
 
 export default SentenceBuilder;

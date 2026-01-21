@@ -146,7 +146,7 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
     <View style={styles.container}>
       <Text style={styles.title}>
         {config.mode === "audio_to_image"
-          ? "Escucha y selecciona la imagen correcta"
+          ? "Escucha y selecciona la imagen correcta aaaaaaaaaaaa"
           : "Selecciona la imagen que corresponde"}
       </Text>
 

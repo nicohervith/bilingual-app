@@ -36,6 +36,31 @@ type Module = {
   insigniaModule?: string; // Insignia del módulo
 };
 
+const UNIT_ORDER_MAP_A1: Record<string, number> = {
+  unitA1_first_steps: 1,
+  unitA1_meeting_people: 2,
+  unitA1_numbers_colors: 3,
+  unitA1_my_environment: 4,
+  unitA1_daily_lifestyle: 5,
+  unitA1_food_drinks: 6,
+  unitA1_at_the_restaurant: 7,
+  unitA1_skills_work: 8,
+  unitA1_body_health: 9,
+  unitA1_travel_city: 10,
+  unitA1_sports_leisure: 11,
+  unitA1_future_goals: 12,
+  unitA1_final_mastery: 13,
+};
+
+const UNIT_ORDER_MAP_A2: Record<string, number> = {
+  unitA2_past_memories: 1,
+  unitA2_work_experience: 2,
+};
+
+const UNIT_ORDER_MAP_B1: Record<string, number> = {
+  unitB1_debates_opinions: 1,
+};
+
 export default function LevelModulesScreen() {
   const { level } = useLocalSearchParams();
   const { user } = useAuth();
@@ -48,11 +73,22 @@ export default function LevelModulesScreen() {
 
   const isModuleComplete = (
     module: Module,
-    completedLessons: Record<string, boolean>
+    completedLessons: Record<string, boolean>,
   ): boolean => {
     return Object.values(module.units).every((unit: Unit) => {
       return unit.lessons.every((lessonId) => completedLessons[lessonId]);
     });
+  };
+
+  const getUnitOrder = (unitId: string, currentLevel: string): number => {
+    const maps: Record<string, Record<string, number>> = {
+      A1: UNIT_ORDER_MAP_A1,
+      A2: UNIT_ORDER_MAP_A2,
+      B1: UNIT_ORDER_MAP_B1,
+    };
+
+    const currentMap = maps[currentLevel as string] || {};
+    return currentMap[unitId] || 999;
   };
 
   const [moduleCompletion, setModuleCompletion] = useState<
@@ -96,7 +132,7 @@ export default function LevelModulesScreen() {
           filteredModules.forEach((module) => {
             newModuleCompletion[module.id] = isModuleComplete(
               module,
-              completedLessons
+              completedLessons,
             );
           });
           setModuleCompletion(newModuleCompletion);
@@ -109,7 +145,7 @@ export default function LevelModulesScreen() {
             Object.values(module.units).forEach((unit: any) => {
               const totalLessons = unit.lessons.length;
               const completedCount = unit.lessons.filter(
-                (id: string) => completedLessons[id]
+                (id: string) => completedLessons[id],
               ).length;
               newUnitProgress[unit.id] = completedCount / totalLessons;
             });
@@ -201,14 +237,14 @@ export default function LevelModulesScreen() {
 
             {Object.values(module.units)
               .sort((a: any, b: any) => {
-                // Las pruebas finales siempre van al final
-                const aIsFinalTest = a.id?.includes("final_test");
-                const bIsFinalTest = b.id?.includes("final_test");
+                const orderA = getUnitOrder(a.id, level as string);
+                const orderB = getUnitOrder(b.id, level as string);
 
-                if (aIsFinalTest && !bIsFinalTest) return 1;
-                if (!aIsFinalTest && bIsFinalTest) return -1;
+                if (orderA !== orderB) {
+                  return orderA - orderB;
+                }
 
-                // Para el resto, mantener orden alfabético
+                // Fallback por si no están en el mapa
                 return (a.id || "").localeCompare(b.id || "");
               })
               .map((unit: any) => {
@@ -382,13 +418,8 @@ const styles = StyleSheet.create({
     color: "#6c757d",
     fontSize: 14,
   },
-  /* xpReward: {
-    color: "#28a745",
-    fontSize: 14,
-    marginTop: 4,
-  }, */
   xpReward: {
-    color: "#4CAF50", // Color de éxito para "Progreso"
+    color: "#4CAF50",
     fontSize: 14,
     marginTop: 4,
   },
@@ -399,14 +430,10 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   abstractPattern: {
-    position: "absolute", // Clave para que flote sobre el fondo
-    fontSize: 250, // Letras grandes
+    position: "absolute",
+    fontSize: 250,
     fontWeight: "bold",
-    // Simulación del "borroso" usando opacidad muy baja (0.08)
     color: "rgba(255, 255, 255, 0.08)",
-    // Asegurarse de que esté detrás del contenido (pero el zIndex por defecto ya lo hace si el contenido no tiene zIndex)
     zIndex: -1,
-    // Nota: El efecto de blur real en RN a menudo requiere usar <Image> o librerías específicas.
-    // Usar la opacidad baja es la alternativa más simple y ligera para un patrón de fondo.
   },
 });

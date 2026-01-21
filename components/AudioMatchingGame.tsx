@@ -1,6 +1,6 @@
 import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { Audio } from "expo-av";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ExerciseFeedback from "./ExerciseFeedback";
 
@@ -54,6 +54,15 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
     [key: number]: string;
   }>({});
 
+  useEffect(() => {
+    // Configurar el modo de audio apenas cargue el juego
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+    });
+  }, []);
+
   // Sincronizar cuando isCompleted cambia desde props
   React.useEffect(() => {
     if (isCompleted) {
@@ -77,15 +86,19 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   }
 
   const playSound = async (audioUri: string) => {
+    if (!audioUri) return;
     try {
+      // Si ya hay un sonido cargado, lo liberamos antes de poner el nuevo
       if (sound) {
         await sound.unloadAsync();
       }
 
       const { sound: newSound } = await Audio.Sound.createAsync(
         { uri: audioUri },
-        { shouldPlay: true }
+        { shouldPlay: true },
+        // Eliminamos 'onPlaybackStatusUpdate' porque no está definido
       );
+
       setSound(newSound);
       setHasPlayedFirstAudio(true);
     } catch (error) {
@@ -94,8 +107,8 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   };
 
   const handleSelect = (selectedId: string) => {
-    // Bloquear si ya está completado
-    if (isExerciseCompleted) return;
+    // Bloquear si ya está completado o si hay una animación de éxito/error activa
+    if (isExerciseCompleted || selectedOption !== null) return;
 
     setSelectedOption(selectedId);
     setAttempts((prev) => prev + 1);
@@ -120,7 +133,7 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
     if (isCorrect) {
       setShowSuccess(true);
       setShowError(false);
-      // Guardar la respuesta correcta
+
       setCompletedAnswers((prev) => ({
         ...prev,
         [currentItem]: selectedId,
@@ -145,70 +158,56 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
       setShowError(true);
       setShowSuccess(false);
 
-      if (
-        config.options?.attemptsBeforeHint &&
-        attempts >= config.options.attemptsBeforeHint - 1
-      ) {
-        setShowHint(true);
-      }
+      // --- CAMBIO CLAVE AQUÍ ---
+      // Después de 1 segundo, limpiamos la selección incorrecta para dejar al usuario intentar de nuevo
+      setTimeout(() => {
+        setSelectedOption(null);
+        setShowError(false);
+
+        if (
+          config.options?.attemptsBeforeHint &&
+          attempts >= config.options.attemptsBeforeHint - 1
+        ) {
+          setShowHint(true);
+        }
+      }, 1000);
     }
   };
 
   const options = React.useMemo(() => {
     if (!currentItems || currentItem >= currentItems.length) return [];
 
-    if (usePairsStructure) {
-      // Para estructura pairs: usar los textos de todos los pairs como opciones
-      const currentPair = currentItems[currentItem] as {
-        audio: string;
-        text: string;
-        image?: string;
-      };
-      const allTexts = currentItems.map(
-        (item) => (item as { audio: string; text: string; image?: string }).text
-      );
+    // 1. Obtener la respuesta correcta actual
+    const currentItemData = currentItems[currentItem] as {
+      audio: string;
+      correctMatch: string;
+    };
+    const currentItemId = currentItemData.correctMatch;
+    const correctVocabularyItem = vocabulary.find(
+      (item) => item.id === currentItemId,
+    );
 
-      // Mezclar y seleccionar opciones (incluyendo la correcta)
-      const shuffledOptions = [...allTexts]
-        .filter((text) => text !== currentPair.text) // Excluir la correcta temporalmente
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3); // 3 distractores
-
-      // Agregar la opción correcta y mezclar
-      return [currentPair.text, ...shuffledOptions].sort(
-        () => Math.random() - 0.5
-      );
-    } else {
-      // Para estructura items original
-      const currentItemData = currentItems[currentItem] as {
-        audio: string;
-        correctMatch: string;
-      };
-      const currentItemId = currentItemData.correctMatch;
-      const vocabularyItem = vocabulary.find(
-        (item) => item.id === currentItemId
-      );
-
-      if (!vocabularyItem) {
-        console.error(`No se encontró el ítem con id: ${currentItemId}`);
-        return [];
-      }
-
-      // Obtener opciones posibles (excluyendo la correcta)
-      let distractors = vocabulary
-        .filter(
-          (item) =>
-            item.id !== currentItemId &&
-            item.media &&
-            (item.media.image || item.word)
-        )
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3); // 3 distractores
-
-      // Mezclar la opción correcta con los distractores
-      return [vocabularyItem, ...distractors].sort(() => Math.random() - 0.5);
+    if (!correctVocabularyItem) {
+      console.error(`No se encontró el ítem con id: ${currentItemId}`);
+      return [];
     }
-  }, [vocabulary, currentItems, currentItem, usePairsStructure]);
+
+    // 2. Obtener TODAS las posibles opciones del vocabulario que tengan imagen o palabra
+    // Excluimos la correcta para manejarla por separado
+    const allPotentialDistractors = vocabulary.filter(
+      (item) => item.id !== currentItemId && (item.media?.image || item.word),
+    );
+
+    // 3. Mezclar distractores y tomar 3
+    const selectedDistractors = [...allPotentialDistractors]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+
+    // 4. Combinar la correcta con los distractores y volver a mezclar
+    return [correctVocabularyItem, ...selectedDistractors].sort(
+      () => Math.random() - 0.5,
+    );
+  }, [vocabulary, currentItems, currentItem]);
 
   const getCurrentAudio = (): string => {
     if (usePairsStructure) {
@@ -274,6 +273,14 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   const getOptionImage = (option: string | any): string | undefined => {
     return usePairsStructure ? undefined : (option as any).media?.image;
   };
+
+  useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
 
   return (
     <View style={styles.container}>
