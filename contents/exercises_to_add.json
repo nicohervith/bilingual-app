@@ -1,193 +1,48 @@
 {
-  "A1_time_expressions": [
+  "A1_future_plans": [
     {
-      "id": "ex_conj_be",
+      "id": "ex1_conjugation_full",
       "type": "conjugation",
-      "hasConfig": true,
+      "title": "Grammar: Going to",
+      "instructions": "Conjugate the future with 'going to' for all pronouns.",
       "config": {
-        "verb": "be",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She/It", "We/They"],
+        "verb": "be going to",
+        "tenses": ["Future"],
+        "pronouns": ["I", "You", "He", "She", "It", "We", "They"],
         "correct": {
-          "Present": {
-            "I": "am",
-            "You": "are",
-            "He/She/It": "is",
-            "We/They": "are"
+          "Future": {
+            "I": "am going to",
+            "You": "are going to",
+            "He": "is going to",
+            "She": "is going to",
+            "It": "is going to",
+            "We": "are going to",
+            "They": "are going to"
           }
-        },
-        "hints": { "showInfinitive": true }
+        }
       }
     },
     {
-      "id": "ex_conj_have",
-      "type": "conjugation",
-      "hasConfig": true,
+      "id": "ex3_calendar_expanded",
+      "type": "calendar_planner",
+      "title": "Plan a busy week",
+      "instructions": "Assign at least 3 activities per day to complete your schedule.",
       "config": {
-        "verb": "have",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "We/They"],
-        "correct": {
-          "Present": {
-            "I": "have",
-            "You": "have",
-            "He/She": "has",
-            "We/They": "have"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_go",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "go",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "They"],
-        "correct": {
-          "Present": {
-            "I": "go",
-            "You": "go",
-            "He/She": "goes",
-            "They": "go"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_do",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "do",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "We/They"],
-        "correct": {
-          "Present": {
-            "I": "do",
-            "You": "do",
-            "He/She": "does",
-            "We/They": "do"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_say",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "say",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "They"],
-        "correct": {
-          "Present": {
-            "I": "say",
-            "You": "say",
-            "He/She": "says",
-            "They": "say"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_get",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "get",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "We"],
-        "correct": {
-          "Present": {
-            "I": "get",
-            "You": "get",
-            "He/She": "gets",
-            "We": "get"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_make",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "make",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "They"],
-        "correct": {
-          "Present": {
-            "I": "make",
-            "You": "make",
-            "He/She": "makes",
-            "They": "make"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_know",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "know",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "We"],
-        "correct": {
-          "Present": {
-            "I": "know",
-            "You": "know",
-            "He/She": "knows",
-            "We": "know"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_take",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "take",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "They"],
-        "correct": {
-          "Present": {
-            "I": "take",
-            "You": "take",
-            "He/She": "takes",
-            "They": "take"
-          }
-        },
-        "hints": { "showInfinitive": true }
-      }
-    },
-    {
-      "id": "ex_conj_see",
-      "type": "conjugation",
-      "hasConfig": true,
-      "config": {
-        "verb": "see",
-        "tenses": ["Present"],
-        "pronouns": ["I", "You", "He/She", "We"],
-        "correct": {
-          "Present": {
-            "I": "see",
-            "You": "see",
-            "He/She": "sees",
-            "We": "see"
-          }
-        },
-        "hints": { "showInfinitive": true }
+        "activities": [
+          "Doctor appointment",
+          "Dinner with friends",
+          "Go to the gym",
+          "Watch a movie",
+          "English class",
+          "Visit family",
+          "Play soccer",
+          "Buy groceries",
+          "Read a book",
+          "Clean the house"
+        ],
+        "constraints": {
+          "maxActivitiesPerDay": 3
+        }
       }
     }
   ]

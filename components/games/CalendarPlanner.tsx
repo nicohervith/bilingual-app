@@ -1,13 +1,12 @@
 // components/Games/CalendarPlanner.tsx
 import React, { useState } from "react";
 import {
-  View,
+  ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
+  View,
 } from "react-native";
-
 
 interface CalendarPlannerProps {
   config: {
@@ -33,7 +32,7 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
     "Domingo",
   ];
   const [schedule, setSchedule] = useState<Record<string, string[]>>(
-    days.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
+    days.reduce((acc, day) => ({ ...acc, [day]: [] }), {}),
   );
   const [selectedDay, setSelectedDay] = useState<string>(days[0]);
   const [showCompletion, setShowCompletion] = useState(false);
@@ -75,7 +74,7 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
     return config.activities.filter(
       (activity) =>
         !currentActivities.includes(activity) &&
-        currentActivities.length < config.constraints.maxActivitiesPerDay
+        currentActivities.length < config.constraints.maxActivitiesPerDay,
     );
   };
 
@@ -87,51 +86,50 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
 
   return (
     <View style={styles.container}>
-      {/* Header con instrucciones */}
       <View style={styles.header}>
         <Text style={styles.title}>📅 Planifica Tu Semana</Text>
         <Text style={styles.instructions}>
-          Asigna actividades a cada día. Máximo{" "}
-          {config.constraints.maxActivitiesPerDay} por día.
+          Máximo {config.constraints.maxActivitiesPerDay} por día.
         </Text>
       </View>
 
-      {/* Selector de días */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.daysSelector}
-      >
-        {days.map((day) => (
-          <TouchableOpacity
-            key={day}
-            onPress={() => setSelectedDay(day)}
-            style={[styles.dayTab, selectedDay === day && styles.dayTabActive]}
-          >
-            <Text
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.daysSelector}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
+        >
+          {days.map((day) => (
+            <TouchableOpacity
+              key={day}
+              onPress={() => setSelectedDay(day)}
               style={[
-                styles.dayTabText,
-                selectedDay === day && styles.dayTabTextActive,
+                styles.dayTab,
+                selectedDay === day && styles.dayTabActive,
               ]}
             >
-              {day.substring(0, 3)}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+              <Text
+                style={[
+                  styles.dayTabText,
+                  selectedDay === day && styles.dayTabTextActive,
+                ]}
+              >
+                {day.substring(0, 3)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
-      {/* Calendario principal */}
-      <View style={styles.calendar}>
-        {/* Día seleccionado */}
-        <View style={styles.selectedDay}>
+      {/* USAMOS SCROLLVIEW AQUÍ PARA QUE NADA SE PISE */}
+      <ScrollView style={styles.calendar} showsVerticalScrollIndicator={false}>
+        <View style={styles.selectedDayCard}>
           <Text style={styles.selectedDayTitle}>{selectedDay}</Text>
 
-          {/* Actividades asignadas */}
           <View style={styles.assignedActivities}>
             {schedule[selectedDay].length === 0 ? (
-              <Text style={styles.emptyState}>
-                No hay actividades programadas
-              </Text>
+              <Text style={styles.emptyState}>No hay actividades</Text>
             ) : (
               schedule[selectedDay].map((activity, index) => (
                 <View key={index} style={styles.activityChip}>
@@ -147,16 +145,14 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
             )}
           </View>
 
-          {/* Contador */}
           <Text style={styles.counter}>
             {schedule[selectedDay].length}/
-            {config.constraints.maxActivitiesPerDay} actividades
+            {config.constraints.maxActivitiesPerDay} completado
           </Text>
         </View>
 
-        {/* Actividades disponibles */}
-        <View style={styles.availableActivities}>
-          <Text style={styles.sectionTitle}>Actividades Disponibles:</Text>
+        <View style={styles.availableSection}>
+          <Text style={styles.sectionTitle}>Toca para añadir:</Text>
           <View style={styles.activitiesGrid}>
             {getAvailableActivities(selectedDay).map((activity) => (
               <TouchableOpacity
@@ -166,17 +162,18 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
               >
                 <Text style={styles.activityButtonText}>{activity}</Text>
                 <Text style={styles.usageCount}>
-                  Usada {getActivityUsageCount(activity)} veces
+                  {getActivityUsageCount(activity)} usos
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
-      </View>
+        {/* Espacio extra al final para que el resumen no tape nada */}
+        <View style={{ height: 40 }} />
+      </ScrollView>
 
-      {/* Resumen de la semana */}
+      {/* El resumen se queda fijo abajo */}
       <View style={styles.weekSummary}>
-        <Text style={styles.summaryTitle}>Resumen de la Semana</Text>
         <View style={styles.summaryGrid}>
           {days.map((day) => (
             <View key={day} style={styles.summaryDay}>
@@ -191,11 +188,9 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
         </View>
       </View>
 
-      {/* Feedback de completado */}
       {showCompletion && (
         <View style={styles.completionOverlay}>
           <Text style={styles.completionText}>🎉 ¡Semana planificada!</Text>
-          <Text style={styles.completionSubtext}>Excelente organización</Text>
         </View>
       )}
     </View>
@@ -205,31 +200,30 @@ const CalendarPlanner: React.FC<CalendarPlannerProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f4f7f6",
   },
   header: {
-    padding: 20,
-    backgroundColor: "#f8f9fa",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e9ecef",
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    backgroundColor: "#fff",
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#2c3e50",
-    marginBottom: 5,
+    color: "#1a1a1a",
   },
   instructions: {
-    fontSize: 16,
-    color: "#6c757d",
+    fontSize: 14,
+    color: "#666",
   },
   daysSelector: {
     backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e9ecef",
+    maxHeight: 60,
   },
   dayTab: {
-    padding: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     borderBottomWidth: 3,
     borderBottomColor: "transparent",
   },
@@ -238,8 +232,7 @@ const styles = StyleSheet.create({
   },
   dayTabText: {
     fontSize: 14,
-    color: "#6c757d",
-    fontWeight: "500",
+    color: "#999",
   },
   dayTabTextActive: {
     color: "#007AFF",
@@ -247,96 +240,80 @@ const styles = StyleSheet.create({
   },
   calendar: {
     flex: 1,
-    padding: 20,
+    padding: 15,
   },
-  selectedDay: {
-    marginBottom: 30,
+  selectedDayCard: {
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 20,
+    // Sombra para iOS/Android
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   selectedDayTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#2c3e50",
-    marginBottom: 15,
-  },
-  assignedActivities: {
-    minHeight: 100,
     marginBottom: 10,
-  },
-  emptyState: {
-    color: "#6c757d",
-    fontStyle: "italic",
-    textAlign: "center",
-    padding: 20,
+    color: "#333",
   },
   activityChip: {
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#e8f5e8",
-    padding: 12,
-    borderRadius: 20,
+    backgroundColor: "#f0f9ff",
+    padding: 10,
+    borderRadius: 10,
     marginBottom: 8,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#bae1ff",
   },
   activityChipText: {
     flex: 1,
-    color: "#2e7d32",
-    fontWeight: "500",
+    color: "#0056b3",
   },
-  removeButton: {
-    padding: 4,
-    marginLeft: 8,
-  },
-  removeText: {
-    color: "#dc3545",
-    fontWeight: "bold",
-  },
-  counter: {
-    textAlign: "center",
-    color: "#6c757d",
-    fontSize: 14,
-  },
-  availableActivities: {
-    marginTop: 100,
+  availableSection: {
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
-    color: "#2c3e50",
-    marginBottom: 15,
+    marginBottom: 12,
+    color: "#444",
   },
   activitiesGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    justifyContent: "space-between",
   },
   activityButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#fff",
+    width: "48%", // Dos columnas
     padding: 15,
     borderRadius: 12,
-    minWidth: 150,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
     alignItems: "center",
   },
   activityButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 14,
-    marginBottom: 4,
+    textAlign: "center",
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#333",
   },
   usageCount: {
-    color: "rgba(255, 255, 255, 0.8)",
-    fontSize: 12,
+    fontSize: 10,
+    color: "#aaa",
+    marginTop: 4,
   },
   weekSummary: {
-    padding: 20,
-    backgroundColor: "#f8f9fa",
+    paddingVertical: 15,
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderTopColor: "#e9ecef",
-  },
-  summaryTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#2c3e50",
-    marginBottom: 15,
-    textAlign: "center",
+    borderTopColor: "#eee",
   },
   summaryGrid: {
     flexDirection: "row",
@@ -344,44 +321,44 @@ const styles = StyleSheet.create({
   },
   summaryDay: {
     alignItems: "center",
+    width: 30,
   },
   summaryDayName: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#6c757d",
-    marginBottom: 5,
+    fontSize: 10,
+    color: "#999",
+    marginBottom: 4,
   },
   summaryDots: {
-    flexDirection: "column",
-    gap: 2,
+    height: 30,
+    justifyContent: "flex-start",
+    gap: 3,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#28a745",
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "#4cd964",
   },
   completionOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.9)",
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,122,255,0.9)",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 1000,
   },
   completionText: {
-    fontSize: 28,
+    color: "#fff",
+    fontSize: 24,
     fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
   },
-  completionSubtext: {
-    fontSize: 18,
-    color: "#ccc",
-    marginTop: 10,
+  assignedActivities: {
+    minHeight: 100,
+    marginBottom: 10,
   },
+  emptyState: {},
+  removeButton: {},
+  removeText: {},
+  counter: {},
 });
 
 export default CalendarPlanner;

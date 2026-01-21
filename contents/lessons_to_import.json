@@ -1,464 +1,117 @@
 {
   "lessons": {
-    "A1_time_expressions": {
-      "id": "A1_time_expressions",
-      "title": "Time and Daily Routines",
-      "xpReward": 45,
+    "A1_ordering_food": {
+      "id": "A1_ordering_food",
+      "title": "At the Restaurant",
       "metadata": {
-        "estimatedDuration": 15,
         "level": "A1",
-        "module": "basics",
-        "unit": "unitA1_basics",
-        "tags": ["time", "verbs", "present_simple"],
-        "xpReward": 45
+        "module": "daily_life",
+        "estimatedDuration": 25,
+        "unit": "unitA1_conversation",
+        "tags": ["food", "ordering", "restaurant", "politeness"],
+        "xpReward": 100
       },
       "objectives": [
-        "Tell time in English",
-        "Use time expressions in sentences",
-        "Conjugate irregular verbs"
+        "Identify common food and drinks",
+        "Use 'would like' to order politely",
+        "Understand basic restaurant interactions"
       ],
-
+      "settings": {
+        "retryLimit": 3,
+        "unlockCondition": "completed:A1_basics"
+      },
       "content": {
         "vocabulary": [
           {
-            "id": "time_morning",
-            "word": "Morning",
-            "translation": "Mañana",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1753820118/ElevenLabs_Text_to_Speech_audio_2_kn7xij.mp3",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1753816580/ChatGPT_Image_29_jul_2025_04_15_45_p.m._ofdirq.png"
-            },
-            "examples": ["I wake up at 7 in the morning", "Good morning!"],
-            "conjugations": null
+            "id": "voc_burger",
+            "word": "Hamburger",
+            "translation": "Hamburguesa",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005001/hamburger.png",
+            "examples": ["I want a hamburger, please"]
           },
           {
-            "id": "time_noon",
-            "word": "Noon",
-            "translation": "Mediodía",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1753820104/ElevenLabs_Text_to_Speech_audio_1_dk4kre.mp3",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/noon_placeholder.png"
-            },
-            "examples": ["Lunch is at noon", "The sun is high at noon"],
-            "conjugations": null
+            "id": "voc_water",
+            "word": "Still water",
+            "translation": "Agua sin gas",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005002/water.png",
+            "examples": ["A bottle of still water, please"]
           },
           {
-            "id": "time_afternoon",
-            "word": "Afternoon",
-            "translation": "Tarde",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_AFTERNOON",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/afternoon_placeholder.png"
-            },
-            "examples": ["Good afternoon!", "I work in the afternoon"],
-            "conjugations": null
-          },
-          {
-            "id": "time_evening",
-            "word": "Evening",
-            "translation": "Tarde/Noche",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "https://res.cloudinary.com/dltwwat1r/video/upload/v1753820104/ElevenLabs_Text_to_Speech_audio_1_dk4kre.mp3",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1753816679/ChatGPT_Image_29_jul_2025_04_17_49_p.m._oh3hes.png"
-            },
-            "examples": ["I have dinner in the evening", "Good evening!"],
-            "conjugations": null
-          },
-          {
-            "id": "time_night",
-            "word": "Night",
-            "translation": "Noche",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_NIGHT",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/night_placeholder.png"
-            },
-            "examples": ["Good night", "The stars shine at night"],
-            "conjugations": null
-          },
-          {
-            "id": "time_midnight",
-            "word": "Midnight",
-            "translation": "Medianoche",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_MIDNIGHT",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/midnight_placeholder.png"
-            },
-            "examples": ["It is midnight", "I sleep at midnight"],
-            "conjugations": null
-          },
-          {
-            "id": "time_sunrise",
-            "word": "Sunrise",
-            "translation": "Amanecer",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_SUNRISE",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/sunrise_placeholder.png"
-            },
-            "examples": ["The sunrise is beautiful", "Birds sing at sunrise"],
-            "conjugations": null
-          },
-          {
-            "id": "time_sunset",
-            "word": "Sunset",
-            "translation": "Atardecer",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_SUNSET",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/sunset_placeholder.png"
-            },
-            "examples": ["We watch the sunset", "The sky is red at sunset"],
-            "conjugations": null
-          },
-          {
-            "id": "time_early",
-            "word": "Early",
-            "translation": "Temprano",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_EARLY",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/early_placeholder.png"
-            },
-            "examples": ["I wake up early", "He is early for class"],
-            "conjugations": null
-          },
-          {
-            "id": "time_late",
-            "word": "Late",
-            "translation": "Tarde",
-            "tags": ["time_expression"],
-            "media": {
-              "audio": "URL_AUDIO_LATE",
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/late_placeholder.png"
-            },
-            "examples": ["Don't be late", "It is very late"],
-            "conjugations": null
-          },
-          {
-            "id": "verb_go",
-            "word": "Go",
-            "translation": "Ir",
-            "tags": ["irregular_verb"],
-            "media": {
-              "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754937892/gotowork_fooag9.png"
-            },
-            "examples": ["I go to work at 8", "She goes to school"],
-            "conjugations": {
-              "present": {
-                "I": "go",
-                "you": "go",
-                "he_she_it": "goes",
-                "we": "go",
-                "they": "go"
-              }
-            }
+            "id": "voc_bill",
+            "word": "The bill",
+            "translation": "La cuenta",
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005003/bill.png",
+            "examples": ["Can I have the bill, please?"]
           }
         ],
         "exercises": [
           {
-            "id": "ex1_audio_time",
-            "type": "audio_matching",
-            "title": "Daily Time Expressions",
-            "instructions": "Listen and select the correct time of day",
-            "question": "Escucha y selecciona el momento del día",
+            "id": "ex1_food_select",
+            "type": "image_selection",
+            "title": "Menu Choice",
+            "instructions": "Which one is the main course?",
             "config": {
-              "mode": "image_selection",
-              "options": {
-                "imageSource": "vocabulary",
-                "attemptsBeforeHint": 2
-              },
-              "items": [
+              "multipleSelection": false,
+              "options": [
                 {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017711/Morning_kslteb.mp3",
-                  "correctMatch": "time_morning"
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005001/hamburger.png",
+                  "correct": true,
+                  "feedback": "Correct! A hamburger is a main course."
                 },
                 {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017752/Noon_g7subg.mp3",
-                  "correctMatch": "time_noon"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017775/Afternoon_zmtten.mp3",
-                  "correctMatch": "time_afternoon"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017803/Evening_w5ni12.mp3",
-                  "correctMatch": "time_evening"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017829/night_xlwupo.mp3",
-                  "correctMatch": "time_night"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017848/MIDNIGHT_zuki7b.mp3",
-                  "correctMatch": "time_midnight"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017882/Sunrise_hye62z.mp3",
-                  "correctMatch": "time_sunrise"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017910/Sunset_z9ljl8.mp3",
-                  "correctMatch": "time_sunset"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017924/Early_mey0ox.mp3",
-                  "correctMatch": "time_early"
-                },
-                {
-                  "audio": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769017950/Late_vbytu5.mp3",
-                  "correctMatch": "time_late"
+                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005002/water.png",
+                  "correct": false,
+                  "feedback": "No, water is a drink."
                 }
               ]
             }
           },
           {
-            "id": "ex2_irregular_verbs",
+            "id": "ex2_would_like",
             "type": "conjugation",
-            "title": "Irregular Verbs Mastery",
+            "title": "Polite Ordering",
+            "instructions": "Complete the polite form 'would like' (Querría/Me gustaría)",
             "config": {
-              "verbs": [
-                {
-                  "verb": "be",
-                  "pronouns": ["I", "You", "He/She/It", "We/They"],
-                  "correct": ["am", "are", "is", "are"]
-                },
-                {
-                  "verb": "have",
-                  "pronouns": ["I", "You", "He/She", "We"],
-                  "correct": ["have", "have", "has", "have"]
-                },
-                {
-                  "verb": "go",
-                  "pronouns": ["I", "You", "He/She", "They"],
-                  "correct": ["go", "go", "goes", "go"]
-                },
-                {
-                  "verb": "do",
-                  "pronouns": ["I", "You", "He/She", "We"],
-                  "correct": ["do", "do", "does", "do"]
-                },
-                {
-                  "verb": "say",
-                  "pronouns": ["I", "You", "He/She", "They"],
-                  "correct": ["say", "say", "says", "say"]
-                },
-                {
-                  "verb": "get",
-                  "pronouns": ["I", "You", "He/She", "We"],
-                  "correct": ["get", "get", "gets", "get"]
-                },
-                {
-                  "verb": "make",
-                  "pronouns": ["I", "You", "He/She", "They"],
-                  "correct": ["make", "make", "makes", "make"]
-                },
-                {
-                  "verb": "know",
-                  "pronouns": ["I", "You", "He/She", "We"],
-                  "correct": ["know", "know", "knows", "know"]
-                },
-                {
-                  "verb": "take",
-                  "pronouns": ["I", "You", "He/She", "They"],
-                  "correct": ["take", "take", "takes", "take"]
-                },
-                {
-                  "verb": "see",
-                  "pronouns": ["I", "You", "He/She", "We"],
-                  "correct": ["see", "see", "sees", "see"]
+              "verb": "would like",
+              "tenses": ["Present"],
+              "pronouns": ["I", "You", "He/She", "We"],
+              "correct": {
+                "Present": {
+                  "I": "would like",
+                  "You": "would like",
+                  "He/She": "would like",
+                  "We": "would like"
                 }
+              }
+            }
+          },
+          {
+            "id": "ex3_match_restaurant",
+            "type": "drag_drop",
+            "title": "Restaurant Vocabulary",
+            "instructions": "Match the English word with its Spanish meaning.",
+            "config": {
+              "pairs": [
+                { "id": "p1", "from": "Waiter", "to": "Mesero" },
+                { "id": "p2", "from": "Table", "to": "Mesa" },
+                { "id": "p3", "from": "Dessert", "to": "Postre" }
               ]
             }
           },
           {
-            "id": "ex3_routine_sentences",
+            "id": "ex4_order_sentence",
             "type": "sentence_formation",
-            "question": "Yo me despierto temprano en la mañana",
+            "title": "Making an Order",
+            "instructions": "Order the words to ask for the bill politely.",
             "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "I",
-                "wake",
-                "up",
-                "early",
-                "in",
-                "the",
-                "morning",
-                "at",
-                "night"
-              ],
-              "correctAnswers": ["I wake up early in the morning"]
-            }
-          },
-          {
-            "id": "ex4_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Ella va a trabajar al mediodía",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "She",
-                "goes",
-                "to",
-                "work",
-                "at",
-                "noon",
-                "evening",
-                "the"
-              ],
-              "correctAnswers": ["She goes to work at noon"]
-            }
-          },
-          {
-            "id": "ex5_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Nosotros cenamos al atardecer",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "We",
-                "have",
-                "dinner",
-                "at",
-                "sunset",
-                "sunrise",
-                "lunch"
-              ],
-              "correctAnswers": ["We have dinner at sunset"]
-            }
-          },
-          {
-            "id": "ex6_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Ellos ven la televisión por la noche",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "They",
-                "watch",
-                "TV",
-                "at",
-                "night",
-                "morning",
-                "go"
-              ],
-              "correctAnswers": ["They watch TV at night"]
-            }
-          },
-          {
-            "id": "ex7_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Yo sé la respuesta ahora",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": ["I", "know", "the", "answer", "now", "late", "noon"],
-              "correctAnswers": ["I know the answer now"]
-            }
-          },
-          {
-            "id": "ex8_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Él hace el desayuno al amanecer",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "He",
-                "makes",
-                "breakfast",
-                "at",
-                "sunrise",
-                "sunset",
-                "gets"
-              ],
-              "correctAnswers": ["He makes breakfast at sunrise"]
-            }
-          },
-          {
-            "id": "ex9_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Es medianoche en Londres",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "It",
-                "is",
-                "midnight",
-                "in",
-                "London",
-                "noon",
-                "at"
-              ],
-              "correctAnswers": ["It is midnight in London"]
-            }
-          },
-          {
-            "id": "ex10_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Tú llegas tarde hoy",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": ["You", "are", "late", "today", "early", "at", "the"],
-              "correctAnswers": ["You are late today"]
-            }
-          },
-          {
-            "id": "ex11_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Nosotros vamos al parque por la tarde",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "We",
-                "go",
-                "to",
-                "the",
-                "park",
-                "in",
-                "the",
-                "afternoon",
-                "night"
-              ],
-              "correctAnswers": ["We go to the park in the afternoon"]
-            }
-          },
-          {
-            "id": "ex12_routine_sentences",
-            "type": "sentence_formation",
-            "question": "Yo tomo café por la mañana",
-            "config": {
-              "title": "Build your routine",
-              "wordBank": [
-                "I",
-                "take",
-                "coffee",
-                "in",
-                "the",
-                "morning",
-                "at",
-                "night"
-              ],
-              "correctAnswers": [
-                "I take coffee in the morning",
-                "I drink coffee in the morning"
-              ]
+              "wordBank": ["Can", "I", "have", "the", "bill", "please", "food"],
+              "correctAnswers": ["Can I have the bill please"],
+              "requiredWords": ["Can", "I", "have", "the", "bill", "please"]
             }
           }
         ]
-      }
-    },
-    "settings": {
-      "retryLimit": 3,
-      "accessibility": {
-        "audioSubtitles": true,
-        "visualAids": true
       },
-      "unlockCondition": "completed:A1_numbers"
+      "updatedAt": { "_seconds": 1768912180, "_nanoseconds": 0 }
     }
   }
 }
