@@ -53,8 +53,14 @@ const UNIT_ORDER_MAP_A1: Record<string, number> = {
 };
 
 const UNIT_ORDER_MAP_A2: Record<string, number> = {
-  unitA2_past_memories: 1,
-  unitA2_work_experience: 2,
+  unitA2_lifestyle: 1,
+  unitA2_environment: 2,
+  unitA2_grammar_past: 3,
+  unitA2_travel_culture: 4,
+  unitA2_wellbeing: 5,
+  unitA2_tech_society: 6,
+  unitA2_work_career: 7,
+  unitA2_final_test: 8,
 };
 
 const UNIT_ORDER_MAP_B1: Record<string, number> = {

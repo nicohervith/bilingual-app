@@ -1,49 +1,19 @@
 {
-  "A1_future_plans": [
+  "A1_food_restaurants": [
     {
-      "id": "ex1_conjugation_full",
-      "type": "conjugation",
-      "title": "Grammar: Going to",
-      "instructions": "Conjugate the future with 'going to' for all pronouns.",
+      "id": "ex5_containers_match",
+      "type": "drag_drop",
+      "title": "Containers & Quantities",
+      "instructions": "Match the container with the correct food item.",
       "config": {
-        "verb": "be going to",
-        "tenses": ["Future"],
-        "pronouns": ["I", "You", "He", "She", "It", "We", "They"],
-        "correct": {
-          "Future": {
-            "I": "am going to",
-            "You": "are going to",
-            "He": "is going to",
-            "She": "is going to",
-            "It": "is going to",
-            "We": "are going to",
-            "They": "are going to"
-          }
-        }
-      }
-    },
-    {
-      "id": "ex3_calendar_expanded",
-      "type": "calendar_planner",
-      "title": "Plan a busy week",
-      "instructions": "Assign at least 3 activities per day to complete your schedule.",
-      "config": {
-        "activities": [
-          "Doctor appointment",
-          "Dinner with friends",
-          "Go to the gym",
-          "Watch a movie",
-          "English class",
-          "Visit family",
-          "Play soccer",
-          "Buy groceries",
-          "Read a book",
-          "Clean the house"
-        ],
-        "constraints": {
-          "maxActivitiesPerDay": 3
-        }
-      }
+        "pairs": [
+          { "id": "p1", "from": "A glass of", "to": "Water" },
+          { "id": "p2", "from": "A piece of", "to": "Cake" },
+          { "id": "p3", "from": "A bowl of", "to": "Rice" },
+          { "id": "p4", "from": "A cup of", "to": "Coffee" }
+        ]
+      },
+      "scoring": { "pointsPerCorrect": 10 }
     }
   ]
 }

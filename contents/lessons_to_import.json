@@ -1,117 +1,145 @@
 {
   "lessons": {
-    "A1_ordering_food": {
-      "id": "A1_ordering_food",
-      "title": "At the Restaurant",
+    "A1_paying_the_bill": {
+      "id": "A1_paying_the_bill",
+      "title": "Paying the Bill",
       "metadata": {
         "level": "A1",
         "module": "daily_life",
-        "estimatedDuration": 25,
-        "unit": "unitA1_conversation",
-        "tags": ["food", "ordering", "restaurant", "politeness"],
+        "estimatedDuration": 20,
+        "unit": "Unit 7 (At the Restaurant)",
+        "tags": ["money", "restaurant", "payment", "social_skills"],
         "xpReward": 100
       },
       "objectives": [
-        "Identify common food and drinks",
-        "Use 'would like' to order politely",
-        "Understand basic restaurant interactions"
+        "Ask for the bill politely using 'Can I have...?'",
+        "Identify common payment methods (cash, card)",
+        "Understand the concept of a 'tip' in a restaurant context"
       ],
       "settings": {
         "retryLimit": 3,
-        "unlockCondition": "completed:A1_basics"
+        "unlockCondition": "completed:A1_ordering_food"
       },
       "content": {
         "vocabulary": [
           {
-            "id": "voc_burger",
-            "word": "Hamburger",
-            "translation": "Hamburguesa",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005001/hamburger.png",
-            "examples": ["I want a hamburger, please"]
-          },
-          {
-            "id": "voc_water",
-            "word": "Still water",
-            "translation": "Agua sin gas",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005002/water.png",
-            "examples": ["A bottle of still water, please"]
-          },
-          {
-            "id": "voc_bill",
+            "id": "pay_bill",
             "word": "The bill",
             "translation": "La cuenta",
-            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005003/bill.png",
-            "examples": ["Can I have the bill, please?"]
+            "examples": ["Check, please!"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025001/bill.png"
+          },
+          {
+            "id": "pay_cash",
+            "word": "Cash",
+            "translation": "Efectivo",
+            "examples": ["I only have cash"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025002/cash.png"
+          },
+          {
+            "id": "pay_card",
+            "word": "Credit card",
+            "translation": "Tarjeta de crédito",
+            "examples": ["Do you accept cards?"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025003/card.png"
+          },
+          {
+            "id": "pay_tip",
+            "word": "Tip",
+            "translation": "Propina",
+            "examples": ["Leave a tip for the waiter"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025004/tip.png"
           }
         ],
         "exercises": [
           {
-            "id": "ex1_food_select",
+            "id": "pay_ex1_select",
             "type": "image_selection",
-            "title": "Menu Choice",
-            "instructions": "Which one is the main course?",
+            "title": "Payment Method",
+            "instructions": "Which one is a credit card?",
             "config": {
-              "multipleSelection": false,
+              "question": "Select the correct payment method",
               "options": [
                 {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005001/hamburger.png",
+                  "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025003/card.png",
                   "correct": true,
-                  "feedback": "Correct! A hamburger is a main course."
+                  "feedback": "Correct! Most restaurants accept cards."
                 },
                 {
-                  "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1755005002/water.png",
+                  "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025002/cash.png",
                   "correct": false,
-                  "feedback": "No, water is a drink."
+                  "feedback": "No, that is cash (paper money)."
                 }
               ]
             }
           },
           {
-            "id": "ex2_would_like",
-            "type": "conjugation",
-            "title": "Polite Ordering",
-            "instructions": "Complete the polite form 'would like' (Querría/Me gustaría)",
-            "config": {
-              "verb": "would like",
-              "tenses": ["Present"],
-              "pronouns": ["I", "You", "He/She", "We"],
-              "correct": {
-                "Present": {
-                  "I": "would like",
-                  "You": "would like",
-                  "He/She": "would like",
-                  "We": "would like"
-                }
-              }
-            }
-          },
-          {
-            "id": "ex3_match_restaurant",
-            "type": "drag_drop",
-            "title": "Restaurant Vocabulary",
-            "instructions": "Match the English word with its Spanish meaning.",
-            "config": {
-              "pairs": [
-                { "id": "p1", "from": "Waiter", "to": "Mesero" },
-                { "id": "p2", "from": "Table", "to": "Mesa" },
-                { "id": "p3", "from": "Dessert", "to": "Postre" }
-              ]
-            }
-          },
-          {
-            "id": "ex4_order_sentence",
+            "id": "pay_ex2_sentence",
             "type": "sentence_formation",
-            "title": "Making an Order",
-            "instructions": "Order the words to ask for the bill politely.",
+            "title": "Asking for the bill",
+            "instructions": "Order the words to ask for the bill.",
             "config": {
               "wordBank": ["Can", "I", "have", "the", "bill", "please", "food"],
               "correctAnswers": ["Can I have the bill please"],
-              "requiredWords": ["Can", "I", "have", "the", "bill", "please"]
+              "requiredWords": ["Can", "I", "have", "the", "bill"]
+            }
+          },
+          {
+            "id": "pay_ex3_match",
+            "type": "drag_drop",
+            "title": "Money Match",
+            "instructions": "Match the words with their Spanish meaning.",
+            "config": {
+              "pairs": [
+                {
+                  "id": "m1",
+                  "from": "Service included",
+                  "to": "Servicio incluido"
+                },
+                { "id": "m2", "from": "Waitress", "to": "Mesera" },
+                { "id": "m3", "from": "Total price", "to": "Precio total" }
+              ]
+            }
+          },
+          {
+            "id": "pay_ex4_listening",
+            "type": "listening_transcription",
+            "title": "Listening: Paying",
+            "instructions": "Listen and transcribe the payment choice.",
+            "config": {
+              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025005/pay_card.mp3",
+              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025006/pay_card_slow.mp3",
+              "correctSentence": "I want to pay by card",
+              "wordBank": [
+                "I",
+                "want",
+                "to",
+                "pay",
+                "by",
+                "card",
+                "cash",
+                "the",
+                "bill"
+              ]
+            }
+          },
+          {
+            "id": "pay_ex5_memory",
+            "type": "memory_game",
+            "title": "Restaurant Recap",
+            "instructions": "Match the icons with the words.",
+            "config": {
+              "pairs": [
+                { "front": "Bill", "back": "Cuenta" },
+                { "front": "Cash", "back": "Efectivo" },
+                { "front": "Tip", "back": "Propina" },
+                { "front": "Card", "back": "Tarjeta" }
+              ]
             }
           }
         ]
       },
-      "updatedAt": { "_seconds": 1768912180, "_nanoseconds": 0 }
+      "updatedAt": { "_seconds": 1769025000, "_nanoseconds": 0 }
     }
   }
 }

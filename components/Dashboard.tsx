@@ -33,6 +33,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/ToastConfig";
+import GuestSection from "./GuestSection";
 import PurchaseLevel from "./PurchaseLevel";
 import { FlameIcon, InstagramIcon } from "./SvgIcons";
 
@@ -187,20 +188,20 @@ export default function Dashboard() {
     const A1Units = modules.flatMap((m) =>
       Object.entries(m.units || {})
         .filter(([unitId]) => unitId.includes("A1_"))
-        .map(([, unit]) => unit)
+        .map(([, unit]) => unit),
     );
 
     const A2Units = modules.flatMap((m) =>
       Object.entries(m.units || {})
         .filter(([unitId]) => unitId.includes("A2_"))
-        .map(([, unit]) => unit)
+        .map(([, unit]) => unit),
     );
 
     return {
       A1: 0,
       A2: Math.round(calculateTotalLevelXP(A1Units) * 0.7),
       B1: Math.round(
-        calculateTotalLevelXP(A1Units) + calculateTotalLevelXP(A2Units) * 0.7
+        calculateTotalLevelXP(A1Units) + calculateTotalLevelXP(A2Units) * 0.7,
       ),
     };
   };
@@ -225,7 +226,7 @@ export default function Dashboard() {
     todayDate.setHours(0, 0, 0, 0);
 
     const diffDays = Math.floor(
-      (todayDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)
+      (todayDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24),
     );
 
     let newStreak = userProgress.stats?.daysStreak || 1;
@@ -238,7 +239,7 @@ export default function Dashboard() {
 
     const longestStreak = Math.max(
       newStreak,
-      userProgress.stats?.longestStreak || 1
+      userProgress.stats?.longestStreak || 1,
     );
 
     try {
@@ -304,7 +305,7 @@ export default function Dashboard() {
               levelTotals.A2 += unit.lessons?.length || 0;
             else if (unitId.includes("B1_"))
               levelTotals.B1 += unit.lessons?.length || 0;
-          }
+          },
         );
       });
 
@@ -376,7 +377,7 @@ export default function Dashboard() {
               totalLessons.A2 += unit.lessons?.length || 0;
             else if (unitId.includes("B1_"))
               totalLessons.B1 += unit.lessons?.length || 0;
-          }
+          },
         );
       });
       const newProgressData = {
@@ -453,6 +454,17 @@ export default function Dashboard() {
   // El useEffect anterior que sincronizaba niveles ha sido removido
 
   const handleBuyLevel = (levelId: LevelId) => {
+    if (!user) {
+      Toast.show({
+        type: "error",
+        text1: "Inicia sesión requerido",
+        text2: "Por favor inicia sesión para comprar niveles",
+        topOffset: 60,
+        visibilityTime: 4000,
+      });
+      return;
+    }
+
     setSelectedLevel(levelId);
     setPaymentModalVisible(true);
 
@@ -474,7 +486,7 @@ export default function Dashboard() {
     } catch (error) {
       console.log(
         "⚠️ Backend wake-up call failed (expected for cold starts):",
-        error
+        error,
       );
     }
   };
@@ -520,7 +532,7 @@ export default function Dashboard() {
 
       // Si no tiene acceso local, verificar en el backend
       const response = await fetch(
-        API_ENDPOINTS.CHECK_LEVEL_ACCESS_SPECIFIC(user.uid, levelId)
+        API_ENDPOINTS.CHECK_LEVEL_ACCESS_SPECIFIC(user.uid, levelId),
       );
 
       if (response.ok) {
@@ -629,7 +641,7 @@ export default function Dashboard() {
                   style={styles.instagramButton}
                   onPress={() =>
                     Linking.openURL(
-                      "https://www.instagram.com/bilingualsite01/"
+                      "https://www.instagram.com/bilingualsite01/",
                     )
                   }
                 >
@@ -656,16 +668,7 @@ export default function Dashboard() {
               </View>
             </>
           ) : (
-            <View style={styles.guestInfo}>
-              <Text style={styles.guestTitle}>Bienvenido invitado</Text>
-              <Text style={styles.guestText}>
-                Inicia sesión para acceder a todo el contenido
-              </Text>
-              <Button
-                title="Iniciar sesión"
-                onPress={() => router.push("/login")}
-              />
-            </View>
+            <GuestSection />
           )}
         </View>
 
@@ -686,7 +689,7 @@ export default function Dashboard() {
                         />
                         <Text style={styles.badgeTitle}>{badge.unitTitle}</Text>
                       </View>
-                    )
+                    ),
                   )}
                 </View>
               </ScrollView>
@@ -718,7 +721,7 @@ export default function Dashboard() {
             total: 0,
           };
           const completedCount = Object.keys(
-            progress.completedLessons || {}
+            progress.completedLessons || {},
           ).filter((id) => id.includes(level.id)).length;
 
           const hasAccess = progress.purchasedLevels?.[level.id];
@@ -838,15 +841,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "rgba(255, 255, 255, 0.08)",
     zIndex: -1,
-  },
-  guestInfo: {
-    alignItems: "center",
-  },
-  guestTitle: {},
-  guestText: {
-    marginBottom: 10,
-    color: "#FFFFFF",
-    fontFamily: "Poppins",
   },
   userHeader: {
     flexDirection: "row",

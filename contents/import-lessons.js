@@ -22,7 +22,7 @@ async function importLessons() {
         // Validación corregida
         if (!lesson.id || !lesson.title || !lesson.metadata?.level) {
           console.warn(
-            `⚠️ Lección omitida: ${lessonId} - Faltan campos requeridos`
+            `⚠️ Lección omitida: ${lessonId} - Faltan campos requeridos`,
           );
           continue;
         }
@@ -48,7 +48,7 @@ async function importLessons() {
                 translation: item.translation,
                 examples: item.examples || [],
                 conjugations: item.conjugations || null,
-                image: item.image || null,
+                media: item.media || null,
                 tags: item.tags || [],
               })) || [],
             exercises:
