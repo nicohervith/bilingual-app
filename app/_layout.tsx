@@ -1,29 +1,67 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { AuthProvider } from "@/contexts/AuthContext";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
+import { StyleSheet, useColorScheme, View } from "react-native";
+import "react-native-reanimated";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+WebBrowser.maybeCompleteAuthSession();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AuthProvider>
+      <View style={styles.globalContainer}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
+          <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
+          <Stack.Screen
+            name="payment-success"
+            options={{
+              title: "Pago Exitoso",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="payment-cancel"
+            options={{
+              title: "Pago Cancelado",
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </View>
+    </AuthProvider>
   );
 }
+const styles = StyleSheet.create({
+  globalContainer: {
+    width: 800,
+    marginHorizontal: "auto",
+    marginTop: 32,
+    padding: 16,
+    backgroundColor: "#9365FF",
+    borderRadius: 16,
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    alignSelf: "center",
+    flex: 1,
+  },
+  header: {
+    backgroundColor: "#f5f5f5",
+    elevation: 0,
+    shadowOpacity: 0,
+  },
+  headerTitle: {
+    fontWeight: "bold",
+    color: "#333",
+  },
+});

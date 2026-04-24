@@ -9,10 +9,14 @@
       ]
     }
   },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "contents/migrateStructure.js", "lib/firebaseConfig.ts", "scripts/migrate-user-badges.js", "components/StripePayment.js"  ]
 }

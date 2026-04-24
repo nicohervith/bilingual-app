@@ -1,36 +1,43 @@
-import { useLocalSearchParams } from "expo-router";
+
+import { getLessonsByLevel } from "@/services/firestoreService";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View, ActivityIndicator } from "react-native";
-import Mission from "@/components/Mission";
-import { getMissionsByLevel } from "@/lib/firebaseUtils";
+import {
+  ActivityIndicator,
+  View,
+} from "react-native";
+import LessonContent from "../lesson/LessonContent";
 
-export default function LevelScreen() {
-  const { level } = useLocalSearchParams();
-  const [missions, setMissions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  export default function LevelPage() {
+    const { level: levelId } = useLocalSearchParams();
+    const [lessons, setLessons] = useState<any[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const router = useRouter();
 
-  useEffect(() => {
-    if (level) {
-      getMissionsByLevel(level as string)
-        .then(setMissions)
-        .catch(console.error)
-        .finally(() => setLoading(false));
-    }
-  }, [level]);
+    useEffect(() => {
+      const loadLessons = async () => {
+        const lessons = await getLessonsByLevel(levelId as string);
+        setLessons(lessons);
+      };
+      loadLessons();
+    }, [levelId]);
 
-  if (loading) {
-    return <ActivityIndicator size="large" style={{ marginTop: 40 }} />;
+    if (lessons.length === 0) return <ActivityIndicator />;
+
+    console.log(`Mostrando lección ${currentIndex + 1}/${lessons.length}`);
+
+    return (
+      <View style={{ flex: 1 }}>
+        <LessonContent
+          lesson={lessons[currentIndex]}
+          onComplete={() => {
+            if (currentIndex < lessons.length - 1) {
+              setCurrentIndex(currentIndex + 1);
+            } else {
+              router.back();
+            }
+          }}
+        />
+      </View>
+    );
   }
-
-  return (
-    <ScrollView contentContainerStyle={{ padding: 20 }}>
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        Level {level} Missions
-      </Text>
-
-      {missions.map((mission) => (
-        <Mission key={mission.id} mission={mission} />
-      ))}
-    </ScrollView>
-  );
-}

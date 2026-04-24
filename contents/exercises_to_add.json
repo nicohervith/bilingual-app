@@ -1,0 +1,19 @@
+{
+  "A1_food_restaurants": [
+    {
+      "id": "ex5_containers_match",
+      "type": "drag_drop",
+      "title": "Containers & Quantities",
+      "instructions": "Match the container with the correct food item.",
+      "config": {
+        "pairs": [
+          { "id": "p1", "from": "A glass of", "to": "Water" },
+          { "id": "p2", "from": "A piece of", "to": "Cake" },
+          { "id": "p3", "from": "A bowl of", "to": "Rice" },
+          { "id": "p4", "from": "A cup of", "to": "Coffee" }
+        ]
+      },
+      "scoring": { "pointsPerCorrect": 10 }
+    }
+  ]
+}

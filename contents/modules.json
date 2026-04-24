@@ -1,0 +1,33 @@
+{
+  "modules": {
+    "basics": {
+      "id": "basics",
+      "title": "Fundamentos de Inglés",
+      "description": "Aprende los conceptos básicos",
+      "icon": "🌟",
+      "units": {
+        "unitA1_basics": {
+          "id": "unitA1_basics",
+          "title": "Básicos",
+          "lessons": ["A1_numbers", "A1_colors"],
+          "requiredXP": 0,
+          "rewardXP": 100
+        },
+        "unitA1_vocabulary": {
+          "id": "unitA1_vocabulary",
+          "title": "Vocabulario Esencial",
+          "lessons": ["A1_animals", "A1_weather"],
+          "requiredXP": 100,
+          "rewardXP": 150
+        },
+        "unitA1_grammar": {
+          "id": "unitA1_grammar",
+          "title": "Gramática Básica",
+          "lessons": ["A1_pronouns", "A1_verbs"],
+          "requiredXP": 200,
+          "rewardXP": 200
+        }
+      }
+    }
+  }
+}

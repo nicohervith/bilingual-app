@@ -1,0 +1,53 @@
+{
+  "units": {
+    "unit1_greetings": {
+      "title": "Greetings and Introductions",
+      "order": 1,
+      "description": "Aprende saludos básicos y presentaciones",
+      "level": "A1",
+      "rewards": {
+        "gems": 10,
+        "badge": "First Talk",
+        "sticker": "bily_hello"
+      },
+      "lessons": [
+        "lesson1_hello",
+        "lesson2_my_name",
+        "lesson3_whats_your_name",
+        "lesson4_nice_to_meet_you",
+        "lesson5_review_game"
+      ]
+    }
+  },
+  "lessons": {
+    "lesson1_hello": {
+      "title": "Hello! Hi!",
+      "type": "vocabulary",
+      "objectives": [
+        "Comprender saludos básicos",
+        "Diferenciar saludos formales e informales"
+      ],
+      "content": {
+        "vocabulary": [
+          {
+            "word": "hello",
+            "translation": "hola",
+            "audio": "hello.mp3",
+            "image": "wave.png"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "matching",
+            "pairs": [
+              { "from": "hello", "to": "hola" },
+              { "from": "goodbye", "to": "adiós" }
+            ]
+          }
+        ]
+      },
+      "xpReward": 50,
+      "required": []
+    }
+  }
+}

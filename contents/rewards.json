@@ -1,0 +1,15 @@
+{
+  "badge_first_talk": {
+    "name": "First Talk",
+    "description": "Completaste tu primera conversación",
+    "image": "rewards/badges/first_talk.png",
+    "rarity": "common",
+    "xpValue": 200
+  },
+  "sticker_bily_hello": {
+    "type": "sticker",
+    "collection": "greetings",
+    "animation": "stickers/hello_anim.gif",
+    "unlockCondition": "complete_unit1"
+  }
+}
