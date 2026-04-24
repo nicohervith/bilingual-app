@@ -2,7 +2,7 @@ import { CompletionMessage } from "@/components/ui/CompletionMessage";
 import { Audio } from "expo-av";
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import ExerciseFeedback from "./ExerciseFeedback";
+import ExerciseFeedback from "@/components/ui/ExerciseFeedback";
 
 type AudioMatchingGameProps = {
   config: {

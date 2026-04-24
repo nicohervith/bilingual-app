@@ -10,7 +10,7 @@ import {
 } from "@/services/courseService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
-import LessonContent from "../app/lesson/LessonContent";
+import LessonContent from "@/app/lesson/LessonContent";
 
 // Definición de tipos para TypeScript
 type VocabularyItem = {

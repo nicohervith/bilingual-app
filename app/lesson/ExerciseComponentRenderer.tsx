@@ -1,18 +1,18 @@
-import AudioMatchingGame from "@/components/AudioMatchingGame";
-import AudioToImageMatching from "@/components/AudioToImageMatching";
-import CategorizationGame from "@/components/CategorizationGame";
-import ConjugationExercise from "@/components/ConjugationExercise";
-import DragDropExercise from "@/components/DragAndDropExercise";
+import AudioMatchingGame from "@/components/games/AudioMatchingGame";
+import AudioToImageMatching from "@/components/games/AudioToImageMatching";
+import CategorizationGame from "@/components/games/CategorizationGame";
+import ConjugationExercise from "@/components/exercises/ConjugationExercise";
+import DragDropExercise from "@/components/exercises/DragAndDropExercise";
 import CalendarPlanner from "@/components/games/CalendarPlanner";
 import DialogueSimulation from "@/components/games/DialogueSimulation";
 import MapInteractive from "@/components/games/MapInteractive";
 import { PronunciationGame } from "@/components/games/PronunciationGame";
-import ImageSelectionExercise from "@/components/ImageSelectionExercise";
-import ListeningExercise from "@/components/ListeningExercise";
-import MatchingExercise from "@/components/MatchingExercise";
-import MemoryGame from "@/components/MemoryGame";
-import NumbersGame from "@/components/NumbersGame";
-import SentenceBuilder from "@/components/SentenceBuilder";
+import ImageSelectionExercise from "@/components/exercises/ImageSelectionExercise";
+import ListeningExercise from "@/components/exercises/ListeningExercise";
+import MatchingExercise from "@/components/exercises/MatchingExercise";
+import MemoryGame from "@/components/games/MemoryGame";
+import NumbersGame from "@/components/games/NumbersGame";
+import SentenceBuilder from "@/components/content/SentenceBuilder";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import type { Exercise } from "./exerciseConfig";
@@ -26,10 +26,6 @@ interface ExerciseComponentProps extends CommonExerciseProps {
   onExerciseData: (index: number, data: any) => void;
 }
 
-/**
- * Componente centralizado para renderizar diferentes tipos de ejercicios
- * Elimina el switch statement enorme del componente principal
- */
 export const ExerciseComponentRenderer: React.FC<ExerciseComponentProps> = ({
   exercise,
   index,

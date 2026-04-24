@@ -11,9 +11,9 @@ import {
 
 type ConjugationExerciseProps = {
   config: {
-    verb?: string; // Hacer opcional para soportar otros tipos
-    tenses?: string[]; // Hacer opcional
-    pronouns: string[]; // Mantener requerido ya que es esencial
+    verb?: string;
+    tenses?: string[];
+    pronouns: string[];
     correct?: {
       [key: string]: {
         [pronoun: string]: string;
@@ -36,11 +36,9 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
   onComplete,
   isCompleted,
 }) => {
-  // 1. Función auxiliar para obtener la respuesta correcta de forma segura
-  const getCorrectAnswer = (tense: string, pronoun: string) => {
-    return (
-      config.correct?.[tense]?.[pronoun] || config.correct?.[pronoun] || ""
-    );
+  const getCorrectAnswer = (tense: string, pronoun: string): string => {
+    const answer = config.correct?.[tense]?.[pronoun];
+    return typeof answer === "string" ? answer : "";
   };
 
   const tenses = config.tenses || ["Presente"];
@@ -50,11 +48,10 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
   const [currentTense, setCurrentTense] = useState(tenses[0]);
   const [activePronoun, setActivePronoun] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
-  const [showFeedback, setShowFeedback] = useState(isCompleted); // Si está completo, mostrar feedback
+  const [showFeedback, setShowFeedback] = useState(isCompleted);
   const [showCompletion, setShowCompletion] = useState(false);
   const [isCorrect, setIsCorrect] = useState(isCompleted);
 
-  // 2. Efecto para inicializar o resetear según isCompleted
   useEffect(() => {
     const initialAnswers: Record<string, Record<string, string>> = {};
 
@@ -93,8 +90,8 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
   const checkCompletion = (currentAnswers: typeof answers) => {
     const allTensesComplete = tenses.every((tense) =>
       config.pronouns.every((pronoun) =>
-        currentAnswers[tense]?.[pronoun]?.trim()
-      )
+        currentAnswers[tense]?.[pronoun]?.trim(),
+      ),
     );
 
     if (!allTensesComplete) return;
@@ -152,12 +149,11 @@ const ConjugationExercise: React.FC<ConjugationExerciseProps> = ({
                   getCorrectAnswer(currentTense, pronoun).toLowerCase()
                   ? styles.correctInput
                   : answers[currentTense]?.[pronoun]
-                  ? styles.incorrectInput
-                  : null,
+                    ? styles.incorrectInput
+                    : null,
                 isCompleted && styles.correctInput, // Forzar verde si ya está completo
               ]}
               onPress={() => {
-                // SOLO abrir modal si no está completado
                 if (!isCompleted) {
                   setActivePronoun(pronoun);
                   setInputValue(answers[currentTense]?.[pronoun] || "");

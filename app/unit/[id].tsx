@@ -1,5 +1,5 @@
 /* import { db } from "@/lib/firebaseConfig"; */
-import { CheckmarkIcon } from "@/components/SvgIcons";
+import { CheckmarkIcon } from "@/components/ui/SvgIcons";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";

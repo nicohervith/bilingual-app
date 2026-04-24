@@ -31,6 +31,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const [showLinkingOptions, setShowLinkingOptions] = useState(false);
   const [linkedGoogleCredential, setLinkedGoogleCredential] =
     useState<any>(null);
@@ -81,8 +82,8 @@ export default function Login() {
           // El email ya existe en otra forma de autenticación
           setErrorMessage(
             `Este correo ya está registrado. Utiliza el método: ${signInMethods.join(
-              ", "
-            )}`
+              ", ",
+            )}`,
           );
           setLoading(false);
           return;
@@ -92,7 +93,7 @@ export default function Login() {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,
-          password
+          password,
         );
         await handleAuthSuccess(userCredential);
       } else {
@@ -101,7 +102,7 @@ export default function Login() {
           const userCredential = await signInWithEmailAndPassword(
             auth,
             email,
-            password
+            password,
           );
           await handleAuthSuccess(userCredential);
         } catch (error: any) {
@@ -116,12 +117,12 @@ export default function Login() {
               // El email existe pero con otro método de autenticación
               setErrorMessage(
                 `Este correo está registrado con: ${signInMethods.join(
-                  ", "
-                )}. Por favor, usa ese método para iniciar sesión.`
+                  ", ",
+                )}. Por favor, usa ese método para iniciar sesión.`,
               );
             } else {
               setErrorMessage(
-                "Credenciales incorrectas. Verifica tu email y contraseña."
+                "Credenciales incorrectas. Verifica tu email y contraseña.",
               );
             }
           } else {
@@ -226,13 +227,10 @@ export default function Login() {
       let newStreak = stats.daysStreak || 1;
 
       if (diffDays === 1) {
-        // Entró al día siguiente: SUMA racha
         newStreak += 1;
       } else if (diffDays > 1) {
-        // Pasó más de un día: RESETEA racha
         newStreak = 1;
       }
-      // Si diffDays === 0 (entró el mismo día), newStreak se queda igual.
 
       await updateDoc(userProgressRef, {
         "stats.daysStreak": newStreak,
@@ -255,82 +253,101 @@ export default function Login() {
           </View>
         )}
 
-        <TextInput
-          placeholder="Email"
-          style={[styles.input, errorMessage && styles.inputError]}
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            if (errorMessage) setErrorMessage(null);
-          }}
-          autoCapitalize="none"
-        />
-        <View style={styles.passwordContainer}>
-          <TextInput
-            placeholder="Contraseña"
-            style={styles.passwordInput}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            style={styles.eyeIcon}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <Ionicons
-              name={showPassword ? "eye" : "eye-off"}
-              size={24}
-              color="#666"
-            />
-          </TouchableOpacity>
-        </View>
-
+        {/* OPCIÓN PRINCIPAL: GOOGLE */}
         <TouchableOpacity
-          style={styles.mainButton}
-          onPress={handleEmailAuth}
-          disabled={loading}
+          style={[styles.mainGoogleButton]}
+          onPress={() => gPrompt()}
+          disabled={!gRequest}
         >
-          {loading ? (
-            <ActivityIndicator color="#FFF" />
-          ) : (
-            <Text style={styles.buttonText}>
-              {isRegistering ? "Registrarse" : "Entrar"}
-            </Text>
-          )}
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)}>
-          <Text style={styles.switchText}>
-            {isRegistering
-              ? "¿Ya tienes cuenta? Loguéate"
-              : "¿No tienes cuenta? Regístrate"}
-          </Text>
+          <Image
+            source={require("../assets/images/logo.png")}
+            style={styles.mainGoogleIcon}
+          />
+          <Text style={styles.mainGoogleButtonText}>Continuar con Google</Text>
         </TouchableOpacity>
 
         <View style={styles.divider}>
           <View style={styles.line} />
-          <Text style={styles.dividerText}>O continuar con</Text>
+          <Text style={styles.dividerText}>o</Text>
           <View style={styles.line} />
         </View>
 
-        {/* BOTONES SOCIALES */}
-        <View style={styles.socialContainer}>
+        {/* BOTÓN PARA MOSTRAR FORMULARIO DE EMAIL */}
+        {!showEmailForm ? (
           <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => gPrompt()}
-            disabled={!gRequest}
+            style={styles.emailToggleButton}
+            onPress={() => setShowEmailForm(true)}
           >
-            {/* <Image
-              source={require("../assets/images/google-icon.png")}
-              style={styles.socialIcon}
-            /> */}
-            <Image
-              source={require("../assets/images/logo.png")}
-              style={styles.socialIcon}
-            />
-            <Text style={styles.socialButtonText}>Google</Text>
+            <Text style={styles.emailToggleText}>Usar email en su lugar</Text>
           </TouchableOpacity>
-        </View>
+        ) : (
+          <>
+            {/* FORMULARIO DE EMAIL (colapsable) */}
+            <TextInput
+              placeholder="Email"
+              style={[styles.input, errorMessage && styles.inputError]}
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                if (errorMessage) setErrorMessage(null);
+              }}
+              autoCapitalize="none"
+            />
+            <View style={styles.passwordContainer}>
+              <TextInput
+                placeholder="Contraseña"
+                style={styles.passwordInput}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color="#666"
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              style={styles.mainButton}
+              onPress={handleEmailAuth}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#FFF" />
+              ) : (
+                <Text style={styles.buttonText}>
+                  {isRegistering ? "Registrarse" : "Entrar"}
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)}>
+              <Text style={styles.switchText}>
+                {isRegistering
+                  ? "¿Ya tienes cuenta? Loguéate"
+                  : "¿No tienes cuenta? Regístrate"}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.backToGoogleButton}
+              onPress={() => {
+                setShowEmailForm(false);
+                setEmail("");
+                setPassword("");
+                setErrorMessage(null);
+              }}
+            >
+              <Text style={styles.backToGoogleText}>Volver a Google</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </ScrollView>
   );
@@ -345,7 +362,54 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: { width: 100, height: 100, marginBottom: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 30,
+    color: "#1a1a1a",
+  },
+
+  // BOTÓN PRINCIPAL DE GOOGLE
+  mainGoogleButton: {
+    width: "100%",
+    height: 56,
+    backgroundColor: "#dadada",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginBottom: 20,
+    shadowColor: "#c9c9c9",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  mainGoogleIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
+    resizeMode: "contain",
+  },
+  mainGoogleButtonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#FFFFFF",
+  },
+
+  // TOGGLE PARA EMAIL
+  emailToggleButton: {
+    width: "100%",
+    paddingVertical: 14,
+    alignItems: "center",
+  },
+  emailToggleText: {
+    fontSize: 15,
+    color: "#4285F4",
+    fontWeight: "600",
+    textDecorationLine: "underline",
+  },
+
   input: {
     width: "100%",
     height: 50,
@@ -383,10 +447,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
-  switchText: { marginTop: 20, color: "#666" },
-  divider: { flexDirection: "row", alignItems: "center", marginVertical: 30 },
+  switchText: { marginTop: 20, color: "#666", textAlign: "center" },
+  backToGoogleButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+  },
+  backToGoogleText: {
+    fontSize: 14,
+    color: "#4285F4",
+    fontWeight: "600",
+    textAlign: "center",
+    textDecorationLine: "underline",
+  },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 24,
+    width: "100%",
+  },
   line: { flex: 1, height: 1, backgroundColor: "#DDD" },
-  dividerText: { marginHorizontal: 10, color: "#999" },
+  dividerText: { marginHorizontal: 10, color: "#999", fontSize: 14 },
   socialContainer: {
     flexDirection: "row",
     gap: 12,
@@ -395,15 +475,14 @@ const styles = StyleSheet.create({
   },
   socialButton: {
     flex: 1,
-    flexDirection: "row", // Alinea icono y texto en fila
+    flexDirection: "row",
     height: 50,
     borderWidth: 1,
     borderColor: "#DDD",
     borderRadius: 12,
-    alignItems: "center", // Centra verticalmente
-    justifyContent: "center", // Centra horizontalmente
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#FFF",
-    // Sombra suave para que parezca un botón real
     elevation: 2,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -417,7 +496,7 @@ const styles = StyleSheet.create({
   socialIcon: {
     width: 20,
     height: 20,
-    marginRight: 10, // Espacio entre el logo y el texto
+    marginRight: 10,
     resizeMode: "contain",
   },
   socialButtonText: {
@@ -426,13 +505,13 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   errorBanner: {
-    backgroundColor: "#FFEBEE", // Rojo muy claro
+    backgroundColor: "#FFEBEE",
     padding: 12,
     borderRadius: 8,
     width: "100%",
     marginBottom: 15,
     borderLeftWidth: 4,
-    borderLeftColor: "#EF5350", // Rojo vibrante
+    borderLeftColor: "#EF5350",
   },
   errorText: {
     color: "#C62828",

@@ -1,4 +1,4 @@
-import { SessionChecker } from "@/components/SessionChecker";
+import { SessionChecker } from "@/components/auth/SessionChecker";
 import { Slot } from "expo-router";
 import React from "react";
 import "react-native-reanimated";

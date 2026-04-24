@@ -2,7 +2,8 @@ import { getLessonById, getUnitById } from "@/services/courseService";
 import { Lesson, Unit } from "@/types/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
+import LessonCard from "./LessonCard";
 
 export default function UnitScreen() {
   const { id } = useLocalSearchParams();
@@ -19,7 +20,7 @@ export default function UnitScreen() {
         // 2. Obtener todas las lecciones de la unidad
         if (unitData && unitData.lessons) {
           const lessonsData = await Promise.all(
-            unitData.lessons.map((lessonId) => getLessonById(lessonId))
+            unitData.lessons.map((lessonId) => getLessonById(lessonId)),
           );
           setLessons(lessonsData);
         } else {
@@ -37,10 +38,11 @@ export default function UnitScreen() {
     <ScrollView>
       <Text style={styles.title}>{unit?.title}</Text>
 
-      {lessons.map((lesson) => (
+      {lessons.map((lesson, index) => (
         <LessonCard
           key={lesson.id}
           lesson={lesson}
+          index={index}
           onPress={() => router.push(`/lesson/${lesson.id}`)}
         />
       ))}
@@ -48,7 +50,5 @@ export default function UnitScreen() {
   );
 }
 const styles = StyleSheet.create({
-  title: {
-    
-  },
+  title: {},
 });

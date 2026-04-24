@@ -29,7 +29,6 @@ const LessonContent = ({
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
 
-  // Usar hooks personalizados para ejercicios y completitud
   const {
     completedExercises,
     exerciseData,

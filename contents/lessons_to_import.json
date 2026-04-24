@@ -1,145 +1,255 @@
 {
   "lessons": {
-    "A1_paying_the_bill": {
-      "id": "A1_paying_the_bill",
-      "title": "Paying the Bill",
+    "A1_shopping": {
+      "id": "A1_shopping",
+      "title": "Shopping and Prices",
       "metadata": {
         "level": "A1",
         "module": "daily_life",
-        "estimatedDuration": 20,
-        "unit": "Unit 7 (At the Restaurant)",
-        "tags": ["money", "restaurant", "payment", "social_skills"],
-        "xpReward": 100
+        "estimatedDuration": 25,
+        "unit": "Unit 8 (Shopping)",
+        "tags": ["shopping", "prices", "quantifiers", "money", "clothes"],
+        "xpReward": 120
       },
       "objectives": [
-        "Ask for the bill politely using 'Can I have...?'",
-        "Identify common payment methods (cash, card)",
-        "Understand the concept of a 'tip' in a restaurant context"
+        "Ask about prices using 'How much is/are...?'",
+        "Use quantifiers 'some', 'any', 'much', 'many' correctly",
+        "Understand common shopping phrases (discount, size, fit)",
+        "Identify countable vs uncountable nouns in a store context"
       ],
       "settings": {
         "retryLimit": 3,
-        "unlockCondition": "completed:A1_ordering_food"
+        "unlockCondition": "completed:A1_paying_the_bill"
       },
       "content": {
         "vocabulary": [
           {
-            "id": "pay_bill",
-            "word": "The bill",
-            "translation": "La cuenta",
-            "examples": ["Check, please!"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025001/bill.png"
+            "id": "shop_price",
+            "word": "How much?",
+            "translation": "¿Cuánto cuesta?",
+            "examples": [
+              "How much is this shirt?",
+              "How much are these shoes?"
+            ],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025100/price_tag.png"
           },
           {
-            "id": "pay_cash",
-            "word": "Cash",
-            "translation": "Efectivo",
-            "examples": ["I only have cash"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025002/cash.png"
+            "id": "shop_discount",
+            "word": "Discount",
+            "translation": "Descuento",
+            "examples": ["This jacket has a 30% discount", "It's on sale"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025101/discount_sign.png"
           },
           {
-            "id": "pay_card",
-            "word": "Credit card",
-            "translation": "Tarjeta de crédito",
-            "examples": ["Do you accept cards?"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025003/card.png"
+            "id": "shop_size",
+            "word": "Size",
+            "translation": "Talla / Tamaño",
+            "examples": ["What size are you?", "I need a larger size"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025102/size_chart.png"
           },
           {
-            "id": "pay_tip",
-            "word": "Tip",
-            "translation": "Propina",
-            "examples": ["Leave a tip for the waiter"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025004/tip.png"
+            "id": "shop_fit",
+            "word": "Fit",
+            "translation": "Quedar bien",
+            "examples": ["This fits perfectly", "The shoes don't fit me"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025103/fitting_room.png"
+          },
+          {
+            "id": "shop_receipt",
+            "word": "Receipt",
+            "translation": "Recibo / Ticket",
+            "examples": [
+              "Can I have the receipt, please?",
+              "Keep your receipt for returns"
+            ],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025104/receipt.png"
           }
         ],
         "exercises": [
           {
-            "id": "pay_ex1_select",
-            "type": "image_selection",
-            "title": "Payment Method",
-            "instructions": "Which one is a credit card?",
+            "id": "shop_ex1_quantifiers_match",
+            "type": "drag_drop",
+            "title": "Much vs Many",
+            "instructions": "Match each quantifier with the correct noun type.",
             "config": {
-              "question": "Select the correct payment method",
-              "options": [
+              "pairs": [
                 {
-                  "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025003/card.png",
-                  "correct": true,
-                  "feedback": "Correct! Most restaurants accept cards."
+                  "id": "q1",
+                  "from": "How MANY apples? (countable ✅)",
+                  "to": "MANY"
                 },
                 {
-                  "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025002/cash.png",
-                  "correct": false,
-                  "feedback": "No, that is cash (paper money)."
+                  "id": "q2",
+                  "from": "How MUCH milk? (uncountable 🥛)",
+                  "to": "MUCH"
+                },
+                {
+                  "id": "q3",
+                  "from": "How MANY shirts? (countable 👕)",
+                  "to": "MANY"
+                },
+                {
+                  "id": "q4",
+                  "from": "How MUCH money? (uncountable 💵)",
+                  "to": "MUCH"
                 }
               ]
             }
           },
           {
-            "id": "pay_ex2_sentence",
-            "type": "sentence_formation",
-            "title": "Asking for the bill",
-            "instructions": "Order the words to ask for the bill.",
-            "config": {
-              "wordBank": ["Can", "I", "have", "the", "bill", "please", "food"],
-              "correctAnswers": ["Can I have the bill please"],
-              "requiredWords": ["Can", "I", "have", "the", "bill"]
-            }
-          },
-          {
-            "id": "pay_ex3_match",
-            "type": "drag_drop",
-            "title": "Money Match",
-            "instructions": "Match the words with their Spanish meaning.",
+            "id": "shop_ex2_some_any",
+            "type": "matching",
+            "title": "Some vs Any",
+            "instructions": "Match each sentence with 'some' or 'any'.",
             "config": {
               "pairs": [
                 {
-                  "id": "m1",
-                  "from": "Service included",
-                  "to": "Servicio incluido"
+                  "from": "I have ___ money to buy a gift. (positive ✅)",
+                  "to": "some"
                 },
-                { "id": "m2", "from": "Waitress", "to": "Mesera" },
-                { "id": "m3", "from": "Total price", "to": "Precio total" }
-              ]
+                {
+                  "from": "Do you have ___ questions? (question ❓)",
+                  "to": "any"
+                },
+                {
+                  "from": "There aren't ___ discounts today. (negative ❌)",
+                  "to": "any"
+                },
+                {
+                  "from": "She bought ___ nice dresses. (positive ✅)",
+                  "to": "some"
+                },
+                {
+                  "from": "Would you like ___ coffee? (offer ☕)",
+                  "to": "some"
+                },
+                {
+                  "from": "I don't need ___ help. (negative)",
+                  "to": "any"
+                }
+              ],
+              "vocabulary": [],
+              "title": "Match the quantifier"
             }
           },
           {
-            "id": "pay_ex4_listening",
-            "type": "listening_transcription",
-            "title": "Listening: Paying",
-            "instructions": "Listen and transcribe the payment choice.",
-            "config": {
-              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025005/pay_card.mp3",
-              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025006/pay_card_slow.mp3",
-              "correctSentence": "I want to pay by card",
-              "wordBank": [
-                "I",
-                "want",
-                "to",
-                "pay",
-                "by",
-                "card",
-                "cash",
-                "the",
-                "bill"
-              ]
-            }
-          },
-          {
-            "id": "pay_ex5_memory",
-            "type": "memory_game",
-            "title": "Restaurant Recap",
-            "instructions": "Match the icons with the words.",
+            "id": "shop_ex3_much_many",
+            "type": "matching",
+            "title": "Much vs Many",
+            "instructions": "Match the sentence with 'much' or 'many'.",
             "config": {
               "pairs": [
-                { "front": "Bill", "back": "Cuenta" },
-                { "front": "Cash", "back": "Efectivo" },
-                { "front": "Tip", "back": "Propina" },
-                { "front": "Card", "back": "Tarjeta" }
+                {
+                  "from": "How ___ apples? (countable 🍎)",
+                  "to": "many"
+                },
+                {
+                  "from": "How ___ milk? (uncountable 🥛)",
+                  "to": "much"
+                },
+                {
+                  "from": "How ___ shirts did you buy? (countable 👕)",
+                  "to": "many"
+                },
+                {
+                  "from": "How ___ sugar do you need? (uncountable)",
+                  "to": "much"
+                },
+                {
+                  "from": "How ___ dollars? (countable 💵)",
+                  "to": "many"
+                },
+                {
+                  "from": "How ___ time? (uncountable ⏰)",
+                  "to": "much"
+                }
+              ],
+              "vocabulary": [],
+              "title": "Match the quantifier"
+            }
+          },
+          {
+            "id": "shop_ex4_price_questions_1",
+            "type": "sentence_formation",
+            "title": "Asking for Prices - Exercise 1",
+            "instructions": "Order the words to ask about the price of a jacket.",
+            "config": {
+              "wordBank": ["How", "much", "is", "this", "jacket", "?"],
+              "correctAnswers": ["How much is this jacket?"],
+              "requiredWords": ["How", "much", "is", "this", "jacket"],
+              "question": "💰 Ask about the price of the jacket",
+              "timeLimit": 60,
+              "title": "Forma la pregunta para el precio",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "shop_ex5_price_questions_2",
+            "type": "sentence_formation",
+            "title": "Asking for Prices - Exercise 2",
+            "instructions": "Order the words to ask about the shoes (plural).",
+            "config": {
+              "wordBank": [
+                "How",
+                "much",
+                "are",
+                "those",
+                "shoes",
+                "please",
+                "?"
+              ],
+              "correctAnswers": ["How much are those shoes please?"],
+              "requiredWords": ["How", "much", "are", "those", "shoes"],
+              "question": "👠 Ask about the price of those shoes",
+              "timeLimit": 60,
+              "title": "Forma la pregunta (plural)",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "shop_ex6_listening",
+            "type": "listening_transcription",
+            "title": "Listening: In the Store",
+            "instructions": "Listen to the conversation and complete the missing word.",
+            "config": {
+              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1777055626/Do_you_have_this_in_a_larger_size_djoztb.mp3",
+              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025106/shop_conversation_slow.mp3",
+              "correctSentence": "Do you have this in a larger size?",
+              "wordBank": [
+                "Do",
+                "you",
+                "have",
+                "this",
+                "in",
+                "a",
+                "larger",
+                "size",
+                "price",
+                "discount",
+                "fit"
+              ]
+            }
+          },
+          {
+            "id": "shop_ex7_memory_game",
+            "type": "memory_game",
+            "title": "Shopping Memory",
+            "instructions": "Match the English word with its Spanish translation.",
+            "config": {
+              "pairs": [
+                { "front": "Discount", "back": "Descuento" },
+                { "front": "How much?", "back": "¿Cuánto cuesta?" },
+                { "front": "Size", "back": "Talla" },
+                { "front": "Receipt", "back": "Ticket / Recibo" },
+                { "front": "Fit", "back": "Quedar bien" },
+                { "front": "Some", "back": "Algunos/as" },
+                { "front": "Any", "back": "Ningún / Algún (neg/preg)" }
               ]
             }
           }
         ]
       },
-      "updatedAt": { "_seconds": 1769025000, "_nanoseconds": 0 }
+      "updatedAt": { "_seconds": 1769025200, "_nanoseconds": 0 }
     }
   }
 }

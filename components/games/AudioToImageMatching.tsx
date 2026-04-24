@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
-import ExerciseFeedback from "./ExerciseFeedback";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import ExerciseFeedback from "../ui/ExerciseFeedback";
 
 interface AudioToImageMatchingProps {
   config?: {
@@ -45,7 +45,7 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
 
   // Separar los pares en audios e imágenes con validación
   const validPairs = config.pairs.filter(
-    (pair) => pair && typeof pair === "object" && pair.id
+    (pair) => pair && typeof pair === "object" && pair.id,
   );
 
   if (validPairs.length === 0) {
@@ -96,7 +96,7 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
 
       const { sound: newSound } = await Audio.Sound.createAsync(
         { uri: currentAudio.audio },
-        { shouldPlay: true }
+        { shouldPlay: true },
       );
       setSound(newSound);
       setHasPlayed(true);

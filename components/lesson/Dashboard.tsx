@@ -1,6 +1,8 @@
-import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
-/* import { useStripe } from "@stripe/stripe-react-native"; */
 import { API_ENDPOINTS } from "@/constants/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
 import {
@@ -25,17 +27,12 @@ import {
   View,
 } from "react-native";
 import * as Progress from "react-native-progress";
-import "../assets/css/globalStyles.css";
-import { useAuth } from "../contexts/AuthContext";
-
-/* import { usePayment } from "@/hooks/usePayment"; */
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import Toast from "react-native-toast-message";
-import { toastConfig } from "../components/ToastConfig";
-import GuestSection from "./GuestSection";
-import PurchaseLevel from "./PurchaseLevel";
-import { FlameIcon, InstagramIcon } from "./SvgIcons";
+import "../../assets/css/globalStyles.css";
+import GuestSection from "../auth/GuestSection";
+import PurchaseLevel from "../payment/PurchaseLevel";
+import { FacebookIcon, FlameIcon, InstagramIcon } from "../ui/SvgIcons";
+import { toastConfig } from "../ui/ToastConfig";
 
 interface Level {
   id: string;
@@ -132,8 +129,6 @@ export default function Dashboard() {
 
       if (response.ok) {
         const data = await response.json();
-
-        // Actualizar el estado local si hay cambios
         if (
           data.unlockedLevels &&
           JSON.stringify(data.unlockedLevels) !==
@@ -397,15 +392,11 @@ export default function Dashboard() {
           longestStreak: 1,
         },
       };
-
-      // 1. Guardamos en Firestore
       await setDoc(doc(db, "userProgress", userId), newProgressData);
-
-      // 2. RETORNAMOS los datos para que loadProgress pueda continuar
       return newProgressData;
     } catch (error) {
       console.error("Error creating user progress:", error);
-      throw error; // Lanzamos el error para que el catch de loadProgress lo maneje
+      throw error;
     }
   };
 
@@ -450,9 +441,6 @@ export default function Dashboard() {
 
   const xpProgress = calculateXPProgress();
 
-  // NOTA: Los niveles ahora se compran, no se desbloquean automáticamente por XP
-  // El useEffect anterior que sincronizaba niveles ha sido removido
-
   const handleBuyLevel = (levelId: LevelId) => {
     if (!user) {
       Toast.show({
@@ -491,22 +479,16 @@ export default function Dashboard() {
     }
   };
 
-  // Mantener el backend caliente periódicamente
   useEffect(() => {
     const keepBackendAlive = async () => {
       try {
         await fetch(API_ENDPOINTS.WAKE_UP, {
           signal: AbortSignal.timeout(3000),
         });
-      } catch (error) {
-        // Silenciar errores, es solo un keep-alive
-      }
+      } catch (error) {}
     };
 
-    // Llamar cada 5 minutos para mantener el backend activo
     const interval = setInterval(keepBackendAlive, 5 * 60 * 1000);
-
-    // Llamar inmediatamente al cargar
     keepBackendAlive();
 
     return () => clearInterval(interval);
@@ -519,7 +501,6 @@ export default function Dashboard() {
     }
 
     try {
-      // Verificar acceso EN purchasedLevels - TODOS los niveles requieren compra
       const hasPurchased = progress.purchasedLevels?.[levelId];
 
       if (hasPurchased) {
@@ -530,7 +511,6 @@ export default function Dashboard() {
         return;
       }
 
-      // Si no tiene acceso local, verificar en el backend
       const response = await fetch(
         API_ENDPOINTS.CHECK_LEVEL_ACCESS_SPECIFIC(user.uid, levelId),
       );
@@ -556,7 +536,6 @@ export default function Dashboard() {
         }
       }
 
-      // Si no tiene acceso en ningún lado, mostrar modal de pago
       setSelectedLevel(levelId);
       setPaymentModalVisible(true);
     } catch (error) {
@@ -650,6 +629,18 @@ export default function Dashboard() {
                   <Text style={styles.instagramText}>
                     Síguenos en Instagram
                   </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.facebookButton}
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://web.facebook.com/siteBilingualsite",
+                    )
+                  }
+                >
+                  <FacebookIcon />
+                  <Text style={styles.facebookText}>Síguenos en Facebook</Text>
                 </TouchableOpacity>
 
                 <View style={styles.streakContainer}>
@@ -811,10 +802,18 @@ export default function Dashboard() {
               }
               style={styles.socialButton}
             >
-              {/* <Ionicons name="logo-instagram" size={24} color="#E1306C" /> */}
-
               <InstagramIcon />
-              <Text style={styles.socialText}>Instagram</Text>
+              <Text style={styles.instagramSocialText}>Instagram</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL("https://web.facebook.com/siteBilingualsite")
+              }
+              style={styles.facebookSocialButton}
+            >
+              <FacebookIcon />
+              <Text style={styles.facebookSocialText}>Facebook</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.copyright}>
@@ -1085,17 +1084,52 @@ const styles = StyleSheet.create({
   instagramButton: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
-    padding: 8,
-    backgroundColor: "white",
-    borderRadius: 8,
-    borderWidth: 1,
+    justifyContent: "center",
+    marginTop: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 2,
     borderColor: "#E1306C",
+    marginHorizontal: 0,
+    shadowColor: "#E1306C",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
   },
   instagramText: {
-    marginLeft: 8,
+    marginLeft: 10,
     color: "#E1306C",
-    fontWeight: "bold",
+    fontWeight: "700",
+    fontSize: 14,
+    fontFamily: "Poppins",
+  },
+  facebookButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#1877F2",
+    marginHorizontal: 0,
+    shadowColor: "#1877F2",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  facebookText: {
+    marginLeft: 10,
+    color: "#1877F2",
+    fontWeight: "700",
+    fontSize: 14,
+    fontFamily: "Poppins",
   },
   footer: {
     marginTop: 10,
@@ -1116,19 +1150,59 @@ const styles = StyleSheet.create({
   socialButton: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     marginHorizontal: 12,
-    padding: 8,
-    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 12,
     backgroundColor: "white",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5,
+    borderWidth: 2,
+    borderColor: "#E1306C",
+    minWidth: 140,
+  },
+  facebookSocialButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5,
+    borderWidth: 2,
+    borderColor: "#1877F2",
+    minWidth: 140,
   },
   socialText: {
-    marginLeft: 8,
+    marginLeft: 10,
     color: "#D82989",
+    fontWeight: "700",
+    fontSize: 14,
+    fontFamily: "Poppins",
+  },
+  instagramSocialText: {
+    marginLeft: 10,
+    color: "#E1306C",
+    fontWeight: "700",
+    fontSize: 14,
+    fontFamily: "Poppins",
+  },
+  facebookSocialText: {
+    marginLeft: 10,
+    color: "#1877F2",
+    fontWeight: "700",
+    fontSize: 14,
+    fontFamily: "Poppins",
   },
   copyright: {
     fontSize: 12,

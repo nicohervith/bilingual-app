@@ -1,5 +1,6 @@
 import { Unit } from "@/types/types";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { CheckmarkIcon, LockIcon } from "../ui/SvgIcons";
 
 export default function UnitCard({ unit }: { unit: Unit }) {
   return (
@@ -20,5 +21,5 @@ export default function UnitCard({ unit }: { unit: Unit }) {
 const styles = StyleSheet.create({
   container: {},
   completed: {},
-  locked:{},
+  locked: {},
 });
