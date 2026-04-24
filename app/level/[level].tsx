@@ -1,69 +1,43 @@
-import Mission from "@/components/Mission";
-import { getMissionsByLevel } from "@/lib/firebaseUtils";
-import { Ionicons } from "@expo/vector-icons";
+
+import { getLessonsByLevel } from "@/services/firestoreService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  ScrollView,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
+import LessonContent from "../lesson/LessonContent";
 
-export default function LevelScreen() {
-  const { level } = useLocalSearchParams();
-  const [allMissions, setAllMissions] = useState<any[]>([]);
-  const [currentMissionIndex, setCurrentMissionIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  export default function LevelPage() {
+    const { level: levelId } = useLocalSearchParams();
+    const [lessons, setLessons] = useState<any[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const router = useRouter();
 
-  useEffect(() => {
-    if (level) {
-      getMissionsByLevel(level as string)
-        .then((missions) => {
-          setAllMissions(missions);
-          setLoading(false);
-        })
-        .catch(console.error);
-    }
-  }, [level]);
+    useEffect(() => {
+      const loadLessons = async () => {
+        const lessons = await getLessonsByLevel(levelId as string);
+        setLessons(lessons);
+      };
+      loadLessons();
+    }, [levelId]);
 
-  const handleCompleteMission = () => {
-    // Verificar si hay más misiones disponibles
-    if (currentMissionIndex < allMissions.length - 1) {
-      console.log(currentMissionIndex);
-      setCurrentMissionIndex(currentMissionIndex + 1);
-    } else {
-      // No hay más misiones, volver al dashboard
-      router.replace("/");
-    }
-  };
+    if (lessons.length === 0) return <ActivityIndicator />;
 
-  if (loading) {
-    return <ActivityIndicator size="large" style={{ marginTop: 40 }} />;
-  }
+    console.log(`Mostrando lección ${currentIndex + 1}/${lessons.length}`);
 
-  if (allMissions.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>No se encontraron misiones para este nivel</Text>
+      <View style={{ flex: 1 }}>
+        <LessonContent
+          lesson={lessons[currentIndex]}
+          onComplete={() => {
+            if (currentIndex < lessons.length - 1) {
+              setCurrentIndex(currentIndex + 1);
+            } else {
+              router.back();
+            }
+          }}
+        />
       </View>
     );
   }
-
-  const currentMission = allMissions[currentMissionIndex];
-
-  return (
-    <ScrollView contentContainerStyle={{ padding: 20 }}>
-      <TouchableOpacity onPress={() => router.replace("/")}>
-        <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        {currentMission.title} ({currentMissionIndex + 1}/{allMissions.length})
-      </Text>
-
-      <Mission mission={currentMission} onComplete={handleCompleteMission} />
-    </ScrollView>
-  );
-}

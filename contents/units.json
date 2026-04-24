@@ -1,0 +1,16 @@
+{
+  "unit1_greetings": {
+    "title": "Greetings and Introductions",
+    "level": "A1",
+    "order": 1,
+    "description": "Aprende saludos básicos",
+    "coverImage": "unit1_cover.jpg",
+    "estimatedTime": 90,
+    "rewards": {
+      "gems": 50,
+      "badge": "first_talk",
+      "sticker": "bily_hello"
+    },
+    "lessons": ["lesson1_hello", "lesson2_introductions", "lesson3_goodbyes"]
+  }
+}

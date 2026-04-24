@@ -1,0 +1,15 @@
+{
+  "lesson1_hello": {
+    "unit": "unit1_greetings",
+    "title": "Hello! Hi!",
+    "type": "vocabulary", 
+    "duration": 15,
+    "xpReward": 50,
+    "objectives": [
+      "Recognize basic greetings",
+      "Differentiate formal/informal"
+    ],
+    "content": {
+    }
+  }
+}

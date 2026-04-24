@@ -1,20 +1,13 @@
-import { Slot, Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { SessionChecker } from "@/components/auth/SessionChecker";
+import { Slot } from "expo-router";
+import React from "react";
+import "react-native-reanimated";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <AuthProvider>
+    <>
       <Slot />
-    </AuthProvider>
+      <SessionChecker />
+    </>
   );
 }

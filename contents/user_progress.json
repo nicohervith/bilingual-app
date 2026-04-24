@@ -1,0 +1,47 @@
+{
+  "IDQo86Ni8HN5V9Ytwloe0IKESN92": {
+    "xp": 0,
+    "currentLevel": "A1",
+    "unlockedLevels": ["A1"],
+    "completedMissions": {},
+    "rewards": {
+      "gems": 10,
+      "badges": ["welcome_badge"],
+      "stickers": ["bily_hello"]
+    },
+    "stats": {
+      "daysStreak": 1,
+      "lastLogin": "2024-11-20T10:00:00Z"
+    }
+  },
+  "LQrA9weOVVgI2ij0BruFwYtO3MN2": {
+    "xp": 0,
+    "currentLevel": "A1",
+    "unlockedLevels": ["A1"],
+    "completedMissions": {},
+    "rewards": {
+      "gems": 10,
+      "badges": ["welcome_badge"],
+      "stickers": ["bily_hello"]
+    },
+    "stats": {
+      "daysStreak": 1,
+      "lastLogin": "2024-11-20T10:00:00Z"
+    }
+  },
+  "1amrDitqyngD8zfewoXC51J0tAI3": {
+    "xp": 0,
+    "currentLevel": "A1",
+    "unlockedLevels": ["A1"],
+    "completedMissions": {},
+    "rewards": {
+      "gems": 10,
+      "badges": ["welcome_badge"],
+      "stickers": ["bily_hello"]
+    },
+    "stats": {
+      "daysStreak": 1,
+      "lastLogin": "2024-11-20T10:00:00Z"
+    }
+  }
+}

@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.bilingual.app",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.bilingual.app",
@@ -23,7 +26,17 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyBUm57cQI67Joupf4dovElZYeOnmXcpYcs",
+          "authDomain": "bilingualsite-ee6f8.firebaseapp.com",
+          "projectId": "bilingualsite-ee6f8",
+          "storageBucket": "bilingualsite-ee6f8.firebasestorage.app",
+          "messagingSenderId": "871050529166",
+          "appId": "1:871050529166:web:b1d0a762819fed9be6bcdf"
+        }
+      }
     },
     "plugins": [
       "expo-router",
@@ -34,6 +47,13 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Permítenos escuchar tu pronunciación para ayudarte a mejorar.",
+          "speechRecognitionPermission": "Usamos el reconocimiento de voz para validar tus respuestas."
         }
       ],
       "expo-web-browser"

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(chmod +x /tmp/list_components.sh)",
+      "Bash(/tmp/list_components.sh)",
+      "Bash(cmd:*)",
+      "Bash(ls:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git:*)",
+      "Bash(dir:*)"
+    ]
+  }
+}

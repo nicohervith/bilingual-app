@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import Dashboard from "./dashboard";
+import * as WebBrowser from "expo-web-browser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function Index() {
   const { user } = useAuth();
