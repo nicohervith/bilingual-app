@@ -113,13 +113,18 @@ export const PronunciationGame = ({
       setRecording(null);
 
       if (uri) {
-        // CONVERSIÓN A BLOB (Compatible con Web y Mobile)
         const responseAudio = await fetch(uri);
         const audioBlob = await responseAudio.blob();
-        const fileToUpload = new Blob([audioBlob], { type: "audio/m4a" });
+        const mimeType = audioBlob.type || "audio/m4a";
+        const ext = mimeType.includes("webm")
+          ? "webm"
+          : mimeType.includes("ogg")
+          ? "ogg"
+          : "m4a";
+        const fileToUpload = new Blob([audioBlob], { type: mimeType });
 
         const formData = new FormData();
-        formData.append("audio", fileToUpload, "pronunciation.m4a");
+        formData.append("audio", fileToUpload, `pronunciation.${ext}`);
 
         // LLAMADA A TU BACKEND
         const response = await fetch(API_ENDPOINTS.TRANSCRIBE, {

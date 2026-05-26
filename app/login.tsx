@@ -158,6 +158,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     if (gResponse?.type === "success") {
       const { id_token } = gResponse.params;
       const credential = GoogleAuthProvider.credential(id_token);
@@ -172,7 +173,7 @@ export default function Login() {
             await updateStreak(userCredential.user.uid);
           }
 
-          setTimeout(() => {
+          timeoutId = setTimeout(() => {
             router.replace("/");
           }, 500);
         })
@@ -181,6 +182,7 @@ export default function Login() {
           setErrorMessage("Error en autenticación con Google");
         });
     }
+    return () => clearTimeout(timeoutId);
   }, [gResponse]);
 
   const createNewUserProgress = async (userId: string) => {

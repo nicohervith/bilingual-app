@@ -41,6 +41,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
   const [dialogueHistory, setDialogueHistory] = useState<
     Array<{ speaker: string; text: string }>
   >([]);
+  const [currentSpeaker, setCurrentSpeaker] = useState("Waiter");
 
   // Sincronizar cuando isCompleted cambia a true
   useEffect(() => {
@@ -227,8 +228,6 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
       </View>
     );
   }
-
-  const [currentSpeaker, setCurrentSpeaker] = useState("Waiter");
 
   const handleOptionSelectOld = (option: string) => {
     const newHistory = [
