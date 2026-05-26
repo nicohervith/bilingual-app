@@ -74,6 +74,49 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   const usePairsStructure = !!config.pairs;
   const currentItems = usePairsStructure ? config.pairs : config.items;
 
+  const options = React.useMemo(() => {
+    if (!currentItems || currentItem >= currentItems.length) return [];
+
+    // 1. Obtener la respuesta correcta actual
+    const currentItemData = currentItems[currentItem] as {
+      audio: string;
+      correctMatch: string;
+    };
+    const currentItemId = currentItemData.correctMatch;
+    const correctVocabularyItem = vocabulary.find(
+      (item) => item.id === currentItemId,
+    );
+
+    if (!correctVocabularyItem) {
+      console.error(`No se encontró el ítem con id: ${currentItemId}`);
+      return [];
+    }
+
+    // 2. Obtener TODAS las posibles opciones del vocabulario que tengan imagen o palabra
+    // Excluimos la correcta para manejarla por separado
+    const allPotentialDistractors = vocabulary.filter(
+      (item) => item.id !== currentItemId && (item.media?.image || item.word),
+    );
+
+    // 3. Mezclar distractores y tomar 3
+    const selectedDistractors = [...allPotentialDistractors]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+
+    // 4. Combinar la correcta con los distractores y volver a mezclar
+    return [correctVocabularyItem, ...selectedDistractors].sort(
+      () => Math.random() - 0.5,
+    );
+  }, [vocabulary, currentItems, currentItem]);
+
+  useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
+
   if (!currentItems || currentItems.length === 0) {
     return (
       <View style={styles.container}>
@@ -174,41 +217,6 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
     }
   };
 
-  const options = React.useMemo(() => {
-    if (!currentItems || currentItem >= currentItems.length) return [];
-
-    // 1. Obtener la respuesta correcta actual
-    const currentItemData = currentItems[currentItem] as {
-      audio: string;
-      correctMatch: string;
-    };
-    const currentItemId = currentItemData.correctMatch;
-    const correctVocabularyItem = vocabulary.find(
-      (item) => item.id === currentItemId,
-    );
-
-    if (!correctVocabularyItem) {
-      console.error(`No se encontró el ítem con id: ${currentItemId}`);
-      return [];
-    }
-
-    // 2. Obtener TODAS las posibles opciones del vocabulario que tengan imagen o palabra
-    // Excluimos la correcta para manejarla por separado
-    const allPotentialDistractors = vocabulary.filter(
-      (item) => item.id !== currentItemId && (item.media?.image || item.word),
-    );
-
-    // 3. Mezclar distractores y tomar 3
-    const selectedDistractors = [...allPotentialDistractors]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
-
-    // 4. Combinar la correcta con los distractores y volver a mezclar
-    return [correctVocabularyItem, ...selectedDistractors].sort(
-      () => Math.random() - 0.5,
-    );
-  }, [vocabulary, currentItems, currentItem]);
-
   const getCurrentAudio = (): string => {
     if (usePairsStructure) {
       const currentPair = currentItems[currentItem] as {
@@ -273,14 +281,6 @@ const AudioMatchingGame: React.FC<AudioMatchingGameProps> = ({
   const getOptionImage = (option: string | any): string | undefined => {
     return usePairsStructure ? undefined : (option as any).media?.image;
   };
-
-  useEffect(() => {
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
-    };
-  }, [sound]);
 
   return (
     <View style={styles.container}>

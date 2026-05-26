@@ -44,6 +44,15 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     question: question || (config as any)?.question || "",
   };
 
+  const maxCorrectAnswerLength = Math.max(
+    ...safeConfig.correctAnswers.map((a) => a.trim().split(/\s+/).length),
+  );
+  const isFreeForm = safeConfig.wordBank.length > maxCorrectAnswerLength;
+  const allWordsRequired = !isFreeForm &&
+    safeConfig.correctAnswers.every(
+      (answer) => answer.trim().split(/\s+/).length === safeConfig.wordBank.length,
+    );
+
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState(safeConfig.timeLimit);
@@ -120,9 +129,18 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
 
   const checkSentence = () => {
     const userSentence = selectedWords.join(" ");
-    const isCorrect = safeConfig.correctAnswers.some(
-      (correct) => correct.toLowerCase() === userSentence.toLowerCase(),
-    );
+
+    let isCorrect: boolean;
+    if (isFreeForm) {
+      const hasRequiredWords = safeConfig.requiredWords.every((req) =>
+        selectedWords.some((w) => w.toLowerCase() === req.toLowerCase()),
+      );
+      isCorrect = hasRequiredWords && selectedWords.length >= 2;
+    } else {
+      isCorrect = safeConfig.correctAnswers.some(
+        (correct) => correct.toLowerCase() === userSentence.toLowerCase(),
+      );
+    }
 
     if (isCorrect) {
       setShowSuccess(true);
@@ -205,7 +223,11 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
 
       <View style={styles.instructions}>
         <Text style={styles.instructionText}>
-          Ordena las palabras correctamente:
+          {allWordsRequired
+            ? "Usa todas las palabras para formar la oración:"
+            : isFreeForm
+              ? `Forma una oración propia usando${safeConfig.requiredWords.length > 0 ? ` "${safeConfig.requiredWords.join('", "')}" y` : ""} las palabras del banco:`
+              : "Forma una oración usando algunas de las palabras:"}
         </Text>
       </View>
 
@@ -316,7 +338,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       />
     </View>
   );
-};;
+};
 
 const styles = StyleSheet.create({
   container: {

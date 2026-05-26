@@ -1,255 +1,284 @@
 {
   "lessons": {
-    "A1_shopping": {
-      "id": "A1_shopping",
-      "title": "Shopping and Prices",
+    "A2_past_simple_irregular": {
+      "id": "A2_past_simple_irregular",
+      "title": "Past Simple: Irregular Verbs",
       "metadata": {
-        "level": "A1",
-        "module": "daily_life",
-        "estimatedDuration": 25,
-        "unit": "Unit 8 (Shopping)",
-        "tags": ["shopping", "prices", "quantifiers", "money", "clothes"],
-        "xpReward": 120
+        "level": "A2",
+        "module": "grammar",
+        "estimatedDuration": 45,
+        "unit": "unitA2_grammar_past",
+        "tags": [
+          "past_simple",
+          "irregular_verbs",
+          "grammar",
+          "past_tense",
+          "common_verbs"
+        ],
+        "xpReward": 250
       },
       "objectives": [
-        "Ask about prices using 'How much is/are...?'",
-        "Use quantifiers 'some', 'any', 'much', 'many' correctly",
-        "Understand common shopping phrases (discount, size, fit)",
-        "Identify countable vs uncountable nouns in a store context"
+        "Identify and use 20+ common irregular verbs in past simple",
+        "Distinguish between regular and irregular verb patterns",
+        "Form affirmative sentences with irregular verbs",
+        "Use 'did not' + base form for negative sentences with irregular verbs",
+        "Form questions with 'Did' + subject + base form"
       ],
       "settings": {
         "retryLimit": 3,
-        "unlockCondition": "completed:A1_paying_the_bill"
+        "unlockCondition": "completed:A2_past_simple_regular"
       },
       "content": {
         "vocabulary": [
           {
-            "id": "shop_price",
-            "word": "How much?",
-            "translation": "¿Cuánto cuesta?",
-            "examples": [
-              "How much is this shirt?",
-              "How much are these shoes?"
-            ],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025100/price_tag.png"
+            "id": "verb_go_went",
+            "word": "Go → Went",
+            "translation": "Ir → Fui/Fue",
+            "examples": ["I went to the beach yesterday"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031000/go.png"
           },
           {
-            "id": "shop_discount",
-            "word": "Discount",
-            "translation": "Descuento",
-            "examples": ["This jacket has a 30% discount", "It's on sale"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025101/discount_sign.png"
+            "id": "verb_eat_ate",
+            "word": "Eat → Ate",
+            "translation": "Comer → Comí",
+            "examples": ["She ate pizza for dinner"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031001/eat.png"
           },
           {
-            "id": "shop_size",
-            "word": "Size",
-            "translation": "Talla / Tamaño",
-            "examples": ["What size are you?", "I need a larger size"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025102/size_chart.png"
+            "id": "verb_see_saw",
+            "word": "See → Saw",
+            "translation": "Ver → Vi",
+            "examples": ["We saw a great movie"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031002/see.png"
           },
           {
-            "id": "shop_fit",
-            "word": "Fit",
-            "translation": "Quedar bien",
-            "examples": ["This fits perfectly", "The shoes don't fit me"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025103/fitting_room.png"
+            "id": "verb_have_had",
+            "word": "Have → Had",
+            "translation": "Tener → Tuve",
+            "examples": ["I had a wonderful time"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031003/have.png"
           },
           {
-            "id": "shop_receipt",
-            "word": "Receipt",
-            "translation": "Recibo / Ticket",
-            "examples": [
-              "Can I have the receipt, please?",
-              "Keep your receipt for returns"
-            ],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025104/receipt.png"
+            "id": "verb_do_did",
+            "word": "Do → Did",
+            "translation": "Hacer → Hice",
+            "examples": ["She did her homework"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031004/do.png"
+          },
+          {
+            "id": "verb_say_said",
+            "word": "Say → Said",
+            "translation": "Decir → Dije",
+            "examples": ["He said hello to me"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031005/say.png"
+          },
+          {
+            "id": "verb_get_got",
+            "word": "Get → Got",
+            "translation": "Obtener → Obtuve",
+            "examples": ["I got a new phone"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031006/get.png"
+          },
+          {
+            "id": "verb_make_made",
+            "word": "Make → Made",
+            "translation": "Hacer/Fabricar → Hice",
+            "examples": ["She made a cake"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031007/make.png"
           }
         ],
         "exercises": [
           {
-            "id": "shop_ex1_quantifiers_match",
-            "type": "drag_drop",
-            "title": "Much vs Many",
-            "instructions": "Match each quantifier with the correct noun type.",
-            "config": {
-              "pairs": [
-                {
-                  "id": "q1",
-                  "from": "How MANY apples? (countable ✅)",
-                  "to": "MANY"
-                },
-                {
-                  "id": "q2",
-                  "from": "How MUCH milk? (uncountable 🥛)",
-                  "to": "MUCH"
-                },
-                {
-                  "id": "q3",
-                  "from": "How MANY shirts? (countable 👕)",
-                  "to": "MANY"
-                },
-                {
-                  "id": "q4",
-                  "from": "How MUCH money? (uncountable 💵)",
-                  "to": "MUCH"
-                }
-              ]
-            }
-          },
-          {
-            "id": "shop_ex2_some_any",
+            "id": "ex1_irregular_verbs_matching",
             "type": "matching",
-            "title": "Some vs Any",
-            "instructions": "Match each sentence with 'some' or 'any'.",
+            "title": "Irregular Verbs - Present to Past",
+            "instructions": "Match each present tense irregular verb with its past simple form.",
             "config": {
               "pairs": [
-                {
-                  "from": "I have ___ money to buy a gift. (positive ✅)",
-                  "to": "some"
-                },
-                {
-                  "from": "Do you have ___ questions? (question ❓)",
-                  "to": "any"
-                },
-                {
-                  "from": "There aren't ___ discounts today. (negative ❌)",
-                  "to": "any"
-                },
-                {
-                  "from": "She bought ___ nice dresses. (positive ✅)",
-                  "to": "some"
-                },
-                {
-                  "from": "Would you like ___ coffee? (offer ☕)",
-                  "to": "some"
-                },
-                {
-                  "from": "I don't need ___ help. (negative)",
-                  "to": "any"
-                }
+                { "from": "Go", "to": "Went" },
+                { "from": "Eat", "to": "Ate" },
+                { "from": "See", "to": "Saw" },
+                { "from": "Have", "to": "Had" },
+                { "from": "Do", "to": "Did" },
+                { "from": "Say", "to": "Said" },
+                { "from": "Get", "to": "Got" },
+                { "from": "Make", "to": "Made" },
+                { "from": "Buy", "to": "Bought" },
+                { "from": "Drink", "to": "Drank" },
+                { "from": "Drive", "to": "Drove" },
+                { "from": "Fly", "to": "Flew" },
+                { "from": "Meet", "to": "Met" },
+                { "from": "Read", "to": "Read" },
+                { "from": "Sleep", "to": "Slept" },
+                { "from": "Swim", "to": "Swam" },
+                { "from": "Take", "to": "Took" },
+                { "from": "Write", "to": "Wrote" }
               ],
               "vocabulary": [],
-              "title": "Match the quantifier"
+              "title": "Match Present → Past (Irregular)"
             }
           },
           {
-            "id": "shop_ex3_much_many",
+            "id": "ex2_irregular_grouping",
             "type": "matching",
-            "title": "Much vs Many",
-            "instructions": "Match the sentence with 'much' or 'many'.",
+            "title": "Group Irregular Verbs by Pattern",
+            "instructions": "Match each verb with its pattern group.",
             "config": {
               "pairs": [
-                {
-                  "from": "How ___ apples? (countable 🍎)",
-                  "to": "many"
-                },
-                {
-                  "from": "How ___ milk? (uncountable 🥛)",
-                  "to": "much"
-                },
-                {
-                  "from": "How ___ shirts did you buy? (countable 👕)",
-                  "to": "many"
-                },
-                {
-                  "from": "How ___ sugar do you need? (uncountable)",
-                  "to": "much"
-                },
-                {
-                  "from": "How ___ dollars? (countable 💵)",
-                  "to": "many"
-                },
-                {
-                  "from": "How ___ time? (uncountable ⏰)",
-                  "to": "much"
-                }
+                { "from": "Go → Went → Gone", "to": "i→a→u pattern" },
+                { "from": "Sing → Sang → Sung", "to": "i→a→u pattern" },
+                { "from": "Swim → Swam → Swum", "to": "i→a→u pattern" },
+                { "from": "Eat → Ate → Eaten", "to": "eat→ate→eaten" },
+                { "from": "Speak → Spoke → Spoken", "to": "eak→oke→oken" },
+                { "from": "Buy → Bought → Bought", "to": "-ought pattern" },
+                { "from": "Bring → Brought → Brought", "to": "-ought pattern" },
+                { "from": "Keep → Kept → Kept", "to": "-ept pattern" },
+                { "from": "Sleep → Slept → Slept", "to": "-ept pattern" }
               ],
               "vocabulary": [],
-              "title": "Match the quantifier"
+              "title": "Learn Irregular Verb Patterns"
             }
           },
           {
-            "id": "shop_ex4_price_questions_1",
+            "id": "ex3_sentence_affirmative",
             "type": "sentence_formation",
-            "title": "Asking for Prices - Exercise 1",
-            "instructions": "Order the words to ask about the price of a jacket.",
+            "title": "Past Simple - Irregular Verbs (Affirmative)",
+            "instructions": "Order the words to make a correct past simple sentence with an irregular verb.",
             "config": {
-              "wordBank": ["How", "much", "is", "this", "jacket", "?"],
-              "correctAnswers": ["How much is this jacket?"],
-              "requiredWords": ["How", "much", "is", "this", "jacket"],
-              "question": "💰 Ask about the price of the jacket",
-              "timeLimit": 60,
-              "title": "Forma la pregunta para el precio",
+              "wordBank": ["I", "went", "to", "the", "beach", "yesterday"],
+              "correctAnswers": ["I went to the beach yesterday"],
+              "requiredWords": ["went", "beach"],
+              "question": "🏖️ Complete the sentence about going to the beach",
+              "timeLimit": 45,
+              "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "shop_ex5_price_questions_2",
+            "id": "ex4_sentence_affirmative_2",
             "type": "sentence_formation",
-            "title": "Asking for Prices - Exercise 2",
-            "instructions": "Order the words to ask about the shoes (plural).",
+            "title": "Past Simple - Irregular Verbs (Affirmative 2)",
+            "instructions": "Order the words to make a correct past simple sentence.",
             "config": {
               "wordBank": [
-                "How",
-                "much",
-                "are",
-                "those",
-                "shoes",
-                "please",
-                "?"
+                "She",
+                "ate",
+                "pizza",
+                "for",
+                "dinner",
+                "last",
+                "night"
               ],
-              "correctAnswers": ["How much are those shoes please?"],
-              "requiredWords": ["How", "much", "are", "those", "shoes"],
-              "question": "👠 Ask about the price of those shoes",
-              "timeLimit": 60,
-              "title": "Forma la pregunta (plural)",
+              "correctAnswers": ["She ate pizza for dinner last night"],
+              "requiredWords": ["ate", "pizza"],
+              "question": "🍕 Complete the sentence about eating pizza",
+              "timeLimit": 45,
+              "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "shop_ex6_listening",
-            "type": "listening_transcription",
-            "title": "Listening: In the Store",
-            "instructions": "Listen to the conversation and complete the missing word.",
+            "id": "ex5_sentence_affirmative_3",
+            "type": "sentence_formation",
+            "title": "Past Simple - Irregular Verbs (Affirmative 3)",
+            "instructions": "Order the words to make a correct past simple sentence.",
             "config": {
-              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1777055626/Do_you_have_this_in_a_larger_size_djoztb.mp3",
-              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025106/shop_conversation_slow.mp3",
-              "correctSentence": "Do you have this in a larger size?",
               "wordBank": [
-                "Do",
-                "you",
-                "have",
-                "this",
-                "in",
+                "We",
+                "saw",
                 "a",
-                "larger",
-                "size",
-                "price",
-                "discount",
-                "fit"
-              ]
+                "great",
+                "movie",
+                "last",
+                "weekend"
+              ],
+              "correctAnswers": ["We saw a great movie last weekend"],
+              "requiredWords": ["saw", "movie"],
+              "question": "🎬 Complete the sentence about seeing a movie",
+              "timeLimit": 45,
+              "title": "Form the sentence",
+              "showStartButton": true
             }
           },
           {
-            "id": "shop_ex7_memory_game",
-            "type": "memory_game",
-            "title": "Shopping Memory",
-            "instructions": "Match the English word with its Spanish translation.",
+            "id": "ex6_negative_irregular",
+            "type": "sentence_formation",
+            "title": "Past Simple - Negative with Irregular Verbs",
+            "instructions": "Order the words to make a correct negative sentence.",
             "config": {
-              "pairs": [
-                { "front": "Discount", "back": "Descuento" },
-                { "front": "How much?", "back": "¿Cuánto cuesta?" },
-                { "front": "Size", "back": "Talla" },
-                { "front": "Receipt", "back": "Ticket / Recibo" },
-                { "front": "Fit", "back": "Quedar bien" },
-                { "front": "Some", "back": "Algunos/as" },
-                { "front": "Any", "back": "Ningún / Algún (neg/preg)" }
-              ]
+              "wordBank": [
+                "I",
+                "did",
+                "not",
+                "go",
+                "to",
+                "the",
+                "party",
+                "yesterday"
+              ],
+              "correctAnswers": ["I did not go to the party yesterday"],
+              "requiredWords": ["did", "not", "go"],
+              "question": "🎉 Make a negative sentence about going to a party",
+              "timeLimit": 45,
+              "title": "Form the negative sentence",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "ex7_negative_irregular_2",
+            "type": "sentence_formation",
+            "title": "Past Simple - Negative with Irregular Verbs 2",
+            "instructions": "Order the words to make a correct negative sentence.",
+            "config": {
+              "wordBank": [
+                "They",
+                "didn't",
+                "eat",
+                "breakfast",
+                "this",
+                "morning"
+              ],
+              "correctAnswers": ["They didn't eat breakfast this morning"],
+              "requiredWords": ["didn't", "eat"],
+              "question": "🍳 Make a negative sentence about eating breakfast",
+              "timeLimit": 45,
+              "title": "Form the negative sentence",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "ex8_questions_irregular",
+            "type": "sentence_formation",
+            "title": "Past Simple - Questions with Irregular Verbs",
+            "instructions": "Order the words to make a correct question.",
+            "config": {
+              "wordBank": ["Did", "you", "see", "the", "new", "movie", "?"],
+              "correctAnswers": ["Did you see the new movie?"],
+              "requiredWords": ["Did", "see", "movie"],
+              "question": "🎬 Ask if someone saw the new movie",
+              "timeLimit": 45,
+              "title": "Form the question",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "ex9_questions_irregular_2",
+            "type": "sentence_formation",
+            "title": "Past Simple - Questions with Irregular Verbs 2",
+            "instructions": "Order the words to make a correct question.",
+            "config": {
+              "wordBank": ["What", "did", "you", "eat", "for", "dinner", "?"],
+              "correctAnswers": ["What did you eat for dinner?"],
+              "requiredWords": ["What", "did", "eat"],
+              "question": "🍽️ Ask what someone ate for dinner",
+              "timeLimit": 45,
+              "title": "Form the question",
+              "showStartButton": true
             }
           }
         ]
       },
-      "updatedAt": { "_seconds": 1769025200, "_nanoseconds": 0 }
+      "updatedAt": { "_seconds": 1769031100, "_nanoseconds": 0 }
     }
   }
 }

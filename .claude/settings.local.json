@@ -8,7 +8,24 @@
       "Bash(ls:*)",
       "Bash(git ls-tree:*)",
       "Bash(git:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(npx react-doctor@latest *)",
+      "Bash(Get-Content *)",
+      "Bash(Start-Sleep -Seconds 15)",
+      "Bash(Start-Sleep -Seconds 20)",
+      "Bash(Select-String -Pattern \"rules-of-hooks|rules_of_hooks|Rules of hooks|conditional\" -Context 3)",
+      "Bash(Select-Object -First 60)",
+      "Bash(cd /d \"D:\\\\Programación\\\\Bilingual Site\\\\bilingual-app\")",
+      "Bash(Get-ChildItem -Recurse -Include \"*.tsx\", \"*.ts\" -Exclude \"node_modules\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(grep -v \"import\\\\|export\\\\|//\")",
+      "Bash(npx oxlint *)",
+      "Bash(Select-String \"rules-of-hooks\")",
+      "Bash(Select-Object -First 20)",
+      "Bash(Start-Sleep -Seconds 30)",
+      "Bash(Select-String -Pattern \"rules.of.hooks|Rules of hooks|conditional|hooks\" -Context 3)",
+      "Bash(Remove-Item *)",
+      "Bash(Get-ChildItem *)"
     ]
   }
 }
