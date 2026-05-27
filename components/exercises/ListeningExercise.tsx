@@ -25,12 +25,12 @@ export default function ListeningExercise({
 
   async function playAudio(isSlow = false) {
     if (sound) await sound.unloadAsync();
-    const { sound: newSound } = await Audio.Sound.createAsync(
-      {
-        uri: isSlow ? config.slowAudioUrl || config.audioUrl : config.audioUrl,
-      },
-      { rate: isSlow ? 0.6 : 1.0 }
-    );
+    const { sound: newSound } = await Audio.Sound.createAsync({
+      uri: isSlow ? config.slowAudioUrl || config.audioUrl : config.audioUrl,
+    });
+    if (isSlow) {
+      await newSound.setRateAsync(0.6, true);
+    }
     setSound(newSound);
     await newSound.playAsync();
   }

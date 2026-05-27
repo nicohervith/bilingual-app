@@ -1,255 +1,386 @@
 {
   "lessons": {
-    "A1_shopping": {
-      "id": "A1_shopping",
-      "title": "Shopping and Prices",
+    "A1_daily_routine": {
+      "id": "A1_daily_routine",
+      "title": "Daily Routine",
       "metadata": {
         "level": "A1",
-        "module": "daily_life",
-        "estimatedDuration": 25,
-        "unit": "Unit 8 (Shopping)",
-        "tags": ["shopping", "prices", "quantifiers", "money", "clothes"],
+        "module": "basics",
+        "estimatedDuration": 30,
+        "unit": "unitA1_basics",
+        "tags": [
+          "daily_routines",
+          "present_simple",
+          "habits",
+          "actions",
+          "verbs"
+        ],
         "xpReward": 120
       },
       "objectives": [
-        "Ask about prices using 'How much is/are...?'",
-        "Use quantifiers 'some', 'any', 'much', 'many' correctly",
-        "Understand common shopping phrases (discount, size, fit)",
-        "Identify countable vs uncountable nouns in a store context"
+        "Describe daily activities using present simple",
+        "Use frequency adverbs (always, usually, sometimes, never)",
+        "Talk about habits and routines in first person",
+        "Sequence daily activities in chronological order"
       ],
       "settings": {
         "retryLimit": 3,
-        "unlockCondition": "completed:A1_paying_the_bill"
+        "unlockCondition": "completed:A1_time_expressions",
+        "accessibility": {
+          "visualAids": true,
+          "audioSubtitles": true
+        }
       },
       "content": {
         "vocabulary": [
           {
-            "id": "shop_price",
-            "word": "How much?",
-            "translation": "¿Cuánto cuesta?",
-            "examples": [
-              "How much is this shirt?",
-              "How much are these shoes?"
-            ],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025100/price_tag.png"
+            "id": "voc_wake_up",
+            "word": "Wake up",
+            "translation": "Despertarse",
+            "examples": ["I wake up at 7am", "She wakes up early"],
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754945701/ChatGPT_Image_11_ago_2025_05_54_51_p.m._ui5die.png"
           },
           {
-            "id": "shop_discount",
-            "word": "Discount",
-            "translation": "Descuento",
-            "examples": ["This jacket has a 30% discount", "It's on sale"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025101/discount_sign.png"
+            "id": "voc_get_dressed",
+            "word": "Get dressed",
+            "translation": "Vestirse",
+            "examples": ["I get dressed after breakfast"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033000/get_dressed.png"
           },
           {
-            "id": "shop_size",
-            "word": "Size",
-            "translation": "Talla / Tamaño",
-            "examples": ["What size are you?", "I need a larger size"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025102/size_chart.png"
+            "id": "voc_brush_teeth",
+            "word": "Brush my teeth",
+            "translation": "Cepillarse los dientes",
+            "examples": ["I brush my teeth twice a day"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033001/brush_teeth.png"
           },
           {
-            "id": "shop_fit",
-            "word": "Fit",
-            "translation": "Quedar bien",
-            "examples": ["This fits perfectly", "The shoes don't fit me"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025103/fitting_room.png"
+            "id": "voc_take_shower",
+            "word": "Take a shower",
+            "translation": "Tomar una ducha",
+            "examples": ["I take a shower in the morning"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033002/shower.png"
           },
           {
-            "id": "shop_receipt",
-            "word": "Receipt",
-            "translation": "Recibo / Ticket",
-            "examples": [
-              "Can I have the receipt, please?",
-              "Keep your receipt for returns"
-            ],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769025104/receipt.png"
+            "id": "voc_have_breakfast",
+            "word": "Have breakfast",
+            "translation": "Desayunar",
+            "examples": ["I have breakfast at 8am"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033003/breakfast.png"
+          },
+          {
+            "id": "voc_go_to_work",
+            "word": "Go to work",
+            "translation": "Ir al trabajo",
+            "examples": ["I go to work by bus"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033004/go_to_work.png"
+          },
+          {
+            "id": "voc_have_lunch",
+            "word": "Have lunch",
+            "translation": "Almorzar",
+            "examples": ["I have lunch at 1pm"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033005/lunch.png"
+          },
+          {
+            "id": "voc_finish_work",
+            "word": "Finish work",
+            "translation": "Terminar el trabajo",
+            "examples": ["I finish work at 6pm"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033006/finish_work.png"
+          },
+          {
+            "id": "voc_have_dinner",
+            "word": "Have dinner",
+            "translation": "Cenar",
+            "examples": ["I have dinner with my family"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033007/dinner.png"
+          },
+          {
+            "id": "voc_watch_tv",
+            "word": "Watch TV",
+            "translation": "Ver televisión",
+            "examples": ["I watch TV before bed"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033008/watch_tv.png"
+          },
+          {
+            "id": "voc_go_to_bed",
+            "word": "Go to bed",
+            "translation": "Acostarse / Ir a la cama",
+            "examples": ["I go to bed at 11pm"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033009/go_to_bed.png"
+          },
+          {
+            "id": "voc_exercise",
+            "word": "Exercise",
+            "translation": "Hacer ejercicio",
+            "examples": ["I exercise three times a week"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033010/exercise.png"
           }
         ],
         "exercises": [
           {
-            "id": "shop_ex1_quantifiers_match",
-            "type": "drag_drop",
-            "title": "Much vs Many",
-            "instructions": "Match each quantifier with the correct noun type.",
+            "id": "ex1_daily_actions",
+            "type": "fill_in_blank",
+            "title": "Complete the Daily Actions",
+            "instructions": "Select the correct verb phrase to complete each sentence.",
             "config": {
-              "pairs": [
+              "questions": [
                 {
-                  "id": "q1",
-                  "from": "How MANY apples? (countable ✅)",
-                  "to": "MANY"
+                  "sentence": "In the morning, I ___ at 7am.",
+                  "options": ["wake up", "go to bed", "have dinner"],
+                  "answer": "wake up"
                 },
                 {
-                  "id": "q2",
-                  "from": "How MUCH milk? (uncountable 🥛)",
-                  "to": "MUCH"
+                  "sentence": "Before breakfast, I ___ my teeth.",
+                  "options": ["brush", "wash", "clean"],
+                  "answer": "brush"
                 },
                 {
-                  "id": "q3",
-                  "from": "How MANY shirts? (countable 👕)",
-                  "to": "MANY"
+                  "sentence": "I usually ___ a shower before work.",
+                  "options": ["make", "take", "do"],
+                  "answer": "take"
                 },
                 {
-                  "id": "q4",
-                  "from": "How MUCH money? (uncountable 💵)",
-                  "to": "MUCH"
+                  "sentence": "At 1pm, I ___ lunch.",
+                  "options": ["make", "have", "take"],
+                  "answer": "have"
+                },
+                {
+                  "sentence": "After work, I like to ___ TV.",
+                  "options": ["see", "watch", "look"],
+                  "answer": "watch"
+                },
+                {
+                  "sentence": "I ___ to bed at 11pm.",
+                  "options": ["go", "get", "make"],
+                  "answer": "go"
                 }
               ]
             }
           },
           {
-            "id": "shop_ex2_some_any",
-            "type": "matching",
-            "title": "Some vs Any",
-            "instructions": "Match each sentence with 'some' or 'any'.",
-            "config": {
-              "pairs": [
-                {
-                  "from": "I have ___ money to buy a gift. (positive ✅)",
-                  "to": "some"
-                },
-                {
-                  "from": "Do you have ___ questions? (question ❓)",
-                  "to": "any"
-                },
-                {
-                  "from": "There aren't ___ discounts today. (negative ❌)",
-                  "to": "any"
-                },
-                {
-                  "from": "She bought ___ nice dresses. (positive ✅)",
-                  "to": "some"
-                },
-                {
-                  "from": "Would you like ___ coffee? (offer ☕)",
-                  "to": "some"
-                },
-                {
-                  "from": "I don't need ___ help. (negative)",
-                  "to": "any"
-                }
-              ],
-              "vocabulary": [],
-              "title": "Match the quantifier"
-            }
-          },
-          {
-            "id": "shop_ex3_much_many",
-            "type": "matching",
-            "title": "Much vs Many",
-            "instructions": "Match the sentence with 'much' or 'many'.",
-            "config": {
-              "pairs": [
-                {
-                  "from": "How ___ apples? (countable 🍎)",
-                  "to": "many"
-                },
-                {
-                  "from": "How ___ milk? (uncountable 🥛)",
-                  "to": "much"
-                },
-                {
-                  "from": "How ___ shirts did you buy? (countable 👕)",
-                  "to": "many"
-                },
-                {
-                  "from": "How ___ sugar do you need? (uncountable)",
-                  "to": "much"
-                },
-                {
-                  "from": "How ___ dollars? (countable 💵)",
-                  "to": "many"
-                },
-                {
-                  "from": "How ___ time? (uncountable ⏰)",
-                  "to": "much"
-                }
-              ],
-              "vocabulary": [],
-              "title": "Match the quantifier"
-            }
-          },
-          {
-            "id": "shop_ex4_price_questions_1",
+            "id": "ex2_sentence_formation_1",
             "type": "sentence_formation",
-            "title": "Asking for Prices - Exercise 1",
-            "instructions": "Order the words to ask about the price of a jacket.",
+            "title": "Build Your Morning Routine",
+            "instructions": "Order the words to make a correct sentence about waking up.",
             "config": {
-              "wordBank": ["How", "much", "is", "this", "jacket", "?"],
-              "correctAnswers": ["How much is this jacket?"],
-              "requiredWords": ["How", "much", "is", "this", "jacket"],
-              "question": "💰 Ask about the price of the jacket",
-              "timeLimit": 60,
-              "title": "Forma la pregunta para el precio",
+              "wordBank": ["I", "wake up", "at", "7am", "every", "day"],
+              "correctAnswers": ["I wake up at 7am every day"],
+              "requiredWords": ["wake up", "every", "day"],
+              "question": "🌅 Make a sentence about your wake-up time",
+              "timeLimit": 45,
+              "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "shop_ex5_price_questions_2",
+            "id": "ex3_sentence_formation_2",
             "type": "sentence_formation",
-            "title": "Asking for Prices - Exercise 2",
-            "instructions": "Order the words to ask about the shoes (plural).",
+            "title": "Build Your Breakfast Routine",
+            "instructions": "Order the words to make a correct sentence about breakfast.",
             "config": {
-              "wordBank": [
-                "How",
-                "much",
-                "are",
-                "those",
-                "shoes",
-                "please",
-                "?"
-              ],
-              "correctAnswers": ["How much are those shoes please?"],
-              "requiredWords": ["How", "much", "are", "those", "shoes"],
-              "question": "👠 Ask about the price of those shoes",
-              "timeLimit": 60,
-              "title": "Forma la pregunta (plural)",
+              "wordBank": ["I", "have", "breakfast", "with", "my", "family"],
+              "correctAnswers": ["I have breakfast with my family"],
+              "requiredWords": ["have", "breakfast", "family"],
+              "question": "🍳 Make a sentence about breakfast with family",
+              "timeLimit": 45,
+              "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "shop_ex6_listening",
+            "id": "ex4_sentence_formation_3",
+            "type": "sentence_formation",
+            "title": "Build Your Evening Routine",
+            "instructions": "Order the words to make a correct sentence about dinner.",
+            "config": {
+              "wordBank": ["I", "usually", "have", "dinner", "at", "8pm"],
+              "correctAnswers": ["I usually have dinner at 8pm"],
+              "requiredWords": ["dinner", "usually"],
+              "question": "🍽️ Make a sentence about your dinner time",
+              "timeLimit": 45,
+              "title": "Form the sentence",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "ex5_frequency_adverbs",
+            "type": "fill_in_blank",
+            "title": "Frequency Adverbs",
+            "instructions": "Select the correct frequency adverb (always, usually, sometimes, never).",
+            "config": {
+              "questions": [
+                {
+                  "sentence": "I ___ wake up at 7am. (100%)",
+                  "options": ["always", "sometimes", "never"],
+                  "answer": "always"
+                },
+                {
+                  "sentence": "I ___ have coffee in the morning. (80%)",
+                  "options": ["never", "usually", "sometimes"],
+                  "answer": "usually"
+                },
+                {
+                  "sentence": "I ___ exercise on weekends. (50%)",
+                  "options": ["always", "usually", "sometimes"],
+                  "answer": "sometimes"
+                },
+                {
+                  "sentence": "I ___ go to bed late. (0%)",
+                  "options": ["usually", "sometimes", "never"],
+                  "answer": "never"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ex6_listening_routine",
             "type": "listening_transcription",
-            "title": "Listening: In the Store",
-            "instructions": "Listen to the conversation and complete the missing word.",
+            "title": "Listening: Daily Routine",
+            "instructions": "Listen and type what you hear.",
             "config": {
-              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1777055626/Do_you_have_this_in_a_larger_size_djoztb.mp3",
-              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769025106/shop_conversation_slow.mp3",
-              "correctSentence": "Do you have this in a larger size?",
+              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769033020/daily_routine_audio.mp3",
+              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769033021/daily_routine_slow.mp3",
+              "correctSentence": "I wake up at 7am, then I take a shower and have breakfast",
               "wordBank": [
-                "Do",
-                "you",
-                "have",
-                "this",
-                "in",
+                "I",
+                "wake up",
+                "at",
+                "7am",
+                "then",
+                "take",
                 "a",
-                "larger",
-                "size",
-                "price",
-                "discount",
-                "fit"
+                "shower",
+                "and",
+                "have",
+                "breakfast"
               ]
             }
           },
           {
-            "id": "shop_ex7_memory_game",
-            "type": "memory_game",
-            "title": "Shopping Memory",
-            "instructions": "Match the English word with its Spanish translation.",
+            "id": "ex7_pronunciation_routine",
+            "type": "pronunciation",
+            "title": "Pronunciation: Daily Actions",
+            "instructions": "Listen and repeat the sentence about your daily routine.",
+            "config": {
+              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769033022/pronunciation_routine.mp3",
+              "language": "en-US",
+              "phrase": "I wake up, take a shower, and have breakfast",
+              "translation": "Me despierto, me ducho y desayuno"
+            }
+          },
+          {
+            "id": "ex8_dialogue_routine",
+            "type": "dialogue_simulation",
+            "title": "Dialogue: Talking About Your Day",
+            "instructions": "Choose the correct response to complete the conversation.",
+            "config": {
+              "scenario": "Two friends talking about their daily routines",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "What time do you wake up?",
+                  "options": [
+                    {
+                      "text": "I wake up at 7am",
+                      "correct": true,
+                      "feedback": "✅ Correct!"
+                    },
+                    {
+                      "text": "I waking up at 7am",
+                      "correct": false,
+                      "feedback": "❌ Use 'wake up' in present simple"
+                    }
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "Do you exercise every day?",
+                  "options": [
+                    {
+                      "text": "I usually exercise three times a week",
+                      "correct": true,
+                      "feedback": "✅ Great answer with frequency adverb!"
+                    },
+                    {
+                      "text": "Yes, I exercise every day",
+                      "correct": false,
+                      "feedback": "❌ That's also correct, but try using 'usually' or 'sometimes'"
+                    }
+                  ]
+                },
+                {
+                  "character": "friend",
+                  "text": "What do you do after work?",
+                  "options": [
+                    {
+                      "text": "I have dinner and then watch TV",
+                      "correct": true,
+                      "feedback": "✅ Perfect sequence!"
+                    },
+                    {
+                      "text": "I having dinner and watching TV",
+                      "correct": false,
+                      "feedback": "❌ Use present simple: 'have' and 'watch'"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "ex9_sequence_words",
+            "type": "sentence_formation",
+            "title": "Sequence Your Routine (First, Then, After that)",
+            "instructions": "Order the words to make a sentence using sequence words.",
+            "config": {
+              "wordBank": [
+                "First",
+                "I",
+                "wake up",
+                "then",
+                "I",
+                "take a shower"
+              ],
+              "correctAnswers": ["First I wake up, then I take a shower"],
+              "requiredWords": ["First", "then", "wake up", "shower"],
+              "question": "📋 Use 'First... then...' to sequence your morning",
+              "timeLimit": 60,
+              "title": "Form the sequence",
+              "showStartButton": true
+            }
+          },
+          {
+            "id": "ex10_drag_drop_routine",
+            "type": "drag_drop",
+            "title": "Order the Daily Routine",
+            "instructions": "Drag and drop to complete the daily routine in order.",
             "config": {
               "pairs": [
-                { "front": "Discount", "back": "Descuento" },
-                { "front": "How much?", "back": "¿Cuánto cuesta?" },
-                { "front": "Size", "back": "Talla" },
-                { "front": "Receipt", "back": "Ticket / Recibo" },
-                { "front": "Fit", "back": "Quedar bien" },
-                { "front": "Some", "back": "Algunos/as" },
-                { "front": "Any", "back": "Ningún / Algún (neg/preg)" }
-              ]
+                { "from": "First", "to": "I wake up", "id": "pair1" },
+                { "from": "Then", "to": "I take a shower", "id": "pair2" },
+                {
+                  "from": "After that",
+                  "to": "I have breakfast",
+                  "id": "pair3"
+                },
+                { "from": "Next", "to": "I go to work", "id": "pair4" },
+                { "from": "Finally", "to": "I go to bed", "id": "pair5" }
+              ],
+              "sentenceTemplates": [
+                "__, __",
+                "__, __",
+                "__, __",
+                "__, __",
+                "__, __"
+              ],
+              "question": "Ordena las palabras para formar la rutina diaria correcta"
             }
           }
         ]
       },
-      "updatedAt": { "_seconds": 1769025200, "_nanoseconds": 0 }
+      "updatedAt": { "_seconds": 1769033100, "_nanoseconds": 0 }
     }
   }
 }

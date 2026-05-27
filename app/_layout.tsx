@@ -2,13 +2,16 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { StyleSheet, useColorScheme, View } from "react-native";
+import { Platform, StyleSheet, useColorScheme, useWindowDimensions, View } from "react-native";
 import "react-native-reanimated";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const { width } = useWindowDimensions();
+  const isDesktop = Platform.OS === "web" && width >= 768;
+
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -19,7 +22,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <View style={styles.globalContainer}>
+      <View style={[styles.globalContainer, isDesktop && styles.desktopContainer]}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
@@ -45,15 +48,20 @@ export default function RootLayout() {
 }
 const styles = StyleSheet.create({
   globalContainer: {
-    width: 800,
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#9365FF",
+  },
+  desktopContainer: {
+    maxWidth: 800,
     marginHorizontal: "auto",
     marginTop: 32,
     padding: 16,
-    backgroundColor: "#9365FF",
     borderRadius: 16,
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     alignSelf: "center",
-    flex: 1,
+    ...(Platform.OS === "web" && {
+      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    } as any),
   },
   header: {
     backgroundColor: "#f5f5f5",

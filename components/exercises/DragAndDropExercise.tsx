@@ -39,6 +39,75 @@ interface DropZoneLayout {
   height: number;
 }
 
+interface DragItemViewProps {
+  itemId: string;
+  content: string;
+  positions: ReturnType<typeof useSharedValue<Record<string, { x: number; y: number }>>>;
+  activeDrag: string | null;
+  matches: Record<string, string>;
+  gestureHandler: ReturnType<typeof useAnimatedGestureHandler>;
+  isExerciseCompleted: boolean;
+  setActiveDrag: (id: string) => void;
+  onLayout: (id: string, x: number, y: number) => void;
+}
+
+const DragItemView: React.FC<DragItemViewProps> = ({
+  itemId,
+  content,
+  positions,
+  activeDrag,
+  matches,
+  gestureHandler,
+  isExerciseCompleted,
+  setActiveDrag,
+  onLayout,
+}) => {
+  const animatedStyle = useAnimatedStyle(() => {
+    const isActive = activeDrag === itemId;
+    const isMatched = matches[itemId];
+    return {
+      position: "absolute" as const,
+      left: 0,
+      top: 0,
+      zIndex: isActive ? 1000 : isMatched ? 1 : 100,
+      opacity: isMatched ? 0.9 : 1,
+      transform: [
+        { translateX: positions.value[itemId]?.x || 0 },
+        { translateY: positions.value[itemId]?.y || 0 },
+        { scale: withSpring(isActive ? 1.1 : 1) },
+      ],
+      backgroundColor: isMatched ? "#4CAF50" : isActive ? "#7E57C2" : "#9365FF",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: isActive ? 5 : 2 },
+      shadowOpacity: isActive ? 0.3 : 0.2,
+      shadowRadius: isActive ? 10 : 5,
+      elevation: isActive ? 10 : 3,
+    };
+  });
+
+  return (
+    <PanGestureHandler
+      onGestureEvent={gestureHandler}
+      onHandlerStateChange={gestureHandler}
+      onBegan={() => {
+        if (!isExerciseCompleted) {
+          runOnJS(setActiveDrag)(itemId);
+        }
+      }}
+    >
+      <Animated.View
+        style={[styles.dragItem as ViewStyle, animatedStyle as Animated.AnimateStyle<ViewStyle>]}
+        onLayout={(e) => {
+          const { x, y } = e.nativeEvent.layout;
+          onLayout(itemId, x, y);
+        }}
+      >
+        <Text style={styles.dragText}>{content}</Text>
+      </Animated.View>
+    </PanGestureHandler>
+  );
+};
+
 const DragDropExercise: React.FC<DragDropExerciseProps> = ({
   dragItems = [],
   dropZones = [],
@@ -149,33 +218,6 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
     dragItemLayouts[id] = { x, y };
   };
 
-  const animatedStyles = dragItems.reduce((acc, item) => {
-    acc[item.id] = useAnimatedStyle(() => {
-      const isActive = activeDrag === item.id;
-      const isMatched = matches[item.id];
-
-      return {
-        position: "absolute" as const,
-        left: positions.value[item.id]?.x || 0,
-        top: positions.value[item.id]?.y || 0,
-        zIndex: isActive ? 1000 : isMatched ? 1 : 100,
-        opacity: isMatched ? 0.9 : 1,
-        transform: [{ scale: withSpring(isActive ? 1.1 : 1) }],
-        backgroundColor: isMatched
-          ? "#4CAF50"
-          : isActive
-          ? "#7E57C2"
-          : "#9365FF",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: isActive ? 5 : 2 },
-        shadowOpacity: isActive ? 0.3 : 0.2,
-        shadowRadius: isActive ? 10 : 5,
-        elevation: isActive ? 10 : 3,
-      };
-    });
-    return acc;
-  }, {} as Record<string, ReturnType<typeof useAnimatedStyle>>);
-
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx: { startX: number; startY: number }) => {
       if (!activeDrag || isExerciseCompleted) return;
@@ -261,31 +303,18 @@ const DragDropExercise: React.FC<DragDropExerciseProps> = ({
           {dragItems.map(
             (item) =>
               !matches[item.id] && (
-                <PanGestureHandler
+                <DragItemView
                   key={`drag-${item.id}`}
-                  onGestureEvent={gestureHandler}
-                  onHandlerStateChange={gestureHandler}
-                  onBegan={() => {
-                    if (!isExerciseCompleted) {
-                      runOnJS(setActiveDrag)(item.id);
-                    }
-                  }}
-                >
-                  <Animated.View
-                    style={[
-                      styles.dragItem as ViewStyle,
-                      animatedStyles[
-                        item.id
-                      ] as Animated.AnimateStyle<ViewStyle>,
-                    ]}
-                    onLayout={(e) => {
-                      const { x, y } = e.nativeEvent.layout;
-                      saveDragItemLayout(item.id, x, y);
-                    }}
-                  >
-                    <Text style={styles.dragText}>{item.content}</Text>
-                  </Animated.View>
-                </PanGestureHandler>
+                  itemId={item.id}
+                  content={item.content}
+                  positions={positions}
+                  activeDrag={activeDrag}
+                  matches={matches}
+                  gestureHandler={gestureHandler}
+                  isExerciseCompleted={isExerciseCompleted}
+                  setActiveDrag={setActiveDrag}
+                  onLayout={saveDragItemLayout}
+                />
               )
           )}
         </View>

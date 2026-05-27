@@ -1,18 +1,19 @@
-import AudioMatchingGame from "@/components/games/AudioMatchingGame";
-import AudioToImageMatching from "@/components/games/AudioToImageMatching";
-import CategorizationGame from "@/components/games/CategorizationGame";
+import SentenceBuilder from "@/components/content/SentenceBuilder";
 import ConjugationExercise from "@/components/exercises/ConjugationExercise";
 import DragDropExercise from "@/components/exercises/DragAndDropExercise";
-import CalendarPlanner from "@/components/games/CalendarPlanner";
-import DialogueSimulation from "@/components/games/DialogueSimulation";
-import MapInteractive from "@/components/games/MapInteractive";
-import { PronunciationGame } from "@/components/games/PronunciationGame";
+import FillBlankExercise from "@/components/exercises/FillBlankExercise";
 import ImageSelectionExercise from "@/components/exercises/ImageSelectionExercise";
 import ListeningExercise from "@/components/exercises/ListeningExercise";
 import MatchingExercise from "@/components/exercises/MatchingExercise";
+import AudioMatchingGame from "@/components/games/AudioMatchingGame";
+import AudioToImageMatching from "@/components/games/AudioToImageMatching";
+import CalendarPlanner from "@/components/games/CalendarPlanner";
+import CategorizationGame from "@/components/games/CategorizationGame";
+import DialogueSimulation from "@/components/games/DialogueSimulation";
+import MapInteractive from "@/components/games/MapInteractive";
 import MemoryGame from "@/components/games/MemoryGame";
 import NumbersGame from "@/components/games/NumbersGame";
-import SentenceBuilder from "@/components/content/SentenceBuilder";
+import { PronunciationGame } from "@/components/games/PronunciationGame";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import type { Exercise } from "./exerciseConfig";
@@ -122,6 +123,30 @@ export const ExerciseComponentRenderer: React.FC<ExerciseComponentProps> = ({
             pairs={exercise.config.pairs}
             vocabulary={exercise.config.vocabulary}
             title={exercise.config.title}
+          />
+        );
+
+      case "fill_in_blank":
+        // Verificar que questions existe
+        if (
+          !exercise.config?.questions ||
+          exercise.config.questions.length === 0
+        ) {
+          console.warn("fill_in_blank: No questions provided", exercise);
+          return (
+            <View style={{ padding: 16 }}>
+              <Text>No hay preguntas disponibles para este ejercicio.</Text>
+              <TouchableOpacity onPress={commonProps.onComplete}>
+                <Text>Continuar</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+
+        return (
+          <FillBlankExercise
+            {...commonProps}
+            questions={exercise.config.questions}
           />
         );
 

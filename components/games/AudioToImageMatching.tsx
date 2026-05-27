@@ -28,6 +28,15 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
   const [showError, setShowError] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
 
+  // Limpiar el sonido al desmontar
+  useEffect(() => {
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]);
+
   // Validación completa para evitar errores
   if (!config || !config.pairs || !Array.isArray(config.pairs)) {
     console.warn("Configuración inválida para AudioToImageMatching:", config);
@@ -105,15 +114,6 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
     }
   };
 
-  // Limpiar el sonido al desmontar
-  useEffect(() => {
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
-    };
-  }, [sound]);
-
   const handleImageSelect = (imageId: string) => {
     if (!hasPlayed) return;
 
@@ -146,7 +146,7 @@ const AudioToImageMatching: React.FC<AudioToImageMatchingProps> = ({
     <View style={styles.container}>
       <Text style={styles.title}>
         {config.mode === "audio_to_image"
-          ? "Escucha y selecciona la imagen correcta aaaaaaaaaaaa"
+          ? "Escucha y selecciona la imagen correcta"
           : "Selecciona la imagen que corresponde"}
       </Text>
 
