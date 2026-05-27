@@ -1,284 +1,386 @@
 {
   "lessons": {
-    "A2_past_simple_irregular": {
-      "id": "A2_past_simple_irregular",
-      "title": "Past Simple: Irregular Verbs",
+    "A1_daily_routine": {
+      "id": "A1_daily_routine",
+      "title": "Daily Routine",
       "metadata": {
-        "level": "A2",
-        "module": "grammar",
-        "estimatedDuration": 45,
-        "unit": "unitA2_grammar_past",
+        "level": "A1",
+        "module": "basics",
+        "estimatedDuration": 30,
+        "unit": "unitA1_basics",
         "tags": [
-          "past_simple",
-          "irregular_verbs",
-          "grammar",
-          "past_tense",
-          "common_verbs"
+          "daily_routines",
+          "present_simple",
+          "habits",
+          "actions",
+          "verbs"
         ],
-        "xpReward": 250
+        "xpReward": 120
       },
       "objectives": [
-        "Identify and use 20+ common irregular verbs in past simple",
-        "Distinguish between regular and irregular verb patterns",
-        "Form affirmative sentences with irregular verbs",
-        "Use 'did not' + base form for negative sentences with irregular verbs",
-        "Form questions with 'Did' + subject + base form"
+        "Describe daily activities using present simple",
+        "Use frequency adverbs (always, usually, sometimes, never)",
+        "Talk about habits and routines in first person",
+        "Sequence daily activities in chronological order"
       ],
       "settings": {
         "retryLimit": 3,
-        "unlockCondition": "completed:A2_past_simple_regular"
+        "unlockCondition": "completed:A1_time_expressions",
+        "accessibility": {
+          "visualAids": true,
+          "audioSubtitles": true
+        }
       },
       "content": {
         "vocabulary": [
           {
-            "id": "verb_go_went",
-            "word": "Go → Went",
-            "translation": "Ir → Fui/Fue",
-            "examples": ["I went to the beach yesterday"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031000/go.png"
+            "id": "voc_wake_up",
+            "word": "Wake up",
+            "translation": "Despertarse",
+            "examples": ["I wake up at 7am", "She wakes up early"],
+            "image": "https://res.cloudinary.com/dltwwat1r/image/upload/v1754945701/ChatGPT_Image_11_ago_2025_05_54_51_p.m._ui5die.png"
           },
           {
-            "id": "verb_eat_ate",
-            "word": "Eat → Ate",
-            "translation": "Comer → Comí",
-            "examples": ["She ate pizza for dinner"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031001/eat.png"
+            "id": "voc_get_dressed",
+            "word": "Get dressed",
+            "translation": "Vestirse",
+            "examples": ["I get dressed after breakfast"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033000/get_dressed.png"
           },
           {
-            "id": "verb_see_saw",
-            "word": "See → Saw",
-            "translation": "Ver → Vi",
-            "examples": ["We saw a great movie"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031002/see.png"
+            "id": "voc_brush_teeth",
+            "word": "Brush my teeth",
+            "translation": "Cepillarse los dientes",
+            "examples": ["I brush my teeth twice a day"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033001/brush_teeth.png"
           },
           {
-            "id": "verb_have_had",
-            "word": "Have → Had",
-            "translation": "Tener → Tuve",
-            "examples": ["I had a wonderful time"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031003/have.png"
+            "id": "voc_take_shower",
+            "word": "Take a shower",
+            "translation": "Tomar una ducha",
+            "examples": ["I take a shower in the morning"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033002/shower.png"
           },
           {
-            "id": "verb_do_did",
-            "word": "Do → Did",
-            "translation": "Hacer → Hice",
-            "examples": ["She did her homework"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031004/do.png"
+            "id": "voc_have_breakfast",
+            "word": "Have breakfast",
+            "translation": "Desayunar",
+            "examples": ["I have breakfast at 8am"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033003/breakfast.png"
           },
           {
-            "id": "verb_say_said",
-            "word": "Say → Said",
-            "translation": "Decir → Dije",
-            "examples": ["He said hello to me"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031005/say.png"
+            "id": "voc_go_to_work",
+            "word": "Go to work",
+            "translation": "Ir al trabajo",
+            "examples": ["I go to work by bus"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033004/go_to_work.png"
           },
           {
-            "id": "verb_get_got",
-            "word": "Get → Got",
-            "translation": "Obtener → Obtuve",
-            "examples": ["I got a new phone"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031006/get.png"
+            "id": "voc_have_lunch",
+            "word": "Have lunch",
+            "translation": "Almorzar",
+            "examples": ["I have lunch at 1pm"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033005/lunch.png"
           },
           {
-            "id": "verb_make_made",
-            "word": "Make → Made",
-            "translation": "Hacer/Fabricar → Hice",
-            "examples": ["She made a cake"],
-            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769031007/make.png"
+            "id": "voc_finish_work",
+            "word": "Finish work",
+            "translation": "Terminar el trabajo",
+            "examples": ["I finish work at 6pm"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033006/finish_work.png"
+          },
+          {
+            "id": "voc_have_dinner",
+            "word": "Have dinner",
+            "translation": "Cenar",
+            "examples": ["I have dinner with my family"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033007/dinner.png"
+          },
+          {
+            "id": "voc_watch_tv",
+            "word": "Watch TV",
+            "translation": "Ver televisión",
+            "examples": ["I watch TV before bed"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033008/watch_tv.png"
+          },
+          {
+            "id": "voc_go_to_bed",
+            "word": "Go to bed",
+            "translation": "Acostarse / Ir a la cama",
+            "examples": ["I go to bed at 11pm"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033009/go_to_bed.png"
+          },
+          {
+            "id": "voc_exercise",
+            "word": "Exercise",
+            "translation": "Hacer ejercicio",
+            "examples": ["I exercise three times a week"],
+            "image": "https://res.cloudinary.com/ddowwkgy0/image/upload/v1769033010/exercise.png"
           }
         ],
         "exercises": [
           {
-            "id": "ex1_irregular_verbs_matching",
-            "type": "matching",
-            "title": "Irregular Verbs - Present to Past",
-            "instructions": "Match each present tense irregular verb with its past simple form.",
+            "id": "ex1_daily_actions",
+            "type": "fill_in_blank",
+            "title": "Complete the Daily Actions",
+            "instructions": "Select the correct verb phrase to complete each sentence.",
             "config": {
-              "pairs": [
-                { "from": "Go", "to": "Went" },
-                { "from": "Eat", "to": "Ate" },
-                { "from": "See", "to": "Saw" },
-                { "from": "Have", "to": "Had" },
-                { "from": "Do", "to": "Did" },
-                { "from": "Say", "to": "Said" },
-                { "from": "Get", "to": "Got" },
-                { "from": "Make", "to": "Made" },
-                { "from": "Buy", "to": "Bought" },
-                { "from": "Drink", "to": "Drank" },
-                { "from": "Drive", "to": "Drove" },
-                { "from": "Fly", "to": "Flew" },
-                { "from": "Meet", "to": "Met" },
-                { "from": "Read", "to": "Read" },
-                { "from": "Sleep", "to": "Slept" },
-                { "from": "Swim", "to": "Swam" },
-                { "from": "Take", "to": "Took" },
-                { "from": "Write", "to": "Wrote" }
-              ],
-              "vocabulary": [],
-              "title": "Match Present → Past (Irregular)"
+              "questions": [
+                {
+                  "sentence": "In the morning, I ___ at 7am.",
+                  "options": ["wake up", "go to bed", "have dinner"],
+                  "answer": "wake up"
+                },
+                {
+                  "sentence": "Before breakfast, I ___ my teeth.",
+                  "options": ["brush", "wash", "clean"],
+                  "answer": "brush"
+                },
+                {
+                  "sentence": "I usually ___ a shower before work.",
+                  "options": ["make", "take", "do"],
+                  "answer": "take"
+                },
+                {
+                  "sentence": "At 1pm, I ___ lunch.",
+                  "options": ["make", "have", "take"],
+                  "answer": "have"
+                },
+                {
+                  "sentence": "After work, I like to ___ TV.",
+                  "options": ["see", "watch", "look"],
+                  "answer": "watch"
+                },
+                {
+                  "sentence": "I ___ to bed at 11pm.",
+                  "options": ["go", "get", "make"],
+                  "answer": "go"
+                }
+              ]
             }
           },
           {
-            "id": "ex2_irregular_grouping",
-            "type": "matching",
-            "title": "Group Irregular Verbs by Pattern",
-            "instructions": "Match each verb with its pattern group.",
-            "config": {
-              "pairs": [
-                { "from": "Go → Went → Gone", "to": "i→a→u pattern" },
-                { "from": "Sing → Sang → Sung", "to": "i→a→u pattern" },
-                { "from": "Swim → Swam → Swum", "to": "i→a→u pattern" },
-                { "from": "Eat → Ate → Eaten", "to": "eat→ate→eaten" },
-                { "from": "Speak → Spoke → Spoken", "to": "eak→oke→oken" },
-                { "from": "Buy → Bought → Bought", "to": "-ought pattern" },
-                { "from": "Bring → Brought → Brought", "to": "-ought pattern" },
-                { "from": "Keep → Kept → Kept", "to": "-ept pattern" },
-                { "from": "Sleep → Slept → Slept", "to": "-ept pattern" }
-              ],
-              "vocabulary": [],
-              "title": "Learn Irregular Verb Patterns"
-            }
-          },
-          {
-            "id": "ex3_sentence_affirmative",
+            "id": "ex2_sentence_formation_1",
             "type": "sentence_formation",
-            "title": "Past Simple - Irregular Verbs (Affirmative)",
-            "instructions": "Order the words to make a correct past simple sentence with an irregular verb.",
+            "title": "Build Your Morning Routine",
+            "instructions": "Order the words to make a correct sentence about waking up.",
             "config": {
-              "wordBank": ["I", "went", "to", "the", "beach", "yesterday"],
-              "correctAnswers": ["I went to the beach yesterday"],
-              "requiredWords": ["went", "beach"],
-              "question": "🏖️ Complete the sentence about going to the beach",
+              "wordBank": ["I", "wake up", "at", "7am", "every", "day"],
+              "correctAnswers": ["I wake up at 7am every day"],
+              "requiredWords": ["wake up", "every", "day"],
+              "question": "🌅 Make a sentence about your wake-up time",
               "timeLimit": 45,
               "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "ex4_sentence_affirmative_2",
+            "id": "ex3_sentence_formation_2",
             "type": "sentence_formation",
-            "title": "Past Simple - Irregular Verbs (Affirmative 2)",
-            "instructions": "Order the words to make a correct past simple sentence.",
+            "title": "Build Your Breakfast Routine",
+            "instructions": "Order the words to make a correct sentence about breakfast.",
             "config": {
-              "wordBank": [
-                "She",
-                "ate",
-                "pizza",
-                "for",
-                "dinner",
-                "last",
-                "night"
-              ],
-              "correctAnswers": ["She ate pizza for dinner last night"],
-              "requiredWords": ["ate", "pizza"],
-              "question": "🍕 Complete the sentence about eating pizza",
+              "wordBank": ["I", "have", "breakfast", "with", "my", "family"],
+              "correctAnswers": ["I have breakfast with my family"],
+              "requiredWords": ["have", "breakfast", "family"],
+              "question": "🍳 Make a sentence about breakfast with family",
               "timeLimit": 45,
               "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "ex5_sentence_affirmative_3",
+            "id": "ex4_sentence_formation_3",
             "type": "sentence_formation",
-            "title": "Past Simple - Irregular Verbs (Affirmative 3)",
-            "instructions": "Order the words to make a correct past simple sentence.",
+            "title": "Build Your Evening Routine",
+            "instructions": "Order the words to make a correct sentence about dinner.",
             "config": {
-              "wordBank": [
-                "We",
-                "saw",
-                "a",
-                "great",
-                "movie",
-                "last",
-                "weekend"
-              ],
-              "correctAnswers": ["We saw a great movie last weekend"],
-              "requiredWords": ["saw", "movie"],
-              "question": "🎬 Complete the sentence about seeing a movie",
+              "wordBank": ["I", "usually", "have", "dinner", "at", "8pm"],
+              "correctAnswers": ["I usually have dinner at 8pm"],
+              "requiredWords": ["dinner", "usually"],
+              "question": "🍽️ Make a sentence about your dinner time",
               "timeLimit": 45,
               "title": "Form the sentence",
               "showStartButton": true
             }
           },
           {
-            "id": "ex6_negative_irregular",
-            "type": "sentence_formation",
-            "title": "Past Simple - Negative with Irregular Verbs",
-            "instructions": "Order the words to make a correct negative sentence.",
+            "id": "ex5_frequency_adverbs",
+            "type": "fill_in_blank",
+            "title": "Frequency Adverbs",
+            "instructions": "Select the correct frequency adverb (always, usually, sometimes, never).",
             "config": {
+              "questions": [
+                {
+                  "sentence": "I ___ wake up at 7am. (100%)",
+                  "options": ["always", "sometimes", "never"],
+                  "answer": "always"
+                },
+                {
+                  "sentence": "I ___ have coffee in the morning. (80%)",
+                  "options": ["never", "usually", "sometimes"],
+                  "answer": "usually"
+                },
+                {
+                  "sentence": "I ___ exercise on weekends. (50%)",
+                  "options": ["always", "usually", "sometimes"],
+                  "answer": "sometimes"
+                },
+                {
+                  "sentence": "I ___ go to bed late. (0%)",
+                  "options": ["usually", "sometimes", "never"],
+                  "answer": "never"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ex6_listening_routine",
+            "type": "listening_transcription",
+            "title": "Listening: Daily Routine",
+            "instructions": "Listen and type what you hear.",
+            "config": {
+              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769033020/daily_routine_audio.mp3",
+              "slowAudioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769033021/daily_routine_slow.mp3",
+              "correctSentence": "I wake up at 7am, then I take a shower and have breakfast",
               "wordBank": [
                 "I",
-                "did",
-                "not",
-                "go",
-                "to",
-                "the",
-                "party",
-                "yesterday"
-              ],
-              "correctAnswers": ["I did not go to the party yesterday"],
-              "requiredWords": ["did", "not", "go"],
-              "question": "🎉 Make a negative sentence about going to a party",
-              "timeLimit": 45,
-              "title": "Form the negative sentence",
-              "showStartButton": true
+                "wake up",
+                "at",
+                "7am",
+                "then",
+                "take",
+                "a",
+                "shower",
+                "and",
+                "have",
+                "breakfast"
+              ]
             }
           },
           {
-            "id": "ex7_negative_irregular_2",
+            "id": "ex7_pronunciation_routine",
+            "type": "pronunciation",
+            "title": "Pronunciation: Daily Actions",
+            "instructions": "Listen and repeat the sentence about your daily routine.",
+            "config": {
+              "audioUrl": "https://res.cloudinary.com/ddowwkgy0/video/upload/v1769033022/pronunciation_routine.mp3",
+              "language": "en-US",
+              "phrase": "I wake up, take a shower, and have breakfast",
+              "translation": "Me despierto, me ducho y desayuno"
+            }
+          },
+          {
+            "id": "ex8_dialogue_routine",
+            "type": "dialogue_simulation",
+            "title": "Dialogue: Talking About Your Day",
+            "instructions": "Choose the correct response to complete the conversation.",
+            "config": {
+              "scenario": "Two friends talking about their daily routines",
+              "dialogues": [
+                {
+                  "character": "friend",
+                  "text": "What time do you wake up?",
+                  "options": [
+                    {
+                      "text": "I wake up at 7am",
+                      "correct": true,
+                      "feedback": "✅ Correct!"
+                    },
+                    {
+                      "text": "I waking up at 7am",
+                      "correct": false,
+                      "feedback": "❌ Use 'wake up' in present simple"
+                    }
+                  ]
+                },
+                {
+                  "character": "user",
+                  "text": "Do you exercise every day?",
+                  "options": [
+                    {
+                      "text": "I usually exercise three times a week",
+                      "correct": true,
+                      "feedback": "✅ Great answer with frequency adverb!"
+                    },
+                    {
+                      "text": "Yes, I exercise every day",
+                      "correct": false,
+                      "feedback": "❌ That's also correct, but try using 'usually' or 'sometimes'"
+                    }
+                  ]
+                },
+                {
+                  "character": "friend",
+                  "text": "What do you do after work?",
+                  "options": [
+                    {
+                      "text": "I have dinner and then watch TV",
+                      "correct": true,
+                      "feedback": "✅ Perfect sequence!"
+                    },
+                    {
+                      "text": "I having dinner and watching TV",
+                      "correct": false,
+                      "feedback": "❌ Use present simple: 'have' and 'watch'"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "ex9_sequence_words",
             "type": "sentence_formation",
-            "title": "Past Simple - Negative with Irregular Verbs 2",
-            "instructions": "Order the words to make a correct negative sentence.",
+            "title": "Sequence Your Routine (First, Then, After that)",
+            "instructions": "Order the words to make a sentence using sequence words.",
             "config": {
               "wordBank": [
-                "They",
-                "didn't",
-                "eat",
-                "breakfast",
-                "this",
-                "morning"
+                "First",
+                "I",
+                "wake up",
+                "then",
+                "I",
+                "take a shower"
               ],
-              "correctAnswers": ["They didn't eat breakfast this morning"],
-              "requiredWords": ["didn't", "eat"],
-              "question": "🍳 Make a negative sentence about eating breakfast",
-              "timeLimit": 45,
-              "title": "Form the negative sentence",
+              "correctAnswers": ["First I wake up, then I take a shower"],
+              "requiredWords": ["First", "then", "wake up", "shower"],
+              "question": "📋 Use 'First... then...' to sequence your morning",
+              "timeLimit": 60,
+              "title": "Form the sequence",
               "showStartButton": true
             }
           },
           {
-            "id": "ex8_questions_irregular",
-            "type": "sentence_formation",
-            "title": "Past Simple - Questions with Irregular Verbs",
-            "instructions": "Order the words to make a correct question.",
+            "id": "ex10_drag_drop_routine",
+            "type": "drag_drop",
+            "title": "Order the Daily Routine",
+            "instructions": "Drag and drop to complete the daily routine in order.",
             "config": {
-              "wordBank": ["Did", "you", "see", "the", "new", "movie", "?"],
-              "correctAnswers": ["Did you see the new movie?"],
-              "requiredWords": ["Did", "see", "movie"],
-              "question": "🎬 Ask if someone saw the new movie",
-              "timeLimit": 45,
-              "title": "Form the question",
-              "showStartButton": true
-            }
-          },
-          {
-            "id": "ex9_questions_irregular_2",
-            "type": "sentence_formation",
-            "title": "Past Simple - Questions with Irregular Verbs 2",
-            "instructions": "Order the words to make a correct question.",
-            "config": {
-              "wordBank": ["What", "did", "you", "eat", "for", "dinner", "?"],
-              "correctAnswers": ["What did you eat for dinner?"],
-              "requiredWords": ["What", "did", "eat"],
-              "question": "🍽️ Ask what someone ate for dinner",
-              "timeLimit": 45,
-              "title": "Form the question",
-              "showStartButton": true
+              "pairs": [
+                { "from": "First", "to": "I wake up", "id": "pair1" },
+                { "from": "Then", "to": "I take a shower", "id": "pair2" },
+                {
+                  "from": "After that",
+                  "to": "I have breakfast",
+                  "id": "pair3"
+                },
+                { "from": "Next", "to": "I go to work", "id": "pair4" },
+                { "from": "Finally", "to": "I go to bed", "id": "pair5" }
+              ],
+              "sentenceTemplates": [
+                "__, __",
+                "__, __",
+                "__, __",
+                "__, __",
+                "__, __"
+              ],
+              "question": "Ordena las palabras para formar la rutina diaria correcta"
             }
           }
         ]
       },
-      "updatedAt": { "_seconds": 1769031100, "_nanoseconds": 0 }
+      "updatedAt": { "_seconds": 1769033100, "_nanoseconds": 0 }
     }
   }
 }

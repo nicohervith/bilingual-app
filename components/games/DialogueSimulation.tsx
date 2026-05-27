@@ -9,17 +9,21 @@ import {
   View,
 } from "react-native";
 
+type DialogueOption = string | { text: string; correct?: boolean; feedback?: string };
+
+function getOptionText(option: DialogueOption): string {
+  return typeof option === "string" ? option : option.text;
+}
+
 interface DialogueSimulationProps {
   config: {
     scenario: string;
     dialogues?: Array<{
-      // Nueva estructura que tienes en tus lecciones
       character: string;
       text: string;
-      options?: string[];
+      options?: DialogueOption[];
     }>;
     phrases?: {
-      // Estructura antigua para mantener compatibilidad
       [role: string]: string[];
     };
   };
@@ -91,11 +95,11 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
     const currentDialogue = config.dialogues?.[currentStep];
     const userOptions = currentDialogue?.options || [];
 
-    const handleOptionSelect = (option: string) => {
-      // Bloqueo de seguridad
+    const handleOptionSelect = (option: DialogueOption) => {
       if (isExerciseCompleted) return;
 
-      const userEntry = { speaker: "Tú", text: option };
+      const optionText = getOptionText(option);
+      const userEntry = { speaker: "Tú", text: optionText };
       const newHistory = [...dialogueHistory, userEntry];
 
       if (currentStep < (config.dialogues?.length || 0) - 1) {
@@ -187,7 +191,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
                 style={styles.optionButton}
                 onPress={() => handleOptionSelect(option)}
               >
-                <Text style={styles.optionText}>{option}</Text>
+                <Text style={styles.optionText}>{getOptionText(option)}</Text>
               </TouchableOpacity>
             ))}
           </View>
