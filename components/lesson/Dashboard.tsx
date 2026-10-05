@@ -1,6 +1,7 @@
 import { API_ENDPOINTS } from "@/constants/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
+import { computeStreak, registerDailyConnection } from "@/services/streakService";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "expo-router";
@@ -12,7 +13,6 @@ import {
   getDocs,
   setDoc,
   Timestamp,
-  updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
@@ -211,47 +211,13 @@ export default function Dashboard() {
       };
     }
 
-    const userProgressRef = doc(db, "userProgress", user.uid);
-    const lastLogin = userProgress.stats?.lastLogin;
-
-    const lastLoginDate = lastLogin?.toDate?.() || new Date();
-    const todayDate = new Date();
-
-    lastLoginDate.setHours(0, 0, 0, 0);
-    todayDate.setHours(0, 0, 0, 0);
-
-    const diffDays = Math.floor(
-      (todayDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
-
-    let newStreak = userProgress.stats?.daysStreak || 1;
-
-    if (diffDays === 1) {
-      newStreak += 1;
-    } else if (diffDays > 1) {
-      newStreak = 1;
-    }
-
-    const longestStreak = Math.max(
-      newStreak,
-      userProgress.stats?.longestStreak || 1,
-    );
-
     try {
-      await updateDoc(userProgressRef, {
-        "stats.daysStreak": newStreak,
-        "stats.lastLogin": new Date(),
-        "stats.longestStreak": longestStreak,
-      });
+      const updated = await registerDailyConnection(user.uid, userProgress.stats);
+      if (updated) return updated;
     } catch (error) {
       console.error("Error updating streak:", error);
     }
-
-    return {
-      daysStreak: newStreak,
-      lastLogin: new Date(),
-      longestStreak: longestStreak,
-    };
+    return computeStreak(userProgress.stats);
   };
 
   const loadProgress = async () => {
@@ -281,7 +247,7 @@ export default function Dashboard() {
 
   const loadHeavyData = async (userProgress: any) => {
     try {
-      const [modulesSnapshot] = await Promise.all([
+      const [modulesSnapshot, streak] = await Promise.all([
         getDocs(collection(db, "modules")),
         updateStreak(userProgress),
       ]);
@@ -310,6 +276,8 @@ export default function Dashboard() {
         completedLessons: userProgress.completedLessons || {},
         purchasedLevels: userProgress.purchasedLevels || {},
         earnedBadges: userProgress.earnedBadges || {},
+        // antes no se copiaba: la pantalla mostraba siempre "1 días de racha"
+        stats: streak,
         levels: {
           A1: {
             completed: userProgress.levels?.A1?.completed || 0,
@@ -646,7 +614,9 @@ export default function Dashboard() {
                 <View style={styles.streakContainer}>
                   <FlameIcon size={20} color="#FF9500" />
                   <Text style={styles.streakText}>
-                    {progress.stats?.daysStreak ?? 1} días de racha
+                    {progress.stats?.daysStreak ?? 1}{" "}
+                    {(progress.stats?.daysStreak ?? 1) === 1 ? "día" : "días"} de
+                    racha
                   </Text>
                 </View>
 

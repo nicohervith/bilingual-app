@@ -10,7 +10,7 @@ import {
   signInWithCredential,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -23,6 +23,7 @@ import {
   View,
 } from "react-native";
 import { auth, db } from "../lib/firebaseConfig";
+import { registerDailyConnection } from "../services/streakService";
 
 export default function Login() {
   const router = useRouter();
@@ -199,46 +200,12 @@ export default function Login() {
     });
   };
 
-  // En Login.tsx
   const updateStreak = async (userId: string) => {
-    const userProgressRef = doc(db, "userProgress", userId);
-    const userProgressSnap = await getDoc(userProgressRef);
-
-    if (userProgressSnap.exists()) {
-      const userData = userProgressSnap.data();
-
-      // VALIDACIÓN DE SEGURIDAD: Si no hay stats, creamos el objeto base
-      const stats = userData.stats || {
-        daysStreak: 0,
-        lastLogin: new Date(),
-        longestStreak: 0,
-      };
-
-      // Convertir Timestamp de Firebase a Date de JS
-      const lastLogin = stats.lastLogin?.toDate
-        ? stats.lastLogin.toDate()
-        : new Date(stats.lastLogin);
-      const today = new Date();
-
-      lastLogin.setHours(0, 0, 0, 0);
-      today.setHours(0, 0, 0, 0);
-
-      const diffTime = today.getTime() - lastLogin.getTime();
-      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); // Usar round es más seguro
-
-      let newStreak = stats.daysStreak || 1;
-
-      if (diffDays === 1) {
-        newStreak += 1;
-      } else if (diffDays > 1) {
-        newStreak = 1;
-      }
-
-      await updateDoc(userProgressRef, {
-        "stats.daysStreak": newStreak,
-        "stats.lastLogin": new Date(), // Actualizamos siempre la última conexión
-        "stats.longestStreak": Math.max(newStreak, stats.longestStreak || 1),
-      });
+    try {
+      await registerDailyConnection(userId);
+    } catch (error) {
+      // la racha nunca debe impedir el login
+      console.error("Error updating streak:", error);
     }
   };
 

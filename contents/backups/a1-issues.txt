@@ -1,0 +1,50 @@
+A1_numbers #7 dialogue_simulation (ex9_age_conversation): step 1 has no correct option
+A1_numbers #7 dialogue_simulation (ex9_age_conversation): step 2 has no correct option
+A1_abilities #1 matching (ex1_abilities): only 2 pairs
+A1_jobs_and_professions #5 listening_transcription (ex5_listening_jobs): sentence not buildable from wordBank: I am an engineer and I work in an office
+A1_directions #1 matching (ex1_matching): only 2 pairs
+A1_directions #2 memory_game (ex2_memory_game): only 2 pairs
+A1_drinks_beverages #4 dialogue_simulation (ex4_cafe_conversation): step 1 has no correct option
+A1_drinks_beverages #4 dialogue_simulation (ex4_cafe_conversation): step 2 has no correct option
+A1_daily_routine #6 listening_transcription (ex6_listening_routine): sentence not buildable from wordBank: I wake up at 7am, then I take a shower and have breakfast
+A1_time_expressions #11 sentence_formation (ex12_routine_sentences): answer not buildable: I drink coffee in the morning
+A1_likes_dislikes #7 dialogue_simulation (ex7_talking_about_hobbies): step 1 has no correct option
+A1_likes_dislikes #7 dialogue_simulation (ex7_talking_about_hobbies): step 2 has no correct option
+A1_likes_dislikes #7 dialogue_simulation (ex7_talking_about_hobbies): step 3 has no correct option
+A1_meeting_people #4 dialogue_simulation (ex4_group_introduction): step 1 has no correct option
+A1_meeting_people #4 dialogue_simulation (ex4_group_introduction): step 2 has no correct option
+A1_introductions_names #4 dialogue_simulation (ex4_name_introduction): step 1 has no correct option
+A1_introductions_names #4 dialogue_simulation (ex4_name_introduction): step 2 has no correct option
+A1_meeting_people_formal #4 dialogue_simulation (ex4_formal_meeting): step 1 has no correct option
+A1_meeting_people_formal #4 dialogue_simulation (ex4_formal_meeting): step 2 has no correct option
+A1_MEGA_FINAL_EXAM #3 listening_transcription (ex4_likes): sentence not buildable from wordBank: I can play the guitar and the piano
+A1_MEGA_FINAL_EXAM #6 dialogue_simulation (ex7_directions): step 1 has no correct option
+A1_MEGA_FINAL_EXAM #6 dialogue_simulation (ex7_directions): step 2 has no correct option
+A1_MEGA_FINAL_EXAM #11 listening_transcription (ex12_transport): sentence not buildable from wordBank: I am taking the bus to the airport
+A1_MEGA_FINAL_EXAM #12 dialogue_simulation (ex13_health): step 1 has no correct option
+A1_future_plans_will #3 sentence_formation (ex3_future_sentences): answer not buildable: She will study English
+A1_future_plans_will #3 sentence_formation (ex3_future_sentences): answer not buildable: We will work tomorrow
+A1_future_plans_will #4 dialogue_simulation (ex4_future_plans): step 1 has no correct option
+A1_future_plans_will #4 dialogue_simulation (ex4_future_plans): step 2 has no correct option
+A1_goals #1 matching (ex1_future_forms): only 2 pairs
+A1_intentions_decisions #3 sentence_formation (ex3_intention_sentences): answer not buildable: She will call later
+A1_intentions_decisions #3 sentence_formation (ex3_intention_sentences): answer not buildable: We will visit family
+A1_greetings_basic #4 dialogue_simulation (ex4_basic_introduction): step 1 has no correct option
+A1_greetings_basic #4 dialogue_simulation (ex4_basic_introduction): step 2 has no correct option
+A1_introducing_yourself #4 dialogue_simulation (ex4_full_introduction): step 1 has no correct option
+A1_introducing_yourself #4 dialogue_simulation (ex4_full_introduction): step 2 has no correct option
+A1_asking_names #4 dialogue_simulation (ex4_name_conversation): step 1 has no correct option
+A1_asking_names #4 dialogue_simulation (ex4_name_conversation): step 2 has no correct option
+A1_personal_info #6 fill_in_blank (ex6_verb_to_be_conjugation_3): answer missing/not in options: I ___ 25 years old.
+A1_personal_info #6 fill_in_blank (ex6_verb_to_be_conjugation_3): answer missing/not in options: She ___ my mother.
+A1_personal_info #6 fill_in_blank (ex6_verb_to_be_conjugation_3): answer missing/not in options: We ___ students.
+A1_personal_info #6 fill_in_blank (ex6_verb_to_be_conjugation_3): answer missing/not in options: He ___ a doctor.
+A1_personal_info #6 fill_in_blank (ex6_verb_to_be_conjugation_3): answer missing/not in options: They ___ from Spain.
+A1_restaurant_phrases #3 dialogue_simulation (ex3_restaurant_conversation): step 1 has no correct option
+A1_restaurant_phrases #3 dialogue_simulation (ex3_restaurant_conversation): step 2 has no correct option
+A1_team_sports #5 dialogue_simulation (ex5_watching_game): step 1 has no correct option
+A1_team_sports #5 dialogue_simulation (ex5_watching_game): step 2 has no correct option
+A1_health_symptoms #4 dialogue_simulation (ex4_doctor_visit): step 1 has no correct option
+A1_health_symptoms #4 dialogue_simulation (ex4_doctor_visit): step 2 has no correct option
+A1_feeling_sick #4 dialogue_simulation (ex4_health_conversation): step 1 has no correct option
+A1_feeling_sick #4 dialogue_simulation (ex4_health_conversation): step 2 has no correct option

@@ -165,6 +165,33 @@ const LessonContent = ({
             </View>
           )}
 
+          {/* Gramática */}
+          {lesson.content.grammar && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Gramática</Text>
+              <View style={styles.grammarCard}>
+                <Text style={styles.grammarTitle}>
+                  {lesson.content.grammar.title}
+                </Text>
+                {!!lesson.content.grammar.explanation && (
+                  <Text style={styles.grammarExplanation}>
+                    {lesson.content.grammar.explanation}
+                  </Text>
+                )}
+                {lesson.content.grammar.rules?.map((item: any, i: number) => (
+                  <View key={i} style={styles.grammarRule}>
+                    <Text style={styles.grammarRuleText}>{item.rule}</Text>
+                    {item.examples?.map((ex: string, j: number) => (
+                      <Text key={j} style={styles.example}>
+                        {ex}
+                      </Text>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
           {/* Ejercicios */}
           {lesson.content.exercises?.map((exercise: Exercise, index: number) =>
             renderExercise(exercise, index),
@@ -304,6 +331,31 @@ const styles = StyleSheet.create({
   example: {
     fontStyle: "italic",
     color: "#666",
+    marginBottom: 4,
+  },
+  grammarCard: {
+    padding: 12,
+    backgroundColor: "#F3EFFF",
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: "#9365FF",
+  },
+  grammarTitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 6,
+  },
+  grammarExplanation: {
+    color: "#555",
+    marginBottom: 8,
+  },
+  grammarRule: {
+    marginTop: 8,
+  },
+  grammarRuleText: {
+    fontWeight: "600",
+    color: "#444",
     marginBottom: 4,
   },
   exerciseContainer: {

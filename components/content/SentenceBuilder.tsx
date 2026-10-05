@@ -24,6 +24,14 @@ interface SentenceBuilderProps {
   question?: string; // Prop opcional a nivel de ejercicio
 }
 
+const normalizeSentence = (sentence: string) =>
+  sentence
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/[.,!?;:¿¡"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
 const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
   config,
   onComplete,
@@ -130,17 +138,11 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
   const checkSentence = () => {
     const userSentence = selectedWords.join(" ");
 
-    let isCorrect: boolean;
-    if (isFreeForm) {
-      const hasRequiredWords = safeConfig.requiredWords.every((req) =>
-        selectedWords.some((w) => w.toLowerCase() === req.toLowerCase()),
-      );
-      isCorrect = hasRequiredWords && selectedWords.length >= 2;
-    } else {
-      isCorrect = safeConfig.correctAnswers.some(
-        (correct) => correct.toLowerCase() === userSentence.toLowerCase(),
-      );
-    }
+    // La oración debe coincidir con una de las respuestas listadas,
+    // ignorando mayúsculas y puntuación
+    const isCorrect = safeConfig.correctAnswers.some(
+      (correct) => normalizeSentence(correct) === normalizeSentence(userSentence),
+    );
 
     if (isCorrect) {
       setShowSuccess(true);
@@ -225,9 +227,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
         <Text style={styles.instructionText}>
           {allWordsRequired
             ? "Usa todas las palabras para formar la oración:"
-            : isFreeForm
-              ? `Forma una oración propia usando${safeConfig.requiredWords.length > 0 ? ` "${safeConfig.requiredWords.join('", "')}" y` : ""} las palabras del banco:`
-              : "Forma una oración usando algunas de las palabras:"}
+            : "Forma una oración usando algunas de las palabras:"}
         </Text>
       </View>
 

@@ -46,6 +46,7 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
     Array<{ speaker: string; text: string }>
   >([]);
   const [currentSpeaker, setCurrentSpeaker] = useState("Waiter");
+  const [wrongFeedback, setWrongFeedback] = useState<string | null>(null);
 
   // Sincronizar cuando isCompleted cambia a true
   useEffect(() => {
@@ -97,6 +98,20 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
 
     const handleOptionSelect = (option: DialogueOption) => {
       if (isExerciseCompleted) return;
+
+      // Si el paso marca una opción como correcta, solo esa permite avanzar.
+      // Los diálogos antiguos (opciones sin marcar) siguen aceptando cualquiera.
+      const hasCorrectOption = userOptions.some(
+        (o) => typeof o !== "string" && o.correct,
+      );
+      if (hasCorrectOption && (typeof option === "string" || !option.correct)) {
+        setWrongFeedback(
+          (typeof option !== "string" && option.feedback) ||
+            "Esa respuesta no encaja. Intenta de nuevo.",
+        );
+        return;
+      }
+      setWrongFeedback(null);
 
       const optionText = getOptionText(option);
       const userEntry = { speaker: "Tú", text: optionText };
@@ -185,6 +200,9 @@ const DialogueSimulation: React.FC<DialogueSimulationProps> = ({
         {!isExerciseCompleted && userOptions.length > 0 && (
           <View style={styles.optionsContainer}>
             <Text style={styles.optionsTitle}>Elige tu respuesta:</Text>
+            {wrongFeedback && (
+              <Text style={styles.wrongFeedbackText}>{wrongFeedback}</Text>
+            )}
             {userOptions.map((option, index) => (
               <TouchableOpacity
                 key={index}
@@ -353,6 +371,14 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
+    textAlign: "center",
+  },
+  wrongFeedbackText: {
+    color: "#C62828",
+    backgroundColor: "#FFEBEE",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 12,
     textAlign: "center",
   },
   completeButton: {

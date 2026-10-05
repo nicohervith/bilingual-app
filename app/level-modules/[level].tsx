@@ -1,4 +1,5 @@
 // app/level-modules/[level].tsx
+import { getUnitOrder } from "@/constants/unitOrder";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -36,42 +37,11 @@ type Module = {
   insigniaModule?: string; // Insignia del módulo
 };
 
-const UNIT_ORDER_MAP_A1: Record<string, number> = {
-  unitA1_first_steps: 1,
-  unitA1_meeting_people: 2,
-  unitA1_numbers_colors: 3,
-  unitA1_my_environment: 4,
-  unitA1_daily_lifestyle: 5,
-  unitA1_food_drinks: 6,
-  unitA1_at_the_restaurant: 7,
-  unitA1_skills_work: 8,
-  unitA1_body_health: 9,
-  unitA1_travel_city: 10,
-  unitA1_sports_leisure: 11,
-  unitA1_future_goals: 12,
-  unitA1_final_mastery: 13,
-};
-
-const UNIT_ORDER_MAP_A2: Record<string, number> = {
-  unitA2_lifestyle: 1,
-  unitA2_environment: 2,
-  unitA2_grammar_past: 3,
-  unitA2_travel_culture: 4,
-  unitA2_wellbeing: 5,
-  unitA2_tech_society: 6,
-  unitA2_work_career: 7,
-  unitA2_final_test: 8,
-};
-
-const UNIT_ORDER_MAP_B1: Record<string, number> = {
-  unitB1_debates_opinions: 1,
-};
-
 export default function LevelModulesScreen() {
   const { level } = useLocalSearchParams();
   const { user } = useAuth();
   const router = useRouter() as {
-    push: (path: `/unit/${string}`) => void;
+    push: (path: `/unit/${string}` | `/readings/${string}`) => void;
   };
   const [unitProgress, setUnitProgress] = useState<Record<string, number>>({});
   const [modules, setModules] = useState<Module[]>([]);
@@ -84,17 +54,6 @@ export default function LevelModulesScreen() {
     return Object.values(module.units).every((unit: Unit) => {
       return unit.lessons.every((lessonId) => completedLessons[lessonId]);
     });
-  };
-
-  const getUnitOrder = (unitId: string, currentLevel: string): number => {
-    const maps: Record<string, Record<string, number>> = {
-      A1: UNIT_ORDER_MAP_A1,
-      A2: UNIT_ORDER_MAP_A2,
-      B1: UNIT_ORDER_MAP_B1,
-    };
-
-    const currentMap = maps[currentLevel as string] || {};
-    return currentMap[unitId] || 999;
   };
 
   const [moduleCompletion, setModuleCompletion] = useState<
@@ -209,6 +168,18 @@ export default function LevelModulesScreen() {
         C
       </Text>
       <Text style={styles.title}>Level {level} Modules</Text>
+      <TouchableOpacity
+        style={styles.readingsButton}
+        onPress={() => router.push(`/readings/${level}`)}
+      >
+        <Text style={styles.readingsIcon}>📖</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.readingsTitle}>Lecturas</Text>
+          <Text style={styles.readingsSubtitle}>
+            Textos cortos con preguntas de comprensión
+          </Text>
+        </View>
+      </TouchableOpacity>
       {modules.map((module) => {
         const isModuleComplete = moduleCompletion[module.id];
 
@@ -363,6 +334,29 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#D82989",
     fontFamily: "Poppins",
+  },
+  readingsButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#D82989",
+  },
+  readingsIcon: {
+    fontSize: 28,
+    marginRight: 12,
+  },
+  readingsTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#1E1B4B",
+  },
+  readingsSubtitle: {
+    fontSize: 13,
+    color: "#6c757d",
   },
   moduleCard: {
     backgroundColor: "#9365ff",
