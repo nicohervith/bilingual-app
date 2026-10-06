@@ -1,0 +1,346 @@
+// Lecturas cortas de A2: 2 por unidad. Formato en ../readings-helpers.js.
+const { reading } = require("../readings-helpers");
+
+module.exports = [
+  // ───────────── Personas y Estilo de Vida ─────────────
+  reading({
+    unitId: "unitA2_lifestyle",
+    title: "My Best Friend Is Very Different from Me",
+    titleEs: "Mi mejor amiga es muy distinta a mí",
+    text: [
+      "My best friend, Chloe, and I have known each other since we were six years old. People are always surprised that we are such good friends, because we are completely different.",
+      "Chloe is tall and slim, with curly red hair and freckles. I'm shorter than her and I have straight dark hair. She is very outgoing and talkative: she loves meeting new people and she is always the centre of attention at parties. I'm quieter and a bit shy.",
+      "Our hobbies are different too. Chloe is really into fashion. She designs some of her own clothes and she spends hours in second-hand shops looking for unusual jackets. I prefer comfortable clothes like jeans and trainers, and in my free time I like hiking and taking photos of nature.",
+      "But we have important things in common. We are both honest and we both have a great sense of humour. When I have a problem, Chloe is the first person I call. She always listens and gives me good advice. I think that's what a best friend is.",
+    ],
+    glossary: ["have known each other = nos conocemos", "slim = delgada", "curly = rizado", "freckles = pecas", "outgoing = extrovertida", "shy = tímida", "is into = le apasiona", "second-hand shops = tiendas de ropa usada", "in common = en común", "advice = consejo"],
+    questions: [
+      "How long have the two friends known each other? | Since they were six | Since last year, Since university | \"since we were six years old\".",
+      "What does Chloe look like? | Tall with curly red hair | Short with straight dark hair, Tall with straight blond hair | \"tall and slim, with curly red hair and freckles\".",
+      "How does the writer describe herself? | Quiet and a bit shy | Outgoing and talkative, Funny and loud | \"I'm quieter and a bit shy\".",
+      "What is Chloe really into? | Fashion | Hiking, Photography | \"Chloe is really into fashion\".",
+      "What does the writer do in her free time? | Hiking and taking photos | Designing clothes, Going to parties | \"I like hiking and taking photos of nature\".",
+      "The two friends are both honest. | True | False | \"We are both honest\".",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_lifestyle",
+    title: "Three Generations Under One Roof",
+    titleEs: "Tres generaciones bajo un mismo techo",
+    text: [
+      "The Romero family lives in a big old house in Valencia. Three generations share the same roof: the grandparents, Rosa and Manuel; their daughter Lucía and her husband Pablo; and their two teenage children, Marta and Javi.",
+      "Living together isn't always easy. The grandparents go to bed early and like a quiet house, while Marta and Javi often listen to loud music and invite friends over. \"Sometimes we argue about the TV remote,\" laughs Javi.",
+      "But there are many advantages. Lucía and Pablo both work full-time, so the grandparents help with the cooking and pick up the children from school. In return, Marta and Javi help their grandparents with their phones and do the shopping for them.",
+      "Every Sunday the whole family has lunch together. Grandma Rosa cooks paella and everyone tells stories about their week. \"These lunches are the best moment of the week,\" says Marta. \"My friends think it's strange to live with your grandparents, but I'm going to miss this when I leave home.\"",
+    ],
+    glossary: ["generations = generaciones", "share = comparten", "roof = techo", "teenage = adolescentes", "argue = discutir", "remote = control remoto", "advantages = ventajas", "pick up = buscar", "in return = a cambio", "miss = extrañar"],
+    questions: [
+      "How many generations live in the house? | Three | Two, Four | \"Three generations share the same roof\".",
+      "What do the family sometimes argue about? | The TV remote | Money, The housework | \"Sometimes we argue about the TV remote\".",
+      "Why do the grandparents help with the children? | Lucía and Pablo work full-time. | The children are very young., The grandparents are bored. | \"Lucía and Pablo both work full-time\".",
+      "How do Marta and Javi help their grandparents? | With their phones and the shopping | With the cooking, With the garden | \"help their grandparents with their phones and do the shopping\".",
+      "What does Grandma Rosa cook on Sundays? | Paella | Pizza, Soup | \"Grandma Rosa cooks paella\".",
+      "Marta doesn't like living with her grandparents. | False | True | Dice que va a extrañar esto cuando se vaya de casa.",
+    ],
+  }),
+
+  // ───────────── El Mundo que nos Rodea ─────────────
+  reading({
+    unitId: "unitA2_environment",
+    title: "City Life or Country Life?",
+    titleEs: "¿Vida en la ciudad o en el campo?",
+    text: [
+      "Two years ago, Daniel and his wife, Sara, lived in a small flat in the centre of London. They had good jobs, but they were always stressed. The city was noisy and crowded, and the rent was very expensive.",
+      "So they decided to make a big change. They moved to a small village in Wales, three hundred kilometres from London. Now they live in an old stone house with a large garden. They grow their own vegetables and they have six chickens.",
+      "\"Life here is much slower and calmer,\" says Sara. \"The air is cleaner and the people are friendlier. Everyone says hello in the street.\"",
+      "But country life has disadvantages too. There is only one shop in the village, and the nearest cinema is forty minutes away by car. Public transport is not very good: there are only two buses a day. Daniel works online now, but sometimes the internet connection is slow. \"We miss the restaurants and the museums,\" admits Daniel, \"but we don't want to go back.\"",
+    ],
+    glossary: ["crowded = lleno de gente", "rent = alquiler", "moved = se mudaron", "village = pueblo", "stone = piedra", "grow = cultivar", "calmer = más tranquila", "nearest = más cercano", "disadvantages = desventajas", "admits = admite"],
+    questions: [
+      "Why were Daniel and Sara stressed in London? | The city was noisy and expensive. | They didn't have jobs., Their flat was too big. | \"The city was noisy and crowded, and the rent was very expensive\".",
+      "Where do they live now? | In a village in Wales | In the centre of London, In a big city in Scotland | \"They moved to a small village in Wales\".",
+      "What animals do they have? | Chickens | Dogs, Cows | \"they have six chickens\".",
+      "How far is the nearest cinema? | Forty minutes by car | Ten minutes on foot, Three hundred kilometres | \"the nearest cinema is forty minutes away by car\".",
+      "What do they miss about London? | Restaurants and museums | The noise, Their old jobs | \"We miss the restaurants and the museums\".",
+      "Daniel and Sara want to go back to London. | False | True | \"but we don't want to go back\".",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_environment",
+    title: "Small Changes, Big Difference",
+    titleEs: "Pequeños cambios, gran diferencia",
+    text: [
+      "Last year, the students at Greenhill School started a project to make their school more environmentally friendly. Their teacher, Mrs. Ali, asked them a simple question: \"What can we change?\"",
+      "First, they looked at rubbish. They discovered that the school threw away more than two hundred plastic bottles every week. So they put water fountains in the corridors and asked everyone to bring reusable bottles. Now they use ninety percent less plastic.",
+      "Next, they started a recycling system with different bins for paper, plastic and glass. The students also built a compost area behind the school, where they put fruit and vegetable waste from the canteen. The compost is used in the new school garden.",
+      "Finally, they thought about energy. Students now turn off the lights and computers when they leave a classroom, and many families walk or cycle to school instead of driving. \"At first people thought our ideas were too small,\" says Tom, aged fourteen. \"But together we made a big difference. Other schools in the city want to copy our project now.\"",
+    ],
+    glossary: ["environmentally friendly = amigable con el ambiente", "rubbish = basura", "threw away = tiraban", "water fountains = bebederos", "reusable = reutilizables", "bins = tachos", "glass = vidrio", "waste = desechos", "canteen = comedor", "instead of = en lugar de"],
+    questions: [
+      "Who started the project? | The students and their teacher | The city council, The parents | Lo empezaron los alumnos con su profesora, Mrs. Ali.",
+      "How many plastic bottles did the school throw away every week? | More than two hundred | About twenty, Ninety | \"more than two hundred plastic bottles every week\".",
+      "What did they put in the corridors? | Water fountains | Recycling bins, Computers | \"they put water fountains in the corridors\".",
+      "What is the compost used for? | The school garden | The canteen, Selling to families | \"The compost is used in the new school garden\".",
+      "How do many families go to school now? | They walk or cycle. | They drive., They take a taxi. | \"many families walk or cycle to school instead of driving\".",
+      "Other schools want to copy the project. | True | False | \"Other schools in the city want to copy our project now\".",
+    ],
+  }),
+
+  // ───────────── Gramática de Experiencias ─────────────
+  reading({
+    unitId: "unitA2_grammar_past",
+    title: "The Day Everything Went Wrong",
+    titleEs: "El día que todo salió mal",
+    text: [
+      "Last Tuesday was the worst day of my life. It was the day of my job interview with a big design company, and I wanted to make a good impression.",
+      "First, my alarm didn't ring, so I woke up forty minutes late. I didn't have time for breakfast. I quickly put on my best suit and ran to the bus stop, but I missed the bus by one minute. While I was waiting for the next one, it started to rain, and I didn't have an umbrella.",
+      "When I finally arrived at the office, I was wet and nervous. In the lift, I spilled coffee on my white shirt. Then, during the interview, my phone rang loudly. I forgot to turn it off!",
+      "I went home feeling terrible. I was sure I didn't get the job. But two days later, the company called me. \"You were very honest and you stayed calm,\" said the manager. \"We'd like you to start next month.\" I couldn't believe it! Sometimes a bad day has a happy ending.",
+    ],
+    glossary: ["went wrong = salió mal", "job interview = entrevista de trabajo", "make a good impression = causar buena impresión", "didn't ring = no sonó", "suit = traje", "missed = perdí", "while = mientras", "lift = ascensor", "spilled = derramé", "stayed calm = mantuviste la calma"],
+    questions: [
+      "Why did the writer wake up late? | The alarm didn't ring. | They went to bed late., They were ill. | \"my alarm didn't ring\".",
+      "What happened at the bus stop? | It started to rain. | They met a friend., They lost their bag. | \"it started to rain, and I didn't have an umbrella\".",
+      "What happened in the lift? | They spilled coffee on their shirt. | They lost their phone., They met the manager. | \"In the lift, I spilled coffee on my white shirt\".",
+      "What did the writer forget to do? | Turn off their phone | Bring their CV, Eat breakfast | \"I forgot to turn it off!\"",
+      "When did the company call? | Two days later | The same day, A month later | \"two days later, the company called me\".",
+      "The writer didn't get the job. | False | True | La empresa le ofreció empezar el mes siguiente.",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_grammar_past",
+    title: "Have You Ever...?",
+    titleEs: "¿Alguna vez...?",
+    text: [
+      "My grandfather, Arthur, is eighty-two years old, and he has had an incredible life. He has lived in four different countries and he has worked as a sailor, a cook and a taxi driver.",
+      "He has visited more than forty countries. He has seen the Northern Lights in Norway and he has swum with dolphins in Australia. In 1975 he crossed the Atlantic Ocean on a small boat with two friends. The trip took thirty-five days!",
+      "But there are some things he has never done. He has never flown in a helicopter and he has never been to a rock concert. He has never used a computer either… until last month. My sister and I gave him a tablet for his birthday, and he has already learned to send emails and make video calls.",
+      "Last week he asked me: \"Have you ever tried skydiving?\" I said no. \"Me neither,\" he answered with a smile. \"Let's do it together next summer!\" I think he's serious.",
+    ],
+    glossary: ["has had = ha tenido", "sailor = marinero", "Northern Lights = auroras boreales", "swum = nadado", "crossed = cruzó", "took = duró", "never = nunca", "either = tampoco", "already = ya", "skydiving = paracaidismo"],
+    questions: [
+      "How many countries has Arthur lived in? | Four | Forty, Two | \"He has lived in four different countries\".",
+      "Where has he swum with dolphins? | In Australia | In Norway, In the Atlantic | \"he has swum with dolphins in Australia\".",
+      "How long did the Atlantic trip take? | Thirty-five days | Thirty days, Five days | \"The trip took thirty-five days!\"",
+      "Which of these has Arthur never done? | Flown in a helicopter | Worked as a cook, Seen the Northern Lights | \"He has never flown in a helicopter\".",
+      "What has he learned to do with his tablet? | Send emails and make video calls | Play games, Take photos | \"he has already learned to send emails and make video calls\".",
+      "Arthur wants to try skydiving with his grandchild. | True | False | \"Let's do it together next summer!\"",
+    ],
+  }),
+
+  // ───────────── Viajes, Ocio y Cultura ─────────────
+  reading({
+    unitId: "unitA2_travel_culture",
+    title: "Lost in Tokyo",
+    titleEs: "Perdida en Tokio",
+    text: [
+      "Last spring, I spent two weeks in Japan. It was my first trip to Asia, and I was a bit worried because I don't speak any Japanese.",
+      "On my second day in Tokyo, I decided to visit a famous temple. I took the underground, but I got on the wrong train and ended up on the other side of the city. All the signs were in Japanese and my phone battery was dead. I was completely lost!",
+      "I went into a small café and tried to explain my problem with gestures. The owner, an old woman, didn't speak English, but she understood. She drew a map on a napkin, gave me a cup of green tea and refused to let me pay. Then her grandson arrived and walked with me to the right station.",
+      "In the end, I arrived at the temple two hours late, but I didn't care. That experience taught me something important about travelling: you don't always need a common language to communicate. A little kindness is enough. Japan is now my favourite country, and I'm already planning my next trip.",
+    ],
+    glossary: ["spent = pasé", "worried = preocupada", "underground = subte", "ended up = terminé", "signs = carteles", "battery was dead = batería se agotó", "gestures = gestos", "owner = dueña", "napkin = servilleta", "refused = se negó", "kindness = amabilidad"],
+    questions: [
+      "How long was the trip to Japan? | Two weeks | Two days, A month | \"I spent two weeks in Japan\".",
+      "Why was the writer worried before the trip? | She doesn't speak Japanese. | She was afraid of flying., She had little money. | \"I don't speak any Japanese\".",
+      "Why did she get lost? | She got on the wrong train. | She missed her flight., She lost her map. | \"I got on the wrong train\".",
+      "What did the café owner draw? | A map on a napkin | A picture of the temple, A train | \"She drew a map on a napkin\".",
+      "Who walked with her to the station? | The owner's grandson | A police officer, Another tourist | \"her grandson arrived and walked with me to the right station\".",
+      "She paid for the green tea. | False | True | La dueña \"refused to let me pay\": no la dejó pagar.",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_travel_culture",
+    title: "Festivals Around the World",
+    titleEs: "Festivales del mundo",
+    text: [
+      "All over the world, people celebrate special days with music, food and colour. Here are three of the most famous festivals.",
+      "Holi is celebrated in India every March, at the beginning of spring. It is known as the Festival of Colours. People go out into the streets and throw coloured powder and water at each other. Everyone is covered in pink, yellow and green, and nobody cares!",
+      "In Brazil, Carnival takes place forty days before Easter. The most famous one is in Rio de Janeiro, where samba schools prepare all year for a huge parade with spectacular costumes and music. More than two million people dance in the streets every day.",
+      "In Mexico, families celebrate the Day of the Dead on the first and second of November. It isn't a sad day. People remember family members who have died by decorating their graves with orange flowers and candles. They also prepare altars at home with photos and the favourite food of their loved ones.",
+      "Which festival would you like to experience?",
+    ],
+    glossary: ["celebrate = celebrar", "powder = polvo", "covered = cubiertos", "takes place = tiene lugar", "Easter = Pascua", "parade = desfile", "costumes = disfraces", "graves = tumbas", "candles = velas", "loved ones = seres queridos"],
+    questions: [
+      "When is Holi celebrated? | In March | In November, In December | \"Holi is celebrated in India every March\".",
+      "What do people throw during Holi? | Coloured powder and water | Flowers, Sweets | \"throw coloured powder and water at each other\".",
+      "When does Carnival take place in Brazil? | Forty days before Easter | On the first of November, At the beginning of spring | \"Carnival takes place forty days before Easter\".",
+      "How many people dance in the streets of Rio every day? | More than two million | About two thousand, Two hundred | \"More than two million people dance in the streets every day\".",
+      "What do Mexican families put on graves? | Orange flowers and candles | Coloured powder, Costumes | \"decorating their graves with orange flowers and candles\".",
+      "The Day of the Dead is a sad celebration. | False | True | \"It isn't a sad day\".",
+    ],
+  }),
+
+  // ───────────── Hogar, Salud y Bienestar ─────────────
+  reading({
+    unitId: "unitA2_wellbeing",
+    title: "How I Learned to Save Money",
+    titleEs: "Cómo aprendí a ahorrar",
+    text: [
+      "When I started university, I had a part-time job in a bookshop, but I never had any money at the end of the month. I didn't understand where my money went, so I decided to write down everything I spent for four weeks.",
+      "The results were surprising. I spent almost eighty pounds a month on coffee and snacks from cafés! I also paid for three different music and video apps, but I only used one of them. And I often ordered takeaway food because I was too tired to cook.",
+      "So I made a plan. I cancelled two of the apps and I bought a cheap thermos to take coffee from home. On Sundays I cooked big meals and kept them in the fridge for the week. I also started comparing prices online before buying anything expensive.",
+      "After six months, I saved six hundred pounds, enough for a short holiday in Portugal with my friends. My advice is simple: before you try to save money, find out where it goes.",
+    ],
+    glossary: ["part-time job = trabajo de medio tiempo", "write down = anotar", "spent = gasté", "snacks = colaciones", "takeaway food = comida para llevar", "cancelled = cancelé", "cheap = barato", "thermos = termo", "compare prices = comparar precios", "find out = averiguar"],
+    questions: [
+      "Where did the writer work? | In a bookshop | In a café, In a supermarket | \"I had a part-time job in a bookshop\".",
+      "How much did the writer spend on coffee and snacks every month? | Almost eighty pounds | About eight pounds, Six hundred pounds | \"almost eighty pounds a month on coffee and snacks\".",
+      "How many apps did the writer cancel? | Two | One, Three | \"I cancelled two of the apps\".",
+      "What did the writer do on Sundays? | Cooked big meals for the week | Went to cafés, Worked at the bookshop | \"On Sundays I cooked big meals and kept them in the fridge\".",
+      "What did the writer do with the money saved? | Went on holiday to Portugal | Bought a new phone, Paid for university | \"enough for a short holiday in Portugal\".",
+      "The writer's main advice is to find out where your money goes. | True | False | \"before you try to save money, find out where it goes\".",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_wellbeing",
+    title: "Too Much Stress?",
+    titleEs: "¿Demasiado estrés?",
+    text: [
+      "Dear Dr. Ellis,",
+      "I'm a nineteen-year-old student and I feel stressed all the time. I have exams next month, and I also work three evenings a week. I can't sleep well, I often have headaches and I don't have time to see my friends. What should I do? — Jamie",
+      "Dear Jamie,",
+      "First of all, you aren't alone: many students feel like this before exams. Here are some ideas that can help. Try to make a realistic timetable for studying, with short breaks every hour. Studying for eight hours without a break isn't effective.",
+      "You should also look after your body. Do some exercise, even a thirty-minute walk, three or four times a week. Avoid coffee and energy drinks after five p.m., and stop using your phone an hour before bed. This will help you sleep better.",
+      "Finally, don't stop seeing your friends. Spending time with people you love is important for your mental health. If you still feel bad after a few weeks, talk to a doctor or a counsellor at your university. Good luck with your exams! — Dr. Ellis",
+    ],
+    glossary: ["stressed = estresado/a", "timetable = horario, cronograma", "breaks = descansos", "effective = efectivo", "look after = cuidar", "even = aunque sea", "avoid = evitar", "energy drinks = bebidas energizantes", "counsellor = consejero/a, psicólogo/a"],
+    questions: [
+      "How old is Jamie? | Nineteen | Twenty-nine, Fifteen | \"I'm a nineteen-year-old student\".",
+      "How many evenings a week does Jamie work? | Three | Five, Two | \"I also work three evenings a week\".",
+      "What does Dr. Ellis say about studying for eight hours without a break? | It isn't effective. | It's a good idea., It's necessary before exams. | \"Studying for eight hours without a break isn't effective\".",
+      "When should Jamie avoid coffee? | After five p.m. | In the morning, Before exercise | \"Avoid coffee and energy drinks after five p.m.\"",
+      "When should Jamie stop using the phone? | An hour before bed | During lunch, After exercise | \"stop using your phone an hour before bed\".",
+      "Dr. Ellis says Jamie should stop seeing friends until the exams finish. | False | True | Dice lo contrario: \"don't stop seeing your friends\".",
+    ],
+  }),
+
+  // ───────────── Sociedad y Tecnología ─────────────
+  reading({
+    unitId: "unitA2_tech_society",
+    title: "A Week Without My Phone",
+    titleEs: "Una semana sin mi celular",
+    text: [
+      "Like most teenagers, I used to check my phone more than a hundred times a day. Last month, my school organised a challenge: one week without smartphones. I didn't think I could do it, but I decided to try.",
+      "The first two days were really hard. I kept putting my hand in my pocket to look for my phone, and I felt that I was missing everything on social media. I also realised that I didn't know my friends' phone numbers, so I had to write them on a piece of paper.",
+      "But by the third day, something changed. I started reading a novel on the bus instead of scrolling. I talked more with my family at dinner. I even went to bed earlier, and I felt less tired in the mornings.",
+      "When the week finished, I got my phone back, but I made some new rules for myself. I turned off notifications for most apps and I don't use my phone during meals anymore. I still love technology, but now I control it — it doesn't control me.",
+    ],
+    glossary: ["used to = solía", "challenge = desafío", "kept putting = seguía metiendo", "pocket = bolsillo", "missing = perdiéndome", "realised = me di cuenta", "novel = novela", "scrolling = deslizar la pantalla", "notifications = notificaciones", "anymore = ya no"],
+    questions: [
+      "How many times a day did the writer use to check the phone? | More than a hundred | About ten, Fifty | \"more than a hundred times a day\".",
+      "Who organised the challenge? | The school | The writer's parents, A social media app | \"my school organised a challenge\".",
+      "Why did the writer write numbers on paper? | They didn't know their friends' numbers. | It was homework., Their phone was broken. | \"I didn't know my friends' phone numbers\".",
+      "What did the writer start doing on the bus? | Reading a novel | Sleeping, Listening to music | \"I started reading a novel on the bus\".",
+      "What is one of the new rules? | No phone during meals | No phone at weekends, Only one hour a day | \"I don't use my phone during meals anymore\".",
+      "The first two days of the challenge were easy. | False | True | \"The first two days were really hard\".",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_tech_society",
+    title: "Learning Online or in the Classroom?",
+    titleEs: "¿Aprender online o en el aula?",
+    text: [
+      "More and more people are studying online. But is it better than going to a classroom? We asked two students.",
+      "Marco, 24, is studying computer science online while he works in a hotel. \"For me, online learning is perfect,\" he says. \"I can watch the lessons whenever I want, even at midnight after work. I save time and money because I don't travel to university. The only problem is that you need a lot of discipline. Nobody tells you to study!\"",
+      "Aisha, 20, studies medicine at a traditional university. \"I tried an online course last year, but I didn't finish it,\" she explains. \"I prefer having a teacher in front of me. If I don't understand something, I can ask immediately. I also love working in groups and meeting other students. Some of my classmates are now my best friends.\"",
+      "Both of them agree on one thing: the best way to learn is the one that suits your life. \"There isn't one perfect method,\" says Aisha. \"The important thing is not to stop learning.\"",
+    ],
+    glossary: ["more and more = cada vez más", "computer science = informática", "whenever = cuando sea que", "save = ahorrar", "discipline = disciplina", "immediately = inmediatamente", "classmates = compañeros de clase", "agree = están de acuerdo", "suits = se adapta a"],
+    questions: [
+      "What does Marco study? | Computer science | Medicine, Tourism | \"Marco, 24, is studying computer science online\".",
+      "Where does Marco work? | In a hotel | At a university, In a hospital | \"while he works in a hotel\".",
+      "According to Marco, what do you need for online learning? | A lot of discipline | A lot of money, A teacher | \"you need a lot of discipline\".",
+      "What happened with Aisha's online course? | She didn't finish it. | She failed the exam., She loved it. | \"I tried an online course last year, but I didn't finish it\".",
+      "Why does Aisha prefer the classroom? | She can ask questions immediately. | It's cheaper., It's closer to her home. | \"If I don't understand something, I can ask immediately\".",
+      "Marco and Aisha agree that the best method depends on your life. | True | False | \"the best way to learn is the one that suits your life\".",
+    ],
+  }),
+
+  // ───────────── Mundo Profesional y Futuro ─────────────
+  reading({
+    unitId: "unitA2_work_career",
+    title: "Working from Home: My First Year",
+    titleEs: "Trabajar desde casa: mi primer año",
+    text: [
+      "A year ago, I started a new job as a customer service manager for a software company. The company has no office: all forty employees work from home in eight different countries.",
+      "At the beginning, I loved it. I didn't have to commute for an hour every morning, I could wear comfortable clothes and I had lunch with my cat. But after a few months, I noticed some problems. I worked too many hours because my laptop was always on the kitchen table. I also felt lonely, as I didn't see my colleagues in person.",
+      "So I changed a few things. I turned a small room into an office, and now I close the door at six o'clock and don't open my email again until the next morning. I go to a co-working space twice a week to be around other people.",
+      "Our team also has a video call every Monday morning to plan the week, and on Fridays we have a \"virtual coffee\" where we don't talk about work. Now I feel more productive and much happier. My advice for remote workers: separate your work life from your personal life.",
+    ],
+    glossary: ["customer service = atención al cliente", "employees = empleados", "commute = viajar al trabajo", "noticed = noté", "lonely = sola", "colleagues = colegas", "in person = en persona", "turned into = convertí en", "co-working space = espacio de coworking", "remote workers = trabajadores remotos"],
+    questions: [
+      "What is the writer's job? | Customer service manager | Software developer, Office cleaner | \"a customer service manager for a software company\".",
+      "How many employees does the company have? | Forty | Eight, Fourteen | \"all forty employees work from home\".",
+      "What problem did the writer notice? | She worked too many hours. | Her internet was slow., Her boss was angry. | \"I worked too many hours\".",
+      "When does she stop working now? | At six o'clock | At four o'clock, At midnight | \"I close the door at six o'clock\".",
+      "How often does she go to a co-working space? | Twice a week | Every day, Once a month | \"I go to a co-working space twice a week\".",
+      "During the Friday \"virtual coffee\" the team plans the week. | False | True | Planifican el lunes; el viernes \"we don't talk about work\".",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_work_career",
+    title: "Five Tips for a Job Interview",
+    titleEs: "Consejos para una entrevista de trabajo",
+    text: [
+      "Do you have a job interview soon? Many people feel nervous before an interview, but good preparation can make a big difference. Here are five tips from Laura Kent, a recruiter with fifteen years of experience.",
+      "1. Research the company. \"Visit their website and find out what they do and what their values are. Interviewers always notice when a candidate is well prepared.\"",
+      "2. Practise your answers. \"You will probably hear questions like 'What are your strengths?' or 'Why do you want this job?'. Practise your answers out loud with a friend.\"",
+      "3. Arrive on time. \"Plan your journey the day before and arrive ten minutes early. If the interview is online, check your camera and internet connection.\"",
+      "4. Think about your body language. \"Smile, make eye contact and don't cross your arms. It shows you are confident and friendly.\"",
+      "5. Ask questions. \"At the end, interviewers usually ask: 'Do you have any questions?' Always say yes! Ask about the team or the training opportunities. It shows you are really interested.\"",
+      "\"And after the interview,\" Laura adds, \"send a short email to say thank you. Very few candidates do it, so it will help you stand out.\"",
+    ],
+    glossary: ["tips = consejos", "recruiter = reclutador/a", "research = investigar", "values = valores", "strengths = fortalezas", "out loud = en voz alta", "journey = trayecto", "body language = lenguaje corporal", "eye contact = contacto visual", "stand out = destacarte"],
+    questions: [
+      "How much experience does Laura Kent have? | Fifteen years | Five years, Fifty years | \"a recruiter with fifteen years of experience\".",
+      "How should you practise your answers? | Out loud with a friend | By writing them down only, In your head | \"Practise your answers out loud with a friend\".",
+      "How early should you arrive? | Ten minutes early | One hour early, Exactly on time | \"arrive ten minutes early\".",
+      "Which of these is good body language? | Making eye contact | Crossing your arms, Looking at the floor | \"Smile, make eye contact and don't cross your arms\".",
+      "What should you do after the interview? | Send a thank-you email | Call the next day, Visit the office again | \"send a short email to say thank you\".",
+      "When the interviewer asks if you have questions, it's better to say no. | False | True | \"Always say yes!\"",
+    ],
+  }),
+
+  // ───────────── Examen Final ─────────────
+  reading({
+    unitId: "unitA2_final_test",
+    title: "From Nervous Student to English Teacher",
+    titleEs: "De alumna nerviosa a profesora de inglés",
+    text: [
+      "When Valentina was fifteen, she hated English. She was very shy and she was afraid of making mistakes, so she never spoke in class. \"My grades were terrible,\" she remembers.",
+      "Everything changed when she was eighteen. She got a summer job at a hotel in her city, Córdoba, and many of the guests were tourists from the United States and Canada. \"At first I was terrified,\" she says. \"But I had to speak English every day, and the guests were very patient with me. I realised that making mistakes was normal.\"",
+      "After that summer, Valentina started studying English seriously. She watched series with subtitles, listened to podcasts on the bus and practised with apps every day. Two years later, she passed an advanced English exam, and she decided to study to become a teacher.",
+      "Today, Valentina is thirty and she has taught English for eight years. She has also lived in Ireland for a year. \"Many of my students are shy, like I was,\" she says. \"I always tell them the same thing: don't be afraid of mistakes. They are the best way to learn. If I could do it, anyone can.\"",
+    ],
+    glossary: ["afraid of = con miedo de", "mistakes = errores", "grades = notas", "guests = huéspedes", "terrified = aterrada", "patient = pacientes", "seriously = en serio", "subtitles = subtítulos", "passed = aprobó", "anyone = cualquiera"],
+    questions: [
+      "Why didn't Valentina speak in class at fifteen? | She was shy and afraid of mistakes. | She didn't go to school., Her teacher didn't let her. | \"She was very shy and she was afraid of making mistakes\".",
+      "Where did she work when she was eighteen? | At a hotel | At a school, In a shop | \"She got a summer job at a hotel\".",
+      "What did she realise at the hotel? | Making mistakes was normal. | English was too difficult., She didn't like tourists. | \"I realised that making mistakes was normal\".",
+      "Which of these did she NOT use to study? | Private lessons | Series with subtitles, Podcasts | Usó series, podcasts y apps; no menciona clases particulares.",
+      "How long has she taught English? | For eight years | For two years, For thirty years | \"she has taught English for eight years\".",
+      "Valentina has lived in Ireland. | True | False | \"She has also lived in Ireland for a year\".",
+    ],
+  }),
+  reading({
+    unitId: "unitA2_final_test",
+    title: "The Lost Wallet",
+    titleEs: "La billetera perdida",
+    text: [
+      "Last Saturday, Sam was walking through the park when he saw something black on a bench. It was a wallet. Inside there were two hundred dollars, three credit cards and a driving licence with the name Helen Carter.",
+      "Sam looked around, but there was nobody near the bench. He thought about what to do. He could take it to the police station, but it was closed on Saturday afternoons. So he searched for Helen Carter on social media and found a woman with the same face as the photo on the licence. He sent her a message.",
+      "An hour later, Helen called him. She was very worried because she had lost the wallet that morning while she was running. They met at a café near the park, and Sam gave her the wallet. Nothing was missing.",
+      "Helen wanted to give him fifty dollars as a reward, but Sam refused. \"I just did what anyone would do,\" he said. So Helen paid for their coffee and cake instead. They talked for two hours and discovered that they both loved hiking. Since then, they have gone hiking together every weekend. \"Losing that wallet was the luckiest thing that has ever happened to me,\" says Helen.",
+    ],
+    glossary: ["wallet = billetera", "bench = banco (de plaza)", "driving licence = licencia de conducir", "looked around = miró alrededor", "searched = buscó", "had lost = había perdido", "missing = faltando", "reward = recompensa", "refused = rechazó", "luckiest = más afortunado"],
+    questions: [
+      "Where did Sam find the wallet? | On a bench in the park | In a café, On the bus | \"he saw something black on a bench\".",
+      "How much money was in the wallet? | Two hundred dollars | Fifty dollars, Three hundred dollars | \"Inside there were two hundred dollars\".",
+      "Why didn't Sam take it to the police station? | It was closed. | It was too far., He didn't have time. | \"it was closed on Saturday afternoons\".",
+      "How did Sam find Helen? | On social media | In the phone book, At the police station | \"he searched for Helen Carter on social media\".",
+      "What did Helen do instead of giving a reward? | She paid for coffee and cake. | She bought him a book., She gave him a credit card. | \"Helen paid for their coffee and cake instead\".",
+      "Sam and Helen have gone hiking together every weekend since then. | True | False | \"Since then, they have gone hiking together every weekend\".",
+    ],
+  }),
+];

@@ -1,10 +1,18 @@
 /* import { db } from "@/lib/firebaseConfig"; */
+import ReadingRow from "@/components/content/ReadingRow";
 import { CheckmarkIcon } from "@/components/ui/SvgIcons";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import {
+  getCompletedReadings,
+  getReadingsByUnit,
+  Reading,
+  ReadingResult,
+} from "@/services/readingService";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { lessonXp } from "@/services/xpService";
+import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -22,22 +30,13 @@ export default function UnitScreen() {
     new Set()
   );
   const [loading, setLoading] = useState(true);
+  const [readings, setReadings] = useState<Reading[]>([]);
+  const [completedReadings, setCompletedReadings] = useState<
+    Record<string, ReadingResult>
+  >({});
   const router = useRouter();
   const { user } = useAuth();
 
-  // Función para obtener el XP reward
-  const getXpReward = (lesson: any): number => {
-    if (lesson.xpReward !== undefined && lesson.xpReward !== null) {
-      return lesson.xpReward;
-    }
-    if (
-      lesson.metadata?.xpReward !== undefined &&
-      lesson.metadata?.xpReward !== null
-    ) {
-      return lesson.metadata.xpReward;
-    }
-    return 0;
-  };
 
   // Cargar lecciones completadas del usuario
   const loadCompletedLessons = async () => {
@@ -97,6 +96,25 @@ export default function UnitScreen() {
     loadUnitData();
   }, [id, user]);
 
+  // Lecturas de la unidad; se recargan al volver de una lectura
+  useFocusEffect(
+    useCallback(() => {
+      const loadReadings = async () => {
+        try {
+          const [data, done] = await Promise.all([
+            getReadingsByUnit(id as string),
+            user ? getCompletedReadings(user.uid) : Promise.resolve({}),
+          ]);
+          setReadings(data);
+          setCompletedReadings(done);
+        } catch (error) {
+          console.error("Error loading readings:", error);
+        }
+      };
+      loadReadings();
+    }, [id, user]),
+  );
+
   // Función para verificar si una lección está completada
   const isLessonCompleted = (lessonId: string): boolean => {
     return completedLessons.has(lessonId);
@@ -141,7 +159,7 @@ export default function UnitScreen() {
       </Text>
 
       {lessons.map((lesson, index) => {
-        const xpReward = getXpReward(lesson);
+        const xpReward = lessonXp(lesson.id);
         const isCompleted = isLessonCompleted(lesson.id);
 
         return (
@@ -209,11 +227,36 @@ export default function UnitScreen() {
           </TouchableOpacity>
         );
       })}
+
+      {readings.length > 0 && (
+        <>
+          <Text style={styles.readingsTitle}>Lecturas</Text>
+          {readings.map((reading) => (
+            <ReadingRow
+              key={reading.id}
+              reading={reading}
+              result={completedReadings[reading.id]}
+              onPress={() =>
+                router.push({
+                  pathname: "/reading/[id]",
+                  params: { id: reading.id },
+                })
+              }
+            />
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  readingsTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 12,
+    marginBottom: 10,
+  },
   lessonCard: {
     backgroundColor: "#fff",
     padding: 16,

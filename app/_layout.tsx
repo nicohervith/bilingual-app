@@ -27,6 +27,8 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="unit/[id]" options={{ title: "Unidad" }} />
           <Stack.Screen name="lesson/[id]" options={{ title: "Lección" }} />
+          <Stack.Screen name="readings/[level]" options={{ title: "Lecturas" }} />
+          <Stack.Screen name="reading/[id]" options={{ title: "Lectura" }} />
           <Stack.Screen
             name="payment-success"
             options={{

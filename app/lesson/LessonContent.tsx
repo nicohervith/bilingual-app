@@ -16,6 +16,7 @@ import { ExerciseComponentRenderer } from "./ExerciseComponentRenderer";
 import type { Exercise } from "./exerciseConfig";
 import { normalizeExerciseConfig } from "./exerciseConfig";
 import { useExerciseCompletion, useLessonCompletion } from "./useLessonHooks";
+import { lessonXp } from "@/services/xpService";
 
 const LessonContent = ({
   lesson,
@@ -54,11 +55,11 @@ const LessonContent = ({
     }
   }, [lesson]);
 
-  const handleCompleteLesson = async () => {
-    await executeCompleteLesson(unitId, allCompleted, lesson?.xpReward || 0);
-  };
+  const xpReward = lesson ? lessonXp(lesson.id) : 0;
 
-  const xpReward = lesson?.metadata?.xpReward ?? lesson?.xpReward ?? 0;
+  const handleCompleteLesson = async () => {
+    await executeCompleteLesson(unitId, allCompleted, xpReward);
+  };
 
   // Renderizar ejercicios con el componente centralizado
   const renderExercise = (exercise: Exercise, index: number) => {
@@ -162,6 +163,33 @@ const LessonContent = ({
                   </View>
                 );
               })}
+            </View>
+          )}
+
+          {/* Gramática */}
+          {lesson.content.grammar && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Gramática</Text>
+              <View style={styles.grammarCard}>
+                <Text style={styles.grammarTitle}>
+                  {lesson.content.grammar.title}
+                </Text>
+                {!!lesson.content.grammar.explanation && (
+                  <Text style={styles.grammarExplanation}>
+                    {lesson.content.grammar.explanation}
+                  </Text>
+                )}
+                {lesson.content.grammar.rules?.map((item: any, i: number) => (
+                  <View key={i} style={styles.grammarRule}>
+                    <Text style={styles.grammarRuleText}>{item.rule}</Text>
+                    {item.examples?.map((ex: string, j: number) => (
+                      <Text key={j} style={styles.example}>
+                        {ex}
+                      </Text>
+                    ))}
+                  </View>
+                ))}
+              </View>
             </View>
           )}
 
@@ -304,6 +332,31 @@ const styles = StyleSheet.create({
   example: {
     fontStyle: "italic",
     color: "#666",
+    marginBottom: 4,
+  },
+  grammarCard: {
+    padding: 12,
+    backgroundColor: "#F3EFFF",
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: "#9365FF",
+  },
+  grammarTitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 6,
+  },
+  grammarExplanation: {
+    color: "#555",
+    marginBottom: 8,
+  },
+  grammarRule: {
+    marginTop: 8,
+  },
+  grammarRuleText: {
+    fontWeight: "600",
+    color: "#444",
     marginBottom: 4,
   },
   exerciseContainer: {

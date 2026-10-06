@@ -1,6 +1,9 @@
 // app/level-modules/[level].tsx
+import { getUnitOrder } from "@/constants/unitOrder";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
+import { getReadingsByLevel } from "@/services/readingService";
+import { ProgressStats, summarizeXp } from "@/services/xpService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -36,44 +39,14 @@ type Module = {
   insigniaModule?: string; // Insignia del módulo
 };
 
-const UNIT_ORDER_MAP_A1: Record<string, number> = {
-  unitA1_first_steps: 1,
-  unitA1_meeting_people: 2,
-  unitA1_numbers_colors: 3,
-  unitA1_my_environment: 4,
-  unitA1_daily_lifestyle: 5,
-  unitA1_food_drinks: 6,
-  unitA1_at_the_restaurant: 7,
-  unitA1_skills_work: 8,
-  unitA1_body_health: 9,
-  unitA1_travel_city: 10,
-  unitA1_sports_leisure: 11,
-  unitA1_future_goals: 12,
-  unitA1_final_mastery: 13,
-};
-
-const UNIT_ORDER_MAP_A2: Record<string, number> = {
-  unitA2_lifestyle: 1,
-  unitA2_environment: 2,
-  unitA2_grammar_past: 3,
-  unitA2_travel_culture: 4,
-  unitA2_wellbeing: 5,
-  unitA2_tech_society: 6,
-  unitA2_work_career: 7,
-  unitA2_final_test: 8,
-};
-
-const UNIT_ORDER_MAP_B1: Record<string, number> = {
-  unitB1_debates_opinions: 1,
-};
-
 export default function LevelModulesScreen() {
   const { level } = useLocalSearchParams();
   const { user } = useAuth();
   const router = useRouter() as {
-    push: (path: `/unit/${string}`) => void;
+    push: (path: `/unit/${string}` | `/readings/${string}`) => void;
   };
-  const [unitProgress, setUnitProgress] = useState<Record<string, number>>({});
+  // lecciones, lecturas, progreso y XP de cada unidad
+  const [unitStats, setUnitStats] = useState<Record<string, ProgressStats>>({});
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -84,17 +57,6 @@ export default function LevelModulesScreen() {
     return Object.values(module.units).every((unit: Unit) => {
       return unit.lessons.every((lessonId) => completedLessons[lessonId]);
     });
-  };
-
-  const getUnitOrder = (unitId: string, currentLevel: string): number => {
-    const maps: Record<string, Record<string, number>> = {
-      A1: UNIT_ORDER_MAP_A1,
-      A2: UNIT_ORDER_MAP_A2,
-      B1: UNIT_ORDER_MAP_B1,
-    };
-
-    const currentMap = maps[currentLevel as string] || {};
-    return currentMap[unitId] || 999;
   };
 
   const [moduleCompletion, setModuleCompletion] = useState<
@@ -127,11 +89,22 @@ export default function LevelModulesScreen() {
 
         setModules(filteredModules);
 
-        // 2. Cargar progreso del usuario
-        const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
+        // 2. Cargar progreso del usuario y lecturas del nivel
+        const [progressDoc, readings] = await Promise.all([
+          getDoc(doc(db, "userProgress", user.uid)),
+          getReadingsByLevel(level as string).catch(() => []),
+        ]);
+        const progressData = progressDoc.data() || {};
+        setUnitStats(
+          summarizeXp(
+            filteredModules,
+            readings,
+            progressData.completedLessons,
+            progressData.completedReadings,
+          ).byUnit,
+        );
+
         if (progressDoc.exists()) {
-          const progressData = progressDoc.data();
-          console.log("User progress data:", progressData);
           const completedLessons = progressData.completedLessons || {};
 
           const newModuleCompletion: Record<string, boolean> = {};
@@ -142,22 +115,6 @@ export default function LevelModulesScreen() {
             );
           });
           setModuleCompletion(newModuleCompletion);
-
-          console.log("User progress:", completedLessons);
-          // Calcular progreso por unidad
-          const newUnitProgress: Record<string, number> = {};
-
-          filteredModules.forEach((module) => {
-            Object.values(module.units).forEach((unit: any) => {
-              const totalLessons = unit.lessons.length;
-              const completedCount = unit.lessons.filter(
-                (id: string) => completedLessons[id],
-              ).length;
-              newUnitProgress[unit.id] = completedCount / totalLessons;
-            });
-          });
-
-          setUnitProgress(newUnitProgress);
         }
       } catch (error) {
         console.error("Error loading modules:", error);
@@ -180,7 +137,6 @@ export default function LevelModulesScreen() {
       </View>
     );
   }
-  console.log("Modules loaded:", modules);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -209,6 +165,18 @@ export default function LevelModulesScreen() {
         C
       </Text>
       <Text style={styles.title}>Level {level} Modules</Text>
+      <TouchableOpacity
+        style={styles.readingsButton}
+        onPress={() => router.push(`/readings/${level}`)}
+      >
+        <Text style={styles.readingsIcon}>📖</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.readingsTitle}>Lecturas</Text>
+          <Text style={styles.readingsSubtitle}>
+            Textos cortos con preguntas de comprensión
+          </Text>
+        </View>
+      </TouchableOpacity>
       {modules.map((module) => {
         const isModuleComplete = moduleCompletion[module.id];
 
@@ -254,7 +222,11 @@ export default function LevelModulesScreen() {
                 return (a.id || "").localeCompare(b.id || "");
               })
               .map((unit: any) => {
-                const isUnitComplete = unitProgress[unit.id] === 1;
+                const stats = unitStats[unit.id];
+                // la insignia se gana con todas las lecciones (las lecturas son extra)
+                const isUnitComplete =
+                  !!stats?.lessonsTotal &&
+                  stats.lessonsDone === stats.lessonsTotal;
 
                 return (
                   <TouchableOpacity
@@ -279,18 +251,29 @@ export default function LevelModulesScreen() {
                     </View>
 
                     <Text style={styles.lessonCount}>
-                      {unit.lessons.length} lecciones
+                      📚 {stats?.lessonsDone ?? 0}/{unit.lessons.length}{" "}
+                      lecciones
+                      {stats?.readingsTotal
+                        ? `   📖 ${stats.readingsDone}/${stats.readingsTotal} lecturas`
+                        : ""}
                     </Text>
+                    {!!stats?.xp && (
+                      <Text style={styles.unitXp}>
+                        ⭐ {stats.xp} XP ganados
+                      </Text>
+                    )}
 
                     <Progress.Bar
-                      progress={unitProgress[unit.id] || 0}
-                      width={200}
+                      progress={stats?.progress || 0}
+                      width={null} // ocupa todo el ancho de la tarjeta
+                      height={8}
+                      borderRadius={4}
                       color="#4CAF50"
+                      style={{ marginTop: 6 }}
                     />
 
                     <Text style={styles.progressText}>
-                      {Math.round((unitProgress[unit.id] || 0) * 100)}%
-                      completado
+                      {Math.round((stats?.progress || 0) * 100)}% completado
                     </Text>
                   </TouchableOpacity>
                 );
@@ -364,6 +347,29 @@ const styles = StyleSheet.create({
     color: "#D82989",
     fontFamily: "Poppins",
   },
+  readingsButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#D82989",
+  },
+  readingsIcon: {
+    fontSize: 28,
+    marginRight: 12,
+  },
+  readingsTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#1E1B4B",
+  },
+  readingsSubtitle: {
+    fontSize: 13,
+    color: "#6c757d",
+  },
   moduleCard: {
     backgroundColor: "#9365ff",
     borderRadius: 12,
@@ -423,6 +429,12 @@ const styles = StyleSheet.create({
   lessonCount: {
     color: "#6c757d",
     fontSize: 14,
+  },
+  unitXp: {
+    color: "#B8860B",
+    fontSize: 13,
+    marginTop: 2,
+    marginBottom: 4,
   },
   xpReward: {
     color: "#4CAF50",
