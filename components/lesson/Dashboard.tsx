@@ -1,7 +1,17 @@
 import { API_ENDPOINTS } from "@/constants/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { auth, checkAuthState, db } from "@/lib/firebaseConfig";
-import { computeStreak, registerDailyConnection } from "@/services/streakService";
+import {
+  computeStreak,
+  registerDailyConnection,
+} from "@/services/streakService";
+import { getAllReadings } from "@/services/readingService";
+import {
+  currentLevel,
+  NEXT_LEVEL_HINT_AT,
+  summarizeXp,
+  XP,
+} from "@/services/xpService";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "expo-router";
@@ -14,7 +24,7 @@ import {
   setDoc,
   Timestamp,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Button,
@@ -26,7 +36,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Progress from "react-native-progress";
 import Toast from "react-native-toast-message";
 import "../../assets/css/globalStyles.css";
 import GuestSection from "../auth/GuestSection";
@@ -53,6 +62,7 @@ interface ProgressData {
   purchasedLevels: { [key: string]: boolean };
   completedMissions?: Record<string, string[]>;
   completedLessons?: Record<string, boolean>;
+  completedReadings?: Record<string, unknown>;
   levels?: Record<string, { completed: number; total: number }>;
   earnedBadges?: Record<
     string,
@@ -70,11 +80,6 @@ interface ProgressData {
   };
 }
 
-type LevelRequirements = {
-  A1: number;
-  A2: number;
-  B1: number;
-};
 type LevelId = "A1" | "A2" | "B1";
 
 const LEVEL_PRICES: Record<LevelId, number> = {
@@ -82,8 +87,6 @@ const LEVEL_PRICES: Record<LevelId, number> = {
   A2: 150,
   B1: 200,
 };
-
-const BASE_XP_PER_LESSON = 50;
 
 const STRIPE_PUBLIC_KEY = process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY;
 const stripePromise = loadStripe(STRIPE_PUBLIC_KEY ? STRIPE_PUBLIC_KEY : "");
@@ -114,12 +117,26 @@ export default function Dashboard() {
     },
   });
 
-  const [dynamicRequirements, setDynamicRequirements] =
-    useState<LevelRequirements>({
-      A1: 0,
-      A2: 1000,
-      B1: 2000,
-    });
+  const [modulesData, setModulesData] = useState<any[]>([]);
+  const [readings, setReadings] = useState<{ id: string; unitId: string }[]>(
+    [],
+  );
+  const xp = useMemo(
+    () =>
+      summarizeXp(
+        modulesData,
+        readings,
+        progress.completedLessons,
+        progress.completedReadings,
+      ),
+    [
+      modulesData,
+      readings,
+      progress.completedLessons,
+      progress.completedReadings,
+    ],
+  );
+  const studying = currentLevel(xp, progress.purchasedLevels);
 
   const syncUnlockedLevels = async () => {
     if (!user) return;
@@ -159,13 +176,6 @@ export default function Dashboard() {
     }
   }, [user]);
 
-  const calculateTotalLevelXP = (units: any[]): number => {
-    return units.reduce((total, unit) => {
-      const lessonsXP = (unit.lessons?.length || 0) * BASE_XP_PER_LESSON;
-      return total + lessonsXP + (unit.rewardXP || 0);
-    }, 0);
-  };
-
   const capitalizeName = (name: any) => {
     if (!name) return "";
 
@@ -179,28 +189,6 @@ export default function Dashboard() {
       .join(" ");
   };
 
-  const getDynamicLevelRequirements = (modules: any[]) => {
-    const A1Units = modules.flatMap((m) =>
-      Object.entries(m.units || {})
-        .filter(([unitId]) => unitId.includes("A1_"))
-        .map(([, unit]) => unit),
-    );
-
-    const A2Units = modules.flatMap((m) =>
-      Object.entries(m.units || {})
-        .filter(([unitId]) => unitId.includes("A2_"))
-        .map(([, unit]) => unit),
-    );
-
-    return {
-      A1: 0,
-      A2: Math.round(calculateTotalLevelXP(A1Units) * 0.7),
-      B1: Math.round(
-        calculateTotalLevelXP(A1Units) + calculateTotalLevelXP(A2Units) * 0.7,
-      ),
-    };
-  };
-
   const updateStreak = async (userProgress: any) => {
     if (!user) {
       console.error("No hay usuario autenticado");
@@ -212,7 +200,10 @@ export default function Dashboard() {
     }
 
     try {
-      const updated = await registerDailyConnection(user.uid, userProgress.stats);
+      const updated = await registerDailyConnection(
+        user.uid,
+        userProgress.stats,
+      );
       if (updated) return updated;
     } catch (error) {
       console.error("Error updating streak:", error);
@@ -247,51 +238,24 @@ export default function Dashboard() {
 
   const loadHeavyData = async (userProgress: any) => {
     try {
-      const [modulesSnapshot, streak] = await Promise.all([
+      const [modulesSnapshot, streak, allReadings] = await Promise.all([
         getDocs(collection(db, "modules")),
         updateStreak(userProgress),
+        getAllReadings().catch(() => []),
       ]);
+      setReadings(allReadings);
 
-      const modulesData = modulesSnapshot.docs.map((doc) => doc.data());
-      setDynamicRequirements(getDynamicLevelRequirements(modulesData));
-
-      const levelTotals = { A1: 0, A2: 0, B1: 0 };
-
-      modulesSnapshot.forEach((doc) => {
-        Object.entries(doc.data().units || {}).forEach(
-          ([unitId, unit]: [string, any]) => {
-            if (unitId.includes("A1_"))
-              levelTotals.A1 += unit.lessons?.length || 0;
-            else if (unitId.includes("A2_"))
-              levelTotals.A2 += unit.lessons?.length || 0;
-            else if (unitId.includes("B1_"))
-              levelTotals.B1 += unit.lessons?.length || 0;
-          },
-        );
-      });
+      setModulesData(modulesSnapshot.docs.map((doc) => doc.data()));
 
       setProgress((prev) => ({
         ...prev,
         xp: userProgress.xp || 0,
         completedLessons: userProgress.completedLessons || {},
+        completedReadings: userProgress.completedReadings || {},
         purchasedLevels: userProgress.purchasedLevels || {},
         earnedBadges: userProgress.earnedBadges || {},
         // antes no se copiaba: la pantalla mostraba siempre "1 días de racha"
         stats: streak,
-        levels: {
-          A1: {
-            completed: userProgress.levels?.A1?.completed || 0,
-            total: levelTotals.A1,
-          },
-          A2: {
-            completed: userProgress.levels?.A2?.completed || 0,
-            total: levelTotals.A2,
-          },
-          B1: {
-            completed: userProgress.levels?.B1?.completed || 0,
-            total: levelTotals.B1,
-          },
-        },
       }));
     } catch (error) {
       console.error("Error loading heavy data:", error);
@@ -367,47 +331,6 @@ export default function Dashboard() {
       throw error;
     }
   };
-
-  const getCurrentLevel = (): string => {
-    const totalXP =
-      Object.keys(progress.completedLessons || {}).length * BASE_XP_PER_LESSON;
-    if (!totalXP) return "A1";
-    if (totalXP >= dynamicRequirements.B1) return "B1";
-    if (totalXP >= dynamicRequirements.A2) return "A2";
-    return "A1";
-  };
-
-  const calculateXPProgress = (): { progress: number; nextLevel: string } => {
-    const currentXP =
-      Object.keys(progress.completedLessons || {}).length * BASE_XP_PER_LESSON;
-
-    if (Object.keys(dynamicRequirements).length === 0) {
-      return { progress: 0, nextLevel: "A2" };
-    }
-
-    const currentLevel = getCurrentLevel();
-    const nextLevel: "A2" | "B1" | null =
-      currentLevel === "A1" ? "A2" : currentLevel === "A2" ? "B1" : null;
-
-    if (!nextLevel) return { progress: 1, nextLevel: "Máximo" };
-
-    const currentReq =
-      dynamicRequirements[currentLevel as keyof LevelRequirements] || 0;
-    const nextReq = dynamicRequirements[nextLevel] || 1; // Evitar división por 0
-
-    // Calcular progreso de manera segura
-    let calculatedProgress = 0;
-    if (nextReq > currentReq) {
-      calculatedProgress = (currentXP - currentReq) / (nextReq - currentReq);
-    }
-
-    return {
-      progress: Math.min(1, Math.max(0, calculatedProgress)),
-      nextLevel,
-    };
-  };
-
-  const xpProgress = calculateXPProgress();
 
   const handleBuyLevel = (levelId: LevelId) => {
     if (!user) {
@@ -615,16 +538,14 @@ export default function Dashboard() {
                   <FlameIcon size={20} color="#FF9500" />
                   <Text style={styles.streakText}>
                     {progress.stats?.daysStreak ?? 1}{" "}
-                    {(progress.stats?.daysStreak ?? 1) === 1 ? "día" : "días"} de
-                    racha
+                    {(progress.stats?.daysStreak ?? 1) === 1 ? "día" : "días"}{" "}
+                    de racha
                   </Text>
                 </View>
 
-                <Text style={styles.userLevel}>Nivel: {getCurrentLevel()}</Text>
+                <Text style={styles.userLevel}>Cursando: {studying}</Text>
                 <Text style={styles.userXP}>
-                  {Object.keys(progress.completedLessons || {}).length *
-                    BASE_XP_PER_LESSON || 0}{" "}
-                  XP
+                  ⭐ {xp.total.toLocaleString("es")} XP
                 </Text>
               </View>
             </>
@@ -662,33 +583,28 @@ export default function Dashboard() {
         {/* Barra de progreso global */}
         <View style={styles.globalXpBar}>
           <Text style={styles.xpText}>
-            {Object.keys(progress.completedLessons || {}).length *
-              BASE_XP_PER_LESSON || 0}{" "}
-            XP
+            ⭐ {xp.total.toLocaleString("es")} XP
           </Text>
-          <Progress.Bar
-            progress={calculateXPProgress().progress}
-            width={200}
-            color="#4CAF50"
-          />
           <Text style={styles.levelText}>
-            Actual: {getCurrentLevel()} → Siguiente:{" "}
-            {calculateXPProgress().nextLevel}
+            Lección +{XP.lesson} · Lectura +{XP.reading} · Unidad completa +
+            {XP.unitBonus} · Examen final +{XP.finalExam}
           </Text>
         </View>
-        {availableLevels.map((level) => {
-          const levelData = progress.levels?.[level.id] || {
-            completed: 0,
-            total: 0,
-          };
-          const completedCount = Object.keys(
-            progress.completedLessons || {},
-          ).filter((id) => id.includes(level.id)).length;
+        {availableLevels.map((level, i) => {
+          const stats = xp.byLevel[level.id];
+          const completedCount = stats.lessonsDone + stats.readingsDone;
 
           const hasAccess = progress.purchasedLevels?.[level.id];
 
-          const progressPercentage =
-            levelData.total > 0 ? (completedCount / levelData.total) * 100 : 0;
+          const progressPercentage = stats.progress * 100;
+
+          // sugerir este nivel cuando el anterior (comprado) está casi terminado
+          const previous = availableLevels[i - 1];
+          const suggestNext =
+            !hasAccess &&
+            !!previous &&
+            !!progress.purchasedLevels?.[previous.id] &&
+            xp.byLevel[previous.id].progress >= NEXT_LEVEL_HINT_AT;
 
           return (
             <View key={level.id} style={styles.levelCard}>
@@ -704,7 +620,10 @@ export default function Dashboard() {
               {/* MANTENER las barras de progreso */}
               <View style={styles.progressContainer}>
                 <Text>
-                  Completadas: {completedCount}/{levelData.total} lecciones
+                  Completadas: {stats.lessonsDone}/{stats.lessonsTotal}{" "}
+                  lecciones
+                  {stats.readingsTotal > 0 &&
+                    ` · ${stats.readingsDone}/${stats.readingsTotal} lecturas`}
                 </Text>
                 <View style={styles.progressBar}>
                   <View
@@ -717,9 +636,9 @@ export default function Dashboard() {
                 <Text>{Math.round(progressPercentage)}% completado</Text>
 
                 {/* Mostrar XP ganado en este nivel */}
-                {completedCount > 0 && (
+                {stats.xp > 0 && (
                   <Text style={styles.xpEarned}>
-                    🎯 {completedCount * BASE_XP_PER_LESSON} XP ganados
+                    ⭐ {stats.xp.toLocaleString("es")} XP ganados
                   </Text>
                 )}
               </View>
@@ -734,12 +653,19 @@ export default function Dashboard() {
                   </Text>
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity
-                  onPress={() => handleBuyLevel(level.id)}
-                  style={[styles.levelButton, styles.buyButton]}
-                >
-                  <Text style={styles.buttonText}>Comprar Nivel</Text>
-                </TouchableOpacity>
+                <>
+                  {suggestNext && (
+                    <Text style={styles.nextLevelHint}>
+                      🎉 ¡Ya casi terminás {previous.id}! Seguí con {level.id}.
+                    </Text>
+                  )}
+                  <TouchableOpacity
+                    onPress={() => handleBuyLevel(level.id)}
+                    style={[styles.levelButton, styles.buyButton]}
+                  >
+                    <Text style={styles.buttonText}>Comprar Nivel</Text>
+                  </TouchableOpacity>
+                </>
               )}
 
               {/* Modal de pago */}
@@ -1255,6 +1181,12 @@ const styles = StyleSheet.create({
   },
   buyButton: {
     backgroundColor: "#FF9500", // Color naranja para comprar
+  },
+  nextLevelHint: {
+    color: "#D82989",
+    fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 8,
   },
   xpEarned: {
     color: "#666",

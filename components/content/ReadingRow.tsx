@@ -1,5 +1,6 @@
 import { CheckmarkIcon } from "@/components/ui/SvgIcons";
 import { Reading, ReadingResult } from "@/services/readingService";
+import { XP } from "@/services/xpService";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ReadingRow({
@@ -23,7 +24,7 @@ export default function ReadingRow({
         <Text style={styles.rowXp}>
           {result
             ? `${result.score}/${result.total} correctas`
-            : `${reading.questions.length} preguntas · +${reading.xpReward} XP`}
+            : `${reading.questions.length} preguntas · +${XP.reading} XP`}
         </Text>
       </View>
       {result && (

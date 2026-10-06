@@ -1,4 +1,5 @@
 import { db } from "@/lib/firebaseConfig";
+import { XP } from "@/services/xpService";
 import {
   collection,
   doc,
@@ -29,7 +30,6 @@ export type Reading = {
   text: string[]; // un elemento por párrafo
   glossary: { word: string; translation: string }[];
   questions: ReadingQuestion[];
-  xpReward: number;
 };
 
 export type ReadingResult = {
@@ -38,6 +38,11 @@ export type ReadingResult = {
 };
 
 const byOrder = (a: Reading, b: Reading) => a.order - b.order;
+
+export const getAllReadings = async (): Promise<Reading[]> => {
+  const snap = await getDocs(collection(db, "readings"));
+  return snap.docs.map((d) => ({ ...(d.data() as Reading), id: d.id })).sort(byOrder);
+};
 
 export const getReadingsByLevel = async (level: string): Promise<Reading[]> => {
   const snap = await getDocs(query(collection(db, "readings"), where("level", "==", level)));
@@ -82,7 +87,7 @@ export const completeReading = async (
       completedAt: serverTimestamp(),
     },
   };
-  if (!previous) update.xp = increment(reading.xpReward || 0);
+  if (!previous) update.xp = increment(XP.reading);
 
   await updateDoc(ref, update);
   return { firstTime: !previous };

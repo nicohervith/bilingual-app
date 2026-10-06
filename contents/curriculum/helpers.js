@@ -144,4 +144,29 @@ const dialog = (title, scenario, steps, instr = "Elige la respuesta correcta par
     }),
   });
 
-module.exports = { v, g, match, memory, fill, build, drag, cat, conj, dialog, tokens, slug };
+// volcado más reciente de Firestore (contents/backups/firestore-dump-AAAA-MM-DD[-HHMMSS].json), generado por dump.js
+const latestDump = () => {
+  const fs = require("fs");
+  const path = require("path");
+  const dir = path.join(__dirname, "../backups");
+  const name = fs
+    .readdirSync(dir)
+    .filter((f) => /^firestore-dump-\d{4}-\d{2}-\d{2}(-\d{6})?\.json$/.test(f))
+    .sort((a, b) => a.replace(".json", "").localeCompare(b.replace(".json", ""))) // sin hora < con hora
+    .pop();
+  if (!name) throw new Error("No hay volcado: correr node contents/curriculum/dump.js");
+  return path.join(dir, name);
+};
+
+// JSON con las claves ordenadas: Firestore no conserva el orden de las claves al reescribir un documento
+const stableStringify = (x) =>
+  Array.isArray(x)
+    ? `[${x.map(stableStringify).join(",")}]`
+    : x && typeof x === "object"
+      ? `{${Object.keys(x)
+          .sort()
+          .map((k) => `${JSON.stringify(k)}:${stableStringify(x[k])}`)
+          .join(",")}}`
+      : JSON.stringify(x);
+
+module.exports = { v, g, match, memory, fill, build, drag, cat, conj, dialog, tokens, slug, latestDump, stableStringify };

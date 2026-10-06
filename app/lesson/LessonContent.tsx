@@ -16,6 +16,7 @@ import { ExerciseComponentRenderer } from "./ExerciseComponentRenderer";
 import type { Exercise } from "./exerciseConfig";
 import { normalizeExerciseConfig } from "./exerciseConfig";
 import { useExerciseCompletion, useLessonCompletion } from "./useLessonHooks";
+import { lessonXp } from "@/services/xpService";
 
 const LessonContent = ({
   lesson,
@@ -54,11 +55,11 @@ const LessonContent = ({
     }
   }, [lesson]);
 
-  const handleCompleteLesson = async () => {
-    await executeCompleteLesson(unitId, allCompleted, lesson?.xpReward || 0);
-  };
+  const xpReward = lesson ? lessonXp(lesson.id) : 0;
 
-  const xpReward = lesson?.metadata?.xpReward ?? lesson?.xpReward ?? 0;
+  const handleCompleteLesson = async () => {
+    await executeCompleteLesson(unitId, allCompleted, xpReward);
+  };
 
   // Renderizar ejercicios con el componente centralizado
   const renderExercise = (exercise: Exercise, index: number) => {

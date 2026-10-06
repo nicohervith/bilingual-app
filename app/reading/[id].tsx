@@ -6,9 +6,10 @@ import {
   Reading,
   ReadingResult,
 } from "@/services/readingService";
+import { XP } from "@/services/xpService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as Speech from "expo-speech";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -30,6 +31,7 @@ export default function ReadingScreen() {
   const [message, setMessage] = useState("");
   const [showGlossary, setShowGlossary] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const speechSession = useRef(0);
 
   useEffect(() => {
     const load = async () => {
@@ -49,6 +51,7 @@ export default function ReadingScreen() {
     };
     load();
     return () => {
+      speechSession.current++;
       Speech.stop();
     };
   }, [id, user]);
@@ -59,20 +62,36 @@ export default function ReadingScreen() {
   const score = answers.filter((a, i) => a === reading.questions[i].answer).length;
   const allAnswered = answers.every((a) => a !== null);
 
+  // Speak one paragraph per utterance: Chrome cuts long utterances after ~15s.
   const toggleSpeech = () => {
     if (speaking) {
+      speechSession.current++;
       Speech.stop();
       setSpeaking(false);
       return;
     }
+    const session = ++speechSession.current;
+    const parts = [reading.title, ...reading.text].filter((p) => p.trim());
+    const speakPart = (i: number) => {
+      if (session !== speechSession.current) return;
+      if (i >= parts.length) {
+        setSpeaking(false);
+        return;
+      }
+      Speech.speak(parts[i], {
+        language: "en-US",
+        rate: 0.85,
+        onDone: () => speakPart(i + 1),
+        onStopped: () => {
+          if (session === speechSession.current) setSpeaking(false);
+        },
+        onError: () => {
+          if (session === speechSession.current) setSpeaking(false);
+        },
+      });
+    };
     setSpeaking(true);
-    Speech.speak([reading.title, ...reading.text].join("\n"), {
-      language: "en-US",
-      rate: 0.85,
-      onDone: () => setSpeaking(false),
-      onStopped: () => setSpeaking(false),
-      onError: () => setSpeaking(false),
-    });
+    speakPart(0);
   };
 
   const handleCheck = async () => {
@@ -85,7 +104,7 @@ export default function ReadingScreen() {
       const { firstTime } = await completeReading(user.uid, reading, score);
       setMessage(
         firstTime
-          ? `¡Lectura completada! +${reading.xpReward} XP`
+          ? `¡Lectura completada! +${XP.reading} XP`
           : "Ya habías completado esta lectura (no obtienes XP adicional).",
       );
       setPrevious({ score: Math.max(score, previous?.score || 0), total: reading.questions.length });

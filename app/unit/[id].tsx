@@ -11,6 +11,7 @@ import {
 } from "@/services/readingService";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
+import { lessonXp } from "@/services/xpService";
 import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -36,19 +37,6 @@ export default function UnitScreen() {
   const router = useRouter();
   const { user } = useAuth();
 
-  // Función para obtener el XP reward
-  const getXpReward = (lesson: any): number => {
-    if (lesson.xpReward !== undefined && lesson.xpReward !== null) {
-      return lesson.xpReward;
-    }
-    if (
-      lesson.metadata?.xpReward !== undefined &&
-      lesson.metadata?.xpReward !== null
-    ) {
-      return lesson.metadata.xpReward;
-    }
-    return 0;
-  };
 
   // Cargar lecciones completadas del usuario
   const loadCompletedLessons = async () => {
@@ -171,7 +159,7 @@ export default function UnitScreen() {
       </Text>
 
       {lessons.map((lesson, index) => {
-        const xpReward = getXpReward(lesson);
+        const xpReward = lessonXp(lesson.id);
         const isCompleted = isLessonCompleted(lesson.id);
 
         return (

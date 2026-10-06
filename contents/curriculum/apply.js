@@ -11,10 +11,11 @@ const fs = require("fs");
 const path = require("path");
 
 const WRITE = process.argv.includes("--write");
-const LEVEL = (process.argv.find((a) => /^ad$/i.test(a)) || "A1").toUpperCase();
-const dumpPath = path.join(__dirname, "../backups/firestore-dump-2026-10-02.json");
-const dump = JSON.parse(fs.readFileSync(dumpPath, "utf8"));
+const LEVEL = (process.argv.find((a) => /^a\d$/i.test(a)) || "A1").toUpperCase();
+const { stableStringify } = require("./helpers");
 const out = JSON.parse(fs.readFileSync(path.join(__dirname, `out/${LEVEL.toLowerCase()}-lessons.json`), "utf8"));
+if (!out.dumpPath) throw new Error(`Volver a correr: node contents/curriculum/build.js ${LEVEL}`);
+const dump = JSON.parse(fs.readFileSync(out.dumpPath, "utf8"));
 
 admin.initializeApp({ credential: admin.credential.cert(require("../../service-account-key.json")) });
 const db = admin.firestore();
@@ -33,7 +34,7 @@ const now = admin.firestore.FieldValue.serverTimestamp();
     }
     const live = snap.data();
     backup.lessons[id] = live;
-    if (JSON.stringify(live.content) !== JSON.stringify(dump.lessons[id].content)) {
+    if (stableStringify(live.content) !== stableStringify(dump.lessons[id].content)) {
       skipped.push(`${id}: cambió en Firestore después del volcado (volver a volcar y a correr build.js)`);
       continue;
     }

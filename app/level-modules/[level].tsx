@@ -2,6 +2,8 @@
 import { getUnitOrder } from "@/constants/unitOrder";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/firebaseConfig";
+import { getReadingsByLevel } from "@/services/readingService";
+import { ProgressStats, summarizeXp } from "@/services/xpService";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -43,7 +45,8 @@ export default function LevelModulesScreen() {
   const router = useRouter() as {
     push: (path: `/unit/${string}` | `/readings/${string}`) => void;
   };
-  const [unitProgress, setUnitProgress] = useState<Record<string, number>>({});
+  // lecciones, lecturas, progreso y XP de cada unidad
+  const [unitStats, setUnitStats] = useState<Record<string, ProgressStats>>({});
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,11 +89,22 @@ export default function LevelModulesScreen() {
 
         setModules(filteredModules);
 
-        // 2. Cargar progreso del usuario
-        const progressDoc = await getDoc(doc(db, "userProgress", user.uid));
+        // 2. Cargar progreso del usuario y lecturas del nivel
+        const [progressDoc, readings] = await Promise.all([
+          getDoc(doc(db, "userProgress", user.uid)),
+          getReadingsByLevel(level as string).catch(() => []),
+        ]);
+        const progressData = progressDoc.data() || {};
+        setUnitStats(
+          summarizeXp(
+            filteredModules,
+            readings,
+            progressData.completedLessons,
+            progressData.completedReadings,
+          ).byUnit,
+        );
+
         if (progressDoc.exists()) {
-          const progressData = progressDoc.data();
-          console.log("User progress data:", progressData);
           const completedLessons = progressData.completedLessons || {};
 
           const newModuleCompletion: Record<string, boolean> = {};
@@ -101,22 +115,6 @@ export default function LevelModulesScreen() {
             );
           });
           setModuleCompletion(newModuleCompletion);
-
-          console.log("User progress:", completedLessons);
-          // Calcular progreso por unidad
-          const newUnitProgress: Record<string, number> = {};
-
-          filteredModules.forEach((module) => {
-            Object.values(module.units).forEach((unit: any) => {
-              const totalLessons = unit.lessons.length;
-              const completedCount = unit.lessons.filter(
-                (id: string) => completedLessons[id],
-              ).length;
-              newUnitProgress[unit.id] = completedCount / totalLessons;
-            });
-          });
-
-          setUnitProgress(newUnitProgress);
         }
       } catch (error) {
         console.error("Error loading modules:", error);
@@ -139,7 +137,6 @@ export default function LevelModulesScreen() {
       </View>
     );
   }
-  console.log("Modules loaded:", modules);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -225,7 +222,11 @@ export default function LevelModulesScreen() {
                 return (a.id || "").localeCompare(b.id || "");
               })
               .map((unit: any) => {
-                const isUnitComplete = unitProgress[unit.id] === 1;
+                const stats = unitStats[unit.id];
+                // la insignia se gana con todas las lecciones (las lecturas son extra)
+                const isUnitComplete =
+                  !!stats?.lessonsTotal &&
+                  stats.lessonsDone === stats.lessonsTotal;
 
                 return (
                   <TouchableOpacity
@@ -250,18 +251,29 @@ export default function LevelModulesScreen() {
                     </View>
 
                     <Text style={styles.lessonCount}>
-                      {unit.lessons.length} lecciones
+                      📚 {stats?.lessonsDone ?? 0}/{unit.lessons.length}{" "}
+                      lecciones
+                      {stats?.readingsTotal
+                        ? `   📖 ${stats.readingsDone}/${stats.readingsTotal} lecturas`
+                        : ""}
                     </Text>
+                    {!!stats?.xp && (
+                      <Text style={styles.unitXp}>
+                        ⭐ {stats.xp} XP ganados
+                      </Text>
+                    )}
 
                     <Progress.Bar
-                      progress={unitProgress[unit.id] || 0}
-                      width={200}
+                      progress={stats?.progress || 0}
+                      width={null} // ocupa todo el ancho de la tarjeta
+                      height={8}
+                      borderRadius={4}
                       color="#4CAF50"
+                      style={{ marginTop: 6 }}
                     />
 
                     <Text style={styles.progressText}>
-                      {Math.round((unitProgress[unit.id] || 0) * 100)}%
-                      completado
+                      {Math.round((stats?.progress || 0) * 100)}% completado
                     </Text>
                   </TouchableOpacity>
                 );
@@ -417,6 +429,12 @@ const styles = StyleSheet.create({
   lessonCount: {
     color: "#6c757d",
     fontSize: 14,
+  },
+  unitXp: {
+    color: "#B8860B",
+    fontSize: 13,
+    marginTop: 2,
+    marginBottom: 4,
   },
   xpReward: {
     color: "#4CAF50",

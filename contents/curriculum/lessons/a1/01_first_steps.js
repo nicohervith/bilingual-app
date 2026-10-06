@@ -241,6 +241,8 @@ module.exports = {
       ["Noche, al llegar", "Good evening!"],
       ["Noche, al irse o ir a dormir", "Good night!"],
       ["Informal: Hi / Bye — Formal: Hello / Goodbye", "Hi, Tom!", "Goodbye, Mr. Smith."],
+      ["Responder a 'How are you?' y devolver la pregunta", "I'm fine, thanks. And you?", "Very well, thank you."],
+      ["Al conocer a alguien", "Nice to meet you. (Encantado/a)", "Nice to meet you too. (Igualmente)"],
     ),
     vocab: [
       v("Good morning", "Buenos días", "Good morning, class!"),
@@ -249,6 +251,10 @@ module.exports = {
       v("See you later", "Hasta luego", "Bye! See you later"),
       v("Bye", "Chau / Adiós", "Bye, Tom!"),
       v("Welcome", "Bienvenido/a", "Welcome to my house"),
+      v("Good night", "Buenas noches (al despedirse)", "Good night, Mom!"),
+      v("See you soon", "Hasta pronto", "Bye, Anna! See you soon"),
+      v("Take care", "Cuídate", "Goodbye and take care!"),
+      v("Nice to meet you", "Encantado/a de conocerte", "Hi, I'm Tom. — Nice to meet you!"),
     ],
     add: [
       match("Saludos del día", [
@@ -287,6 +293,18 @@ module.exports = {
         ["Emma", "Good morning! How are you?", "Good morning! I am fine, thank you.", "Good night! I am John.", "Es de mañana: responde con 'Good morning'."],
         ["Emma", "Nice to see you. Goodbye!", "Bye! See you later.", "Hello! Welcome.", "Emma se está despidiendo."],
       ]),
+      dialog("Simulación: En la oficina", "Llegas a una reunión a las 3 de la tarde", [
+        ["Mr. Smith", "Good afternoon! I'm Robert Smith.", "Good afternoon, Mr. Smith. Nice to meet you.", "Good morning! What's up?", "Son las 3 PM y es una situación formal."],
+        ["Mr. Smith", "Nice to meet you too. How are you?", "Very well, thank you. And you?", "Good night, Mr. Smith.", "Responde cómo estás y devuelve la pregunta."],
+        ["Mr. Smith", "I'm fine, thanks. Welcome to the company!", "Thank you very much.", "You're welcome.", "Te dan la bienvenida: agradece."],
+      ]),
+      match("¿Cómo respondes?", [
+        "How are you? = I'm fine, thanks. And you?",
+        "Nice to meet you. = Nice to meet you too.",
+        "Thank you! = You're welcome.",
+        "See you later! = Bye! Take care.",
+      ], "Une cada frase con la respuesta adecuada."),
+      build("Saludo formal", "🏢 Buenas tardes, señor Smith. Encantado de conocerlo.", "Good afternoon Mr Smith Nice to meet you", ["morning", "hi"]),
     ],
   },
 };

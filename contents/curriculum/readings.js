@@ -14,7 +14,7 @@ const MODULE_ID = { A1: "basics", A2: "basics_a2" }[LEVEL];
 if (!MODULE_ID) throw new Error(`Nivel desconocido: ${LEVEL}`);
 
 const PER_UNIT = 2;
-const dump = JSON.parse(fs.readFileSync(path.join(__dirname, "../backups/firestore-dump-2026-10-02.json"), "utf8"));
+const dump = JSON.parse(fs.readFileSync(require("./helpers").latestDump(), "utf8"));
 const units = dump.modules[MODULE_ID].units;
 const source = require(`./readings/${LEVEL.toLowerCase()}.js`);
 

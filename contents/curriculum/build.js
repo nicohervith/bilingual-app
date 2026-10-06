@@ -3,16 +3,18 @@
 //
 //   node contents/curriculum/build.js A1 [ruta-al-volcado.json]
 //   node contents/curriculum/build.js A2
+//
+// Sin ruta usa el volcado más reciente de contents/backups (ver dump.js).
 
 const fs = require("fs");
 const path = require("path");
-const { tokens } = require("./helpers");
+const { tokens, latestDump } = require("./helpers");
 
 const LEVEL = (process.argv[2] || "A1").toUpperCase();
 const MODULE_ID = { A1: "basics", A2: "basics_a2" }[LEVEL];
 if (!MODULE_ID) throw new Error(`Nivel desconocido: ${LEVEL}`);
 
-const dumpPath = process.argv[3] || path.join(__dirname, "../backups/firestore-dump-2026-10-02.json");
+const dumpPath = process.argv[3] ? path.resolve(process.argv[3]) : latestDump();
 const dump = JSON.parse(fs.readFileSync(dumpPath, "utf8"));
 
 const MIN_EX = 10;
@@ -273,6 +275,7 @@ Object.values(moduleUnits).forEach((u) => {
 });
 out.level = LEVEL;
 out.moduleId = MODULE_ID;
+out.dumpPath = dumpPath; // apply.js compara contra este mismo volcado
 
 // lecciones visibles en la app que todavía no tienen parche
 const pending = Object.keys(unitOf).filter((id) => !patches[id]);
